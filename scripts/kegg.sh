@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -exo pipefail
+
 HEADERGENETOKEGG=../header/genetokegg.tsv
 HEADERKEGGINFO=../header/kegginfo.tsv
 INGENETOKEGG=../databases/kegg/download/genetokegg.tsv

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -exo pipefail
+
 HEADER=../header/exac.tsv
 INPUT=../databases/exac/download/ExAC.r0.3.1.sites.vep.vcf.gz
 OUTPUT=$(dirname $INPUT)/../$(basename $INPUT .vcf.gz).tsv

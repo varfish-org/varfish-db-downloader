@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -exo pipefail
+
 HEADER=../header/mim2gene_medgen.tsv
 INPUT=../databases/omim/download/mim2gene_medgen
 OUTPUT=$(dirname $INPUT)/../$(basename $INPUT).tsv

@@ -1,7 +1,9 @@
 #!/bin/bash
 
+set -exo pipefail
+
 HEADER=../header/dbsnp.tsv
-INPUT=../databases/dbsnp/download/All_20170710.vcf.gz
+INPUT=../databases/dbsnp/download/All_20180423.vcf.gz
 OUTPUT=$(dirname $INPUT)/../$(basename $INPUT .vcf.gz).tsv
 REF=../downloads/hs37d5.fa
 

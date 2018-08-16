@@ -5,7 +5,7 @@ URL_HGNC = ftp://ftp.ebi.ac.uk/pub/databases/genenames/hgnc_complete_set.txt.gz
 URL_HPO = http://compbio.charite.de/jenkins/job/hpo.annotations.2018/lastSuccessfulBuild/artifact/misc_2018/phenotype.hpoa
 URL_EXAC = ftp://ftp.broadinstitute.org/pub/ExAC_release/release0.3.1/ExAC.r0.3.1.sites.vep.vcf.gz
 URL_GNOMAD = https://storage.googleapis.com/gnomad-public/release/2.0.2/vcf/exomes/gnomad.exomes.r2.0.2.sites.vcf.bgz
-URL_DBSNP = ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh37p13/VCF/GATK/All_20180423.vcf.gz
+URL_DBSNP = ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh37p13/VCF/All_20180423.vcf.gz
 URL_REF = ftp://ftp.ncbi.nlm.nih.gov/1000genomes/ftp/technical/reference/phase2_reference_assembly_sequence/hs37d5.fa.gz
 
 CLINVAR_SINGLE = ../databases/clinvar/download/$(notdir $(URL_CLINVAR_SINGLE))

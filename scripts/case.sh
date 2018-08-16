@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -exo pipefail
+
 HEADER=../header/case.tsv
 
 for INPUT in ../database/case/download/*.ped

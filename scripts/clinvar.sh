@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -exo pipefail
+
 HEADER=../header/clinvar.tsv
 INSINGLE=../databases/clinvar/download/clinvar_allele_trait_pairs.single.b37.tsv.gz
 INMULTI=../databases/clinvar/download/clinvar_allele_trait_pairs.multi.b37.tsv.gz

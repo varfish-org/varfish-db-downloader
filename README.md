@@ -12,7 +12,7 @@ containing the column names of the corresponding varfish database table).
 
 ### Requirements
 
-We recommend the installation of the requirements via conda:
+We recommend the installation of the requirements via [conda](https://conda.io/miniconda.html):
 
 ```
 conda install bcftools

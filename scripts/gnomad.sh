@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -exo pipefail
+
 HEADER=../header/gnomad.tsv
 INPUT=../databases/gnomad/download/gnomad.exomes.r2.0.2.sites.vcf.gz
 OUTPUT=$(dirname $INPUT)/../$(basename $INPUT .vcf.gz).tsv
