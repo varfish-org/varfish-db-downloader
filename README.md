@@ -39,7 +39,6 @@ This step creates the folder structure in `databases/`.
 
 ```
 make download
-make dl_ref
 ```
 
 The downloads will be stored in `databases/<database_name>/download/`.
@@ -56,15 +55,48 @@ The download links are defined in `downloads/Makefile` and the variable names
 are prefixed with `URL_`. Those variables are safe to change (if the downloaded
 file contains the expected format).
 
-The KEGG database is not automatically downloadable. Instructions are printed
-to obtain the required files. They need to be placed in
-`databases/kegg/downloads`.
-
-The case files are in `.ped` format and are individual depending on your
+* The KEGG database is not automatically downloadable. Instructions are printed
+to obtain the required files (or see instructions below). They need to be
+placed in `databases/kegg/downloads`.
+* The case files are in `.ped` format and are individual depending on your
 project. You need to place them in `databases/case/download`.
+* Copy the resulting `-vars` file from Varhab to `databases/annotation`
+* Copy the resulting `-gts` file from Varhab to `databases/smallvariant`
 
 Note that ExAC, gnomAD and dbSNP databases are rather large files and will take
 time to download.
+
+#### KEGG download
+
+##### GeneToKegg
+
+* https://genome.ucsc.edu
+* Tools -> Table Browser
+    - group: All tables
+    - assembly: GRCh37
+    - table: keggPathway
+    - output format: selected fields from primary and related tables
+    - output file: `genetokegg.tsv`
+    - get output
+        - Linked Tables -> knownGene -> allow selection from checked tables
+        - Linked Tables -> ensGtp -> allow selection from checked tables
+        - Select Fields from keggPathway -> mapID
+        - ensGtp fields -> gene
+        - get output
+
+##### KeggInfo
+
+* https://genome.ucsc.edu
+* Tools -> Table Browser
+    - group: All tables
+    - assembly: GRCh37
+    - table: keggMapDesc
+    - output format: selected fields from primary and related tables
+    - output file: `kegginfo.tsv`
+    - get output
+        - Select Fields from keggMapDesc -> mapID
+        - Select Fields from keggMapDesc -> description
+        - get output
 
 ### Convert databases
 

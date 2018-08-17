@@ -4,9 +4,9 @@ set -exo pipefail
 
 HEADER=../header/case.tsv
 
-for INPUT in ../database/case/download/*.ped
+for INPUT in ../databases/case/download/*.ped
 do
-    OUPTUT=$(dirname $INPUT)/../$(basename $INPUT .ped).tsv
+    OUTPUT=$(dirname $INPUT)/../$(basename $INPUT .ped).tsv
     (
         cat $HEADER;
         awk -F $'\t' '

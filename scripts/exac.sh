@@ -7,6 +7,8 @@ INPUT=../databases/exac/download/ExAC.r0.3.1.sites.vep.vcf.gz
 OUTPUT=$(dirname $INPUT)/../$(basename $INPUT .vcf.gz).tsv
 REF=../downloads/hs37d5.fa
 
+test -e $INPUT.tbi || bcftools index $INPUT
+
 # The problem is that the AC_Het field is not properly defined.
 # It is set as Number=A which refers to 1 entry for each alternative allele.
 # The field contains 1 if there is only 1 alternative allele but 3 if there are

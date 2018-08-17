@@ -3,9 +3,11 @@
 set -exo pipefail
 
 HEADER=../header/gnomad.tsv
-INPUT=../databases/gnomad/download/gnomad.exomes.r2.0.2.sites.vcf.gz
-OUTPUT=$(dirname $INPUT)/../$(basename $INPUT .vcf.gz).tsv
+INPUT=../databases/gnomad/download/gnomad.exomes.r2.0.2.sites.vcf.bgz
+OUTPUT=$(dirname $INPUT)/../$(basename $INPUT .vcf.bgz).tsv
 REF=../downloads/hs37d5.fa
+
+test -e $INPUT.tbi || bcftools index $INPUT
 
 (
     cat $HEADER;
@@ -16,7 +18,7 @@ REF=../downloads/hs37d5.fa
     | bcftools query \
         -f 'GRCh37\t%CHROM\t%POS\t%REF\t%ALT\t%AC\t%AC_AFR\t%AC_AMR\t%AC_ASJ\t%AC_EAS\t%AC_FIN\t%AC_NFE\t%AC_OTH\t%AC_SAS\t%AN\t%AN_AFR\t%AN_AMR\t%AN_ASJ\t%AN_EAS\t%AN_FIN\t%AN_NFE\t%AN_OTH\t%AN_SAS\t%Hemi\t%Hemi_AFR\t%Hemi_AMR\t%Hemi_ASJ\t%Hemi_EAS\t%Hemi_FIN\t%Hemi_NFE\t%Hemi_OTH\t%Hemi_SAS\t%Hom\t%Hom_AFR\t%Hom_AMR\t%Hom_ASJ\t%Hom_EAS\t%Hom_FIN\t%Hom_NFE\t%Hom_OTH\t%Hom_SAS\t%POPMAX\n' \
         - \
-    | awk -F "\t" '!_[$2$3$4$5]++' \
+    | sort -u -k 2,5 -S 80% \
     | awk -F $'\t' \
         'BEGIN {
             OFS = FS
@@ -62,4 +64,4 @@ REF=../downloads/hs37d5.fa
             af_sas = ($(populations["SAS"] + an) > 0) ? $(populations["SAS"] + ac) / $(populations["SAS"] + an) : "."
             print $0,ac_popmax,an_popmax,af_popmax,hemi_popmax,hom_popmax,af,af_afr,af_amr,af_asj,af_eas,af_fin,af_nfe,af_oth,af_sas
         }'
-) > $OUPTUT
+) > $OUTPUT

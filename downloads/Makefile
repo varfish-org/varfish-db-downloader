@@ -39,14 +39,17 @@ $(HPO):
 exac: $(EXAC)
 $(EXAC):
 	wget -c $(URL_EXAC) -O $@
+	wget -c $(URL_EXAC).tbi -O $@.tbi
 
 gnomad: $(GNOMAD)
 $(GNOMAD):
 	wget -c $(URL_GNOMAD) -O $@
+	wget -c $(URL_GNOMAD).tbi -O $@.tbi
 
 dbsnp: $(DBSNP)
 $(DBSNP):
 	wget -c $(URL_DBSNP) -O $@
+	wget -c $(URL_DBSNP).tbi -O $@.tbi
 
 ref: $(REF)
 $(REF):
