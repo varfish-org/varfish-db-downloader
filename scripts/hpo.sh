@@ -8,5 +8,5 @@ OUTPUT=$(dirname $INPUT)/../$(basename $INPUT .hpoa).tsv
 
 (
     cat $HEADER;
-    grep -v '^#' $INPUT
+    tail -n +6 $INPUT
 ) > $OUTPUT

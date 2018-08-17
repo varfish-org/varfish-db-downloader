@@ -1,7 +1,7 @@
 URL_CLINVAR_SINGLE = https://raw.githubusercontent.com/macarthur-lab/clinvar/master/output/b37/single/clinvar_allele_trait_pairs.single.b37.tsv.gz
 URL_CLINVAR_MULTI = https://raw.githubusercontent.com/macarthur-lab/clinvar/master/output/b37/multi/clinvar_allele_trait_pairs.multi.b37.tsv.gz
 URL_OMIM = ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/mim2gene_medgen
-URL_HGNC = ftp://ftp.ebi.ac.uk/pub/databases/genenames/hgnc_complete_set.txt.gz
+URL_HGNC = ftp://ftp.ebi.ac.uk/pub/databases/genenames/new/tsv/hgnc_complete_set.txt
 URL_HPO = http://compbio.charite.de/jenkins/job/hpo.annotations.2018/lastSuccessfulBuild/artifact/misc_2018/phenotype.hpoa
 URL_EXAC = ftp://ftp.broadinstitute.org/pub/ExAC_release/release0.3.1/ExAC.r0.3.1.sites.vep.vcf.gz
 URL_GNOMAD = https://storage.googleapis.com/gnomad-public/release/2.0.2/vcf/exomes/gnomad.exomes.r2.0.2.sites.vcf.bgz
