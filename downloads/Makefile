@@ -7,6 +7,8 @@ URL_EXAC = ftp://ftp.broadinstitute.org/pub/ExAC_release/release0.3.1/ExAC.r0.3.
 URL_GNOMAD = https://storage.googleapis.com/gnomad-public/release/2.0.2/vcf/exomes/gnomad.exomes.r2.0.2.sites.vcf.bgz
 URL_DBSNP = ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh37p13/VCF/All_20180423.vcf.gz
 URL_REF = ftp://ftp.ncbi.nlm.nih.gov/1000genomes/ftp/technical/reference/phase2_reference_assembly_sequence/hs37d5.fa.gz
+URL_REFSEQ = ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/ARCHIVE/ANNOTATION_RELEASE.105/GFF/ref_GRCh37.p13_top_level.gff3.gz
+URL_ENSEMBL = ftp://ftp.ensembl.org/pub/release-75/gtf/homo_sapiens/Homo_sapiens.GRCh37.75.gtf.gz
 
 CLINVAR_SINGLE = ../databases/clinvar/download/$(notdir $(URL_CLINVAR_SINGLE))
 CLINVAR_MULTI = ../databases/clinvar/download/$(notdir $(URL_CLINVAR_MULTI))
@@ -16,6 +18,8 @@ HPO = ../databases/hpo/download/$(notdir $(URL_HPO))
 EXAC = ../databases/exac/download/$(notdir $(URL_EXAC))
 GNOMAD = ../databases/gnomad/download/$(notdir $(URL_GNOMAD))
 DBSNP = ../databases/dbsnp/download/$(notdir $(URL_DBSNP))
+REFSEQ = ../databases/refseq/download/$(notdir $(URL_REFSEQ))
+ENSEMBL = ../databases/ensembl/download/$(notdir $(URL_ENSEMBL))
 REF = $(patsubst %.gz,%,$(notdir $(URL_REF)))
 
 clinvar: $(CLINVAR_SINGLE) $(CLINVAR_MULTI)
@@ -51,6 +55,14 @@ $(DBSNP):
 	wget -c $(URL_DBSNP) -O $@
 	wget -c $(URL_DBSNP).tbi -O $@.tbi
 
+refseq: $(REFSEQ)
+$(REFSEQ):
+	wget -c $(URL_REFSEQ) -O $@
+
+ensembl: $(ENSEMBL)
+$(ENSEMBL):
+	wget -c $(URL_ENSEMBL) -O $@
+
 ref: $(REF)
 $(REF):
 	wget -c $(URL_REF) -O- \
@@ -60,6 +72,8 @@ case:
 	@echo -e
 	@echo -e Place ped files \(yes, multiple are allowed\) in databases/case/download
 	@echo -e
+
+
 
 kegg:
 	@echo -e
