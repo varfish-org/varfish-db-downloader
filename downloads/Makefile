@@ -63,7 +63,7 @@ case:
 
 kegg:
 	@echo -e
-	@echo -e \#\# GeneToKegg
+	@echo -e \#\# EnsemblToKegg
 	@echo -e \* https://genome.ucsc.edu
 	@echo -e \* Tools -\> Table Browser
 	@echo -e \\t- group: All tables
@@ -72,10 +72,23 @@ kegg:
 	@echo -e \\t- output format: selected fields from primary and related tables
 	@echo -e \\t- output file: genetokegg.tsv
 	@echo -e \\t- get output
-	@echo -e \\t\\t- Linked Tables -\> knownGene -\> allow selection from checked tables
+	@echo -e \\t\\t- Linked Tables -\> knownToEnsembl -\> allow selection from checked tables
 	@echo -e \\t\\t- Linked Tables -\> ensGtp -\> allow selection from checked tables
 	@echo -e \\t\\t- Select Fields from keggPathway -\> mapID
 	@echo -e \\t\\t- ensGtp fields -\> gene
+	@echo -e \\t\\t- get output
+	@echo -e
+	@echo -e \#\# RefseqToKegg
+	@echo -e \* https://genome.ucsc.edu
+	@echo -e \* Tools -\> Table Browser
+	@echo -e \\t- group: All tables
+	@echo -e \\t- assembly: GRCh37
+	@echo -e \\t- table: keggPathway
+	@echo -e \\t- output format: selected fields from primary and related tables
+	@echo -e \\t- output file: genetokegg.tsv
+	@echo -e \\t- get output
+	@echo -e \\t\\t- Linked Tables -\> knownToKeggEntrez -\> allow selection from checked tables
+	@echo -e \\t\\t- knownToKeggEntrez fields -\> keggEntrez
 	@echo -e \\t\\t- get output
 	@echo -e 
 	@echo -e \#\# KeggInfo

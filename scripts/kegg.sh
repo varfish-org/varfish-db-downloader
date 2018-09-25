@@ -2,16 +2,21 @@
 
 set -exo pipefail
 
-HEADERGENETOKEGG=../header/genetokegg.tsv
+HEADERENSEMBLTOKEGG=../header/ensembltokegg.tsv
+HEADERREFSEQTOKEGG=../header/refseqtokegg.tsv
 HEADERKEGGINFO=../header/kegginfo.tsv
-INGENETOKEGG=../databases/kegg/download/genetokegg.tsv
+
+INENSEMBLTOKEGG=../databases/kegg/download/ensembltokegg.tsv
+INREFSEQTOKEGG=../databases/kegg/download/refseqtokegg.tsv
 INKEGGINFO=../databases/kegg/download/kegginfo.tsv
-OUTGENETOKEGG=$(dirname $INGENETOKEGG)/../$(basename $INGENETOKEGG)
+
+OUTENSEMBLTOKEGG=$(dirname $INENSEMBLTOKEGG)/../$(basename $INENSEMBLTOKEGG)
+OUTREFSEQTOKEGG=$(dirname $INREFSEQTOKEGG)/../$(basename $INREFSEQTOKEGG)
 OUTKEGGINFO=$(dirname $INKEGGINFO)/../$(basename $INKEGGINFO)
 
 (
-    cat $HEADERGENETOKEGG;
-    tail -n +2 $INGENETOKEGG \
+    cat $HEADERENSEMBLTOKEGG;
+    tail -n +2 $INENSEMBLTOKEGG \
     | sort -u \
     | awk -F $'\t' 'BEGIN {
             OFS=FS
@@ -22,7 +27,19 @@ OUTKEGGINFO=$(dirname $INKEGGINFO)/../$(basename $INKEGGINFO)
             }
             print $2,$1
         }'
-) > $OUTGENETOKEGG
+) > $OUTENSEMBLTOKEGG
+
+(
+    cat $HEADERREFSEQTOKEGG;
+    tail -n +2 $INREFSEQTOKEGG \
+    | sort -u \
+    | awk -F+ 'BEGIN {
+            OFS="\t"
+        }
+        {
+            print $2,$1
+        }'
+) > $OUTREFSEQTOKEGG
 
 (
     cat $HEADERKEGGINFO;
