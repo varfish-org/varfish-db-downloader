@@ -15,7 +15,7 @@ containing the column names of the corresponding varfish database table).
 We recommend the installation of the requirements via [conda](https://conda.io/miniconda.html):
 
 ```
-conda install bcftools bedops
+conda install bcftools bedops samtools
 ```
 
 ### Clone project

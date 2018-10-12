@@ -3,7 +3,7 @@
 set -euo pipefail
 set -x
 
-INPUT=../databases/ensembl/download/Homo_sapiens.GRCh37.75.gtf.gz
+INPUT=../data/ensembl/download/Homo_sapiens.GRCh37.75.gtf.gz
 OUTPUT=$(dirname $INPUT)/../$(basename $INPUT .gtf.gz).bed
 
 (

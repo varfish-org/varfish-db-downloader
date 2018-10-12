@@ -2,10 +2,10 @@
 
 set -exo pipefail
 
-HEADER=../header/gnomad.tsv
-INPUT=../databases/gnomad/download/gnomad.exomes.r2.0.2.sites.vcf.bgz
+HEADER=../header/gnomad_exomes.tsv
+INPUT=../databases/gnomad_exomes/download/gnomad.exomes.r2.0.2.sites.vcf.bgz
 OUTPUT=$(dirname $INPUT)/../$(basename $INPUT .vcf.bgz).tsv
-REF=../downloads/hs37d5.fa
+REF=../helpers/data/reference/hs37d5.fa
 
 test -e $INPUT.tbi || bcftools index $INPUT
 
@@ -65,3 +65,4 @@ test -e $INPUT.tbi || bcftools index $INPUT
             print $0,ac_popmax,an_popmax,af_popmax,hemi_popmax,hom_popmax,af,af_afr,af_amr,af_asj,af_eas,af_fin,af_nfe,af_oth,af_sas
         }'
 ) > $OUTPUT
+

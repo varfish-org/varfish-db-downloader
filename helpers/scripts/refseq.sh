@@ -3,7 +3,7 @@
 set -euo pipefail
 set -x
 
-INPUT=../databases/refseq/download/ref_GRCh37.p13_top_level.gff3.gz
+INPUT=../data/refseq/download/ref_GRCh37.p13_top_level.gff3.gz
 OUTPUT=$(dirname $INPUT)/../$(basename $INPUT .gff3.gz).bed
 
 (
