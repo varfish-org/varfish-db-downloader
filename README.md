@@ -1,4 +1,4 @@
-# Varfish Anno
+# Varfish Database Downloader
 
 The purpose of this project is to convert databases that are required by
 varfish into a format that can be easily imported (i.e. TSV files with a header
