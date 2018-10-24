@@ -16,8 +16,8 @@ containing the column names of the corresponding varfish database table).
 ### Clone project
 
 ```
-git clone git@github.com:bihealth/varfish-anno.git
-cd varfish-anno
+git clone git@cubi-gitlab.bihealth.org:CUBI_Engineering/VarFish/varfish-db-downloader
+cd varfish-db-downloader
 ```
 
 ### Requirements
