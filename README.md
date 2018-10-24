@@ -7,22 +7,28 @@ containing the column names of the corresponding varfish database table).
 ## Requirements
 
 * bcftools
+* bedops
+* python 3.6
+* samtools
 
 ## Installation
-
-### Requirements
-
-We recommend the installation of the requirements via [conda](https://conda.io/miniconda.html):
-
-```
-conda install bcftools bedops samtools
-```
 
 ### Clone project
 
 ```
 git clone git@github.com:bihealth/varfish-anno.git
 cd varfish-anno
+```
+
+### Requirements
+
+We recommend the installation of the requirements via [conda](https://conda.io/miniconda.html),
+using the attached `environment.yml` file:
+
+```
+conda env create -f environment.yml
+conda activate varfish-db-downloader
+pip install -r requirements.txt
 ```
 
 ## Usage

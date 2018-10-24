@@ -55,6 +55,7 @@ URL_DBSNP = ftp://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh37p13/VCF/A
 URL_REF = ftp://ftp.ncbi.nlm.nih.gov/1000genomes/ftp/technical/reference/phase2_reference_assembly_sequence/hs37d5.fa.gz
 URL_REFSEQ = ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/ARCHIVE/ANNOTATION_RELEASE.105/GFF/ref_GRCh37.p13_top_level.gff3.gz
 URL_ENSEMBL = ftp://ftp.ensembl.org/pub/release-75/gtf/homo_sapiens/Homo_sapiens.GRCh37.75.gtf.gz
+URL_KNOWNGENEAA = http://hgdownload.cse.ucsc.edu/goldenpath/hg19/multiz100way/alignments/knownGene.exonAA.fa.gz
 
 CLINVAR_SINGLE = ../databases/clinvar/download/$(notdir $(URL_CLINVAR_SINGLE))
 CLINVAR_MULTI = ../databases/clinvar/download/$(notdir $(URL_CLINVAR_MULTI))
@@ -113,6 +114,8 @@ DBSNP = ../databases/dbsnp/download/$(notdir $(URL_DBSNP))
 REFSEQ = ../helpers/data/refseq/download/$(notdir $(URL_REFSEQ))
 ENSEMBL = ../helpers/data/ensembl/download/$(notdir $(URL_ENSEMBL))
 REF = ../helpers/data/reference/$(patsubst %.gz,%,$(notdir $(URL_REF)))
+KNOWNGENEAA = ../databases/knowngeneaa/download/$(notdir $(URL_KNOWNGENEAA))
+
 
 clinvar: $(CLINVAR_SINGLE) $(CLINVAR_MULTI)
 $(CLINVAR_SINGLE):
@@ -307,10 +310,9 @@ case:
 	@echo -e Place ped files \(yes, multiple are allowed\) in databases/case/download
 	@echo -e
 
-knowngeneaa:
-	@echo -e
-	@echo -e TBD
-	@echo -e
+knowngeneaa: $(KNOWNGENEAA)
+$(KNOWNGENEAA):
+	wget -c $(URL_KNOWNGENEAA) -O $@
 
 kegg:
 	@echo -e

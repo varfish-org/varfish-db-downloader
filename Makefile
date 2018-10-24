@@ -10,11 +10,6 @@ DLS = $(patsubst %,dl_%,$(filter-out $(EXTERNAL),$(HELPERS) $(DBS)))
 PATHS = $(patsubst %,databases/%/download,$(DBS)) $(patsubst %,helpers/data/%/download,$(HELPERS))
 .PHONY: convert download init helpers help $(DBS) $(DLS) $(HELPERS) $(PATHS) $(EXTERNAL)
 
-print:
-	@echo $(DBS)
-	@echo $(DLS)
-	@echo $(PATHS)
-
 convert: helpers $(DBS)
 $(DBS):
 	$(MAKE) -C scripts $@
