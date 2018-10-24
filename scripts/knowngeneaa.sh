@@ -15,11 +15,13 @@ python knowngeneaa.py \
     -O z \
     -o $INPUT
 
-cd $(dirname $INPUT)
-md5sum $INPUT > $INPUT.md5
-
-tabix -f $INPUT
-md5sum $INPUT.tbi > $INPUT.tbi.md5
+(
+    cd $(dirname $INPUT)
+    FILE=$(basename $INPUT)
+    md5sum $FILE > $FILE.md5
+    tabix -f $FILE
+    md5sum $FILE.tbi > $FILE.tbi.md5
+)
 
 (
     cat $HEADER;

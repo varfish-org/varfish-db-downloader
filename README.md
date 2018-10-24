@@ -10,6 +10,7 @@ containing the column names of the corresponding varfish database table).
 * bedops
 * python 3.6
 * samtools
+* tabix
 
 ## Installation
 

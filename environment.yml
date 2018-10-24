@@ -6,3 +6,4 @@ dependencies:
   - bcftools
   - bedops
   - samtools
+  - tabix
