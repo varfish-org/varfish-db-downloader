@@ -56,6 +56,7 @@ URL_REF = ftp://ftp.ncbi.nlm.nih.gov/1000genomes/ftp/technical/reference/phase2_
 URL_REFSEQ = ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/ARCHIVE/ANNOTATION_RELEASE.105/GFF/ref_GRCh37.p13_top_level.gff3.gz
 URL_ENSEMBL = ftp://ftp.ensembl.org/pub/release-75/gtf/homo_sapiens/Homo_sapiens.GRCh37.75.gtf.gz
 URL_KNOWNGENEAA = http://hgdownload.cse.ucsc.edu/goldenpath/hg19/multiz100way/alignments/knownGene.exonAA.fa.gz
+URL_ENSEMBL_VARIATION = ftp://ftp.ensembl.org/pub/grch37/release-94/mysql/homo_sapiens_variation_94_37/variation_feature
 
 CLINVAR_SINGLE = ../databases/clinvar/download/$(notdir $(URL_CLINVAR_SINGLE))
 CLINVAR_MULTI = ../databases/clinvar/download/$(notdir $(URL_CLINVAR_MULTI))
@@ -115,6 +116,7 @@ REFSEQ = ../helpers/data/refseq/download/$(notdir $(URL_REFSEQ))
 ENSEMBL = ../helpers/data/ensembl/download/$(notdir $(URL_ENSEMBL))
 REF = ../helpers/data/reference/$(patsubst %.gz,%,$(notdir $(URL_REF)))
 KNOWNGENEAA = ../databases/knowngeneaa/download/$(notdir $(URL_KNOWNGENEAA))
+ENSEMBL_VARIATION = ../databases/hgmd/download/ensembl_variation
 
 
 clinvar: $(CLINVAR_SINGLE) $(CLINVAR_MULTI)
@@ -130,6 +132,11 @@ $(OMIM):
 hgnc: $(HGNC)
 $(HGNC):
 	wget -c $(URL_HGNC) -O $@
+
+hgmd: $(ENSEMBL_VARIATION).sql $(ENSEMBL_VARIATION).txt
+$(ENSEMBL_VARIATION).sql $(ENSEMBL_VARIATION).txt:
+	aria2c -x 16 -o $(ENSEMBL_VARIATION).sql $(URL_ENSEMBL_VARIATION).sql
+	aria2c -x 16 -o $(ENSEMBL_VARIATION).txt $(URL_ENSEMBL_VARIATION).txt
 
 hpo: $(HPO)
 $(HPO):
