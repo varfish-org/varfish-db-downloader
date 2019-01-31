@@ -1,9 +1,0 @@
-name: varfish-db-downloader
-channels:
-  - bioconda
-dependencies:
-  - python=3.6
-  - bcftools
-  - bedops
-  - samtools
-  - tabix

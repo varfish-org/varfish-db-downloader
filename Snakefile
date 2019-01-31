@@ -3,55 +3,33 @@ shell.prefix("set -x; set -euo pipefail; ")
 
 rule all:
     input:
-        'GRCh37/ncbi_gene/ncbi_gene_info.tsv',
-        'GRCh37/ncbi_gene/ncbi_gene_rif.tsv',
+        "GRCh37/reference/hs37d5/hs37d5.fa",
+        "GRCh37/clinvar/latest/clinvar.tsv",
+        "GRCh38/clinvar/latest/clinvar.tsv",
+        "GRCh37/dbSNP/b151/All_20180423.vcf.gz",
+        "GRCh37/gnomAD_exomes/r2.1/gnomad.exomes.r2.1.sites.vcf.bgz",
+        "GRCh37/gnomAD_genomes/r2.1/gnomad.genomes.r2.1.sites.vcf.bgz",
+        "GRCh37/hgmd_public/hgmd_public.tsv",
+        "GRCh37/hgnc/hgnc.tsv",
+        "GRCh37/knowngeneaa/knownGeneAA.tsv",
+        "GRCh37/ncbi_gene/ncbi_gene_info.tsv",
+        "GRCh37/ncbi_gene/ncbi_gene_rif.tsv",
+        "GRCh37/thousand_genomes/phase3/ALL.phase3_shapeit2_mvncall_integrated_v5a.20130502.sites.vcf.gz",
+        "GRCh37/kegg/kegg.release_info",
+        "GRCh37/mim2gene/mim2gene.release_info",
+        "GRCh37/hpo/hpo.release_info",
+        "GRCh38/reference/hs38/hs38.fa",
 
-rule ncbi_gene_download:
-    output:
-        release_info_ncbi_gene_info='GRCh37/ncbi_gene/ncbi_gene_info.release_info',
-        release_info_ncbi_gene_rif='GRCh37/ncbi_gene/ncbi_gene_rif.release_info',
-        ncbi_gene_info_tsv='GRCh37/ncbi_gene/ncbi_gene_info.tsv',
-        ncbi_gene_rif_tsv='GRCh37/ncbi_gene/ncbi_gene_rif.tsv',
-    shell:
-        r"""
-        mkdir -p $(dirname {output.ncbi_gene_info_tsv})/download
-        pushd $(dirname {output.ncbi_gene_info_tsv})/download
-
-        if [[ ! -e Homo_sapiens.ags.gz.md5 ]]; then
-            wget \
-                -O Homo_sapiens.ags.gz \
-                ftp://ftp.ncbi.nih.gov/gene/DATA/ASN_BINARY/Mammalia/Homo_sapiens.ags.gz
-            md5sum Homo_sapiens.ags.gz >Homo_sapiens.ags.gz.md5
-        fi
-
-        if [[ ! -e linux64.gene2xml ]]; then
-            wget \
-                -O linux64.gene2xml.gz \
-                ftp://ftp.ncbi.nlm.nih.gov/asn1-converters/by_program/gene2xml/linux64.gene2xml.gz
-            gzip -d -c linux64.gene2xml.gz > linux64.gene2xml
-            chmod +x linux64.gene2xml
-        fi
-
-        cd ..
-
-        ./download/linux64.gene2xml -b T -c T -i download/Homo_sapiens.ags.gz \
-        | tee >(
-            python3 ../../tools/refseq_xml_to_tsv.py \
-                --input /dev/stdin \
-                --output /dev/stdout \
-                --info-type generif \
-            > ncbi_gene_rif.tsv
-            ) \
-        | python3 ../../tools/refseq_xml_to_tsv.py \
-            --input /dev/stdin \
-            --output /dev/stdout \
-            --info-type summary \
-        > ncbi_gene_info.tsv
-
-        md5sum ncbi_gene_info.tsv >ncbi_gene_info.tsv.md5
-        md5sum ncbi_gene_rif.tsv >ncbi_gene_rif.tsv.md5
-
-        popd
-        echo -e "table\tversion\nncbi_gene_info\t$(date +%Y-%m-%d)" > {output.release_info_ncbi_gene_info}
-        echo -e "table\tversion\nncbi_gene_rif\t$(date +%Y-%m-%d)" > {output.release_info_ncbi_gene_rif}
-        """
+include: "snakefiles/clinvar.snake"
+include: "snakefiles/dbsnp.snake"
+include: "snakefiles/exac.snake"
+include: "snakefiles/gnomad.snake"
+include: "snakefiles/hgnc.snake"
+include: "snakefiles/hgmd.snake"
+include: "snakefiles/hpo.snake"
+include: "snakefiles/kegg.snake"
+include: "snakefiles/knowngeneaa.snake"
+include: "snakefiles/ncbi_gene.snake"
+include: "snakefiles/mim2gene.snake"
+include: "snakefiles/reference.snake"
+include: "snakefiles/thousand_genomes.snake"

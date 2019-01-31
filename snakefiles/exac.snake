@@ -1,0 +1,51 @@
+# Download ExAC, normalize, and convert into TSV for import.
+
+rule grch37_exac_v1_0_0_download:
+    output:
+        vcf="GRCh37/ExAC/r1/download/ExAC.r1.sites.vep.vcf.gz",
+        tbi="GRCh37/ExAC/r1/download/ExAC.r1.sites.vep.vcf.gz.tbi",
+    log: "GRCh37/ExAC/r1/download/ExAC.r1.sites.vep.vcf.gz.log"
+    shell:
+        r"""
+        wget \
+            -o {log} \
+            -O {output.vcf} \
+            ftp://ftp.broadinstitute.org/pub/ExAC_release/release1/ExAC.r1.sites.vep.vcf.gz
+        wget \
+            -a {log}
+            -O {output.tbi} \
+            ftp://ftp.broadinstitute.org/pub/ExAC_release/release1/ExAC.r1.sites.vep.vcf.gz.tbi
+
+        pushd $(dirname {output.vcf})
+        md5sum $(basename {output.vcf}) >$(basename {output.vcf}).md5
+        md5sum $(basename {output.tbi}) >$(basename {output.tbi}).md5
+        """
+
+rule grch37_exac_v1_0_0_normalize:
+    input:
+        reference="GRCh37/reference/hs37d5/hs37d5.fa",
+        vcf="GRCh37/ExAC/r1/download/ExAC.r1.sites.vep.vcf.gz",
+    output:
+        release_info="GRCh37/ExAC/r1/exac.release_info",
+        vcf="GRCh37/ExAC/r1/ExAC.r1.sites.vep.vcf.gz",
+        vcf_md5="GRCh37/ExAC/r1/ExAC.r1.sites.vep.vcf.gz.md5",
+        tbi="GRCh37/ExAC/r1/ExAC.r1.sites.vep.vcf.gz.tbi",
+        tbi_md5="GRCh37/ExAC/r1/ExAC.r1.sites.vep.vcf.gz.tbi.md5",
+    shell:
+        r"""
+        bcftools norm \
+            --threads 4 \
+            --multiallelics - \
+            --fasta-ref {input.reference} \
+            -O z \
+            -o {output.vcf} \
+            {input.vcf}
+        tabix -f {output.vcf}
+
+        pushd $(dirname {output.vcf})
+        md5sum $(basename {output.vcf}) >$(basename {output.vcf}).md5
+        md5sum $(basename {output.tbi}) >$(basename {output.tbi}).md5
+        popd
+
+        echo -e "table\tversion\nexac\tr1" > {output.release_info}
+        """

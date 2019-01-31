@@ -1,0 +1,72 @@
+# Download gnomAD exomes and genomes, normalize, and convert into TSV for import.
+
+rule grch37_gnomad_v2_1_download:
+    output:
+        vcf="GRCh37/gnomAD_{kind}/r2.1/download/gnomad.{kind}.r2.1.sites.chr{chrom}.vcf.bgz",
+        tbi="GRCh37/gnomAD_{kind}/r2.1/download/gnomad.{kind}.r2.1.sites.chr{chrom}.vcf.bgz.tbi",
+    log: "GRCh37/gnomAD_{kind}/r2.1/download/gnomad.{kind}.r2.1.sites.chr{chrom}.vcf.bgz.log"
+    shell:
+        r"""
+        wget \
+            -o {log} \
+            -O {output.vcf} \
+            https://storage.googleapis.com/gnomad-public/release/2.1/vcf/{wildcards.kind}/gnomad.{wildcards.kind}.r2.1.sites.chr{wildcards.chrom}.vcf.bgz
+        wget \
+            -a {log} \
+            -O {output.tbi} \
+            https://storage.googleapis.com/gnomad-public/release/2.1/vcf/{wildcards.kind}/gnomad.{wildcards.kind}.r2.1.sites.chr{wildcards.chrom}.vcf.bgz
+
+        pushd $(dirname {output.vcf})
+        md5sum $(basename {output.vcf}) >$(basename {output.vcf}).md5
+        md5sum $(basename {output.tbi}) >$(basename {output.tbi}).md5
+        """
+
+rule grch37_gnomad_v2_1_normalize:
+    input:
+        reference="GRCh37/reference/hs37d5/hs37d5.fa",
+        vcf="GRCh37/gnomAD_{kind}/r2.1/download/gnomad.{kind}.r2.1.sites.chr{chrom}.vcf.bgz",
+    output:
+        vcf="GRCh37/gnomAD_{kind}/r2.1/download/gnomad.{kind}.r2.1.sites.chr{chrom}.normalized.vcf.bgz",
+        tbi="GRCh37/gnomAD_{kind}/r2.1/download/gnomad.{kind}.r2.1.sites.chr{chrom}.normalized.vcf.bgz.tbi",
+    shell:
+        r"""
+        bcftools norm \
+            --threads 4 \
+            --multiallelics - \
+            --fasta-ref {input.reference} \
+            -O z \
+            -o {output.vcf} \
+            {input.vcf}
+        tabix -f {output.vcf}
+
+        pushd $(dirname {output.vcf})
+        md5sum $(basename {output.vcf}) >$(basename {output.vcf}).md5
+        """
+
+ruleorder: grch37_gnomad_v2_1_normalize > grch37_gnomad_v2_1_download
+
+rule grch37_gnomad_v2_1_concat:
+    output:
+        release_info="GRCh37/gnomAD_{kind}/r2.1/gnomad_{kind}.release_info",
+        vcf="GRCh37/gnomAD_{kind}/r2.1/gnomad.{kind}.r2.1.sites.vcf.bgz",
+        vcf_md5="GRCh37/gnomAD_{kind}/r2.1/gnomad.{kind}.r2.1.sites.vcf.bgz.md5",
+        tbi="GRCh37/gnomAD_{kind}/r2.1/gnomad.{kind}.r2.1.sites.vcf.bgz.tbi",
+        tbi_md5="GRCh37/gnomAD_{kind}/r2.1/gnomad.{kind}.r2.1.sites.vcf.bgz.tbi.md5",
+    input:
+        vcf=expand(
+            "GRCh37/gnomAD_{kind}/r2.1/download/gnomad.{kind}.r2.1.sites.chr{chrom}.normalized.vcf.bgz",
+            kind=['{kind}'],
+            chrom=(list(range(1, 23)) + ["X"])
+        )
+    shell:
+        r"""
+        bcftools merge -O z -o {output.vcf} {input.vcf}
+        tabix -f {output.vcf}
+
+        pushd $(dirname {output.vcf})
+        md5sum $(basename {output.vcf}) >$(basename {output.vcf}).md5
+        md5sum $(basename {output.tbi}) >$(basename {output.tbi}).md5
+        popd
+
+        echo -e "table\tversion\ngnomad_{wildcards.kind}\tr2.1" > {output.release_info}
+        """
