@@ -1,0 +1,36 @@
+# Obtain current dump of mim2gene_medgen file from NCBI.
+
+rule grch37_mim2gene_medgen_download:
+    output:
+        txt="GRCh37/mim2gene/download/mim2gene_medgen",
+    shell:
+        r"""
+        wget \
+            -O {output.txt} \
+            ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/mim2gene_medgen
+        """
+
+rule grch37_mim2gene_medgen_to_tsv:
+    input:
+        txt="GRCh37/mim2gene/download/mim2gene_medgen",
+    output:
+        tsv="GRCh37/mim2gene/mim2gene.tsv",
+        release_info="GRCh37/mim2gene/mim2gene.release_info",
+    shell:
+        r"""
+        (
+            cat <<EOF | tr '\n' '\t' | sed -e 's/\t$/\n/g'
+omim_id
+entrez_id
+omim_type
+source
+medgen_cui
+comment
+EOF
+
+            tail -n +2 {input.txt}
+        ) \
+        >{output.tsv}
+
+        echo -e "table\tversion\nmim2gene\t$(date +%Y/%m/%d)" > {output.release_info}
+        """

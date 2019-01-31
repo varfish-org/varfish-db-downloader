@@ -1,0 +1,80 @@
+# Obtain current dump of HGNC gene information info.
+
+rule grch37_hgnc_download:
+    output:
+        txt="GRCh37/hgnc/download/hgnc_complete_set.txt",
+    shell:
+        r"""
+        wget \
+            -O {output.txt} \
+            ftp://ftp.ebi.ac.uk/pub/databases/genenames/new/tsv/hgnc_complete_set.txt
+        """
+
+rule grch37_hgnc_to_tsv:
+    input:
+        reference="GRCh37/reference/hs37d5/hs37d5.fa",
+        txt="GRCh37/hgnc/download/hgnc_complete_set.txt",
+    output:
+        tsv="GRCh37/hgnc/hgnc.tsv",
+        release_info="GRCh37/hgnc/hgnc.release_info",
+    shell:
+        r"""
+        (
+            cat <<EOF | tr '\n' '\t' | sed -e 's/\t$/\n/g'
+hgnc_id
+symbol
+name
+locus_group
+locus_type
+status
+location
+location_sortable
+alias_symbol
+alias_name
+prev_symbol
+prev_name
+gene_family
+gene_family_id
+date_approved_reserved
+date_symbol_changed
+date_name_changed
+date_modified
+entrez_id
+ensembl_gene_id
+vega_id
+ucsc_id
+ena
+refseq_accession
+ccds_id
+uniprot_ids
+pubmed_id
+mgd_id
+rgd_id
+lsdb
+cosmic
+omim_id
+mirbase
+homeodb
+snornabase
+bioparadigms_slc
+orphanet
+pseudogene_org
+horde_id
+merops
+imgt
+iuphar
+kznf_gene_catalog
+namit_trnadb
+cd
+lncrnadb
+enzyme_id
+intermediate_filament_db
+rna_central_ids
+EOF
+
+            tail -n +2 {input.txt}
+        ) \
+        >{output.tsv}
+
+        echo -e "table\tversion\nhgnc\t$(date +%Y/%m/%d)" > {output.release_info}
+        """

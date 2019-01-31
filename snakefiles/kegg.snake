@@ -1,0 +1,100 @@
+# Obtain dump of KEGG information from UCSC.
+
+rule grch37_kegg_download_ensembltokegg:
+    output:
+        tsv="GRCh37/kegg/download/ensembltokegg.tsv",
+    shell:
+        r"""
+        curl 'https://genome-euro.ucsc.edu/cgi-bin/hgTables' --data 'hgta_database=hg19&hgta_table=keggPathway&boolshad.hgta_fs.check.hg19.keggPathway.kgID=0&boolshad.hgta_fs.check.hg19.keggPathway.locusID=0&hgta_fs.check.hg19.keggPathway.mapID=on&boolshad.hgta_fs.check.hg19.keggPathway.mapID=0&hgta_doPrintSelectedFields=get+output&jsh_pageVertPos=0&hgta_fs.check.hg19.ensGtp.gene=on&boolshad.hgta_fs.check.hg19.ensGtp.gene=0&boolshad.hgta_fs.check.hg19.ensGtp.transcript=0&boolshad.hgta_fs.check.hg19.ensGtp.protein=0&boolshad.hgta_fs.check.hg19.knownToEnsembl.name=0&boolshad.hgta_fs.check.hg19.knownToEnsembl.value=0&boolshad.hgta_fs.linked.hg19.bioCycPathway=0&boolshad.hgta_fs.linked.hg19.ccdsKgMap=0&boolshad.hgta_fs.linked.hg19.ceBlastTab=0&boolshad.hgta_fs.linked.hg19.dmBlastTab=0&boolshad.hgta_fs.linked.hg19.drBlastTab=0&boolshad.hgta_fs.linked.hg19.ensGene=0&hgta_fs.linked.hg19.ensGtp=on&boolshad.hgta_fs.linked.hg19.ensGtp=0&boolshad.hgta_fs.linked.hg19.ensPep=0&boolshad.hgta_fs.linked.hg19.ensemblSource=0&boolshad.hgta_fs.linked.hg19.ensemblToGeneName=0&boolshad.hgta_fs.linked.hg19.foldUtr3=0&boolshad.hgta_fs.linked.hg19.foldUtr5=0&boolshad.hgta_fs.linked.hg19.gnfAtlas2Distance=0&boolshad.hgta_fs.linked.hg19.gnfU95Distance=0&boolshad.hgta_fs.linked.hg19.humanHprdP2P=0&boolshad.hgta_fs.linked.hg19.humanVidalP2P=0&boolshad.hgta_fs.linked.hg19.humanWankerP2P=0&boolshad.hgta_fs.linked.hg19.keggMapDesc=0&boolshad.hgta_fs.linked.hg19.kg5ToKg6=0&boolshad.hgta_fs.linked.hg19.kg6ToKg7=0&boolshad.hgta_fs.linked.hg19.kgAlias=0&boolshad.hgta_fs.linked.hg19.kgColor=0&boolshad.hgta_fs.linked.hg19.kgProtAlias=0&boolshad.hgta_fs.linked.hg19.kgProtMap2=0&boolshad.hgta_fs.linked.hg19.kgSpAlias=0&boolshad.hgta_fs.linked.hg19.kgTargetAli=0&boolshad.hgta_fs.linked.hg19.kgTxInfo=0&boolshad.hgta_fs.linked.hg19.kgXref=0&boolshad.hgta_fs.linked.hg19.knownBlastTab=0&boolshad.hgta_fs.linked.hg19.knownCanonical=0&boolshad.hgta_fs.linked.hg19.knownGene=0&boolshad.hgta_fs.linked.hg19.knownGeneMrna=0&boolshad.hgta_fs.linked.hg19.knownGenePep=0&boolshad.hgta_fs.linked.hg19.knownGeneTxMrna=0&boolshad.hgta_fs.linked.hg19.knownGeneTxPep=0&boolshad.hgta_fs.linked.hg19.knownIsoforms=0&boolshad.hgta_fs.linked.hg19.knownToAllenBrain=0&hgta_fs.linked.hg19.knownToEnsembl=on&boolshad.hgta_fs.linked.hg19.knownToEnsembl=0&boolshad.hgta_fs.linked.hg19.knownToGnfAtlas2=0&boolshad.hgta_fs.linked.hg19.knownToHInv=0&boolshad.hgta_fs.linked.hg19.knownToHprd=0&boolshad.hgta_fs.linked.hg19.knownToKeggEntrez=0&boolshad.hgta_fs.linked.hg19.knownToLocusLink=0&boolshad.hgta_fs.linked.hg19.knownToLynx=0&boolshad.hgta_fs.linked.hg19.knownToNextProt=0&boolshad.hgta_fs.linked.hg19.knownToPfam=0&boolshad.hgta_fs.linked.hg19.knownToRefSeq=0&boolshad.hgta_fs.linked.hg19.knownToSuper=0&boolshad.hgta_fs.linked.hg19.knownToTreefam=0&boolshad.hgta_fs.linked.hg19.knownToU133=0&boolshad.hgta_fs.linked.hg19.knownToU133Plus2=0&boolshad.hgta_fs.linked.hg19.knownToU95=0&boolshad.hgta_fs.linked.hg19.knownToVisiGene=0&boolshad.hgta_fs.linked.hg19.knownToWikipedia=0&boolshad.hgta_fs.linked.hg19.mmBlastTab=0&boolshad.hgta_fs.linked.hg19.omim2gene=-2&boolshad.hgta_fs.linked.hg19.rnBlastTab=0&boolshad.hgta_fs.linked.hg19.scBlastTab=0&boolshad.hgta_fs.linked.hg19.ucscScop=0&boolshad.hgta_fs.linked.hgFixed.refLink=0' \
+        > {output.tsv}
+        """
+
+rule grch37_kegg_download_refseqtokegg:
+    output:
+        tsv="GRCh37/kegg/download/refseqtokegg.tsv",
+    shell:
+        r"""
+        curl 'https://genome-euro.ucsc.edu/cgi-bin/hgTables' --data 'hgta_database=hg19&hgta_table=keggPathway&boolshad.hgta_fs.check.hg19.keggPathway.kgID=0&boolshad.hgta_fs.check.hg19.keggPathway.locusID=0&hgta_fs.check.hg19.keggPathway.mapID=on&boolshad.hgta_fs.check.hg19.keggPathway.mapID=0&hgta_doPrintSelectedFields=get+output&jsh_pageVertPos=0&boolshad.hgta_fs.check.hg19.knownToKeggEntrez.name=0&boolshad.hgta_fs.check.hg19.knownToKeggEntrez.value=0&hgta_fs.check.hg19.knownToKeggEntrez.keggEntrez=on&boolshad.hgta_fs.check.hg19.knownToKeggEntrez.keggEntrez=0&boolshad.hgta_fs.linked.hg19.bioCycPathway=0&boolshad.hgta_fs.linked.hg19.ccdsKgMap=0&boolshad.hgta_fs.linked.hg19.ceBlastTab=0&boolshad.hgta_fs.linked.hg19.dmBlastTab=0&boolshad.hgta_fs.linked.hg19.drBlastTab=0&boolshad.hgta_fs.linked.hg19.foldUtr3=0&boolshad.hgta_fs.linked.hg19.foldUtr5=0&boolshad.hgta_fs.linked.hg19.gnfAtlas2Distance=0&boolshad.hgta_fs.linked.hg19.gnfU95Distance=0&boolshad.hgta_fs.linked.hg19.humanHprdP2P=0&boolshad.hgta_fs.linked.hg19.humanVidalP2P=0&boolshad.hgta_fs.linked.hg19.humanWankerP2P=0&boolshad.hgta_fs.linked.hg19.keggMapDesc=0&boolshad.hgta_fs.linked.hg19.kg5ToKg6=0&boolshad.hgta_fs.linked.hg19.kg6ToKg7=0&boolshad.hgta_fs.linked.hg19.kgAlias=0&boolshad.hgta_fs.linked.hg19.kgColor=0&boolshad.hgta_fs.linked.hg19.kgProtAlias=0&boolshad.hgta_fs.linked.hg19.kgProtMap2=0&boolshad.hgta_fs.linked.hg19.kgSpAlias=0&boolshad.hgta_fs.linked.hg19.kgTargetAli=0&boolshad.hgta_fs.linked.hg19.kgTxInfo=0&boolshad.hgta_fs.linked.hg19.kgXref=0&boolshad.hgta_fs.linked.hg19.knownBlastTab=0&boolshad.hgta_fs.linked.hg19.knownCanonical=0&boolshad.hgta_fs.linked.hg19.knownGene=0&boolshad.hgta_fs.linked.hg19.knownGeneMrna=0&boolshad.hgta_fs.linked.hg19.knownGenePep=0&boolshad.hgta_fs.linked.hg19.knownGeneTxMrna=0&boolshad.hgta_fs.linked.hg19.knownGeneTxPep=0&boolshad.hgta_fs.linked.hg19.knownIsoforms=0&boolshad.hgta_fs.linked.hg19.knownToAllenBrain=0&boolshad.hgta_fs.linked.hg19.knownToEnsembl=0&boolshad.hgta_fs.linked.hg19.knownToGnfAtlas2=0&boolshad.hgta_fs.linked.hg19.knownToHInv=0&boolshad.hgta_fs.linked.hg19.knownToHprd=0&hgta_fs.linked.hg19.knownToKeggEntrez=on&boolshad.hgta_fs.linked.hg19.knownToKeggEntrez=0&boolshad.hgta_fs.linked.hg19.knownToLocusLink=0&boolshad.hgta_fs.linked.hg19.knownToLynx=0&boolshad.hgta_fs.linked.hg19.knownToNextProt=0&boolshad.hgta_fs.linked.hg19.knownToPfam=0&boolshad.hgta_fs.linked.hg19.knownToRefSeq=0&boolshad.hgta_fs.linked.hg19.knownToSuper=0&boolshad.hgta_fs.linked.hg19.knownToTreefam=0&boolshad.hgta_fs.linked.hg19.knownToU133=0&boolshad.hgta_fs.linked.hg19.knownToU133Plus2=0&boolshad.hgta_fs.linked.hg19.knownToU95=0&boolshad.hgta_fs.linked.hg19.knownToVisiGene=0&boolshad.hgta_fs.linked.hg19.knownToWikipedia=0&boolshad.hgta_fs.linked.hg19.mmBlastTab=0&boolshad.hgta_fs.linked.hg19.omim2gene=-2&boolshad.hgta_fs.linked.hg19.rnBlastTab=0&boolshad.hgta_fs.linked.hg19.scBlastTab=0&boolshad.hgta_fs.linked.hg19.ucscScop=0&boolshad.hgta_fs.linked.hgFixed.refLink=0'  \
+        > {output.tsv}
+        """
+
+rule grch37_kegg_download_kegginfo:
+    output:
+        tsv="GRCh37/kegg/download/kegginfo.tsv",
+    shell:
+        r"""
+        curl 'https://genome-euro.ucsc.edu/cgi-bin/hgTables' --data 'hgta_database=hg19&hgta_table=keggMapDesc&hgta_fs.check.hg19.keggMapDesc.mapID=on&boolshad.hgta_fs.check.hg19.keggMapDesc.mapID=0&hgta_fs.check.hg19.keggMapDesc.description=on&boolshad.hgta_fs.check.hg19.keggMapDesc.description=0&hgta_doPrintSelectedFields=get+output&jsh_pageVertPos=0&boolshad.hgta_fs.linked.hg19.keggPathway=0&boolshad.hgta_fs.linked.hg19.knownToKeggEntrez=0'  \
+        > {output.tsv}
+        """
+
+rule grch37_keggc_to_tsv:
+    input:
+        ensembl_to_kegg="GRCh37/kegg/download/ensembltokegg.tsv",
+        refseq_to_kegg="GRCh37/kegg/download/refseqtokegg.tsv",
+        kegg_info="GRCh37/kegg/download/kegginfo.tsv",
+    output:
+        ensembl_to_kegg="GRCh37/kegg/ensembltokegg.tsv",
+        refseq_to_kegg="GRCh37/kegg/refseqtokegg.tsv",
+        kegg_info="GRCh37/kegg/kegginfo.tsv",
+        release_info="GRCh37/kegg/kegg.release_info",
+    shell:
+        r"""
+        (
+            cat <<EOF | tr '\n' '\t' | sed -e 's/\t$/\n/g'
+gene_id
+kegginfo_id
+EOF
+
+            tail -n +2 {input.ensembl_to_kegg} \
+            | sort -u \
+            | awk -F $'\t' '
+                BEGIN {{ OFS=FS; }}
+                {{
+                    if ($2 == "n/1") {{
+                        next;
+                    }}
+                    print $2, $1;
+                }}'
+        ) \
+        >{output.ensembl_to_kegg}
+
+        (
+            cat <<EOF | tr '\n' '\t' | sed -e 's/\t$/\n/g'
+gene_id
+kegginfo_id
+EOF
+
+            tail -n +2 {input.refseq_to_kegg} \
+            | sort -u \
+            | awk -F $'\t' '
+                BEGIN {{ OFS=FS; }}
+                {{
+                    if ($2 == "n/1") {{
+                        next;
+                    }}
+                    print $2, $1;
+                }}'
+        ) \
+        >{output.refseq_to_kegg}
+
+        (
+            cat <<EOF | tr '\n' '\t' | sed -e 's/\t$/\n/g'
+kegg_id
+name
+EOF
+
+            tail -n +2 {input.kegg_info} \
+            | sort -u \
+            | awk -F $'\t' '
+                BEGIN {{ OFS=FS; }}
+                {{
+                    if ($2 == "n/1") {{
+                        next;
+                    }}
+                    print $2, $1;
+                }}'
+        ) \
+        >{output.kegg_info}
+
+        echo -e "table\tversion\nkegg\tApril 2011 (via UCSC Genome Browser)" > {output.release_info}
+        """

@@ -1,0 +1,56 @@
+# Obtain "knownGeneAA" track from ENSEMBL and convert into TSV via VCF.
+
+rule grch37_knowngeneaa_download:
+    output:
+        fa="GRCh37/knowngeneaa/download/knownGene.exonAA.fa.gz",
+    shell:
+        r"""
+        wget \
+            -O {output.fa} \
+            http://hgdownload.cse.ucsc.edu/goldenpath/hg19/multiz100way/alignments/knownGene.exonAA.fa.gz
+        """
+
+rule grch37_knowngeneaa_to_vcf:
+    input:
+        reference="GRCh37/reference/hs37d5/hs37d5.fa",
+        fa="GRCh37/knowngeneaa/download/knownGene.exonAA.fa.gz",
+    output:
+        vcf="GRCh37/knowngeneaa/knownGeneAA.vcf.gz",
+        tbi="GRCh37/knowngeneaa/knownGeneAA.vcf.gz.tbi",
+    shell:
+        r"""
+        python tools/knowngeneaa.py \
+            {input.reference} \
+            {input.fa} \
+            --output /dev/stdout \
+        | bcftools sort \
+            -O z \
+            -o {output.vcf}
+        tabix -f {output.vcf}
+        """
+
+rule grch37_knowngeneaa_to_tsv:
+    input:
+        vcf="GRCh37/knowngeneaa/knownGeneAA.vcf.gz",
+    output:
+        tsv="GRCh37/knowngeneaa/knownGeneAA.tsv",
+        release_info="GRCh37/knowngeneaa/knownGeneAA.release_info",
+    shell:
+        r"""
+        (
+            cat <<EOF | tr '\n' '\t' | sed -e 's/\t$/\n/g'
+chromosome
+start
+end
+transcript_id
+alignment
+EOF
+
+            bcftools query \
+                -f "%CHROM\t%POS\t%END\t%UCSC_GENE\t%ALIGNMENT\n" \
+                {input.vcf}
+        ) \
+        >{output.tsv}
+
+        echo -e "table\tversion\nknownGeneAA\t$(date +%Y/%m/%d)" > {output.release_info}
+        """

@@ -1,0 +1,41 @@
+# Obtain current dump of HPO files
+
+rule grch37_hpo_download:
+    output:
+        txt="GRCh37/hpo/download/phenotype.hpoa",
+    shell:
+        r"""
+        wget \
+            -O {output.txt} \
+            http://compbio.charite.de/jenkins/job/hpo.annotations.2018/lastSuccessfulBuild/artifact/misc_2018/phenotype.hpoa
+        """
+
+rule grch37_hpo_to_tsv:
+    input:
+        txt="GRCh37/hpo/download/phenotype.hpoa",
+    output:
+        tsv="GRCh37/hpo/phenotype.tsv",
+        release_info="GRCh37/hpo/hpo.release_info",
+    shell:
+        r"""
+        (
+            cat <<EOF | tr '\n' '\t' | sed -e 's/\t$/\n/g'
+database_id	name
+qualifier
+hpo_id
+reference
+evidence
+onset
+frequency
+sex
+modifier
+aspect
+biocuration
+EOF
+
+            tail -n +2 {input.txt}
+        ) \
+        >{output.tsv}
+
+        echo -e "table\tversion\nhpo\t$(date +%Y/%m/%d)" > {output.release_info}
+        """

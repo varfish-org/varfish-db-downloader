@@ -1,0 +1,12 @@
+channels:
+- bioconda
+- conda-forge
+- defaults
+dependencies:
+- python =3.6
+- snakemake =5.3
+- bedops ==2.4.35
+- bcftools =1.9
+- htslib =1.9
+- samtools =1.9
+- drmaa ==0.7.9

@@ -1,0 +1,91 @@
+# Obtain thousand genomes phase 3 calls and import.
+
+rule grch37_thousand_genomes_download:
+    output:
+        file="GRCh37/thousand_genomes/phase3/download/{filename}",
+        md5="GRCh37/thousand_genomes/phase3/download/{filename}.md5",
+    log: "GRCh37/thousand_genomes/phase3/download/{filename}.log",
+    shell:
+        r"""
+        wget \
+            -O {output.file} \
+            -o {log} \
+            http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/{wildcards.filename}
+        pushd $(dirname {output.file})
+        md5sum {wildcards.filename} >{wildcards.filename}.md5
+        """
+
+rule grch37_thousand_genomes_normalize:
+    input:
+        reference="GRCh37/reference/hs37d5/hs37d5.fa",
+        vcf="GRCh37/thousand_genomes/phase3/download/{filename}",
+    output:
+        vcf="GRCh37/thousand_genomes/phase3/download/normalized.{filename}",
+    log: "GRCh37/thousand_genomes/phase3/download/{filename}.log",
+    shell:
+        r"""
+        bcftools norm \
+            --threads 4 \
+            --multiallelics - \
+            --fasta-ref {input.reference} \
+            -O z \
+            -o {output.vcf} \
+            {input.vcf}
+
+        pushd $(dirname {output.vcf})
+        md5sum $(basename {output.vcf}) >$(basename {output.vcf}).md5
+        """
+
+ruleorder: grch37_thousand_genomes_normalize > grch37_thousand_genomes_download
+
+rule grch37_thousand_genomes_gt_to_site:
+    input:
+        panel="GRCh37/thousand_genomes/phase3/download/integrated_call_samples_v3.20130502.ALL.panel",
+        ped="GRCh37/thousand_genomes/phase3/download/integrated_call_samples_v2.20130502.ALL.ped",
+        reference="GRCh37/reference/hs37d5/hs37d5.fa",
+        vcf="GRCh37/thousand_genomes/phase3/download/normalized.{filename}.genotypes.vcf.gz",
+    output:
+        vcf="GRCh37/thousand_genomes/phase3/{filename}.sites.vcf.gz",
+        vcf_md5="GRCh37/thousand_genomes/phase3/{filename}.sites.vcf.gz.md5",
+        tbi="GRCh37/thousand_genomes/phase3/{filename}.sites.vcf.gz.tbi",
+        tbi_md5="GRCh37/thousand_genomes/phase3/{filename}.sites.vcf.gz.tbi.md5",
+    shell:
+        r"""
+        var-agg \
+            --io-threads 4 \
+            --input-panel {input.panel} \
+            --input-ped {input.ped} \
+            --input-fasta {input.reference} \
+            --output {output.vcf} \
+            {input.vcf}
+
+        tabix -f {output.vcf}
+
+        pushd $(dirname {output.vcf})
+        md5sum $(basename {output.vcf}) >$(basename {output.vcf}).md5
+        md5sum $(basename {output.tbi}) >$(basename {output.tbi}).md5
+        """
+
+rule grch37_joint:
+    output:
+        vcf="GRCh37/thousand_genomes/phase3/ALL.phase3_shapeit2_mvncall_integrated_v5a.20130502.sites.vcf.gz",
+        vcf_md5="GRCh37/thousand_genomes/phase3/ALL.phase3_shapeit2_mvncall_integrated_v5a.20130502.sites.vcf.gz.md5",
+        tbi="GRCh37/thousand_genomes/phase3/ALL.phase3_shapeit2_mvncall_integrated_v5a.20130502.sites.vcf.gz.tbi",
+        tbi_md5="GRCh37/thousand_genomes/phase3/ALL.phase3_shapeit2_mvncall_integrated_v5a.20130502.sites.vcf.gz.tbi.md5",
+    input:
+        vcf=expand(
+            "GRCh37/thousand_genomes/phase3/ALL.chr{chr}.phase3_shapeit2_mvncall_integrated_v5a.20130502.sites.vcf.gz",
+            chr=range(1, 23),
+        ) + [
+            "GRCh37/thousand_genomes/phase3/ALL.chrX.phase3_shapeit2_mvncall_integrated_v1b.20130502.sites.vcf.gz",
+            "GRCh37/thousand_genomes/phase3/ALL.chrY.phase3_integrated_v2a.20130502.sites.vcf.gz",
+            "GRCh37/thousand_genomes/phase3/ALL.chrMT.phase3_callmom-v0_4.20130502.sites.vcf.gz",
+        ]
+    shell:
+        r"""
+        bcftools merge -O z -o {output.vcf} {input.vcf}
+        tabix -f {output.vcf}
+        pushd $(dirname {output.vcf})
+        md5sum $(basename {output.vcf}) >$(basename {output.vcf}).md5
+        md5sum $(basename {output.tbi}) >$(basename {output.tbi}).md5
+        """
