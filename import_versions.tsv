@@ -1,0 +1,14 @@
+build	table_group	version
+GRCh37	clinvar	latest
+GRCh37	dbSNP	b151
+GRCh37	ExAC	r1
+GRCh37	gnomAD_exomes	r2.1
+GRCh37	gnomAD_genomes	r2.1
+GRCh37	md_public	ensembl_r75
+GRCh37	hgnc	latest
+GRCh37	hpo	latest
+GRCh37	kegg	april2011
+GRCh37	knowngeneaa	latest
+GRCh37	mim2gene	latest
+GRCh37	ncbi_gene	latest
+GRCh37	thousand_genomes	phase3

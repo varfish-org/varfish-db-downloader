@@ -1,8 +1,9 @@
 # Obtain current dump of HPO files
 
+
 rule grch37_hpo_download:
     output:
-        txt="GRCh37/hpo/download/phenotype.hpoa",
+        txt="GRCh37/hpo/latest/download/phenotype.hpoa",
     shell:
         r"""
         wget \
@@ -10,32 +11,21 @@ rule grch37_hpo_download:
             http://compbio.charite.de/jenkins/job/hpo.annotations.2018/lastSuccessfulBuild/artifact/misc_2018/phenotype.hpoa
         """
 
+
 rule grch37_hpo_to_tsv:
     input:
-        txt="GRCh37/hpo/download/phenotype.hpoa",
+        header="header/hpo.txt",
+        txt="GRCh37/hpo/latest/download/phenotype.hpoa",
     output:
-        tsv="GRCh37/hpo/phenotype.tsv",
-        release_info="GRCh37/hpo/hpo.release_info",
+        tsv="GRCh37/hpo/latest/Hpo.tsv",
+        release_info="GRCh37/hpo/latest/Hpo.release_info",
     shell:
         r"""
         (
-            cat <<EOF | tr '\n' '\t' | sed -e 's/\t$/\n/g'
-database_id	name
-qualifier
-hpo_id
-reference
-evidence
-onset
-frequency
-sex
-modifier
-aspect
-biocuration
-EOF
-
-            tail -n +2 {input.txt}
+            cat {input.header} | tr '\n' '\t' | sed -e 's/\t*$/\n/g';
+            tail -n +6 {input.txt}
         ) \
-        >{output.tsv}
+        > {output.tsv}
 
-        echo -e "table\tversion\nhpo\t$(date +%Y/%m/%d)" > {output.release_info}
+        echo -e "table\tversion\tgenomebuild\tnull_value\nHpo\t$(date +%Y/%m/%d)\tGRCh37\t" > {output.release_info}
         """

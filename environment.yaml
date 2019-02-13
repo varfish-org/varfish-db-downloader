@@ -10,3 +10,6 @@ dependencies:
 - htslib =1.9
 - samtools =1.9
 - drmaa ==0.7.9
+- bedtools ==2.27.1
+- var-agg ==0.1.1
+- lftp

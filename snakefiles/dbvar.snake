@@ -1,0 +1,18 @@
+rule grchXX_dbvar_latest_download:
+    output:
+        expand("{{genomebuild}}/dbVar/latest/download/{type}/{{genomebuild}}.nr_{type}.{ending}{md5}",
+            type=['deletions', 'insertions', 'duplications'],
+            ending=['bed.gz', 'bedpe.gz', 'tsv.gz', 'acmg_genes.tsv.gz']
+            md5=['', '.md5']
+        ),
+    shell:
+        r"""
+        # mirror server
+        echo 'mirror --include="{{genomebuild}}"' | lftp ftp://ftp.ncbi.nlm.nih.gov/pub/dbVar/sandbox/sv_datasets/nonredundant/
+
+        # set rights as the image has no execute rights to access the folders.
+        chmod u+wX -R $(dirname {output[0]})
+
+        # check md5 sums
+        find -iname '*.md5' | xargs I{} bash -c 'cd $(dirname {}) && md5sum -c $(basename {})'
+        """

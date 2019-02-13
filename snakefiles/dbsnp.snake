@@ -1,5 +1,6 @@
 # Download dbSNP, normalize, and convert into TSV for import.
 
+
 rule grch37_dbsnp_b151_download:
     output:
         vcf="GRCh37/dbSNP/b151/download/All_20180423.vcf.gz",
@@ -21,12 +22,12 @@ rule grch37_dbsnp_b151_download:
         md5sum $(basename {output.tbi}) >$(basename {output.tbi}).md5
         """
 
+
 rule grch37_dbsnp_b151_normalize:
     input:
         reference="GRCh37/reference/hs37d5/hs37d5.fa",
         vcf="GRCh37/dbSNP/b151/download/All_20180423.vcf.gz",
     output:
-        release_info="GRCh37/dbSNP/b151/dbsnp.release_info",
         vcf="GRCh37/dbSNP/b151/All_20180423.vcf.gz",
         tbi="GRCh37/dbSNP/b151/All_20180423.vcf.gz.tbi",
     shell:
@@ -40,8 +41,27 @@ rule grch37_dbsnp_b151_normalize:
             {input.vcf}
         tabix -f {output.vcf}
 
-        echo -e "table\tversion\ndbsnp\tb151" > {output.release_info}
-
         pushd $(dirname {output.vcf})
         md5sum $(basename {output.vcf}) >$(basename {output.vcf}).md5
+        """
+
+
+rule grch37_dbsnp_b151_tsv:
+    input:
+        header="header/dbsnp.txt",
+        vcf="GRCh37/dbSNP/b151/All_20180423.vcf.gz",
+        tbi="GRCh37/dbSNP/b151/All_20180423.vcf.gz.tbi",
+    output:
+        release_info="GRCh37/dbSNP/b151/Dbsnp.release_info",
+        tsv="GRCh37/dbSNP/b151/Dbsnp.tsv",
+    shell:
+        r"""
+        (
+            cat {input.header} | tr '\n' '\t' | sed -e 's/\t*$/\n/g';
+            bcftools query {input.vcf} \
+                -f 'GRCh37\t%CHROM\t%POS\t%REF\t%ALT\t%ID\n' \
+            | sort -u -k 2,5 -S 80%
+        ) > {output.tsv}
+
+        echo -e "table\tversion\tgenomebuild\tnull_value\nDbsnp\tb151\tGRCh37\t" > {output.release_info}
         """

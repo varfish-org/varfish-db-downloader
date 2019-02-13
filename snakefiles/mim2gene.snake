@@ -1,8 +1,9 @@
 # Obtain current dump of mim2gene_medgen file from NCBI.
 
+
 rule grch37_mim2gene_medgen_download:
     output:
-        txt="GRCh37/mim2gene/download/mim2gene_medgen",
+        txt="GRCh37/mim2gene/latest/download/mim2gene_medgen",
     shell:
         r"""
         wget \
@@ -10,27 +11,21 @@ rule grch37_mim2gene_medgen_download:
             ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/mim2gene_medgen
         """
 
+
 rule grch37_mim2gene_medgen_to_tsv:
     input:
-        txt="GRCh37/mim2gene/download/mim2gene_medgen",
+        header="header/mim2gene.txt",
+        txt="GRCh37/mim2gene/latest/download/mim2gene_medgen",
     output:
-        tsv="GRCh37/mim2gene/mim2gene.tsv",
-        release_info="GRCh37/mim2gene/mim2gene.release_info",
+        tsv="GRCh37/mim2gene/latest/Mim2geneMedgen.tsv",
+        release_info="GRCh37/mim2gene/latest/Mim2geneMedgen.release_info",
     shell:
         r"""
         (
-            cat <<EOF | tr '\n' '\t' | sed -e 's/\t$/\n/g'
-omim_id
-entrez_id
-omim_type
-source
-medgen_cui
-comment
-EOF
-
+            cat {input.header} | tr '\n' '\t' | sed -e 's/\t*$/\n/g';
             tail -n +2 {input.txt}
         ) \
-        >{output.tsv}
+        > {output.tsv}
 
-        echo -e "table\tversion\nmim2gene\t$(date +%Y/%m/%d)" > {output.release_info}
+        echo -e "table\tversion\tgenomebuild\tnull_value\nMim2geneMedgen\t$(date +%Y/%m/%d)\tGRCh37\t-" > {output.release_info}
         """
