@@ -1,11 +1,7 @@
+.idea
+logs/
+run.sh
 .snakemake
-sge_log/
-
 GRCh37
 GRCh38
-
-databases
-helpers/data
-
-*~
-.*.sw?
+src/

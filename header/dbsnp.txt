@@ -1,0 +1,6 @@
+release
+chromosome
+position
+reference
+alternative
+rsid

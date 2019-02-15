@@ -1,5 +1,6 @@
 # Download gnomAD exomes and genomes, normalize, and convert into TSV for import.
 
+
 rule grch37_gnomad_v2_1_download:
     output:
         vcf="GRCh37/gnomAD_{kind}/r2.1/download/gnomad.{kind}.r2.1.sites.chr{chrom}.vcf.bgz",
@@ -20,6 +21,7 @@ rule grch37_gnomad_v2_1_download:
         md5sum $(basename {output.vcf}) >$(basename {output.vcf}).md5
         md5sum $(basename {output.tbi}) >$(basename {output.tbi}).md5
         """
+
 
 rule grch37_gnomad_v2_1_normalize:
     input:
@@ -43,30 +45,79 @@ rule grch37_gnomad_v2_1_normalize:
         md5sum $(basename {output.vcf}) >$(basename {output.vcf}).md5
         """
 
+
 ruleorder: grch37_gnomad_v2_1_normalize > grch37_gnomad_v2_1_download
 
-rule grch37_gnomad_v2_1_concat:
-    output:
-        release_info="GRCh37/gnomAD_{kind}/r2.1/gnomad_{kind}.release_info",
-        vcf="GRCh37/gnomAD_{kind}/r2.1/gnomad.{kind}.r2.1.sites.vcf.bgz",
-        vcf_md5="GRCh37/gnomAD_{kind}/r2.1/gnomad.{kind}.r2.1.sites.vcf.bgz.md5",
-        tbi="GRCh37/gnomAD_{kind}/r2.1/gnomad.{kind}.r2.1.sites.vcf.bgz.tbi",
-        tbi_md5="GRCh37/gnomAD_{kind}/r2.1/gnomad.{kind}.r2.1.sites.vcf.bgz.tbi.md5",
+
+# Rule to generate TSV files from chromosomes
+rule grch37_gnomad_exomes_v2_1_to_tsv:
     input:
-        vcf=expand(
-            "GRCh37/gnomAD_{kind}/r2.1/download/gnomad.{kind}.r2.1.sites.chr{chrom}.normalized.vcf.bgz",
-            kind=['{kind}'],
-            chrom=(list(range(1, 23)) + ["X"])
-        )
+        vcf="GRCh37/gnomAD_exomes/r2.1/download/gnomad.exomes.r2.1.sites.chr{chrom}.normalized.vcf.bgz",
+        header="header/gnomad_exomes.txt",
+    output:
+        tsv="GRCh37/gnomAD_exomes/r2.1/GnomadExomes.{chrom}.tsv",
+        release_info="GRCh37/gnomAD_exomes/r2.1/GnomadExomes.{chrom}.release_info",
     shell:
         r"""
-        bcftools merge -O z -o {output.vcf} {input.vcf}
-        tabix -f {output.vcf}
+        (
+            cat {input.header} | tr '\n' '\t' | sed -e 's/\t*$/\n/g';
+            bcftools query {input.vcf} \
+                -f 'GRCh37\t%CHROM\t%POS\t%REF\t%ALT\t%AC\t%AC_afr\t%AC_amr\t%AC_asj\t%AC_eas\t%AC_fin\t%AC_nfe\t%AC_oth\t%AC_sas\t%AN\t%AN_afr\t%AN_amr\t%AN_asj\t%AN_eas\t%AN_fin\t%AN_nfe\t%AN_oth\t%AN_sas\t%AF\t%AF_afr\t%AF_amr\t%AF_asj\t%AF_eas\t%AF_fin\t%AF_nfe\t%AF_oth\t%AF_sas\t%AC_male\t%AC_afr_male\t%AC_amr_male\t%AC_asj_male\t%AC_eas_male\t%AC_fin_male\t%AC_nfe_male\t%AC_oth_male\t%AC_sas_male\t%nhomalt\t%nhomalt_afr\t%nhomalt_amr\t%nhomalt_asj\t%nhomalt_eas\t%nhomalt_fin\t%nhomalt_nfe\t%nhomalt_oth\t%nhomalt_sas\t%popmax\t%AC_popmax\t%AN_popmax\t%AF_popmax\t.\t%nhomalt_popmax\t%nonpar\n' \
+            | sort -u -k 2,5 -S 80% \
+            | awk -F $'\t' \
+                'BEGIN {{
+                    OFS = FS
+                    nonpar = 57
+                }}
+                {{
+                    # nonpar is a flag. it will take either "." if not set or "1" if set.
+                    if ($nonpar == ".") {{
+                        # hemi values are ranging from 33..41
+                        for (i=33; i<42; ++i) {{
+                            $i = "."
+                        }}
+                    }}
+                    print $0
+                }}' \
+            | sed -e 's/\t.$//'
+        ) > {output.tsv}
 
-        pushd $(dirname {output.vcf})
-        md5sum $(basename {output.vcf}) >$(basename {output.vcf}).md5
-        md5sum $(basename {output.tbi}) >$(basename {output.tbi}).md5
-        popd
+        echo -e "table\tversion\tgenomebuild\tnull_value\nGnomadExomes\tr2.1\tGRCh37\t." > {output.release_info}
+        """
 
-        echo -e "table\tversion\ngnomad_{wildcards.kind}\tr2.1" > {output.release_info}
+
+# Rule to generate TSV files from chromosomes
+rule grch37_gnomad_genomes_v2_1_to_tsv:
+    input:
+        vcf="GRCh37/gnomAD_genomes/r2.1/download/gnomad.genomes.r2.1.sites.chr{chrom}.normalized.vcf.bgz",
+        header="header/gnomad_genomes.txt",
+    output:
+        tsv="GRCh37/gnomAD_genomes/r2.1/GnomadGenomes.{chrom}.tsv",
+        release_info="GRCh37/gnomAD_genomes/r2.1/GnomadGenomes.{chrom}.release_info",
+    shell:
+        r"""
+        (
+            cat {input.header} | tr '\n' '\t' | sed -e 's/\t*$/\n/g';
+            bcftools query {input.vcf} \
+                -f 'GRCh37\t%CHROM\t%POS\t%REF\t%ALT\t%AC\t%AC_afr\t%AC_amr\t%AC_asj\t%AC_eas\t%AC_fin\t%AC_nfe\t%AC_oth\t%AN\t%AN_afr\t%AN_amr\t%AN_asj\t%AN_eas\t%AN_fin\t%AN_nfe\t%AN_oth\t%AF\t%AF_afr\t%AF_amr\t%AF_asj\t%AF_eas\t%AF_fin\t%AF_nfe\t%AF_oth\t%AC_male\t%AC_afr_male\t%AC_amr_male\t%AC_asj_male\t%AC_eas_male\t%AC_fin_male\t%AC_nfe_male\t%AC_oth_male\t%nhomalt\t%nhomalt_afr\t%nhomalt_amr\t%nhomalt_asj\t%nhomalt_eas\t%nhomalt_fin\t%nhomalt_nfe\t%nhomalt_oth\t%popmax\t%AC_popmax\t%AN_popmax\t%AF_popmax\t.\t%nhomalt_popmax\t%nonpar\n' \
+            | sort -u -k 2,5 -S 80% \
+            | awk -F $'\t' \
+                'BEGIN {{
+                    OFS = FS
+                    nonpar = 52
+                }}
+                {{
+                    # nonpar is a flag. it will take either "." if not set or "1" if set.
+                    if ($nonpar == ".") {{
+                        # hemi values are ranging from 30..37
+                        for (i=30; i<38; ++i) {{
+                            $i = "."
+                        }}
+                    }}
+                    print $0
+                }}' \
+            | sed -e 's/\t.$//'
+        ) > {output.tsv}
+
+        echo -e "table\tversion\tgenomebuild\tnull_value\nGnomadGenomes\tr2.1\tGRCh37\t." > {output.release_info}
         """

@@ -1,0 +1,36 @@
+rule grch37_dgv_2016_download:
+    output:
+        "GRCh37/DGV/2016/download/DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3",
+        "GRCh37/DGV/2016/download/GRCh37_hg19_variants_2016-05-15.txt",
+        "GRCh37/DGV/2016/download/DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3.md5",
+        "GRCh37/DGV/2016/download/GRCh37_hg19_variants_2016-05-15.txt.md5"
+    log: "GRCh37/DGV/2016/download/wget.log"
+    shell:
+        r"""
+        wget \
+            http://dgv.tcag.ca/dgv/docs/DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3 \
+            http://dgv.tcag.ca/dgv/docs/GRCh37_hg19_variants_2016-05-15.txt \
+            -o {log}
+
+        for i in {output[0]} {output[1]}
+        do
+            cd $(dirname $i)
+            md5sum $(basename $i) > $(basename $i).md5
+        done
+        """
+
+
+rule grch38_dgv_2016_download:
+    output:
+        "GRCh38/DGV/2016/download/GRCh38_hg38_variants_2016-08-31.txt",
+        "GRCh38/DGV/2016/download/GRCh38_hg38_variants_2016-08-31.txt.md5",
+    log: "GRCh38/DGV/2016/download/wget.log"
+    shell:
+        r"""
+        wget \
+            http://dgv.tcag.ca/dgv/docs/GRCh38_hg38_variants_2016-08-31.txt \
+            -o {log}
+
+        cd $(dirname {output[0]})
+        md5sum $(basename {output[0]}) > $(basename {output[1]})
+        """

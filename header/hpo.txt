@@ -1,0 +1,12 @@
+database_id
+name
+qualifier
+hpo_id
+reference
+evidence
+onset
+frequency
+sex
+modifier
+aspect
+biocuration

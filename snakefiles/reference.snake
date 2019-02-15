@@ -1,5 +1,6 @@
 # Download GRCh37 reference sequence hs37d5 and GRCh38 reference sequence hs38.
 
+
 rule grch37_download_hs37d5:
     output:
         fasta="GRCh37/reference/hs37d5/hs37d5.fa.gz",
@@ -15,6 +16,7 @@ rule grch37_download_hs37d5:
         pushd $(dirname {output.fasta})
         md5sum $(basename {output.fasta}) >$(basename {output.fasta}).md5
         """
+
 
 rule grch37_get_hs37d5:
     input: "GRCh37/reference/hs37d5/hs37d5.fa.gz",
@@ -32,6 +34,7 @@ rule grch37_get_hs37d5:
         pushd $(dirname {output.fasta})
         md5sum $(basename {output.fasta}) >$(basename {output.fasta}).md5
         """
+
 
 rule grch38_download_hs38:
     output:
