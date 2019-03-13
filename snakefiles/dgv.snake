@@ -7,14 +7,14 @@ rule grch37_dgv_2016_download:
     log: "GRCh37/DGV/2016/download/wget.log"
     shell:
         r"""
+        cd $(dirname {output[0]})
         wget \
             http://dgv.tcag.ca/dgv/docs/DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3 \
             http://dgv.tcag.ca/dgv/docs/GRCh37_hg19_variants_2016-05-15.txt \
-            -o {log}
+            -o $(basename {log})
 
         for i in {output[0]} {output[1]}
         do
-            cd $(dirname $i)
             md5sum $(basename $i) > $(basename $i).md5
         done
         """
@@ -27,10 +27,9 @@ rule grch38_dgv_2016_download:
     log: "GRCh38/DGV/2016/download/wget.log"
     shell:
         r"""
+        cd $(dirname {output[0]})
         wget \
             http://dgv.tcag.ca/dgv/docs/GRCh38_hg38_variants_2016-08-31.txt \
-            -o {log}
-
-        cd $(dirname {output[0]})
+            -o $(basename {log})
         md5sum $(basename {output[0]}) > $(basename {output[1]})
         """

@@ -56,10 +56,46 @@ rule all:
         # hpo
         "GRCh37/hpo/latest/Hpo.tsv",
         "GRCh37/hpo/latest/Hpo.release_info",
+        ########################################
+        ### SVs files, need post processing step
+        ########################################
+        # SVs -- dbVar
+        expand("{genomebuild}/dbVar/latest/download/{type}/{genomebuild}.nr_{type}.{ending}{md5}",
+            genomebuild=['GRCh37', 'GRCh38'],
+            type=['deletions', 'insertions', 'duplications'],
+            ending=['bed.gz', 'bedpe.gz', 'tsv.gz', 'acmg_genes.tsv.gz'],
+            md5=['', '.md5']
+        ),
+        # SVs -- DGV
+        "GRCh37/DGV/2016/download/DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3",
+        "GRCh37/DGV/2016/download/GRCh37_hg19_variants_2016-05-15.txt",
+        "GRCh37/DGV/2016/download/DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3.md5",
+        "GRCh37/DGV/2016/download/GRCh37_hg19_variants_2016-05-15.txt.md5",
+        "GRCh38/DGV/2016/download/GRCh38_hg38_variants_2016-08-31.txt",
+        "GRCh38/DGV/2016/download/GRCh38_hg38_variants_2016-08-31.txt.md5",
+        # SVs -- ExAC
+        "GRCh37/ExAC/r1/download/exac-final-cnv.gene.scores071316",
+        "GRCh37/ExAC/r1/download/exac-final.autosome-1pct-sq60-qc-prot-coding.cnv.bed",
+        "GRCh37/ExAC/r1/download/README.cnv_gene_scores",
+        "GRCh37/ExAC/r1/download/README.cnv_bed",
+        "GRCh37/ExAC/r1/download/md5sum.txt",
+        # SVs -- 1000G
+        "GRCh37/thousand_genomes/phase3/download/ALL.autosomes.pindel.20130502.complexindex.low_coverage.genotypes.vcf.gz",
+        "GRCh37/thousand_genomes/phase3/download/ALL.autosomes.pindel.20130502.complexindex.low_coverage.genotypes.vcf.gz.tbi",
+        "GRCh37/thousand_genomes/phase3/download/ALL.wgs.mergedSV.v8.20130502.svs.genotypes.vcf.gz",
+        "GRCh37/thousand_genomes/phase3/download/ALL.wgs.mergedSV.v8.20130502.svs.genotypes.vcf.gz.tbi",
+        "GRCh37/thousand_genomes/phase3/download/integrated_call_samples_v3.20130502.ALL.panel",
+        "GRCh37/thousand_genomes/phase3/download/ALL.autosomes.pindel.20130502.complexindex.low_coverage.genotypes.vcf.gz.md5",
+        "GRCh37/thousand_genomes/phase3/download/ALL.autosomes.pindel.20130502.complexindex.low_coverage.genotypes.vcf.gz.tbi.md5",
+        "GRCh37/thousand_genomes/phase3/download/ALL.wgs.mergedSV.v8.20130502.svs.genotypes.vcf.gz.md5",
+        "GRCh37/thousand_genomes/phase3/download/ALL.wgs.mergedSV.v8.20130502.svs.genotypes.vcf.gz.tbi.md5",
+        "GRCh37/thousand_genomes/phase3/download/integrated_call_samples_v3.20130502.ALL.panel.md5",
 
 
 include: "snakefiles/clinvar.snake"
 include: "snakefiles/dbsnp.snake"
+include: "snakefiles/dbvar.snake"
+include: "snakefiles/dgv.snake"
 include: "snakefiles/exac.snake"
 include: "snakefiles/gnomad.snake"
 include: "snakefiles/hgnc.snake"

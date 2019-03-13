@@ -32,10 +32,11 @@ rule grch37_exac_v1_0_0_cnv_download:
         md5sums="GRCh37/ExAC/r1/download/md5sum.txt",
     shell:
         r"""
+        cd $(dirname {output.md5sums})
         # mirror server
-        echo mirror | ftp ftp://ftp.broadinstitute.org/pub/ExAC_release/release1/cnv
+        echo mirror | lftp ftp://ftp.broadinstitute.org/pub/ExAC_release/release1/cnv
         # check md5 sums
-        md5sum -c {output.md5sums}
+        md5sum -c $(basename {output.md5sums})
         """
 
 

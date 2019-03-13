@@ -5,8 +5,6 @@ rule grch37_thousand_genomes_download:
     output:
         file="GRCh37/thousand_genomes/phase3/download/{filename}",
         md5="GRCh37/thousand_genomes/phase3/download/{filename}.md5",
-        tbi="GRCh37/thousand_genomes/phase3/download/{filename}.tbi",
-        tbi_md5="GRCh37/thousand_genomes/phase3/download/{filename}.tbi.md5",
     log: "GRCh37/thousand_genomes/phase3/download/{filename}.log",
     shell:
         r"""
@@ -14,11 +12,9 @@ rule grch37_thousand_genomes_download:
             -O {output.file} \
             -o {log} \
             http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/{wildcards.filename}
-        tabix -f {output.file}
 
         pushd $(dirname {output.file})
         md5sum {wildcards.filename} > {wildcards.filename}.md5
-        md5sum {wildcards.filename}.tbi > {wildcards.filename}.tbi.md5
         """
 
 
@@ -60,14 +56,15 @@ rule grch37_thousand_genomes_sv_download:
     log: "GRCh37/thousand_genomes/phase3/download/wget.log"
     shell:
         r"""
+        cd $(dirname {output[0]})
+
         echo "mget ALL.* README*" \
             | lftp ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase3/integrated_sv_map
         wget ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/integrated_call_samples_v3.20130502.ALL.panel \
-            -o {log}
+            -o $(basename {log})
 
         for i in {output[0]} {output[1]} {output[2]} {output[3]} {output[4]}
         do
-            cd $(dirname $i)
             md5sum $(basename $i) > $(basename $i).md5
         done
         """
