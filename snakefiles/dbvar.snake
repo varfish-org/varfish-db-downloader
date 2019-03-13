@@ -13,7 +13,7 @@ rule grchXX_dbvar_latest_download:
         echo 'mirror --include="{wildcards.genomebuild}"' | lftp ftp://ftp.ncbi.nlm.nih.gov/pub/dbVar/sandbox/sv_datasets/nonredundant/
 
         # set rights as the image has no execute rights to access the folders.
-        chmod u+wX -R .
+        chmod ug+wX -R .
 
         # check md5 sums
         find -iname '*.md5' | xargs -I+ bash -c 'cd $(dirname +) && md5sum -c $(basename +)'
