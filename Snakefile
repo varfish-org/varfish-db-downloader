@@ -56,6 +56,8 @@ rule all:
         # hpo
         "GRCh37/hpo/latest/Hpo.tsv",
         "GRCh37/hpo/latest/Hpo.release_info",
+        "GRCh37/hpo/latest/HpoName.tsv",
+        "GRCh37/hpo/latest/HpoName.release_info",
         ########################################
         ### SVs files, need post processing step
         ########################################

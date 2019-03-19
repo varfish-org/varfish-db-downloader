@@ -12,6 +12,23 @@ rule grch37_hpo_download:
         """
 
 
+rule grch37_hpo_name_mapping:
+    output:
+        tsv="GRCh37/hpo/latest/HpoName.tsv",
+        release_info="GRCh37/hpo/latest/HpoName.release_info"
+    run:
+        import obonet
+        import datetime
+        graph = obonet.read_obo('https://raw.githubusercontent.com/obophenotype/human-phenotype-ontology/master/hp.obo')
+        with open(output.tsv, 'w') as fh:
+            fh.write("hpo_id\tname\n")
+            for _id, data in graph.nodes(data=True):
+                fh.write("{}\t{}\n".format(_id, data['name']))
+        with open(output.release_info, 'w') as fh:
+            fh.write("table\tversion\tgenomebuild\tnull_value\n")
+            fh.write("HpoName\t{}\tGRCh37\t\n".format(datetime.datetime.today().strftime('%Y/%m/%d')))
+
+
 rule grch37_hpo_to_tsv:
     input:
         header="header/hpo.txt",
