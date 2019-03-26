@@ -32,6 +32,8 @@ rule all:
         # hgnc
         "GRCh37/hgnc/latest/Hgnc.tsv",
         "GRCh37/hgnc/latest/Hgnc.release_info",
+        "GRCh37/hgnc/latest/RefseqToHgnc.tsv",
+        "GRCh37/hgnc/latest/RefseqToHgnc.release_info",
         # knowngeneaa
         "GRCh37/knowngeneaa/latest/KnowngeneAA.tsv",
         "GRCh37/knowngeneaa/latest/KnowngeneAA.release_info",
