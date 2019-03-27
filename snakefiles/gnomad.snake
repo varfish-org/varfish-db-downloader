@@ -50,6 +50,11 @@ ruleorder: grch37_gnomad_v2_1_normalize > grch37_gnomad_v2_1_download
 
 
 # Rule to generate TSV files from chromosomes
+## Note: From the release notes (https://macarthurlab.org/2018/10/17/gnomad-v2-1/)
+## Hemizygote counts
+## For this release, there are no more hemizygote count annotations. Instead, our
+## male counts correctly consider males as hemizygous in non-pseudo-autosomal (non-PAR)
+## regions of the sex chromosomes and we provide a nonpar flag to identify all variants that are in the these regions.
 rule grch37_gnomad_exomes_v2_1_to_tsv:
     input:
         vcf="GRCh37/gnomAD_exomes/r2.1/download/gnomad.exomes.r2.1.sites.chr{chrom}.normalized.vcf.bgz",
