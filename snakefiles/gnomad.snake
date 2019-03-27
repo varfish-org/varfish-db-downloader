@@ -13,9 +13,9 @@ rule grch37_gnomad_v2_1_download:
             -O {output.vcf} \
             https://storage.googleapis.com/gnomad-public/release/2.1/vcf/{wildcards.kind}/gnomad.{wildcards.kind}.r2.1.sites.chr{wildcards.chrom}.vcf.bgz
         wget \
-            -a {log} \
+            -o {log} \
             -O {output.tbi} \
-            https://storage.googleapis.com/gnomad-public/release/2.1/vcf/{wildcards.kind}/gnomad.{wildcards.kind}.r2.1.sites.chr{wildcards.chrom}.vcf.bgz
+            https://storage.googleapis.com/gnomad-public/release/2.1/vcf/{wildcards.kind}/gnomad.{wildcards.kind}.r2.1.sites.chr{wildcards.chrom}.vcf.bgz.tbi
 
         pushd $(dirname {output.vcf})
         md5sum $(basename {output.vcf}) >$(basename {output.vcf}).md5
