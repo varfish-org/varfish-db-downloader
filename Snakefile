@@ -60,6 +60,9 @@ rule all:
         "GRCh37/hpo/latest/Hpo.release_info",
         "GRCh37/hpo/latest/HpoName.tsv",
         "GRCh37/hpo/latest/HpoName.release_info",
+        # acmg
+        "GRCh37/acmg/v2.0/Acmg.tsv",
+        "GRCh37/acmg/v2.0/Acmg.release_info",
         ########################################
         ### SVs files, need post processing step
         ########################################
@@ -111,3 +114,4 @@ include: "snakefiles/ncbi_gene.snake"
 include: "snakefiles/mim2gene.snake"
 include: "snakefiles/reference.snake"
 include: "snakefiles/thousand_genomes.snake"
+include: "snakefiles/acmg.snake"
