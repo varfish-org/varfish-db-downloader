@@ -27,8 +27,8 @@ rule all:
         expand("GRCh37/gnomAD_genomes/r2.1/GnomadGenomes.{chrom}.tsv", chrom=CHROMS),
         expand("GRCh37/gnomAD_genomes/r2.1/GnomadGenomes.{chrom}.release_info", chrom=CHROMS),
         # hgmd
-        "GRCh37/hgmd_public/ensembl_r105/HgmdPublicLocus.tsv",
-        "GRCh37/hgmd_public/ensembl_r105/HgmdPublicLocus.release_info",
+        "GRCh37/hgmd_public/ensembl_r75/HgmdPublicLocus.tsv",
+        "GRCh37/hgmd_public/ensembl_r75/HgmdPublicLocus.release_info",
         # hgnc
         "GRCh37/hgnc/latest/Hgnc.tsv",
         "GRCh37/hgnc/latest/Hgnc.release_info",
