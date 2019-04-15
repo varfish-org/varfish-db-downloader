@@ -1,0 +1,20 @@
+rule GRCh37_vista:
+    output:
+        tsv="GRCh37/vista/latest/Vista.tsv",
+        release_info="GRCh37/vista/latest/Vista.release_info.tsv",
+    shell:
+        r"""
+        2>/dev/null curl 'https://enhancer.lbl.gov/cgi-bin/imagedb3.pl?page_size=100;show=1;search.result=yes;search.form=no;form=search;action=search;search.org=Human;search.sequence=1' \
+        | sed -e 's/<pre>//g' \
+        | sed -e 's/<\/pre>//g' \
+        | grep '^>' \
+        | sed -e 's/element /hs/g' \
+        | grep Human \
+        | sed -e 's/[:\|-]/ /g' \
+        | awk 'BEGIN {{ OFS = "\t" }} {{ print $2, $3, $4, $5, $6 }}' \
+        | cut -b 4- \
+        | LC_ALL=C sort -k1,1g -k2,2n -k3,3n \
+        > {output.tsv}
+
+        echo -e "table\tversion\tgenomebuild\tnull_value\nVista\tlatest\tGRCh37\t" > {output.release_info}
+        """
