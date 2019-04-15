@@ -64,20 +64,21 @@ rule all:
         "GRCh37/acmg/v2.0/Acmg.tsv",
         "GRCh37/acmg/v2.0/Acmg.release_info",
         # VISTA enhancer validation results
-        "GRCh37/vista/latest/Vista.tsv",
-        "GRCh37/vista/latest/Vista.release_info.tsv",
+        "GRCh37/vista/latest/VistaEnhancer.tsv",
+        "GRCh37/vista/latest/VistaEnhancer.release_info",
         # ENSEMBL Regulatory Features
-        "GRCh37/ensembl/latest/EnsemblRegulatory.tsv",
-        "GRCh37/ensembl/latest/EnsemblRegulatory.release_info.tsv",
+        "GRCh37/ensembl_regulatory/latest/EnsemblRegulatoryFeature.tsv",
+        "GRCh37/ensembl_regulatory/latest/EnsemblRegulatoryFeature.release_info",
         # Dixon 2012 TAD BED files
-        "GRCh37/tads/dixon2012/hESC_domains_hg19.bed",
-        "GRCh37/tads/dixon2012/IMR90_domains_hg19.bed",
-        "GRCh37/tads/dixon2012/Dixon2012Tads.release_info.tsv",
+        "GRCh37/tads_hesc/dixon2012/TadInterval.tsv",
+        "GRCh37/tads_hesc/dixon2012/TadInterval.release_info",
+        "GRCh37/tads_imr90/dixon2012/TadInterval.tsv",
+        "GRCh37/tads_imr90/dixon2012/TadInterval.release_info",
         # Genes BED files
-        "GRCh37/refseq_genes/r105/RefSeqGenes.bed",
-        "GRCh37/refseq_genes/r105/RefSeqGenes.release_info.tsv",
-        "GRCh37/ensembl_genes/r96/EnsemblGenes.bed",
-        "GRCh37/ensembl_genes/r96/EnsemblGenes.release_info.tsv",
+        "GRCh37/refseq_genes/r105/GeneInterval.tsv",
+        "GRCh37/refseq_genes/r105/GeneInterval.release_info",
+        "GRCh37/ensembl_genes/r96/GeneInterval.tsv",
+        "GRCh37/ensembl_genes/r96/GeneInterval.release_info",
         ########################################
         ### SVs files, need post processing step
         ########################################

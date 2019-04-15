@@ -1,7 +1,7 @@
 rule GRCh37_refseq_genes:
     output:
-        bed="GRCh37/refseq_genes/r105/RefSeqGenes.bed",
-        release_info="GRCh37/refseq_genes/r105/RefSeqGenes.release_info.tsv",
+        tsv="GRCh37/refseq_genes/r105/GeneInterval.tsv",
+        release_info="GRCh37/refseq_genes/r105/GeneInterval.release_info",
     shell:
         r"""
         export TMPDIR=$(mktemp -d)
@@ -24,15 +24,15 @@ rule GRCh37_refseq_genes:
         | LC_ALL=C sort -k1,1 -k2,2n -k3,3n \
         | sed -e 's/[";]//g' \
         | grep '^[1-9XYM]' \
-        > {output.bed}
+        > {output.tsv}
 
         echo -e "table\tversion\tgenomebuild\tnull_value\nRefSeqGenes\t105\tGRCh37\t" > {output.release_info}
         """
 
 rule GRCh37_ensembl_genes:
     output:
-        bed="GRCh37/ensembl_genes/r96/EnsemblGenes.bed",
-        release_info="GRCh37/ensembl_genes/r96/EnsemblGenes.release_info.tsv",
+        tsv="GRCh37/ensembl_genes/r96/GeneInterval.tsv",
+        release_info="GRCh37/ensembl_genes/r96/GeneInterval.release_info",
     shell:
         r"""
         curl 'ftp://ftp.ensembl.org/pub/grch37/release-96/gtf/homo_sapiens/Homo_sapiens.GRCh37.87.gtf.gz' \
@@ -45,7 +45,7 @@ rule GRCh37_ensembl_genes:
         | LC_ALL=C sort -k1,1 -k2,2n -k3,3n \
         | sed -e 's/[";]//g' \
         | grep '^[1-9XYM]' \
-        > {output.bed}
+        > {output.tsv}
 
         echo -e "table\tversion\tgenomebuild\tnull_value\nEnsemblGenes\t96\tGRCh37\t" > {output.release_info}
         """

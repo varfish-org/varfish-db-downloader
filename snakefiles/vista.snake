@@ -1,7 +1,7 @@
 rule GRCh37_vista:
     output:
-        tsv="GRCh37/vista/latest/Vista.tsv",
-        release_info="GRCh37/vista/latest/Vista.release_info.tsv",
+        tsv="GRCh37/vista/latest/VistaEnhancer.tsv",
+        release_info="GRCh37/vista/latest/VistaEnhancer.release_info",
     shell:
         r"""
         2>/dev/null curl 'https://enhancer.lbl.gov/cgi-bin/imagedb3.pl?page_size=100;show=1;search.result=yes;search.form=no;form=search;action=search;search.org=Human;search.sequence=1' \

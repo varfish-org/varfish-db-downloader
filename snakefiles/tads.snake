@@ -1,18 +1,30 @@
-rule GRCh37_tads:
+rule GRCh37_tads_hesc:
     output:
-        hesc_tsv="GRCh37/tads/dixon2012/hESC_domains_hg19.bed",
-        imr90_tsv="GRCh37/tads/dixon2012/IMR90_domains_hg19.bed",
-        release_info="GRCh37/tads/dixon2012/Dixon2012Tads.release_info.tsv",
+        tsv="GRCh37/tads_hesc/dixon2012/TadInterval.tsv",
+        release_info="GRCh37/tads_hesc/dixon2012/TadInterval.release_info",
     shell:
         r"""
         base_url="http://compbio.med.harvard.edu/modencode/webpage/hic"
-        wget -O - $base_url/$(basename {output.hesc_tsv}) \
-        | cut -b 4- \
-        > {output.hesc_tsv}
-        wget -O - $base_url/$(basename {output.imr90_tsv}) \
-        | cut -b 4- \
-        > {output.imr90_tsv}
 
-        echo -e "table\tversion\tgenomebuild\tnull_value\nDixon2012Tads\tlatest\tGRCh37\t" > {output.release_info}
+        wget -O - $base_url/hESC_domains_hg19.bed \
+        | cut -b 4- \
+        > {output.tsv}
+
+        echo -e "table\tversion\tgenomebuild\tnull_value\nTadInterval:hesc\tDixon2012\tGRCh37\t" > {output.release_info}
+        """
+
+rule GRCh37_tads_imr90:
+    output:
+        tsv="GRCh37/tads_imr90/dixon2012/TadInterval.tsv",
+        release_info="GRCh37/tads_imr90/dixon2012/TadInterval.release_info",
+    shell:
+        r"""
+        base_url="http://compbio.med.harvard.edu/modencode/webpage/hic"
+
+        wget -O - $base_url/hESC_domains_hg19.bed \
+        | cut -b 4- \
+        > {output.tsv}
+
+        echo -e "table\tversion\tgenomebuild\tnull_value\nTadInterval:imr90\tDixon2012\tGRCh37\t" > {output.release_info}
         """
 

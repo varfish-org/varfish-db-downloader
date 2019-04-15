@@ -1,7 +1,7 @@
 rule GRCh37_ensembl_regulatory:
     output:
-        tsv="GRCh37/ensembl/latest/EnsemblRegulatory.tsv",
-        release_info="GRCh37/ensembl/latest/EnsemblRegulatory.release_info.tsv",
+        tsv="GRCh37/ensembl_regulatory/latest/EnsemblRegulatoryFeature.tsv",
+        release_info="GRCh37/ensembl_regulatory/latest/EnsemblRegulatoryFeature.release_info",
     shell:
         r"""
         echo -e "Chromosome/scaffold name\tStart (bp)\tEnd (bp)\tRegulatory stable ID\tFeature type\tFeature type description\tSO term accession\tSO term name" \
