@@ -27,8 +27,8 @@ rule all:
         expand("GRCh37/gnomAD_genomes/r2.1/GnomadGenomes.{chrom}.tsv", chrom=CHROMS),
         expand("GRCh37/gnomAD_genomes/r2.1/GnomadGenomes.{chrom}.release_info", chrom=CHROMS),
         # hgmd
-        "GRCh37/hgmd_public/ensembl_r75/HgmdPublicLocus.tsv",
-        "GRCh37/hgmd_public/ensembl_r75/HgmdPublicLocus.release_info",
+        "GRCh37/hgmd_public/ensembl_r105/HgmdPublicLocus.tsv",
+        "GRCh37/hgmd_public/ensembl_r105/HgmdPublicLocus.release_info",
         # hgnc
         "GRCh37/hgnc/latest/Hgnc.tsv",
         "GRCh37/hgnc/latest/Hgnc.release_info",
@@ -72,7 +72,12 @@ rule all:
         # Dixon 2012 TAD BED files
         "GRCh37/tads/dixon2012/hESC_domains_hg19.bed",
         "GRCh37/tads/dixon2012/IMR90_domains_hg19.bed",
-        "GRCh37/tads/dixon2012/Dixon2012Tads.release_info.bed",
+        "GRCh37/tads/dixon2012/Dixon2012Tads.release_info.tsv",
+        # Genes BED files
+        "GRCh37/refseq_genes/r105/RefSeqGenes.bed",
+        "GRCh37/refseq_genes/r105/RefSeqGenes.release_info.tsv",
+        "GRCh37/ensembl_genes/r96/EnsemblGenes.bed",
+        "GRCh37/ensembl_genes/r96/EnsemblGenes.release_info.tsv",
         ########################################
         ### SVs files, need post processing step
         ########################################
@@ -128,3 +133,4 @@ include: "snakefiles/acmg.snake"
 include: "snakefiles/vista.snake"
 include: "snakefiles/ensembl_regulatory.snake"
 include: "snakefiles/tads.snake"
+include: "snakefiles/genes.snake"
