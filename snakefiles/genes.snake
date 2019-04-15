@@ -1,0 +1,52 @@
+rule GRCh37_refseq_genes:
+    output:
+        bed="GRCh37/refseq_genes/r105/RefSeqGenes.bed",
+        release_info="GRCh37/refseq_genes/r105/RefSeqGenes.release_info.tsv",
+    shell:
+        r"""
+        export TMPDIR=$(mktemp -d)
+        trap "rm -rf $TMPDIR" EXIT ERR
+
+        curl 'ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/ARCHIVE/ANNOTATION_RELEASE.105/Assembled_chromosomes/chr_accessions_GRCh37.p13' \
+        | awk 'BEGIN {{ OFS="\t" }} !/^#/ {{ print $2, $1 }}' \
+        | LC_ALL=C sort -k1,1 \
+        > $TMPDIR/names
+
+        curl 'ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/ARCHIVE/ANNOTATION_RELEASE.105/GFF/ref_GRCh37.p13_top_level.gff3.gz' \
+        | zgrep -v '^#' \
+        | LC_ALL=C sort -k1,1 \
+        > $TMPDIR/genes
+
+        LC_ALL=C join --check-order -t $'\t' -j 1 $TMPDIR/names $TMPDIR/genes \
+        | cut -f 2- \
+        | sed -e 's/[=;:,]/ /g' \
+        | awk 'BEGIN {{ OFS="\t" }} ($3 == "gene") {{ print $1, $4-1, $5, $15; }}' \
+        | LC_ALL=C sort -k1,1 -k2,2n -k3,3n \
+        | sed -e 's/[";]//g' \
+        | grep '^[1-9XYM]' \
+        > {output.bed}
+
+        echo -e "table\tversion\tgenomebuild\tnull_value\nRefSeqGenes\t105\tGRCh37\t" > {output.release_info}
+        """
+
+rule GRCh37_ensembl_genes:
+    output:
+        bed="GRCh37/ensembl_genes/r96/EnsemblGenes.bed",
+        release_info="GRCh37/ensembl_genes/r96/EnsemblGenes.release_info.tsv",
+    shell:
+        r"""
+        curl 'ftp://ftp.ensembl.org/pub/grch37/release-96/gtf/homo_sapiens/Homo_sapiens.GRCh37.87.gtf.gz' \
+        | zcat \
+        | awk '
+            BEGIN {{ OFS="\t" }}
+            ($0 ~ /protein_coding/ && $3 == "gene") {{
+                print $1, $4-1, $5, $10;
+            }}' \
+        | LC_ALL=C sort -k1,1 -k2,2n -k3,3n \
+        | sed -e 's/[";]//g' \
+        | grep '^[1-9XYM]' \
+        > {output.bed}
+
+        echo -e "table\tversion\tgenomebuild\tnull_value\nEnsemblGenes\t96\tGRCh37\t" > {output.release_info}
+        """
+
