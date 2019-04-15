@@ -63,6 +63,16 @@ rule all:
         # acmg
         "GRCh37/acmg/v2.0/Acmg.tsv",
         "GRCh37/acmg/v2.0/Acmg.release_info",
+        # VISTA enhancer validation results
+        "GRCh37/vista/latest/Vista.tsv",
+        "GRCh37/vista/latest/Vista.release_info.tsv",
+        # ENSEMBL Regulatory Features
+        "GRCh37/ensembl/latest/EnsemblRegulatory.tsv",
+        "GRCh37/ensembl/latest/EnsemblRegulatory.release_info.tsv",
+        # Dixon 2012 TAD BED files
+        "GRCh37/tads/dixon2012/hESC_domains_hg19.bed",
+        "GRCh37/tads/dixon2012/IMR90_domains_hg19.bed",
+        "GRCh37/tads/dixon2012/Dixon2012Tads.release_info.bed",
         ########################################
         ### SVs files, need post processing step
         ########################################
@@ -115,3 +125,6 @@ include: "snakefiles/mim2gene.snake"
 include: "snakefiles/reference.snake"
 include: "snakefiles/thousand_genomes.snake"
 include: "snakefiles/acmg.snake"
+include: "snakefiles/vista.snake"
+include: "snakefiles/ensembl_regulatory.snake"
+include: "snakefiles/tads.snake"

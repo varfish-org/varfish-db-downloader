@@ -1,0 +1,18 @@
+rule GRCh37_tads:
+    output:
+        hesc_tsv="GRCh37/tads/dixon2012/hESC_domains_hg19.bed",
+        imr90_tsv="GRCh37/tads/dixon2012/IMR90_domains_hg19.bed",
+        release_info="GRCh37/tads/dixon2012/Dixon2012Tads.release_info.bed",
+    shell:
+        r"""
+        base_url="http://compbio.med.harvard.edu/modencode/webpage/hic"
+        wget -O - $base_url/$(basename {output.hesc_tsv}) \
+        | cut -b 4- \
+        > {output.hesc_tsv}
+        wget -O - $base_url/$(basename {output.imr90_tsv}) \
+        | cut -b 4- \
+        > {output.imr90_tsv}
+
+        echo -e "table\tversion\tgenomebuild\tnull_value\nDixon2012Tads\tlatest\tGRCh37\t" > {output.release_info}
+        """
+
