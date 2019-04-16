@@ -113,6 +113,9 @@ rule all:
         "GRCh37/thousand_genomes/phase3/download/ALL.wgs.mergedSV.v8.20130502.svs.genotypes.vcf.gz.md5",
         "GRCh37/thousand_genomes/phase3/download/ALL.wgs.mergedSV.v8.20130502.svs.genotypes.vcf.gz.tbi.md5",
         "GRCh37/thousand_genomes/phase3/download/integrated_call_samples_v3.20130502.ALL.panel.md5",
+        # SVs -- gnomAD sv
+        "GRCh37/gnomAD_SV/v2/download/gnomad_v2_sv.sites.vcf.gz",
+        "GRCh37/gnomAD_SV/v2/download/gnomad_v2_sv.sites.vcf.gz.tbi",
 
 
 include: "snakefiles/clinvar.snake"

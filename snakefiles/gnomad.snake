@@ -126,3 +126,17 @@ rule grch37_gnomad_genomes_v2_1_to_tsv:
 
         echo -e "table\tversion\tgenomebuild\tnull_value\nGnomadGenomes\tr2.1\tGRCh37\t." > {output.release_info}
         """
+
+rule grch37_gnomad_genomes_sv:
+    output:
+        vcf="GRCh37/gnomAD_SV/v2/download/gnomad_v2_sv.sites.vcf.gz",
+        tbi="GRCh37/gnomAD_SV/v2/download/gnomad_v2_sv.sites.vcf.gz.tbi",
+    shell:
+        r"""
+        wget -O {output.vcf} https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2_sv.sites.vcf.gz
+        wget -O {output.tbi} https://storage.googleapis.com/gnomad-public/papers/2019-sv/gnomad_v2_sv.sites.vcf.gz.tbi
+
+        cd $(dirname {output.vcf})
+        md5sum gnomad_v2_sv.sites.vcf.gz >gnomad_v2_sv.sites.vcf.gz.md5
+        md5sum gnomad_v2_sv.sites.vcf.gz.tbi >gnomad_v2_sv.sites.vcf.gz.tbi.md5
+        """
