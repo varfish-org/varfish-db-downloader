@@ -10,3 +10,6 @@ sex
 modifier
 aspect
 biocuration
+omim_id
+decipher_id
+orpha_id

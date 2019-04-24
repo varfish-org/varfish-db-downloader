@@ -40,7 +40,13 @@ rule grch37_hpo_to_tsv:
         r"""
         (
             cat {input.header} | tr '\n' '\t' | sed -e 's/\t*$/\n/g';
-            tail -n +6 {input.txt}
+            tail -n +6 {input.txt} \
+            | awk -F $'\t' '
+                BEGIN {{ OFS=FS }}
+                {{
+                    split($1,a,":")
+                    print $0,a[1]=="OMIM"?a[2]:"",a[1]=="DECIPHER"?a[2]:"",a[1]=="ORPHA"?a[2]:""
+                }}'
         ) \
         > {output.tsv}
 
