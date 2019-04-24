@@ -16,5 +16,5 @@ rule GRCh37_vista:
         | LC_ALL=C sort -k1,1g -k2,2n -k3,3n \
         > {output.tsv}
 
-        echo -e "table\tversion\tgenomebuild\tnull_value\nVista\tlatest\tGRCh37\t" > {output.release_info}
+        echo -e "table\tversion\tgenomebuild\tnull_value\nVistaEnhancer\tlatest\tGRCh37\t" > {output.release_info}
         """
