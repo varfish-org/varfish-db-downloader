@@ -79,6 +79,15 @@ rule all:
         "GRCh37/refseq_genes/r105/GeneInterval.release_info",
         "GRCh37/ensembl_genes/r96/GeneInterval.tsv",
         "GRCh37/ensembl_genes/r96/GeneInterval.release_info",
+        # Gnomad Constraints
+        "GRCh37/gnomAD_constraints/v2.1.1/GnomadConstraints.tsv",
+        "GRCh37/gnomAD_constraints/v2.1.1/GnomadConstraints.release_info",
+        # Exac Constraints
+        "GRCh37/ExAC_constraints/r0.3.1/ExacConstraints.tsv",
+        "GRCh37/ExAC_constraints/r0.3.1/ExacConstraints.release_info",
+        # Ensembl to Refseq mapping
+        "GRCh37/ensembltorefseq/latest/EnsemblToRefseq.tsv",
+        "GRCh37/ensembltorefseq/latest/EnsemblToRefseq.release_info",
         ########################################
         ### SVs files, need post processing step
         ########################################
@@ -138,3 +147,4 @@ include: "snakefiles/vista.snake"
 include: "snakefiles/ensembl_regulatory.snake"
 include: "snakefiles/tads.snake"
 include: "snakefiles/genes.snake"
+include: "snakefiles/ensembltorefseq.snake"

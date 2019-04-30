@@ -1,0 +1,30 @@
+# Obtain current dump of HPO files
+
+
+# rule grch37_ensembl_to_refseq_download:
+# done manually:
+# https://grch37.ensembl.org
+# -> Click BioMart
+# Dataset: Ensembl Genes 96 / Human genes (GRCh37.p13)
+# Attributes: External -> EntrezGene ID
+# -> Click Results
+# -> Export all to compressed file TSV -> Go
+
+
+rule grch37_ensembl_to_refseq_tsv:
+    input:
+        header="header/ensembltorefseq.txt",
+        gz="input/ensembl_to_refseq.tsv.gz",
+    output:
+        tsv="GRCh37/ensembltorefseq/latest/EnsemblToRefseq.tsv",
+        release_info="GRCh37/ensembltorefseq/latest/EnsemblToRefseq.release_info",
+    shell:
+        r"""
+        (
+            cat {input.header} | tr '\n' '\t' | sed -e 's/\t*$/\n/g';
+            zcat {input.gz} \
+            | tail -n +2
+        ) > {output.tsv}
+
+        echo -e "table\tversion\tgenomebuild\tnull_value\nEnsemblToRefseq\t$(date +%Y/%m/%d)\tGRCh37\t" > {output.release_info}
+        """
