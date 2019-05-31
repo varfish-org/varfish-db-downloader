@@ -88,6 +88,9 @@ rule all:
         # Ensembl to Refseq mapping
         "GRCh37/ensembltorefseq/latest/EnsemblToRefseq.tsv",
         "GRCh37/ensembltorefseq/latest/EnsemblToRefseq.release_info",
+        # Refseq to Ensembl mapping
+        "GRCh37/refseqtoensembl/latest/RefseqToEnsembl.tsv",
+        "GRCh37/refseqtoensembl/latest/RefseqToEnsembl.release_info",
         ########################################
         ### SVs files, need post processing step
         ########################################
@@ -148,3 +151,4 @@ include: "snakefiles/ensembl_regulatory.snake"
 include: "snakefiles/tads.snake"
 include: "snakefiles/genes.snake"
 include: "snakefiles/ensembltorefseq.snake"
+include: "snakefiles/refseqtoensembl.snake"
