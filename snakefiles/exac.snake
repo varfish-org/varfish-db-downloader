@@ -52,7 +52,7 @@ rule grch37_exac_v1_0_0_normalize:
     shell:
         r"""
         bcftools norm \
-            --threads 4 \
+            --threads 8 \
             --multiallelics - \
             --fasta-ref {input.reference} \
             -O z \
@@ -88,13 +88,13 @@ rule grch37_exac_v1_0_0_tsv:
                 ) \
                 {input.vcf} \
             | bcftools query \
-                -f 'GRCh37\t%CHROM\t%POS\t%REF\t%ALT\t%AC_Adj\t%AC_AFR\t%AC_AMR\t%AC_EAS\t%AC_FIN\t%AC_NFE\t%AC_OTH\t%AC_SAS\t%AN_Adj\t%AN_AFR\t%AN_AMR\t%AN_EAS\t%AN_FIN\t%AN_NFE\t%AN_OTH\t%AN_SAS\t%AC_Hemi\t%Hemi_AFR\t%Hemi_AMR\t%Hemi_EAS\t%Hemi_FIN\t%Hemi_NFE\t%Hemi_OTH\t%Hemi_SAS\t%AC_Hom\t%Hom_AFR\t%Hom_AMR\t%Hom_EAS\t%Hom_FIN\t%Hom_NFE\t%Hom_OTH\t%Hom_SAS\t%POPMAX\n' \
+                -f 'GRCh37\t%CHROM\t%POS\t%END\t%REF\t%ALT\t%AC_Adj\t%AC_AFR\t%AC_AMR\t%AC_EAS\t%AC_FIN\t%AC_NFE\t%AC_OTH\t%AC_SAS\t%AN_Adj\t%AN_AFR\t%AN_AMR\t%AN_EAS\t%AN_FIN\t%AN_NFE\t%AN_OTH\t%AN_SAS\t%AC_Hemi\t%Hemi_AFR\t%Hemi_AMR\t%Hemi_EAS\t%Hemi_FIN\t%Hemi_NFE\t%Hemi_OTH\t%Hemi_SAS\t%AC_Hom\t%Hom_AFR\t%Hom_AMR\t%Hom_EAS\t%Hom_FIN\t%Hom_NFE\t%Hom_OTH\t%Hom_SAS\t%POPMAX\n' \
                 - \
-            | awk -F "\t" '!_[$2$3$4$5]++' \
+            | awk -F "\t" '!_[$2$3$4$5$6]++' \
             | awk -F $'\t' \
                 'BEGIN {{
                     OFS = FS
-                    offset = 5
+                    offset = 6
                     populations["ALL"] = offset + 1
                     populations["AFR"] = offset + 2
                     populations["AMR"] = offset + 3
@@ -132,9 +132,12 @@ rule grch37_exac_v1_0_0_tsv:
                     af_nfe = ($(populations["NFE"] + an) > 0) ? $(populations["NFE"] + ac) / $(populations["NFE"] + an) : "."
                     af_oth = ($(populations["OTH"] + an) > 0) ? $(populations["OTH"] + ac) / $(populations["OTH"] + an) : "."
                     af_sas = ($(populations["SAS"] + an) > 0) ? $(populations["SAS"] + ac) / $(populations["SAS"] + an) : "."
+                    $4=$4"\t"
                     print $0,ac_popmax,an_popmax,af_popmax,hemi_popmax,hom_popmax,af,af_afr,af_amr,af_eas,af_fin,af_nfe,af_oth,af_sas
-                }}'
-        ) > {output.tsv}
+                }}' 
+        ) \
+        | python tools/ucsc_binning.py \
+        > {output.tsv}
 
         echo -e "table\tversion\tgenomebuild\tnull_value\nExac\tr1\tGRCh37\t." > {output.release_info}
         """

@@ -1,6 +1,8 @@
 release
 chromosome
-position
+start
+end
+bin
 reference
 alternative
 ac

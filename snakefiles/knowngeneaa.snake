@@ -44,9 +44,10 @@ rule grch37_knowngeneaa_to_tsv:
         (
             cat {input.header} | tr '\n' '\t' | sed -e 's/\t*$/\n/g';
             bcftools query \
-                -f "%CHROM\t%POS\t%END\t%UCSC_GENE\t%ALIGNMENT\n" \
+                -f "GRCh37\t%CHROM\t%POS\t%END\t\t%UCSC_GENE\t%ALIGNMENT\n" \
                 {input.vcf}
         ) \
+        | python tools/ucsc_binning.py \
         > {output.tsv}
 
         echo -e "table\tversion\tgenomebuild\tnull_value\nKnowngeneAA\t$(date +%Y/%m/%d)\tGRCh37\t" > {output.release_info}

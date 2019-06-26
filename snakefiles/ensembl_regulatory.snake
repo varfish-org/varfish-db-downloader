@@ -1,7 +1,6 @@
-rule GRCh37_ensembl_regulatory:
+rule GRCh37_ensembl_regulatory_download:
     output:
-        tsv="GRCh37/ensembl_regulatory/latest/EnsemblRegulatoryFeature.tsv",
-        release_info="GRCh37/ensembl_regulatory/latest/EnsemblRegulatoryFeature.release_info",
+        tsv="GRCh37/ensembl_regulatory/latest/download/EnsemblRegulatoryFeature.tsv",
     shell:
         r"""
         echo -e "Chromosome/scaffold name\tStart (bp)\tEnd (bp)\tRegulatory stable ID\tFeature type\tFeature type description\tSO term accession\tSO term name" \
@@ -10,7 +9,25 @@ rule GRCh37_ensembl_regulatory:
         | grep '^[0-9XYM]' \
         | LC_ALL=C sort -k1,1g -k2,2n -k3,3n \
         >> {output.tsv}
+        """
+
+
+rule GRCh37_ensembl_regulatory_tsv:
+    input:
+        tsv="GRCh37/ensembl_regulatory/latest/download/EnsemblRegulatoryFeature.tsv",
+        header="header/ensembl_regulatory.txt"
+    output:
+        tsv="GRCh37/ensembl_regulatory/latest/EnsemblRegulatoryFeature.tsv",
+        release_info="GRCh37/ensembl_regulatory/latest/EnsemblRegulatoryFeature.release_info",
+    shell:
+        r"""
+        (
+            cat {input.header} | tr '\n' '\t' | sed -e 's/\t*$/\n/g';
+            tail -n +2 {input.tsv} \
+            | awk -F$"\t" 'BEGIN{{OFS=FS}}{{$1="GRCh37\t"$1; $3=$3"\t"; print}}'
+        ) \
+        | python tools/ucsc_binning.py \
+        > {output.tsv}
 
         echo -e "table\tversion\tgenomebuild\tnull_value\nEnsemblRegulatoryFeature\tlatest\tGRCh37\t" > {output.release_info}
         """
-

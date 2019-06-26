@@ -3,6 +3,5 @@ chromosome
 start
 end
 bin
-reference
-alternative
-rsid
+element_id
+validation_result
