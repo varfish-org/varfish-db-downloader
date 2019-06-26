@@ -29,7 +29,7 @@ rule grch37_thousand_genomes_normalize:
     shell:
         r"""
         bcftools norm \
-            --threads 4 \
+            --threads 8 \
             --multiallelics - \
             --fasta-ref {input.reference} \
             -O z \
@@ -87,7 +87,7 @@ rule grch37_thousand_genomes_gt_to_site:
     shell:
         r"""
         var-agg \
-            --io-threads 4 \
+            --io-threads 16 \
             --input-panel {input.panel} \
             --input-ped {input.ped} \
             --input-fasta {input.reference} \
@@ -142,7 +142,8 @@ rule grch37_thousand_genomes_tsv:
             bcftools view {input.vcf} \
                 -e "ALT ~ 'CN'" \
             | bcftools query \
-                -f "GRCh37\t%CHROM\t%POS\t%REF\t%ALT\t%AC\t%AN\t%AF\t%AFR_AF\t%AMR_AF\t%EAS_AF\t%EUR_AF\t%SAS_AF\t[%GT\t]\n" \
+                -f "GRCh37\t%CHROM\t%POS\t%END\t%REF\t%ALT\t%AC\t%AN\t%AF\t%AFR_AF\t%AMR_AF\t%EAS_AF\t%EUR_AF\t%SAS_AF\t[%GT\t]\n" \
+            | sort -u -k 2,6 -S 80% \
             | awk -F $'\t' \
                 'BEGIN {{
                     OFS = FS
@@ -152,13 +153,14 @@ rule grch37_thousand_genomes_tsv:
                     a["0|1"] = 0
                     a["1|0"] = 0
                     a["1|1"] = 0
-                    for (i=14; i<NF; ++i) {{
+                    for (i=15; i<NF; ++i) {{
                         a[$i] += 1
                     }}
-                    print $1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,a["0|1"]+a["1|0"],a["1|1"]
-                }}' \
-            | sort -u -k 2,5 -S 80%
-        ) > {output.tsv}
+                    print $1,$2,$3,$4"\t",$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,a["0|1"]+a["1|0"],a["1|1"]
+                }}'
+        ) \
+        | python tools/ucsc_binning.py \
+        > {output.tsv}
 
         echo -e "table\tversion\tgenomebuild\tnull_value\nThousandGenomes\tphase3\tGRCh37\t." > {output.release_info}
         """

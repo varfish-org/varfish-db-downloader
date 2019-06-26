@@ -2,6 +2,7 @@
 .idea
 logs/
 run.sh
+config.yaml
 .snakemake
 GRCh37
 GRCh38

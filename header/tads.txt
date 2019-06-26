@@ -3,6 +3,3 @@ chromosome
 start
 end
 bin
-reference
-alternative
-rsid

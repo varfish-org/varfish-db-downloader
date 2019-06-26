@@ -33,7 +33,7 @@ rule grch37_dbsnp_b151_normalize:
     shell:
         r"""
         bcftools norm \
-            --threads 4 \
+            --threads 16 \
             --multiallelics - \
             --fasta-ref {input.reference} \
             -O z \
@@ -59,9 +59,11 @@ rule grch37_dbsnp_b151_tsv:
         (
             cat {input.header} | tr '\n' '\t' | sed -e 's/\t*$/\n/g';
             bcftools query {input.vcf} \
-                -f 'GRCh37\t%CHROM\t%POS\t%REF\t%ALT\t%ID\n' \
-            | sort -u -k 2,5 -S 80%
-        ) > {output.tsv}
+                -f 'GRCh37\t%CHROM\t%POS\t%END\t\t%REF\t%ALT\t%ID\n' \
+            | sort -u -k 2,7 -S 80%
+        ) \
+        | python tools/ucsc_binning.py \
+        > {output.tsv}
 
         echo -e "table\tversion\tgenomebuild\tnull_value\nDbsnp\tb151\tGRCh37\t" > {output.release_info}
         """
