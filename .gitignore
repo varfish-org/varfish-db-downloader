@@ -7,3 +7,5 @@ config.yaml
 GRCh37
 GRCh38
 src/
+*.pyc
+*.pyo

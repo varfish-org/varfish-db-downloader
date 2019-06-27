@@ -6,6 +6,9 @@ from collections import OrderedDict
 
 def tsv_reader(fh, header):
     keys = header.rstrip("\n").split("\t")
+    required_keys = {"release", "chromosome", "start", "end", "bin", "reference", "alternative"}
+    if not required_keys <= {*keys}:
+        raise Exception("One of the required columns missing: %s" % ", ".join(required_keys))
     for line in fh:
         if not line.startswith("#"):
             yield OrderedDict(zip(keys, line.rstrip("\n").split("\t")))
