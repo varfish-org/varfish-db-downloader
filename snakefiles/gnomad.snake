@@ -66,7 +66,7 @@ rule grch37_gnomad_exomes_v2_1_to_tsv:
             cat {input.header} | tr '\n' '\t' | sed -e 's/\t*$/\n/g';
             bcftools query {input.vcf} \
                 -f 'GRCh37\t%CHROM\t%POS\t%END\t%REF\t%ALT\t%AC\t%AC_afr\t%AC_amr\t%AC_asj\t%AC_eas\t%AC_fin\t%AC_nfe\t%AC_oth\t%AC_sas\t%AN\t%AN_afr\t%AN_amr\t%AN_asj\t%AN_eas\t%AN_fin\t%AN_nfe\t%AN_oth\t%AN_sas\t%AF\t%AF_afr\t%AF_amr\t%AF_asj\t%AF_eas\t%AF_fin\t%AF_nfe\t%AF_oth\t%AF_sas\t%AC_male\t%AC_afr_male\t%AC_amr_male\t%AC_asj_male\t%AC_eas_male\t%AC_fin_male\t%AC_nfe_male\t%AC_oth_male\t%AC_sas_male\t%nhomalt\t%nhomalt_afr\t%nhomalt_amr\t%nhomalt_asj\t%nhomalt_eas\t%nhomalt_fin\t%nhomalt_nfe\t%nhomalt_oth\t%nhomalt_sas\t%popmax\t%AC_popmax\t%AN_popmax\t%AF_popmax\t.\t%nhomalt_popmax\t%nonpar\n' \
-            | sort -u -k 2,6 -S 80% \
+            | sort -u -k 2,2 -k 3,3 -k 4,4 -k 5,5 -k 6,6 -S 80% \
             | awk -F $'\t' \
                 'BEGIN {{
                     OFS = FS
@@ -109,7 +109,7 @@ rule grch37_gnomad_genomes_v2_1_to_tsv:
             cat {input.header} | tr '\n' '\t' | sed -e 's/\t*$/\n/g';
             bcftools query {input.vcf} \
                 -f 'GRCh37\t%CHROM\t%POS\t%END\t%REF\t%ALT\t%AC\t%AC_afr\t%AC_amr\t%AC_asj\t%AC_eas\t%AC_fin\t%AC_nfe\t%AC_oth\t%AN\t%AN_afr\t%AN_amr\t%AN_asj\t%AN_eas\t%AN_fin\t%AN_nfe\t%AN_oth\t%AF\t%AF_afr\t%AF_amr\t%AF_asj\t%AF_eas\t%AF_fin\t%AF_nfe\t%AF_oth\t%AC_male\t%AC_afr_male\t%AC_amr_male\t%AC_asj_male\t%AC_eas_male\t%AC_fin_male\t%AC_nfe_male\t%AC_oth_male\t%nhomalt\t%nhomalt_afr\t%nhomalt_amr\t%nhomalt_asj\t%nhomalt_eas\t%nhomalt_fin\t%nhomalt_nfe\t%nhomalt_oth\t%popmax\t%AC_popmax\t%AN_popmax\t%AF_popmax\t.\t%nhomalt_popmax\t%nonpar\n' \
-            | sort -u -k 2,6 -S 80% \
+            | sort -u -k 2,2 -k 3,3 -k 4,4 -k 5,5 -k 6,6 -S 80% \
             | awk -F $'\t' \
                 'BEGIN {{
                     OFS = FS

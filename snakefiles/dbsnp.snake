@@ -60,7 +60,7 @@ rule grch37_dbsnp_b151_tsv:
             cat {input.header} | tr '\n' '\t' | sed -e 's/\t*$/\n/g';
             bcftools query {input.vcf} \
                 -f 'GRCh37\t%CHROM\t%POS\t%END\t\t%REF\t%ALT\t%ID\n' \
-            | sort -u -k 2,7 -S 80%
+            | sort -u -t $'\t' -k 2,2 -k 3,3 -k 6,6 -k 7,7 -S 80%
         ) \
         | python tools/ucsc_binning.py \
         > {output.tsv}
