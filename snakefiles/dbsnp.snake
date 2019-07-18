@@ -28,8 +28,8 @@ rule grch37_dbsnp_b151_normalize:
         reference="GRCh37/reference/hs37d5/hs37d5.fa",
         vcf="GRCh37/dbSNP/b151/download/All_20180423.vcf.gz",
     output:
-        vcf="GRCh37/dbSNP/b151/All_20180423.vcf.gz",
-        tbi="GRCh37/dbSNP/b151/All_20180423.vcf.gz.tbi",
+        vcf="GRCh37/dbSNP/b151/download/All_20180423.normalized.vcf.gz",
+        tbi="GRCh37/dbSNP/b151/download/All_20180423.normalized.vcf.gz.tbi",
     shell:
         r"""
         bcftools norm \
@@ -39,21 +39,37 @@ rule grch37_dbsnp_b151_normalize:
             -O z \
             -o {output.vcf} \
             {input.vcf}
-        tabix -f {output.vcf}
 
+        tabix -f {output.vcf}
         pushd $(dirname {output.vcf})
         md5sum $(basename {output.vcf}) >$(basename {output.vcf}).md5
+        """
+
+
+rule grch37_dbsnp_b151_split:
+    input:
+        vcf="GRCh37/dbSNP/b151/download/All_20180423.normalized.vcf.gz",
+        tbi="GRCh37/dbSNP/b151/download/All_20180423.normalized.vcf.gz.tbi",
+    output:
+        gz="GRCh37/dbSNP/b151/download/All_20180423.normalized.{chrom}.vcf.gz",
+        tbi="GRCh37/dbSNP/b151/download/All_20180423.normalized.{chrom}.vcf.gz.tbi"
+    shell:
+        r"""
+        tabix -h {input.vcf} {wildcards.chrom} \
+        | bgzip -c \
+        > {output.gz}
+        tabix {output.gz}
         """
 
 
 rule grch37_dbsnp_b151_tsv:
     input:
         header="header/dbsnp.txt",
-        vcf="GRCh37/dbSNP/b151/All_20180423.vcf.gz",
-        tbi="GRCh37/dbSNP/b151/All_20180423.vcf.gz.tbi",
+        vcf="GRCh37/dbSNP/b151/download/All_20180423.normalized.{chrom}.vcf.gz",
+        tbi="GRCh37/dbSNP/b151/download/All_20180423.normalized.{chrom}.vcf.gz.tbi",
     output:
-        release_info="GRCh37/dbSNP/b151/Dbsnp.release_info",
-        tsv="GRCh37/dbSNP/b151/Dbsnp.tsv",
+        release_info="GRCh37/dbSNP/b151/Dbsnp.{chrom}.release_info",
+        tsv="GRCh37/dbSNP/b151/Dbsnp.{chrom}.tsv",
     shell:
         r"""
         (

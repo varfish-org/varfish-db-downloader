@@ -16,8 +16,8 @@ rule all:
         "GRCh38/clinvar/latest/Clinvar.tsv",
         "GRCh38/clinvar/latest/Clinvar.release_info",
         # dbsnp
-        "GRCh37/dbSNP/b151/Dbsnp.tsv",
-        "GRCh37/dbSNP/b151/Dbsnp.release_info",
+        expand("GRCh37/dbSNP/b151/Dbsnp.{chrom}.tsv", chrom=CHROMS+['Y', 'MT']),
+        expand("GRCh37/dbSNP/b151/Dbsnp.{chrom}.release_info", chrom=CHROMS+['Y', 'MT']),
         # exac
         "GRCh37/ExAC/r1/Exac.tsv",
         "GRCh37/ExAC/r1/Exac.release_info",
