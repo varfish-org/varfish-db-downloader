@@ -1,0 +1,13 @@
+release
+chromosome
+start
+end
+bin
+accession
+sv_type
+sv_sub_type
+study
+platform
+num_samples
+observed_gains
+observed_losses

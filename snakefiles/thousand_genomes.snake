@@ -70,6 +70,22 @@ rule grch37_thousand_genomes_sv_download:
         """
 
 
+rule grch37_thousand_genomes_sv_tsv:
+    input:
+        # ``tbi`` is required for vcf parsing but not passed to the to_tsv function.
+        "GRCh37/thousand_genomes/phase3/download/ALL.wgs.mergedSV.v8.20130502.svs.genotypes.vcf.gz.tbi",
+        # ``panel`` is required but not passed to the to_tsv function.
+        # It is hard-coded in the function and passed to the Converter constructor.
+        "GRCh37/thousand_genomes/phase3/download/integrated_call_samples_v3.20130502.ALL.panel",
+        header="header/thousand_genomes_sv.txt",
+        vcf="GRCh37/thousand_genomes/phase3/download/ALL.wgs.mergedSV.v8.20130502.svs.genotypes.vcf.gz",
+    output:
+        tsv="GRCh37/thousand_genomes/phase3/ThousandGenomesSv.tsv",
+        release_info="GRCh37/thousand_genomes/phase3/ThousandGenomesSv.release_info"
+    run:
+        to_tsv(input.vcf, output.tsv, output.release_info, input.header)
+
+
 ruleorder: grch37_thousand_genomes_normalize > grch37_thousand_genomes_download
 
 

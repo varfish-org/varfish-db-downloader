@@ -136,7 +136,7 @@ rule grch37_gnomad_genomes_v2_1_to_tsv:
         echo -e "table\tversion\tgenomebuild\tnull_value\nGnomadGenomes\tr2.1\tGRCh37\t." > {output.release_info}
         """
 
-rule grch37_gnomad_genomes_sv:
+rule grch37_gnomad_genomes_sv_download:
     output:
         vcf="GRCh37/gnomAD_SV/v2/download/gnomad_v2_sv.sites.vcf.gz",
         tbi="GRCh37/gnomAD_SV/v2/download/gnomad_v2_sv.sites.vcf.gz.tbi",
@@ -149,6 +149,18 @@ rule grch37_gnomad_genomes_sv:
         md5sum gnomad_v2_sv.sites.vcf.gz >gnomad_v2_sv.sites.vcf.gz.md5
         md5sum gnomad_v2_sv.sites.vcf.gz.tbi >gnomad_v2_sv.sites.vcf.gz.tbi.md5
         """
+
+
+rule grch37_gnomad_genomes_sv_tsv:
+    input:
+        "GRCh37/gnomAD_SV/v2/download/gnomad_v2_sv.sites.vcf.gz.tbi",
+        header="header/gnomadsv.txt",
+        vcf="GRCh37/gnomAD_SV/v2/download/gnomad_v2_sv.sites.vcf.gz",
+    output:
+        tsv="GRCh37/gnomAD_SV/v2/GnomAdSv.tsv",
+        release_info="GRCh37/gnomAD_SV/v2/GnomAdSv.release_info",
+    run:
+        to_tsv(input.vcf, output.tsv, output.release_info, input.header)
 
 
 rule grch37_gnomad_constraints_v2_1_1_download:
