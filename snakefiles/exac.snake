@@ -40,6 +40,17 @@ rule grch37_exac_v1_0_0_cnv_download:
         """
 
 
+rule grch37_exac_v1_0_0_cnv_tsv:
+    input:
+        header="header/exaccnv.txt",
+        bed="GRCh37/ExAC/r1/download/exac-final.autosome-1pct-sq60-qc-prot-coding.cnv.bed",
+    output:
+        tsv="GRCh37/ExAC/r1/ExacCnv.tsv",
+        release_info="GRCh37/ExAC/r1/ExacCnv.release_info",
+    run:
+        to_tsv(input.bed, output.tsv, output.release_info, input.header)
+
+
 rule grch37_exac_v1_0_0_normalize:
     input:
         reference="GRCh37/reference/hs37d5/hs37d5.fa",
