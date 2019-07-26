@@ -510,7 +510,7 @@ class GnomadSvConverter:
                     str(record.INFO.get("END")),
                     str(binning.assign_bin(record.INFO.get("END") - 1, record.POS)),
                     record.REF,
-                    list_to_str(record.ALT),
+                    list_to_str([alt.serialize() for alt in record.ALT]),
                     list_to_str(record.ID),
                     record.INFO.get("SVTYPE"),
                     str(record.INFO.get("SVLEN")),
