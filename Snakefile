@@ -93,6 +93,9 @@ rule all:
         # Refseq to Ensembl mapping
         "GRCh37/refseqtoensembl/latest/RefseqToEnsembl.tsv",
         "GRCh37/refseqtoensembl/latest/RefseqToEnsembl.release_info",
+        # MGI mouse gene information
+        "GRCh37/mgi/latest/MgiHomMouseHumanSequence.tsv",
+        "GRCh37/mgi/latest/MgiHomMouseHumanSequence.release_info",
         # SVs -- dbVar
         "GRCh37/dbVar/latest/DbVarSv.tsv",
         "GRCh37/dbVar/latest/DbVarSv.release_info",
@@ -116,25 +119,26 @@ rule all:
         "GRCh37/gnomAD_SV/v2/GnomAdSv.release_info",
 
 
+include: "snakefiles/acmg.snake"
 include: "snakefiles/clinvar.snake"
 include: "snakefiles/dbsnp.snake"
 include: "snakefiles/dbvar.snake"
 include: "snakefiles/dgv.snake"
+include: "snakefiles/ensembl_regulatory.snake"
+include: "snakefiles/ensembltorefseq.snake"
 include: "snakefiles/exac.snake"
+include: "snakefiles/genes.snake"
 include: "snakefiles/gnomad.snake"
 include: "snakefiles/hgnc.snake"
 include: "snakefiles/hgmd.snake"
 include: "snakefiles/hpo.snake"
 include: "snakefiles/kegg.snake"
 include: "snakefiles/knowngeneaa.snake"
-include: "snakefiles/ncbi_gene.snake"
+include: "snakefiles/mgi.snake"
 include: "snakefiles/mim2gene.snake"
+include: "snakefiles/ncbi_gene.snake"
 include: "snakefiles/reference.snake"
-include: "snakefiles/thousand_genomes.snake"
-include: "snakefiles/acmg.snake"
-include: "snakefiles/vista.snake"
-include: "snakefiles/ensembl_regulatory.snake"
-include: "snakefiles/tads.snake"
-include: "snakefiles/genes.snake"
-include: "snakefiles/ensembltorefseq.snake"
 include: "snakefiles/refseqtoensembl.snake"
+include: "snakefiles/tads.snake"
+include: "snakefiles/thousand_genomes.snake"
+include: "snakefiles/vista.snake"
