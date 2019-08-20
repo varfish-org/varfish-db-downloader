@@ -10,9 +10,9 @@ DATE = date.today().strftime("%Y%m%d")
 VARFISH_SERVER_BACKGROUND_PATH = "varfish-server-background-db-{}".format(DATE)
 VARFISH_ANNOTATOR_PATH = "varfish-annotator-db-{}".format(DATE)
 VARFISH_ANNOTATOR_FILES = [
-    "GRCh37/clinvar/latest/clinvar_tsv_main/output/clinvar_allele_trait_pairs.single.b37.tsv.gz",
-    "GRCh37/clinvar/latest/clinvar_tsv_main/output/clinvar_allele_trait_pairs.multi.b37.tsv.gz",
-    "GRCh37/ExAC/r1/download/ExAC.r1.sites.vep.vcf.gz",
+    expand("GRCh37/clinvar/latest/clinvar_tsv_main/output/clinvar_allele_trait_pairs.single.b37.tsv.gz{index}", index=["", ".tbi"]),
+    expand("GRCh37/clinvar/latest/clinvar_tsv_main/output/clinvar_allele_trait_pairs.multi.b37.tsv.gz{index}", index=["", ".tbi"]),
+    expand("GRCh37/ExAC/r1/download/ExAC.r1.sites.vep.vcf.gz{index}", index=["", ".tbi"]),
     expand("GRCh37/gnomAD_exomes/r2.1/download/gnomad.exomes.r2.1.sites.chr{chrom}.normalized.vcf.bgz{index}", chrom=CHROMS, index=["", ".tbi"]),
     expand("GRCh37/gnomAD_genomes/r2.1/download/gnomad.genomes.r2.1.sites.chr{chrom}.normalized.vcf.bgz{index}", chrom=CHROMS, index=["", ".tbi"]),
     expand("GRCh37/thousand_genomes/phase3/ALL.phase3_shapeit2_mvncall_integrated_v5a.20130502.sites.vcf.gz{index}", index=["", ".tbi"]),
