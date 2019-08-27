@@ -53,6 +53,10 @@ DOWNLOAD=varfish-db-downloader-finalizing-sv-dbs/varfish-annotator-db-$ANNOTATOR
 tar chzvf \
     varfish-annotator-db-$ANNOTATOR_DATA_RELEASE.tar.gz \
     varfish-annotator-db-$ANNOTATOR_DATA_RELEASE/
+sha256sum \
+    varfish-annotator-db-$ANNOTATOR_DATA_RELEASE.tar.gz \
+    > varfish-annotator-db-$ANNOTATOR_DATA_RELEASE.tar.gz.sha256
+
 
 # Prepare & pack Jannovar DB
 jannovar download \
@@ -64,6 +68,9 @@ jannovar download \
 tar czvf \
     varfish-annotator-transcripts-$ANNOTATOR_DATA_RELEASE.tar.gz \
     varfish-annotator-transcripts-$ANNOTATOR_DATA_RELEASE/*.ser
+sha256sum \
+    varfish-annotator-transcripts-$ANNOTATOR_DATA_RELEASE.tar.gz \
+    > varfish-annotator-transcripts-$ANNOTATOR_DATA_RELEASE.tar.gz.sha256
 
 # Prepare Varfish Annotator DB
 varfish-annotator init-db \
@@ -96,4 +103,10 @@ varfish-annotator init-db \
     \
     --db-release-info "hgmd_public:ensembl_r75" \
     --hgmd-public $DOWNLOAD/GRCh37/hgmd_public/ensembl_r75/HgmdPublicLocus.tsv
+gzip -c \
+    varfish-annotator-db-${ANNOTATOR_DATA_RELEASE}.db.h2 \
+    > varfish-annotator-db-${ANNOTATOR_DATA_RELEASE}.db.h2.gz
+sha256sum \
+    varfish-annotator-db-${ANNOTATOR_DATA_RELEASE}.h2.db.gz \
+    > varfish-annotator-db-${ANNOTATOR_DATA_RELEASE}.h2.db.gz.sha256
 ```
