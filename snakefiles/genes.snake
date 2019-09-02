@@ -39,7 +39,7 @@ rule GRCh37_refseq_genes_tsv:
         (
             cat {input.header} | tr '\n' '\t' | sed -e 's/\t*$/\n/g';
             tail -n +2 {input.tsv} \
-            | awk -F$"\t" 'BEGIN{{OFS=FS}}{{$1="GRCh37\t"$1; $3=$3"\t"; print}}'
+            | awk -F$"\t" 'BEGIN{{OFS=FS}}{{$1="GRCh37\t"$1; $3=$3"\t\trefseq"; print}}'
         ) \
         | python tools/ucsc_binning.py \
         > {output.tsv}
@@ -79,7 +79,7 @@ rule GRCh37_ensembl_genes_tsv:
         (
             cat {input.header} | tr '\n' '\t' | sed -e 's/\t*$/\n/g';
             tail -n +2 {input.tsv} \
-            | awk -F$"\t" 'BEGIN{{OFS=FS}}{{$1="GRCh37\t"$1; $3=$3"\t"; print}}'
+            | awk -F$"\t" 'BEGIN{{OFS=FS}}{{$1="GRCh37\t"$1; $3=$3"\t\tensembl"; print}}'
         ) \
         | python tools/ucsc_binning.py \
         > {output.tsv}

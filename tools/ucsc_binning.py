@@ -6,7 +6,7 @@ from collections import OrderedDict
 
 def tsv_reader(fh, header):
     keys = header.rstrip("\n").split("\t")
-    required_keys = {"release", "chromosome", "start", "end", "bin", "reference", "alternative"}
+    required_keys = {"release", "chromosome", "start", "end", "bin"}
     if not required_keys <= {*keys}:
         raise Exception("One of the required columns missing: %s" % ", ".join(required_keys))
     for line in fh:
@@ -19,7 +19,10 @@ def run(args):
     args.output.write(header)
     for record in tsv_reader(args.input, header):
         if record["end"] == "":
-            record["end"] = str(int(record["start"]) + len(record["reference"]) - 1)
+            try:
+                record["end"] = str(int(record["start"]) + len(record["reference"]) - 1)
+            except KeyError:
+                raise KeyError("Please make sure `end` column is filled when not providing `alternative` column.")
         record["bin"] = str(binning.assign_bin(int(record["start"]) - 1, int(record["end"])))
         args.output.write("%s\n" % "\t".join(v for v in record.values()))
 
