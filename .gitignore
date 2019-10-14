@@ -9,3 +9,6 @@ GRCh38
 src/
 *.pyc
 *.pyo
+*.bak
+varfish-server-background-db-*
+varfish-annotator-db-*

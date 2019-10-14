@@ -105,6 +105,11 @@ VARFISH_FILES = [
     # MGI mouse gene information
     "GRCh37/mgi/latest/MgiHomMouseHumanSequence.tsv",
     "GRCh37/mgi/latest/MgiHomMouseHumanSequence.release_info",
+    # Gene symbol mapping
+    "GRCh37/refseqtogenesymbol/latest/RefseqToGeneSymbol.tsv",
+    "GRCh37/refseqtogenesymbol/latest/RefseqToGeneSymbol.release_info",
+    "GRCh37/ensembltogenesymbol/latest/EnsemblToGeneSymbol.tsv",
+    "GRCh37/ensembltogenesymbol/latest/EnsemblToGeneSymbol.release_info",
     # SVs -- dbVar
     "GRCh37/dbVar/latest/DbVarSv.tsv",
     "GRCh37/dbVar/latest/DbVarSv.release_info",
@@ -191,6 +196,7 @@ include: "snakefiles/dbsnp.snake"
 include: "snakefiles/dbvar.snake"
 include: "snakefiles/dgv.snake"
 include: "snakefiles/ensembl_regulatory.snake"
+include: "snakefiles/ensembltogenesymbol.snake"
 include: "snakefiles/ensembltorefseq.snake"
 include: "snakefiles/exac.snake"
 include: "snakefiles/genes.snake"
@@ -205,6 +211,7 @@ include: "snakefiles/mim2gene.snake"
 include: "snakefiles/ncbi_gene.snake"
 include: "snakefiles/reference.snake"
 include: "snakefiles/refseqtoensembl.snake"
+include: "snakefiles/refseqtogenesymbol.snake"
 include: "snakefiles/tads.snake"
 include: "snakefiles/thousand_genomes.snake"
 include: "snakefiles/vista.snake"
