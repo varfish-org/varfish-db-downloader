@@ -11,6 +11,10 @@ rule grch37_clinvar_latest_run_clinvar_tsv:
         b38_multi="GRCh37/clinvar/latest/clinvar_tsv_main/output/clinvar_allele_trait_pairs.multi.b38.tsv.gz",
         b37_single="GRCh37/clinvar/latest/clinvar_tsv_main/output/clinvar_allele_trait_pairs.single.b37.tsv.gz",
         b37_multi="GRCh37/clinvar/latest/clinvar_tsv_main/output/clinvar_allele_trait_pairs.multi.b37.tsv.gz",
+        b38_single_tbi="GRCh37/clinvar/latest/clinvar_tsv_main/output/clinvar_allele_trait_pairs.single.b38.tsv.gz.tbi",
+        b38_multi_tbi="GRCh37/clinvar/latest/clinvar_tsv_main/output/clinvar_allele_trait_pairs.multi.b38.tsv.gz.tbi",
+        b37_single_tbi="GRCh37/clinvar/latest/clinvar_tsv_main/output/clinvar_allele_trait_pairs.single.b37.tsv.gz.tbi",
+        b37_multi_tbi="GRCh37/clinvar/latest/clinvar_tsv_main/output/clinvar_allele_trait_pairs.multi.b37.tsv.gz.tbi",
         done=touch("GRCh37/clinvar/latest/clinvar_tsv_main/.done"),
     log: "GRCh37/clinvar/latest/clinvar_tsv_main/clinvar_tsv.log"
     shell:
