@@ -12,7 +12,7 @@ import xml.etree.ElementTree as ET
 #: Header for the gene summary file.
 HEADER_SUMMARY = ("entrez_id", "summary")
 #: Header for the gene RIF file
-HEADER_GENERIF = ("entrez_id", "rif_text")
+HEADER_GENERIF = ("entrez_id", "rif_text", "pubmed_ids")
 
 
 def extract_summary_process_entrezgene(elem_entrezgene, writer):
@@ -49,8 +49,9 @@ def extract_generif_process_entrezgene(elem_entrezgene, writer):
             if elem_heading is not None and elem_heading.text == "Interactions":
                 continue  # skip, too noisy for our purposes
             elem_text = elem_commentary.find("./Gene-commentary_text")
+            elem_refs = "{%s}" % ",".join([ref.text for ref in elem_commentary.findall("./Gene-commentary_refs/Pub/Pub_pmid/PubMedId")])
             if elem_text is not None:
-                writer.writerow([gene_id, elem_text.text])
+                writer.writerow([gene_id, elem_text.text, elem_refs])
 
 
 extract_summary_process_entrezgene.header = HEADER_SUMMARY
