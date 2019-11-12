@@ -162,7 +162,7 @@ rule data_freeze_server_background_db:
         VARFISH_FILES,
         "import_versions.tsv"
     output:
-        [expand("{linkout}/{file}", linkout=VARFISH_SERVER_BACKGROUND_PATH, file=file) for file in VARFISH_FILES + ["import_versions.tsv"]],
+        expand("{linkout}/{file}", linkout=VARFISH_SERVER_BACKGROUND_PATH, file=file) for file in VARFISH_FILES + ["import_versions.tsv"],
     params:
         linkout=VARFISH_SERVER_BACKGROUND_PATH
     shell:
@@ -178,7 +178,7 @@ rule data_freeze_varfish_annotator_db:
     input:
         VARFISH_ANNOTATOR_FILES,
     output:
-        [expand("{linkout}/{file}", linkout=VARFISH_ANNOTATOR_PATH, file=file) for file in VARFISH_ANNOTATOR_FILES],
+        expand("{linkout}/{file}", linkout=VARFISH_ANNOTATOR_PATH, file=file) for file in VARFISH_ANNOTATOR_FILES,
     params:
         linkout=VARFISH_ANNOTATOR_PATH
     shell:
