@@ -1,21 +1,32 @@
+import os
+
 from snakemake import shell
 from tools.sv_db_to_tsv import to_tsv
 from datetime import date
+
 
 shell.prefix("set -x; set -euo pipefail; ")
 
 
 CHROMS = (list(range(1, 23)) + ['X'])
-DATE = date.today().strftime("%Y%m%d")
+DATE = os.getenv("DATA_RELEASE", date.today().strftime("%Y%m%d"))
+
 VARFISH_SERVER_BACKGROUND_PATH = "varfish-server-background-db-{}".format(DATE)
-VARFISH_ANNOTATOR_PATH = "varfish-annotator-db-{}".format(DATE)
-VARFISH_ANNOTATOR_FILES = [
-    expand("GRCh37/clinvar/latest/clinvar_tsv_main/output/clinvar_allele_trait_pairs.single.b37.tsv.gz{index}", index=["", ".tbi"]),
-    expand("GRCh37/clinvar/latest/clinvar_tsv_main/output/clinvar_allele_trait_pairs.multi.b37.tsv.gz{index}", index=["", ".tbi"]),
-    expand("GRCh37/ExAC/r1/download/ExAC.r1.sites.vep.vcf.gz{index}", index=["", ".tbi"]),
-    expand("GRCh37/gnomAD_exomes/r2.1/download/gnomad.exomes.r2.1.sites.chr{chrom}.normalized.vcf.bgz{index}", chrom=CHROMS, index=["", ".tbi"]),
-    expand("GRCh37/gnomAD_genomes/r2.1/download/gnomad.genomes.r2.1.sites.chr{chrom}.normalized.vcf.bgz{index}", chrom=CHROMS, index=["", ".tbi"]),
-    expand("GRCh37/thousand_genomes/phase3/ALL.phase3_shapeit2_mvncall_integrated_v5a.20130502.sites.vcf.gz{index}", index=["", ".tbi"]),
+VARFISH_ANNOTATOR_DB_PATH = "varfish-annotator-db-{}".format(DATE)
+VARFISH_ANNOTATOR_PATH = "varfish-annotator-{}".format(DATE)
+JANNOVAR_DB_PATH = "jannovar-db-{}".format(DATE)
+
+VARFISH_ANNOTATOR_DB_FILE = expand("varfish-annotator-db-{date}.h2.db", date=DATE)
+JANNOVAR_FILES = expand("{jannovar_db_path}/hg19_{database}.ser", jannovar_db_path=JANNOVAR_DB_PATH, database=["ensembl", "refseq_curated"])
+VARFISH_ANNOTATOR_FILES = VARFISH_ANNOTATOR_DB_FILE + JANNOVAR_FILES + ["GRCh37/reference/hs37d5/hs37d5.fa", "GRCh37/reference/hs37d5/hs37d5.fa.fai"]
+VARFISH_ANNOTATOR_FILES_OUT = [os.path.basename(file) for file in VARFISH_ANNOTATOR_FILES]
+VARFISH_ANNOTATOR_H2_FILES = [
+    *expand("GRCh37/clinvar/latest/clinvar_tsv_main/output/clinvar_allele_trait_pairs.single.b37.tsv.gz{index}", index=["", ".tbi"]),
+    *expand("GRCh37/clinvar/latest/clinvar_tsv_main/output/clinvar_allele_trait_pairs.multi.b37.tsv.gz{index}", index=["", ".tbi"]),
+    *expand("GRCh37/ExAC/r1/download/ExAC.r1.sites.vep.vcf.gz{index}", index=["", ".tbi"]),
+    *expand("GRCh37/gnomAD_exomes/r2.1/download/gnomad.exomes.r2.1.sites.chr{chrom}.normalized.vcf.bgz{index}", chrom=CHROMS, index=["", ".tbi"]),
+    *expand("GRCh37/gnomAD_genomes/r2.1/download/gnomad.genomes.r2.1.sites.chr{chrom}.normalized.vcf.bgz{index}", chrom=CHROMS, index=["", ".tbi"]),
+    *expand("GRCh37/thousand_genomes/phase3/ALL.phase3_shapeit2_mvncall_integrated_v5a.20130502.sites.vcf.gz{index}", index=["", ".tbi"]),
     "GRCh37/hgmd_public/ensembl_r75/HgmdPublicLocus.tsv",
     "GRCh37/reference/hs37d5/hs37d5.fa",
     "GRCh37/reference/hs37d5/hs37d5.fa.fai",
@@ -27,16 +38,16 @@ VARFISH_FILES = [
     "GRCh38/clinvar/latest/Clinvar.tsv",
     "GRCh38/clinvar/latest/Clinvar.release_info",
     # dbsnp
-    expand("GRCh37/dbSNP/b151/Dbsnp.{chrom}.tsv", chrom=CHROMS+['Y', 'MT']),
-    expand("GRCh37/dbSNP/b151/Dbsnp.{chrom}.release_info", chrom=CHROMS+['Y', 'MT']),
+    *expand("GRCh37/dbSNP/b151/Dbsnp.{chrom}.tsv", chrom=CHROMS+['Y', 'MT']),
+    *expand("GRCh37/dbSNP/b151/Dbsnp.{chrom}.release_info", chrom=CHROMS+['Y', 'MT']),
     # exac
     "GRCh37/ExAC/r1/Exac.tsv",
     "GRCh37/ExAC/r1/Exac.release_info",
     # gnomad
-    expand("GRCh37/gnomAD_exomes/r2.1/GnomadExomes.{chrom}.tsv", chrom=CHROMS),
-    expand("GRCh37/gnomAD_exomes/r2.1/GnomadExomes.{chrom}.release_info", chrom=CHROMS),
-    expand("GRCh37/gnomAD_genomes/r2.1/GnomadGenomes.{chrom}.tsv", chrom=CHROMS),
-    expand("GRCh37/gnomAD_genomes/r2.1/GnomadGenomes.{chrom}.release_info", chrom=CHROMS),
+    *expand("GRCh37/gnomAD_exomes/r2.1/GnomadExomes.{chrom}.tsv", chrom=CHROMS),
+    *expand("GRCh37/gnomAD_exomes/r2.1/GnomadExomes.{chrom}.release_info", chrom=CHROMS),
+    *expand("GRCh37/gnomAD_genomes/r2.1/GnomadGenomes.{chrom}.tsv", chrom=CHROMS),
+    *expand("GRCh37/gnomAD_genomes/r2.1/GnomadGenomes.{chrom}.release_info", chrom=CHROMS),
     # hgmd
     "GRCh37/hgmd_public/ensembl_r75/HgmdPublicLocus.tsv",
     "GRCh37/hgmd_public/ensembl_r75/HgmdPublicLocus.release_info",
@@ -132,12 +143,14 @@ VARFISH_FILES = [
     "GRCh37/gnomAD_SV/v2/GnomAdSv.tsv",
     "GRCh37/gnomAD_SV/v2/GnomAdSv.release_info",
 ]
+VARFISH_FILES_WITH_IMPORT = VARFISH_FILES + ["import_versions.tsv"]
 
 
 rule all:
     input:
-        [expand("{linkout}/{file}", linkout=VARFISH_SERVER_BACKGROUND_PATH, file=file) for file in VARFISH_FILES + ["import_versions.tsv"]],
-        [expand("{linkout}/{file}", linkout=VARFISH_ANNOTATOR_PATH, file=file) for file in VARFISH_ANNOTATOR_FILES],
+        expand("{linkout}/{file}", linkout=VARFISH_SERVER_BACKGROUND_PATH, file=VARFISH_FILES_WITH_IMPORT),
+        expand("{linkout}/{file}", linkout=VARFISH_ANNOTATOR_DB_PATH, file=VARFISH_ANNOTATOR_H2_FILES),
+        expand("{linkout}/{file}", linkout=VARFISH_ANNOTATOR_PATH, file=VARFISH_ANNOTATOR_FILES_OUT)
 
 
 rule generate_import_versions:
@@ -159,10 +172,9 @@ rule generate_import_versions:
 
 rule data_freeze_server_background_db:
     input:
-        VARFISH_FILES,
-        "import_versions.tsv"
+        VARFISH_FILES_WITH_IMPORT
     output:
-        expand("{linkout}/{file}", linkout=VARFISH_SERVER_BACKGROUND_PATH, file=file) for file in VARFISH_FILES + ["import_versions.tsv"],
+        expand("{linkout}/{file}", linkout=VARFISH_SERVER_BACKGROUND_PATH, file=VARFISH_FILES_WITH_IMPORT)
     params:
         linkout=VARFISH_SERVER_BACKGROUND_PATH
     shell:
@@ -174,18 +186,88 @@ rule data_freeze_server_background_db:
         """
 
 
-rule data_freeze_varfish_annotator_db:
+rule data_freeze_varfish_annotator_h2_db:
+    input:
+        VARFISH_ANNOTATOR_H2_FILES,
+    output:
+        expand("{linkout}/{file}", linkout=VARFISH_ANNOTATOR_DB_PATH, file=VARFISH_ANNOTATOR_H2_FILES)
+    params:
+        linkout=VARFISH_ANNOTATOR_DB_PATH
+    shell:
+        r"""
+        for file in {input}
+        do
+            ln -sfr $file {params.linkout}/$file
+        done
+        """
+
+
+rule data_freeze_build_varfish_annotator_h2_db:
+    input:
+        expand("{linkout}/{file}", linkout=VARFISH_ANNOTATOR_DB_PATH, file=VARFISH_ANNOTATOR_H2_FILES)
+    output:
+        expand("varfish-annotator-db-{date}.h2.db", date=DATE)
+    params:
+        data_release=DATE
+    shell:
+        r"""
+        ANNOTATOR_VERSION=$(conda list varfish-annotator-cli | tail -1 | awk '{{print $2}}')
+        varfish-annotator init-db \
+            --db-release-info "varfish-annotator:v$ANNOTATOR_VERSION" \
+            --db-release-info "varfish-annotator-db:r{params.data_release}" \
+            \
+            --ref-path varfish-annotator-db-{params.data_release}/GRCh37/reference/hs37d5/hs37d5.fa \
+            \
+            --db-release-info "clinvar:2019-06-22" \
+            --clinvar-path varfish-annotator-db-{params.data_release}/GRCh37/clinvar/latest/clinvar_tsv_main/output/clinvar_allele_trait_pairs.single.b37.tsv.gz \
+            --clinvar-path varfish-annotator-db-{params.data_release}/GRCh37/clinvar/latest/clinvar_tsv_main/output/clinvar_allele_trait_pairs.multi.b37.tsv.gz \
+            \
+            --db-path ./varfish-annotator-db-{params.data_release} \
+            \
+            --db-release-info "exac:r1.0" \
+            --exac-path varfish-annotator-db-{params.data_release}/GRCh37/ExAC/r1/download/ExAC.r1.sites.vep.vcf.gz \
+            \
+            --db-release-info "gnomad_exomes:r2.1" \
+            $(shell for path in varfish-annotator-db-{params.data_release}/GRCh37/gnomAD_exomes/r2.1/download/gnomad.exomes.r2.1.sites.chr*.normalized.vcf.bgz; do echo --gnomad-exomes-path $$path; done) \
+            \
+            --db-release-info "gnomad_genomes:r2.1" \
+            $(shell for path in varfish-annotator-db-{params.data_release}/GRCh37/gnomAD_genomes/r2.1/download/gnomad.genomes.r2.1.sites.chr*.normalized.vcf.bgz; do echo --gnomad-genomes-path $$path; done) \
+            \
+            --db-release-info "thousand_genomes:v3.20101123" \
+            --thousand-genomes-path varfish-annotator-db-{params.data_release}/GRCh37/thousand_genomes/phase3/ALL.phase3_shapeit2_mvncall_integrated_v5a.20130502.sites.vcf.gz \
+            \
+            --db-release-info "hgmd_public:ensembl_r75" \
+            --hgmd-public varfish-annotator-db-{params.data_release}/GRCh37/hgmd_public/ensembl_r75/HgmdPublicLocus.tsv
+        """
+
+
+rule download_jannovar_dbs:
+    output:
+        JANNOVAR_FILES,
+    shell:
+        r"""
+        output=$(dirname {output[0]})
+        jannovar download \
+            -d hg19/refseq_curated \
+            --download-dir $output
+        jannovar download \
+            -d hg19/ensembl \
+            --download-dir $output
+        """
+
+
+rule data_freeze_varfish_annotator:
     input:
         VARFISH_ANNOTATOR_FILES,
     output:
-        expand("{linkout}/{file}", linkout=VARFISH_ANNOTATOR_PATH, file=file) for file in VARFISH_ANNOTATOR_FILES,
+        expand("{linkout}/{file}", linkout=VARFISH_ANNOTATOR_PATH, file=VARFISH_ANNOTATOR_FILES_OUT)
     params:
         linkout=VARFISH_ANNOTATOR_PATH
     shell:
         r"""
         for file in {input}
         do
-            ln -sfr $file {params.linkout}/$file
+            ln -sfr $file {params.linkout}/$(basename $file)
         done
         """
 

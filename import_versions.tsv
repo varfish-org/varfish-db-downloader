@@ -5,7 +5,6 @@ GRCh37	dbSNP	b151
 GRCh37	dbVar	latest
 GRCh37	DGV	2016
 GRCh37	ensembl_genes	r96
-GRCh37	ensemblgenesymbol	latest
 GRCh37	ensembl_regulatory	latest
 GRCh37	ensembltogenesymbol	latest
 GRCh37	ensembltorefseq	latest
