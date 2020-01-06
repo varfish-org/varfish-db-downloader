@@ -228,10 +228,14 @@ rule data_freeze_build_varfish_annotator_h2_db:
             --exac-path varfish-annotator-db-{params.data_release}/GRCh37/ExAC/r1/download/ExAC.r1.sites.vep.vcf.gz \
             \
             --db-release-info "gnomad_exomes:r2.1" \
-            $(shell for path in varfish-annotator-db-{params.data_release}/GRCh37/gnomAD_exomes/r2.1/download/gnomad.exomes.r2.1.sites.chr*.normalized.vcf.bgz; do echo --gnomad-exomes-path $$path; done) \
+            $(for path in varfish-annotator-db-{params.data_release}/GRCh37/gnomAD_exomes/r2.1/download/gnomad.exomes.r2.1.sites.chr*.normalized.vcf.bgz; do \
+                echo --gnomad-exomes-path $path; \
+            done) \
             \
             --db-release-info "gnomad_genomes:r2.1" \
-            $(shell for path in varfish-annotator-db-{params.data_release}/GRCh37/gnomAD_genomes/r2.1/download/gnomad.genomes.r2.1.sites.chr*.normalized.vcf.bgz; do echo --gnomad-genomes-path $$path; done) \
+            $(for path in varfish-annotator-db-{params.data_release}/GRCh37/gnomAD_genomes/r2.1/download/gnomad.genomes.r2.1.sites.chr*.normalized.vcf.bgz; do \
+                echo --gnomad-genomes-path $path; \
+            done) \
             \
             --db-release-info "thousand_genomes:v3.20101123" \
             --thousand-genomes-path varfish-annotator-db-{params.data_release}/GRCh37/thousand_genomes/phase3/ALL.phase3_shapeit2_mvncall_integrated_v5a.20130502.sites.vcf.gz \

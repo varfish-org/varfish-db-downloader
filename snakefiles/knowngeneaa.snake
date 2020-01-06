@@ -44,8 +44,14 @@ rule grch37_knowngeneaa_to_tsv:
         (
             cat {input.header} | tr '\n' '\t' | sed -e 's/\t*$/\n/g';
             bcftools query \
-                -f "GRCh37\t%CHROM\t%POS\t%END\t\t%UCSC_GENE\t%ALIGNMENT\n" \
-                {input.vcf}
+                -f "GRCh37\t%CHROM\t%POS\t%END\t\t%UCSC_GENE\t\t%ALIGNMENT\n" \
+                {input.vcf} \
+            | awk -F $'\t' '
+                BEGIN {{ OFS = FS }}
+                {{
+                    $7 = substr($6, 1, length($6) - 2)
+                    print
+                }}'
         ) \
         | python tools/ucsc_binning.py \
         > {output.tsv}

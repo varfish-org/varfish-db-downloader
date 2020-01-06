@@ -34,7 +34,15 @@ rule grch37_hgnc_to_tsv:
         r"""
         (
             cat {input.header} | tr '\n' '\t' | sed -e 's/\t*$/\n/g';
-            tail -n +2 {input.txt}
+            tail -n +2 {input.txt} \
+            | awk -F $'\t' '
+                BEGIN {{
+                    OFS = FS
+                }}
+                {{
+                    $NF = $NF "\t" substr($22, 1, length($22) - 2)
+                    print
+                }}'
         ) \
         > {output.tsv}
 

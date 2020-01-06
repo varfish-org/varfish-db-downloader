@@ -47,3 +47,4 @@ lncrnadb
 enzyme_id
 intermediate_filament_db
 rna_central_ids
+ucsc_id_novers
