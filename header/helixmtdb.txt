@@ -1,0 +1,15 @@
+release
+chromosome
+start
+end
+bin
+reference
+alternative
+ac
+an
+af
+ac_het
+ac_het_mean
+ac_het_stdev
+ac_het_min
+ac_het_max

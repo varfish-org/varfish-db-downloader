@@ -142,6 +142,15 @@ VARFISH_FILES = [
     # SVs -- gnomAD sv
     "GRCh37/gnomAD_SV/v2/GnomAdSv.tsv",
     "GRCh37/gnomAD_SV/v2/GnomAdSv.release_info",
+    # MT -- mtDB
+    "GRCh37/mtDB/latest/MtDb.tsv",
+    "GRCh37/mtDB/latest/MtDb.release_info",
+    # MT -- HelixMTdb
+    "GRCh37/HelixMTdb/20190926/HelixMtDb.tsv",
+    "GRCh37/HelixMTdb/20190926/HelixMtDb.release_info",
+    # MT -- MITOMAP
+    "GRCh37/MITOMAP/latest/Mitomap.tsv",
+    "GRCh37/MITOMAP/latest/Mitomap.release_info",
 ]
 VARFISH_FILES_WITH_IMPORT = VARFISH_FILES + ["import_versions.tsv"]
 
@@ -289,11 +298,14 @@ include: "snakefiles/genes.snake"
 include: "snakefiles/gnomad.snake"
 include: "snakefiles/hgnc.snake"
 include: "snakefiles/hgmd.snake"
+include: "snakefiles/helixmtdb.snake"
 include: "snakefiles/hpo.snake"
 include: "snakefiles/kegg.snake"
 include: "snakefiles/knowngeneaa.snake"
 include: "snakefiles/mgi.snake"
 include: "snakefiles/mim2gene.snake"
+include: "snakefiles/mitomap.snake"
+include: "snakefiles/mtdb.snake"
 include: "snakefiles/ncbi_gene.snake"
 include: "snakefiles/reference.snake"
 include: "snakefiles/refseqtoensembl.snake"
