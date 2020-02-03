@@ -30,7 +30,7 @@ rule GRCh37_mitomap_normalize:
             -f "%CHROM\t%POS\t%END\t%REF\t%ALT\t%AC\t$AN\n" \
             -o >(uniq | awk -F$'\t' 'BEGIN{{OFS=FS}}{{$2-=1; print $0,$6/$7}}' | bgzip > {output.ann}) \
             {output.norm}
-        tabix {output.ann}
+        tabix -p bed {output.ann}
         bcftools annotate \
             -a {output.ann} \
             -c CHROM,FROM,TO,REF,ALT,-,INFO/AN,INFO/AF \

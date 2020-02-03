@@ -56,10 +56,10 @@ rule GRCh37_mtdb_tsv:
             for row in fh_input:
                 line = row.strip("\n").split("\t")
                 record = dict(zip(line_header, line))
-                alts = dict(A=0, C=0, G=0, T=0, Gap=0)
+                alts = dict(A=0, C=0, G=0, T=0)
                 start = int(record.get("Posn."))
                 reference = record.get("Base")
-                an = int(record[reference] or 0)
+                an = int(record[reference] or 0) + int(record["Gap"] or 0)
                 # Sanity check ref base against mitochondrial genome and correct
                 if not mitochondrium[start - 1] == reference:
                     if mitochondrium[start - 1] == "N":
@@ -75,25 +75,18 @@ rule GRCh37_mtdb_tsv:
                 # Is an alternative registered, add it to the results list (normalization step)
                 for alt, ac in alts.items():
                     if ac > 0:
-                        _start = start
-                        _ref = reference
-                        _alt = alt
                         _af = ac/an
-                        if alt == "Gap":
-                            _start -= 1  # 1 because we want the base before the position
-                            _ref = mitochondrium[_start - 1] + _ref
-                            _alt = mitochondrium[_start - 1]
                         # Warn if frequency is at 100%.
                         if _af == 1.0:
-                            print("Frequency at position {} is 100%!".format(_start))
+                            print("Frequency at position {} is 100%!".format(start))
                         result.append([
                             "GRCh37",  # release
                             "MT",  # chromosome
-                            _start,  # start
+                            start,  # start
                             start,  # end
-                            binning.assign_bin(_start - 1, start),  # bin
-                            _ref,  # reference
-                            _alt,  # alternative
+                            binning.assign_bin(start - 1, start),  # bin
+                            reference,  # reference
+                            alt,  # alternative
                             record.get("Location"),  # location
                             record.get("Codon"),  # codon
                             record.get("Position"),  # position
