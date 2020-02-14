@@ -5,7 +5,7 @@ end
 bin
 reference
 alternative
-ac
+ac_hom
 an
 af
 ac_het
@@ -13,3 +13,4 @@ ac_het_mean
 ac_het_stdev
 ac_het_min
 ac_het_max
+is_triallelic

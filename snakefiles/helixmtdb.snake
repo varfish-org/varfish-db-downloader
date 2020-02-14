@@ -17,6 +17,7 @@ rule GRCh37_helixmtdb_vcf:
         import vcfpy
         import csv
         import json
+        from collections import defaultdict
 
 
         # As stated in HelixMTdb paper by Bolze et al, 2019,
@@ -25,7 +26,7 @@ rule GRCh37_helixmtdb_vcf:
         AN = 196_554
 
         #: Mitochondrial length
-        MT_LENGTH = 16569
+        MT_LENGTH = 16_569
 
         with open(input[0], "r") as fh:
             # discard first line and get header
@@ -40,10 +41,10 @@ rule GRCh37_helixmtdb_vcf:
                 samples=vcfpy.SamplesInfos(sample_names=[]),
             )
             vcf_header.add_info_line({
-                "ID": "AC",
+                "ID": "AC_HOM",
                 "Number": "A",
                 "Type": "Integer",
-                "Description": "Allele count (heteroplasmy count + homoplasmy count)",
+                "Description": "Homoplasmy allele count",
             })
             vcf_header.add_info_line({
                 "ID": "AN",
@@ -80,63 +81,89 @@ rule GRCh37_helixmtdb_vcf:
                 "Number": "A",
                 "Type": "Float",
                 "Description": "Min value of heteroplasmy allele count",
-            }),
+            })
             vcf_header.add_info_line({
                 "ID": "AC_HET_MAX",
                 "Number": "A",
                 "Type": "Float",
                 "Description": "Max value of heteroplasmy allele count",
-            }),
+            })
+            vcf_header.add_info_line({
+                "ID": "TRIALLELIC",
+                "Number": "0",
+                "Type": "Flag",
+                "Description": "Site is triallelic",
+            })
             vcf_writer = vcfpy.Writer.from_path(
                 output[0],
                 vcf_header,
             )
+            variants = defaultdict(
+                lambda: {
+                    "reference": "",
+                    "alternative": "",
+                    "ac_het": 0,
+                    "ac_hom": 0,
+                    "ac_het_mean": None,
+                    "ac_het_stdev": None,
+                    "ac_het_min": None,
+                    "ac_het_max": None,
+                    "triallelic": False,
+                    "updates": -1,
+                }
+            )
             for line in fh:
                 record = dict(zip(header, line.strip("\n").split("\t")))
                 het_stats = json.loads(record["HET_STATS"])
-                if "," in record["ALT"]:
-                    continue
-                if len(record["REF"]) == 1 and len(record["ALT"]) == 1:
-                    var_type = vcfpy.SNV
-                elif len(record["REF"]) == len(record["ALT"]):
-                    var_type = vcfpy.MNV
-                else:
-                    var_type = vcfpy.INDEL
-                # alts = []
-                # for alt in record["ALT"].split(","):
-                #     if len(record["REF"]) == 1 and len(alt) == 1:
-                #         var_type = vcfpy.SNV
-                #     elif len(record["REF"]) == len(alt):
-                #         var_type = vcfpy.MNV
-                #     else:
-                #         var_type = vcfpy.INDEL
-                #     alts.append(vcfpy.Substitution(var_type, alt))
-                ac_het = int(record["COUNT_HET"])
-                ac = ac_het + int(record["COUNT_HOM"])
+                alts = record["ALT"].split(",")
+                for alt in alts:
+                    if len(record["REF"]) == 1 and len(alt) == 1:
+                        var_type = vcfpy.SNV
+                    elif len(record["REF"]) == len(alt):
+                        var_type = vcfpy.MNV
+                    else:
+                        var_type = vcfpy.INDEL
+                    signature = "{:05d}-{}-{}".format(int(record["POS"]), record["REF"], alt)
+                    variants[signature]["reference"] = record["REF"]
+                    variants[signature]["alternative"] = vcfpy.Substitution(var_type, alt)
+                    variants[signature]["position"] = int(record["POS"])
+                    variants[signature]["ac_het"] += int(record["COUNT_HET"])
+                    variants[signature]["ac_hom"] += int(record["COUNT_HOM"])
+                    variants[signature]["updates"] += 1
+                    variants[signature]["triallelic"] = len(alts) > 1
+                    if variants[signature]["updates"] > 0:
+                        variants[signature]["ac_het_mean"] = None
+                        variants[signature]["ac_het_stdev"] = None
+                        variants[signature]["ac_het_min"] = None
+                        variants[signature]["ac_het_max"] = None
+                    else:
+                        variants[signature]["ac_het_mean"] = None if het_stats["mean"] == "NaN" else het_stats["mean"]
+                        variants[signature]["ac_het_stdev"] = None if het_stats["stdev"] == "NaN" else het_stats["stdev"]
+                        variants[signature]["ac_het_min"] = het_stats["min"]
+                        variants[signature]["ac_het_max"] = het_stats["max"]
+            for _, record in sorted(variants.items()):
+                info = {
+                    "AN": [AN],
+                    "AF": [(record["ac_het"] + record["ac_hom"]) / AN],
+                    "AC_HOM": [record["ac_hom"]],
+                    "AC_HET": [record["ac_het"]],
+                    "AC_HET_MEAN": [record["ac_het_mean"]],
+                    "AC_HET_STDEV": [record["ac_het_stdev"]],
+                    "AC_HET_MIN": [record["ac_het_min"]],
+                    "AC_HET_MAX": [record["ac_het_max"]],
+                }
+                if record["updates"] > 0 or record["triallelic"]:
+                    info["TRIALLELIC"] = True
                 vcf_writer.write_record(
                     vcfpy.Record(
                         "MT",
-                        int(record["POS"]),
+                        int(record["position"]),
                         [],
-                        record["REF"],
-                        # alts,
-                        [vcfpy.Substitution(var_type, record["ALT"])],
+                        record["reference"],
+                        [record["alternative"]],
                         None,
                         [],
-                        {
-                            "AN": [AN],
-                            "AC": [ac],
-                            "AF": [ac / AN],
-                            "AC_HET": [ac_het],
-                            "AC_HET_MEAN": [
-                                None if het_stats["mean"] == "NaN" else het_stats["mean"]
-                            ],
-                            "AC_HET_STDEV": [
-                                None if het_stats["stdev"] == "NaN" else het_stats["stdev"]
-                            ],
-                            "AC_HET_MIN": [het_stats["min"]],
-                            "AC_HET_MAX": [het_stats["max"]],
-                        },
+                        info
                     )
                 )
             vcf_writer.close()
@@ -172,8 +199,9 @@ rule GRCh37_helixmtdb_tsv:
         (
             cat {input.header} | tr '\n' '\t' | sed -e 's/\t*$/\n/g';
             bcftools query \
-                -f "GRCh37\t%CHROM\t%POS\t%END\t\t%REF\t%ALT\t%AC\t%AN\t%AF\t%AC_HET\t%AC_HET_MEAN\t%AC_HET_STDEV\t%AC_HET_MIN\t%AC_HET_MAX\n" \
-                {input.txt}
+                -f "GRCh37\t%CHROM\t%POS\t%END\t\t%REF\t%ALT\t%AC_HOM\t%AN\t%AF\t%AC_HET\t%AC_HET_MEAN\t%AC_HET_STDEV\t%AC_HET_MIN\t%AC_HET_MAX\t%TRIALLELIC\n" \
+                {input.txt} \
+            | awk -F$'\t' 'BEGIN{{OFS=FS}}{{if($16=="."){{$16=0}}print}}'
         ) \
         | python tools/ucsc_binning.py \
         > {output.tsv}
