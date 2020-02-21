@@ -17,6 +17,7 @@ rule GRCh37_helixmtdb_vcf:
         import vcfpy
         import csv
         import json
+        import math
         from collections import defaultdict
 
 
@@ -127,7 +128,7 @@ rule GRCh37_helixmtdb_vcf:
                     variants[signature]["reference"] = record["REF"]
                     variants[signature]["alternative"] = vcfpy.Substitution(var_type, alt)
                     variants[signature]["position"] = int(record["POS"])
-                    variants[signature]["ac_het"] += int(record["COUNT_HET"])
+                    variants[signature]["ac_het"] += math.ceil(int(record["COUNT_HET"]) / len(alts))
                     variants[signature]["ac_hom"] += int(record["COUNT_HOM"])
                     variants[signature]["updates"] += 1
                     variants[signature]["triallelic"] = len(alts) > 1
