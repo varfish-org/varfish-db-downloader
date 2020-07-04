@@ -10,6 +10,7 @@ shell.prefix("set -x; set -euo pipefail; ")
 
 CHROMS = (list(range(1, 23)) + ['X'])
 DATE = os.getenv("DATA_RELEASE", date.today().strftime("%Y%m%d"))
+CLINVAR_RELEASE = os.getenv("CLINVAR_RELEASE", date.today().strftime("%Y%m%d"))
 
 VARFISH_SERVER_BACKGROUND_PATH = "varfish-server-background-db-{}".format(DATE)
 VARFISH_ANNOTATOR_DB_PATH = "varfish-annotator-db-{}".format(DATE)
@@ -21,8 +22,7 @@ JANNOVAR_FILES = expand("{jannovar_db_path}/hg19_{database}.ser", jannovar_db_pa
 VARFISH_ANNOTATOR_FILES = VARFISH_ANNOTATOR_DB_FILE + JANNOVAR_FILES + ["GRCh37/reference/hs37d5/hs37d5.fa", "GRCh37/reference/hs37d5/hs37d5.fa.fai"]
 VARFISH_ANNOTATOR_FILES_OUT = [os.path.basename(file) for file in VARFISH_ANNOTATOR_FILES]
 VARFISH_ANNOTATOR_H2_FILES = [
-    *expand("GRCh37/clinvar/latest/clinvar_tsv_main/output/clinvar_allele_trait_pairs.single.b37.tsv.gz{index}", index=["", ".tbi"]),
-    *expand("GRCh37/clinvar/latest/clinvar_tsv_main/output/clinvar_allele_trait_pairs.multi.b37.tsv.gz{index}", index=["", ".tbi"]),
+    *expand("GRCh37/clinvar/{clinvar_release}/clinvar_tsv_main/output/clinvar.b37.tsv.gz{index}", clinvar_release=[CLINVAR_RELEASE], index=["", ".tbi"]),
     *expand("GRCh37/ExAC/r1/download/ExAC.r1.sites.vep.vcf.gz{index}", index=["", ".tbi"]),
     *expand("GRCh37/gnomAD_exomes/r2.1/download/gnomad.exomes.r2.1.sites.chr{chrom}.normalized.vcf.bgz{index}", chrom=CHROMS, index=["", ".tbi"]),
     *expand("GRCh37/gnomAD_genomes/r2.1/download/gnomad.genomes.r2.1.sites.chr{chrom}.normalized.vcf.bgz{index}", chrom=CHROMS, index=["", ".tbi"]),
