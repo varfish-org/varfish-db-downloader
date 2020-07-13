@@ -151,6 +151,9 @@ VARFISH_FILES = [
     # MT -- MITOMAP
     "GRCh37/MITOMAP/latest/Mitomap.tsv",
     "GRCh37/MITOMAP/latest/Mitomap.release_info",
+    # Extra annotations.
+    "GRCh37/extra-annos/20200704/ExtraAnnos.tsv",
+    "GRCh37/extra-annos/20200704/ExtraAnnos.release_info",
 ]
 VARFISH_FILES_WITH_IMPORT = VARFISH_FILES + ["import_versions.tsv"]
 
@@ -313,3 +316,4 @@ include: "snakefiles/refseqtogenesymbol.snake"
 include: "snakefiles/tads.snake"
 include: "snakefiles/thousand_genomes.snake"
 include: "snakefiles/vista.snake"
+include: "snakefiles/extra_annos.snake"

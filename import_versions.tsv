@@ -29,6 +29,7 @@ GRCh37	tads_hesc	dixon2012
 GRCh37	tads_imr90	dixon2012
 GRCh37	thousand_genomes	phase3
 GRCh37	vista	latest
+GRCh37	extra_annos	20200704
 GRCh38	clinvar	latest
 GRCh38	dbVar	latest
 GRCh38	DGV	2016
