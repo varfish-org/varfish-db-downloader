@@ -33,7 +33,9 @@ rule GRCh37_extra_annos_tsv_step_1:
                 let "i=$i+1";
                 echo -e "$i\t$label";
             done
-        ) > {output.fields}
+        ) \
+        | sed -e 's/PHRED/CADD-PHRED/g' \
+        > {output.fields}
 
         (
             echo -e "release\tchromosome\tstart\tend\tbin\tref\talt\tanno_data";
