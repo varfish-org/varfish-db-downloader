@@ -149,8 +149,8 @@ VARFISH_FILES = [
     "GRCh37/HelixMTdb/20190926/HelixMtDb.tsv",
     "GRCh37/HelixMTdb/20190926/HelixMtDb.release_info",
     # MT -- MITOMAP
-    "GRCh37/MITOMAP/latest/Mitomap.tsv",
-    "GRCh37/MITOMAP/latest/Mitomap.release_info",
+    "GRCh37/MITOMAP/20200116/Mitomap.tsv",
+    "GRCh37/MITOMAP/20200116/Mitomap.release_info",
     # Extra annotations.
     "GRCh37/extra-annos/20200704/ExtraAnnos.tsv",
     "GRCh37/extra-annos/20200704/ExtraAnnos.release_info",

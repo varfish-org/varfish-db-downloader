@@ -1,4 +1,4 @@
-DATA_RELEASE = 20191129
+DATA_RELEASE = 20200922
 
 
 all: pack_server pack_annotator pack_jannovar
@@ -19,11 +19,11 @@ pack_annotator:
 	tar \
 		--owner=0 \
 		--group=0 \
-		-chzvf varfish-annotator-$(DATA_RELEASE).tar.gz \
-		varfish-annotator-$(DATA_RELEASE)/
+		-chzvf varfish-annotator-db-$(DATA_RELEASE).tar.gz \
+		varfish-annotator-db-$(DATA_RELEASE)/
 	sha256sum \
-		varfish-annotator-$(DATA_RELEASE).tar.gz \
-		> varfish-annotator-$(DATA_RELEASE).tar.gz.sha256
+		varfish-annotator-db-$(DATA_RELEASE).tar.gz \
+		> varfish-annotator-db-$(DATA_RELEASE).tar.gz.sha256
 
 
 pack_jannovar:
