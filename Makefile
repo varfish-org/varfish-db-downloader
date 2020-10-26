@@ -21,11 +21,11 @@ pack_annotator:
 	cd $(RELEASE_PATH) && tar \
 		--owner=0 \
 		--group=0 \
-		-chzvf varfish-annotator-db-$(DATA_RELEASE).tar.gz \
-		varfish-annotator-db-$(DATA_RELEASE)/
+		-chzvf varfish-annotator-$(DATA_RELEASE).tar.gz \
+		varfish-annotator-$(DATA_RELEASE)/
 	cd $(RELEASE_PATH) && sha256sum \
-		varfish-annotator-db-$(DATA_RELEASE).tar.gz \
-		> varfish-annotator-db-$(DATA_RELEASE).tar.gz.sha256
+		varfish-annotator-$(DATA_RELEASE).tar.gz \
+		> varfish-annotator-$(DATA_RELEASE).tar.gz.sha256
 
 
 pack_jannovar:
