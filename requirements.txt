@@ -1,6 +1,7 @@
 attrs
 vcfpy
 pysam==0.15.1
--e git+https://github.com/bihealth/clinvar-tsv@ucsc-binning-schema#egg=clinvar-tsv
+-e git+https://github.com/bihealth/clinvar-tsv#egg=clinvar-tsv
 obonet
 interval-binning
+tqdm

@@ -1,6 +1,6 @@
 rule GRCh37_mitomap_download:
     output:
-        "GRCh37/MITOMAP/latest/download/polymorphisms.vcf",
+        "GRCh37/MITOMAP/20200116/download/polymorphisms.vcf",
     shell:
         r"""
         wget http://mitomap.org/cgi-bin/polymorphisms.cgi?format=vcf \
@@ -10,13 +10,13 @@ rule GRCh37_mitomap_download:
 
 rule GRCh37_mitomap_normalize:
     input:
-        vcf="GRCh37/MITOMAP/latest/download/polymorphisms.vcf",
+        vcf="GRCh37/MITOMAP/20200116/download/polymorphisms.vcf",
         ref="GRCh37/reference/hs37d5/hs37d5.fa",
     output:
-        vcf="GRCh37/MITOMAP/latest/download/polymorphisms.normalized.annotated.vcf",
-        norm=temp("GRCh37/MITOMAP/latest/download/polymorphisms.normalized.vcf"),
-        ann=temp("GRCh37/MITOMAP/latest/download/annotate.bed.gz"),
-        anntbi=temp("GRCh37/MITOMAP/latest/download/annotate.bed.gz.tbi"),
+        vcf="GRCh37/MITOMAP/20200116/download/polymorphisms.normalized.annotated.vcf",
+        norm=temp("GRCh37/MITOMAP/20200116/download/polymorphisms.normalized.vcf"),
+        ann=temp("GRCh37/MITOMAP/20200116/download/annotate.bed.gz"),
+        anntbi=temp("GRCh37/MITOMAP/20200116/download/annotate.bed.gz.tbi"),
     shell:
         r"""
         AN=$(bcftools view -h {input.vcf} | sed -n 's/^[^"]\+"Allele count in GenBank out of \([[:digit:]]\+\) sequences">/\1/p')
@@ -42,11 +42,11 @@ rule GRCh37_mitomap_normalize:
 
 rule GRCh37_mitomap_tsv:
     input:
-        vcf="GRCh37/MITOMAP/latest/download/polymorphisms.normalized.annotated.vcf",
+        vcf="GRCh37/MITOMAP/20200116/download/polymorphisms.normalized.annotated.vcf",
         header="header/mitomap.txt",
     output:
-        tsv="GRCh37/MITOMAP/latest/Mitomap.tsv",
-        release_info="GRCh37/MITOMAP/latest/Mitomap.release_info",
+        tsv="GRCh37/MITOMAP/20200116/Mitomap.tsv",
+        release_info="GRCh37/MITOMAP/20200116/Mitomap.release_info",
     shell:
         r"""
         (
@@ -58,5 +58,5 @@ rule GRCh37_mitomap_tsv:
         | python tools/ucsc_binning.py \
         > {output.tsv}
 
-        echo -e "table\tversion\tgenomebuild\tnull_value\nMitomap\tlatest\tGRCh37\t." > {output.release_info}
+        echo -e "table\tversion\tgenomebuild\tnull_value\nMitomap\t20200116\tGRCh37\t." > {output.release_info}
         """

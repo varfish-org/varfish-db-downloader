@@ -20,91 +20,65 @@ cd varfish-db-downloader
 ### Setup environment
 
 ```
-conda env create -n varfish-db-downloader -f environment.yaml
+conda env create -f environment.frozen-2020-10-23.yaml
 conda activate varfish-db-downloader
 pip install -r requirements.txt
 ```
 
-## Usage
+## Prepare Data Release
+
+This command will download and process all necessary files as well as link all files in a folder to build the final packages.
 
 ```
 snakemake
 ```
 
-## Realize data freeze
+The following variables can be adjusted on the commandline (either export them as variables or preceed the command).
 
-Prepare a new environment:
+| Variable           | Default                 |
+|--------------------|-------------------------|
+| `RELEASE_PATH`     | `releases`              |
+| `DATA_RELEASE`     | current date (YYYYMMDD) |
+| `CLINVAR_RELEASE`  | current date (YYYYMMDD) |
+| `JANNOVAR_RELEASE` | current date (YYYYMMDD) |
+
+The output can be found in the folders `GRCh37`, `GRCh38` and `releases` (default setting).
+
+## Pack Data Release
+
+Use the `Makefile` to pack the output of the snakemake run to finalize the data release.
 
 ```
-conda create -n varfish-annotator varfish-annotator-cli jannovar-cli
-conda activate varfish-annotator
+make pack_server
+make pack_annotator
+make pack_jannovar
 ```
 
-Adapt `DATA_RELEASE` and `ANNOTATOR_VERSION` to the current values.
+The following variables can be adjusted on the commandline (either export them as variables, preceed the command or edit directly in the `Makefile`).
+
+| Variable           | Default                 |
+|--------------------|-------------------------|
+| `RELEASE_PATH`     | `releases`              |
+| `DATA_RELEASE`     | current date (YYYYMMDD) |
+| `JANNOVAR_RELEASE` | current date (YYYYMMDD) |
+
+The output can be found in the folder `releases`:
 
 ```
-DATA_RELEASE=20190820
-ANNOTATOR_VERSION=0.9
+releases/jannovar-db-YYYYMMDD.tar.gz.sha256
+releases/jannovar-db-YYYYMMDD.tar.gz
+releases/varfish-annotator-db-YYYYMMDD.tar.gz.sha256
+releases/varfish-annotator-db-YYYYMMDD.tar.gz
+releases/varfish-server-background-db-YYYYMMDD.tar.gz.sha256
+releases/varfish-server-background-db-YYYYMMDD.tar.gz
 ```
 
-```
-# Pack server background databases
-tar chzvf \
-    varfish-server-background-db-$DATA_RELEASE.tar.gz \
-    varfish-server-background-db-$DATA_RELEASE/
-sha256sum \
-    varfish-server-background-db-$DATA_RELEASE.tar.gz \
-    > varfish-server-background-db-$DATA_RELEASE.tar.gz.sha256
+## VarFish Server Compatibility Table
 
-# Prepare & pack Jannovar DB
-jannovar download \
-    -d hg19/refseq_curated \
-    --download-dir varfish-annotator-transcripts-$DATA_RELEASE
-jannovar download \
-    -d hg19/ensembl \
-    --download-dir varfish-annotator-transcripts-$DATA_RELEASE
-tar czvf \
-    varfish-annotator-transcripts-$DATA_RELEASE.tar.gz \
-    varfish-annotator-transcripts-$DATA_RELEASE/*.ser
-sha256sum \
-    varfish-annotator-transcripts-$DATA_RELEASE.tar.gz \
-    > varfish-annotator-transcripts-$DATA_RELEASE.tar.gz.sha256
+Information about which VarFish DB Downloader version corresponds to which data
+release version and can be used with which VarFish Server version:
 
-# Prepare Varfish Annotator DB
-varfish-annotator init-db \
-    --db-release-info "varfish-annotator:v$ANNOTATOR_VERSION" \
-    --db-release-info "varfish-annotator-db:r$DATA_RELEASE" \
-    \
-    --ref-path $DOWNLOAD/GRCh37/reference/hs37d5/hs37d5.fa \
-    \
-    --db-release-info "clinvar:2019-06-22" \
-    --clinvar-path $DOWNLOAD/GRCh37/clinvar/latest/clinvar_tsv_main/output/clinvar_allele_trait_pairs.single.b37.tsv.gz \
-    --clinvar-path $DOWNLOAD/GRCh37/clinvar/latest/clinvar_tsv_main/output/clinvar_allele_trait_pairs.multi.b37.tsv.gz \
-    \
-    --db-path ./varfish-annotator-db-$DATA_RELEASE \
-    \
-    --db-release-info "exac:r1.0" \
-    --exac-path $DOWNLOAD/GRCh37/ExAC/r1/download/ExAC.r1.sites.vep.vcf.gz \
-    \
-    --db-release-info "gnomad_exomes:r2.1" \
-    $(for path in $DOWNLOAD/GRCh37/gnomAD_exomes/r2.1/download/gnomad.exomes.r2.1.sites.chr*.normalized.vcf.bgz; do \
-        echo --gnomad-exomes-path $path; \
-    done) \
-    \
-    --db-release-info "gnomad_genomes:r2.1" \
-    $(for path in $DOWNLOAD/GRCh37/gnomAD_genomes/r2.1/download/gnomad.genomes.r2.1.sites.chr*.normalized.vcf.bgz; do \
-        echo --gnomad-genomes-path $path; \
-    done) \
-    \
-    --db-release-info "thousand_genomes:v3.20101123" \
-    --thousand-genomes-path $DOWNLOAD/GRCh37/thousand_genomes/phase3/ALL.phase3_shapeit2_mvncall_integrated_v5a.20130502.sites.vcf.gz \
-    \
-    --db-release-info "hgmd_public:ensembl_r75" \
-    --hgmd-public $DOWNLOAD/GRCh37/hgmd_public/ensembl_r75/HgmdPublicLocus.tsv
-gzip -c \
-    varfish-annotator-db-${DATA_RELEASE}.db.h2 \
-    > varfish-annotator-db-${DATA_RELEASE}.db.h2.gz
-sha256sum \
-    varfish-annotator-db-${DATA_RELEASE}.h2.db.gz \
-    > varfish-annotator-db-${DATA_RELEASE}.h2.db.gz.sha256
-```
+| VarFish DB Downloader | Data Release | VarFish Server |
+|-----------------------|--------------|----------------|
+| v0.2                  | 20201006     | <= v0.22.1     |
+

@@ -3,14 +3,16 @@ import tqdm
 
 
 rule GRCh37_extra_annos_release_info:
+    input:
+        "GRCh37/extra-annos/20200704/ExtraAnno.tsv",
+        "GRCh37/extra-annos/20200704/ExtraAnnoField.tsv",
     output:
-        "GRCh37/extra-annos/20200704/ExtraAnno.release_info",
-        "GRCh37/extra-annos/20200704/ExtraAnnoField.release_info",
+        anno="GRCh37/extra-annos/20200704/ExtraAnno.release_info",
+        annofield="GRCh37/extra-annos/20200704/ExtraAnnoField.release_info",
     shell:
         r"""
-        for x in {output}; do
-            echo -e "table\tversion\tgenomebuild\tnull_value\nExtraAnno\t20200704\tGRCh37\t" > $x
-        done
+        echo -e "table\tversion\tgenomebuild\tnull_value\nExtraAnno\t20200704\tGRCh37\t" > {output.anno}
+        echo -e "table\tversion\tgenomebuild\tnull_value\nExtraAnnoField\t20200704\tGRCh37\t" > {output.annofield}
         """
 
         
@@ -38,7 +40,7 @@ rule GRCh37_extra_annos_tsv_step_1:
         > {output.fields}
 
         (
-            echo -e "release\tchromosome\tstart\tend\tbin\tref\talt\tanno_data";
+            echo -e "release\tchromosome\tstart\tend\tbin\treference\talternative\tanno_data";
             tabix -R {input.bed} {input.cadd_snvs} \
             | cut -f 1-4,$cut_expr \
             | awk -F $'\t' 'BEGIN {{ OFS=FS }} {{

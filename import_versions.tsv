@@ -1,6 +1,6 @@
 build	table_group	version
 GRCh37	acmg	v2.0
-GRCh37	clinvar	latest
+GRCh37	clinvar	20200929
 GRCh37	dbSNP	b151
 GRCh37	dbVar	latest
 GRCh37	DGV	2016
@@ -10,6 +10,7 @@ GRCh37	ensembltogenesymbol	latest
 GRCh37	ensembltorefseq	latest
 GRCh37	ExAC_constraints	r0.3.1
 GRCh37	ExAC	r1
+GRCh37	extra-annos	20200704
 GRCh37	gnomAD_constraints	v2.1.1
 GRCh37	gnomAD_exomes	r2.1
 GRCh37	gnomAD_genomes	r2.1
@@ -32,7 +33,6 @@ GRCh37	tads_hesc	dixon2012
 GRCh37	tads_imr90	dixon2012
 GRCh37	thousand_genomes	phase3
 GRCh37	vista	latest
-GRCh37	extra_annos	20200704
-GRCh38	clinvar	latest
+GRCh38	clinvar	20200929
 GRCh38	dbVar	latest
 GRCh38	DGV	2016
