@@ -28,7 +28,7 @@ GRCh37  mtDB  latest
 GRCh37  ncbi_gene latest
 GRCh37  refseq_genes  r105
 GRCh37  refseq2ensembl  latest
-GRCh37 	refseq2genesymbol latest
+GRCh37  refseq2genesymbol latest
 GRCh37 	tads_hesc dixon2012
 GRCh37 	tads_imr90  dixon2012
 GRCh37 	thousand_genomes  phase3
