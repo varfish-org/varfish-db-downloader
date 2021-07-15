@@ -8,7 +8,7 @@ GRCh37 	ensembl_genes 	r104/r105
 GRCh37 	ensembl_regulatory 	latest
 GRCh37 	ensembl2genesymbol 	latest
 GRCh37 	ensembl2refseq 	latest
-GRCh37 	ExAC_constraints
+GRCh37 	ExAC_constraints  r0.3.1
 GRCh37 	ExAC 	r1
 GRCh37 	extra-annos 	20200704
 GRCh37 	gnomAD_constraints 	v2.1.1
