@@ -48,7 +48,7 @@ GRCh38  gnomAD_exomes r2.1.1
 GRCh38  gnomAD_genomes  r3.1.1
 GRCh38  HelixMTdb 20200327
 GRCh38  hgmd_public ensembl_r104
-GRCh38 	hgnc  latest
+GRCh38  hgnc  latest
 GRCh38  hpo latest
 GRCh38  kegg  april2011
 GRCh38  knowngeneaa latest
