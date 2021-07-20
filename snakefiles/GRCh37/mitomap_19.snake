@@ -1,0 +1,62 @@
+rule GRCh37_mitomap_download:
+    output:
+        "GRCh37/MITOMAP/latest/download/polymorphisms.vcf",
+    shell:
+        r"""
+        wget http://mitomap.org/cgi-bin/polymorphisms.cgi?format=vcf \
+            -O {output}
+        """
+
+
+rule GRCh37_mitomap_normalize:
+    input:
+        vcf="GRCh37/MITOMAP/latest/download/polymorphisms.vcf",
+        ref="GRCh37/reference/hs37d5/hs37d5.fa",
+    output:
+        vcf="GRCh37/MITOMAP/latest/download/polymorphisms.normalized.annotated.vcf",
+        norm=temp("GRCh37/MITOMAP/latest/download/polymorphisms.normalized.vcf"),
+        ann=temp("GRCh37/MITOMAP/latest/download/annotate.bed.gz"),
+        anntbi=temp("GRCh37/MITOMAP/latest/download/annotate.bed.gz.tbi"),
+    shell:
+        r"""
+        AN=$(bcftools view -h {input.vcf} | sed -n 's/^[^"]\+"Allele count in GenBank out of \([[:digit:]]\+\) sequences">/\1/p')
+        bcftools norm \
+            -m -any \
+            -c w \
+            -f {input.ref} \
+            -o {output.norm} \
+            {input.vcf}
+        bcftools query \
+            -f "%CHROM\t%POS\t%END\t%REF\t%ALT\t%AC\t$AN\n" \
+            -o >(uniq | awk -F$'\t' 'BEGIN{{OFS=FS}}{{$2-=1; print $0,$6/$7}}' | bgzip > {output.ann}) \
+            {output.norm}
+        tabix -p bed {output.ann}
+        bcftools annotate \
+            -a {output.ann} \
+            -c CHROM,FROM,TO,REF,ALT,-,INFO/AN,INFO/AF \
+            -h <(echo -e "##INFO=<ID=AN,Number=1,Type=Integer,Description=\"Allele number in Genbank\">\n##INFO=<ID=AF,Number=1,Type=Float,Description=\"Allele frequency\">") \
+            -o {output.vcf} \
+            {output.norm}
+        """
+
+
+rule GRCh37_mitomap_tsv:
+    input:
+        vcf="GRCh37/MITOMAP/latest/download/polymorphisms.normalized.annotated.vcf",
+        header="header/mitomap.txt",
+    output:
+        tsv="GRCh37/MITOMAP/latest/Mitomap.tsv",
+        release_info="GRCh37/MITOMAP/latest/Mitomap.release_info",
+    shell:
+        r"""
+        (
+            cat {input.header} | tr '\n' '\t' | sed -e 's/\t*$/\n/g';
+            bcftools query \
+                -f "GRCh37\t%CHROM\t%POS\t%END\t\t%REF\t%ALT\t%AC\t%AN\t%AF\n" \
+                {input.vcf}
+        ) \
+        | python tools/ucsc_binning.py \
+        > {output.tsv}
+
+        echo -e "table\tversion\tgenomebuild\tnull_value\nMitomap\t$(date +%Y/%m/%d)\tGRCh37\t." > {output.release_info}
+        """
