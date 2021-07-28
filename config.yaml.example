@@ -1,0 +1,8 @@
+# Example configuration file for varfish-db-downloader.
+
+# String to use for the download data of data that is not explicitely versioned such as
+# ENSEMBL BioMart or VISTA.
+download_date: 20210728
+
+# String to use for the release name.
+release_name: 20210728
