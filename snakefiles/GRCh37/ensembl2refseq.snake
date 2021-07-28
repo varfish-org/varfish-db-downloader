@@ -1,0 +1,31 @@
+# Obtain mapping of Ensembl Gene ID - Ensembl Transcript ID - Entrez ID
+# If you are just interested in Ensembl Gene Id and Entrez ID this will result in duplicate rows.
+
+rule grch37_ensembl_to_refseq_download:
+    output:
+        "GRCh37/ensembltorefseq/latest/download/ensembl_to_refseq.tsv",
+    shell:
+        r"""
+        wget \
+            'http://grch37.ensembl.org/biomart/martservice?query=<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE Query> <Query  virtualSchemaName = "default" formatter = "TSV" header = "0" uniqueRows = "0" count = "" datasetConfigVersion = "0.6" > <Dataset name = "hsapiens_gene_ensembl" interface = "default" > <Attribute name = "ensembl_gene_id" /> <Attribute name = "ensembl_transcript_id" /> <Attribute name = "entrezgene" /> </Dataset> </Query>' \
+            -O {output}
+        """
+
+
+rule grch37_ensembl_to_refseq_tsv:
+    input:
+        header="header/ensembltorefseq.txt",
+        tsv="GRCh37/ensembltorefseq/latest/download/ensembl_to_refseq.tsv",
+    output:
+        tsv="GRCh37/ensembltorefseq/latest/EnsemblToRefseq.tsv",
+        release_info="GRCh37/ensembltorefseq/latest/EnsemblToRefseq.release_info",
+    shell:
+        r"""
+        (
+            cat {input.header} | tr '\n' '\t' | sed -e 's/\t*$/\n/g';
+            cat {input.tsv}
+        ) > {output.tsv}
+
+        echo -e "table\tversion\tgenomebuild\tnull_value\nEnsemblToRefseq\t$(date +%Y/%m/%d)\tGRCh37\t" > {output.release_info}
+        """
+

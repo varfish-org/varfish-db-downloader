@@ -4,8 +4,8 @@ logs/
 run.sh
 config.yaml
 .snakemake
-GRCh37
-GRCh38
+/GRCh37
+/GRCh38
 src/
 *.pyc
 *.pyo
