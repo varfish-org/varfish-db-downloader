@@ -1,7 +1,7 @@
 rule result_noref_acmg:
     output:
-        tsv="output/noref/acmg/v3.0/Acmg.tsv",
-        release_info="output/noref/acmg/v3.0/Acmg.release_info",
+        tsv="noref/acmg/v3.0/Acmg.tsv",
+        release_info="noref/acmg/v3.0/Acmg.release_info",
     shell:
         r"""
         cat <<-EOF > {output.tsv}
