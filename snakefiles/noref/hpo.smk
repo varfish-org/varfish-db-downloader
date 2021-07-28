@@ -8,7 +8,7 @@ rule noref_hpo_download:
         r"""
         wget \
             -O {output.txt} \
-            http://compbio.charite.de/jenkins/job/hpo.annotations.2018/lastSuccessfulBuild/artifact/misc_2018/phenotype.hpoa
+            http://purl.obolibrary.org/obo/hp/hpoa/phenotype.hpoa
         """
 
 
