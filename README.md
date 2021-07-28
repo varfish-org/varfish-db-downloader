@@ -82,3 +82,8 @@ release version and can be used with which VarFish Server version:
 |-----------------------|--------------|----------------|
 | v0.2                  | 20201006     | <= v0.22.1     |
 
+
+## Developer Info
+
+- Use `wget` only and not `curl`.
+  The rationale is that for the "test mode", we are overriding a single command with a helper command.
