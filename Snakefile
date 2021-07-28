@@ -295,32 +295,61 @@ rule data_freeze_varfish_annotator:
         """
 
 
-include: "snakefiles/acmg.snake"
-include: "snakefiles/clinvar.snake"
-include: "snakefiles/dbsnp.snake"
-include: "snakefiles/dbvar.snake"
-include: "snakefiles/dgv.snake"
-include: "snakefiles/ensembl_regulatory.snake"
-include: "snakefiles/ensembltogenesymbol.snake"
-include: "snakefiles/ensembltorefseq.snake"
-include: "snakefiles/exac.snake"
-include: "snakefiles/genes.snake"
-include: "snakefiles/gnomad.snake"
-include: "snakefiles/hgnc.snake"
-include: "snakefiles/hgmd.snake"
-include: "snakefiles/helixmtdb.snake"
-include: "snakefiles/hpo.snake"
-include: "snakefiles/kegg.snake"
-include: "snakefiles/knowngeneaa.snake"
-include: "snakefiles/mgi.snake"
-include: "snakefiles/mim2gene.snake"
-include: "snakefiles/mitomap.snake"
-include: "snakefiles/mtdb.snake"
-include: "snakefiles/ncbi_gene.snake"
-include: "snakefiles/reference.snake"
-include: "snakefiles/refseqtoensembl.snake"
-include: "snakefiles/refseqtogenesymbol.snake"
-include: "snakefiles/tads.snake"
-include: "snakefiles/thousand_genomes.snake"
-include: "snakefiles/vista.snake"
-include: "snakefiles/extra_annos.snake"
+include: "snakefiles/GRCh37/acmg.snake"
+include: "snakefiles/GRCh37/clinvar.snake"
+include: "snakefiles/GRCh37/dbsnp.snake"
+include: "snakefiles/GRCh37/dbvar.snake"
+include: "snakefiles/GRCh37/DGV.snake"
+include: "snakefiles/GRCh37/ensembl2genesymbol.snake"
+include: "snakefiles/GRCh37/ensembl2refseq.snake"
+include: "snakefiles/GRCh37/ensembl_regulatory.snake"
+include: "snakefiles/GRCh37/exac.snake"
+include: "snakefiles/GRCh37/extra_annos.snake"
+include: "snakefiles/GRCh37/genes.snake"
+include: "snakefiles/GRCh37/gnomad.snake"
+include: "snakefiles/GRCh37/helixdb.snake"
+include: "snakefiles/GRCh37/hgmd.snake"
+include: "snakefiles/GRCh37/hgnc.snake"
+include: "snakefiles/GRCh37/kegg.snake"
+include: "snakefiles/GRCh37/knowngeneaa.snake"
+include: "snakefiles/GRCh37/mgi.snake"
+include: "snakefiles/GRCh37/mim2gene.snake"
+include: "snakefiles/GRCh37/mitomap.snake"
+include: "snakefiles/GRCh37/mtdb.snake"
+include: "snakefiles/GRCh37/ncbi_gene.snake"
+include: "snakefiles/GRCh37/reference.snake"
+include: "snakefiles/GRCh37/refseq2ensembl.snake"
+include: "snakefiles/GRCh37/refseq2genesymbol.snake"
+include: "snakefiles/GRCh37/tads.snake"
+include: "snakefiles/GRCh37/thousand_genomes.snake"
+include: "snakefiles/GRCh37/vista.snake"
+
+# GRCh37 rule for ACMG also creates GRCh38
+# GRCh37 rule for ClinVar also creates GRCh38
+include: "snakefiles/GRCh38/dbsnp.snake"
+# GRCh37 also works for dbvar
+include: "snakefiles/GRCh38/DGV.snake"
+include: "snakefiles/GRCh38/ensembl2genesymbol.snake"
+include: "snakefiles/GRCh38/ensembl2refseq.snake"
+include: "snakefiles/GRCh38/ensembl_regulatory.snake"
+# NO EXAC (probably ever)
+include: "snakefiles/GRCh38/extra_annos.snake"
+include: "snakefiles/GRCh38/genes.snake"
+include: "snakefiles/GRCh38/gnomad.snake"
+# helixmtdb same as GRCh37
+include: "snakefiles/GRCh38/hgmd.snake"
+include: "snakefiles/GRCh38/hgnc.snake"
+include: "snakefiles/GRCh38/hpo.snake"
+# kegg same as GRCh37
+include: "snakefiles/GRCh38/knowngeneaa.snake"
+# mgi same as GRCh37
+# mim2gene same as GRCh37
+# MITOMAP same as GRCh37
+# MTDB same as GRCh37
+# ncbi_genes same as GRCh37
+include: "snakefiles/GRCh38/reference.snake"
+# refseq2ensembl same as GRCh37
+# refseq2genesymbol same as GRCh37
+# NO TADS (YET, TODO: lift over)
+# NO THOUSAND GENOMES (probably ever)
+# NO VISTA (YET, TODO: lift over)

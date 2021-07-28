@@ -26,12 +26,12 @@ class DgvGoldStandardConverter:
         self.path = path
         #: Name of the database stored in the file.
         self.name = name
-        if name != "dgv-gs-GRCh37":
+        if name not in ("dgv-gs-GRCh37", "dgv-gs-GRCh38"):
             raise Exception("Invalid database name {}".format(name))
         #: DB configuration
         self.database = database
         #: The genome release to import for
-        self.genome_release = "GRCh37"
+        self.genome_release = name.split("-")[-1]
         #: Seen IDs to prevent duplicate import
         self.seen_ids = set()
         #: Output file to write to
@@ -69,7 +69,7 @@ class DgvGoldStandardConverter:
                     continue
                 else:
                     self.seen_ids.add(values["attributes"]["ID"])
-                if values["seqid"].startswith("chr"):
+                if values["seqid"].startswith("chr") and self.genome_release == "GRCh37":
                     values["seqid"] = values["seqid"][3:]
                 self.write_to_tsv(values)
                 # read next line
@@ -106,7 +106,7 @@ class DgvGoldStandardConverter:
                 list_to_str(attributes["algorithms"].split(",")),
                 attributes["num_variants"],
                 attributes["num_samples"],
-                attributes["num_unique_samples_tested"],
+                attributes.get("num_unique_samples_tested", attributes.get("Number_of_unique_samples_tested")),
                 pop_sum["African"],
                 pop_sum["Asian"],
                 pop_sum["European"],
@@ -163,6 +163,10 @@ class DgvConverter:
                         % (len(header), len(arr), repr(buffer))
                     )
                 values = dict(zip(header, arr))
+                if values["chr"].startswith("chr") and self.genome_release == "GRCh37":
+                    values["chr"] = values["chr"][3:]
+                elif not values["chr"].startswith("chr") and self.genome_release != "GRCh37":
+                    values["chr"] = "chr%s" % values["chr"]
                 self.write_to_tsv(values)
                 # read next line
                 if chrom != values["chr"]:
@@ -610,18 +614,25 @@ DATABASES = {
         "release": "20160515",
         "converter": DgvGoldStandardConverter,
     },
-    "GRCh37_hg19_variants_2016-05-15.txt": {
+    "DGV.GS.hg38.gff3": {
+        "genomebuild": "GRCh38",
+        "name": "dgv-gs-GRCh38",
+        "table": "DgvGoldStandardSvs",
+        "release": "20200302",
+        "converter": DgvGoldStandardConverter,
+    },
+    "GRCh37_hg19_variants_2020-02-25.txt": {
         "genomebuild": "GRCh37",
         "name": "dgv-GRCh37",
         "table": "DgvSvs",
-        "release": "20160515",
+        "release": "20200225",
         "converter": DgvConverter,
     },
-    "GRCh38_hg38_variants_2016-08-31.txt": {
+    "GRCh38_hg38_variants_2020-02-25.txt": {
         "genomebuild": "GRCh38",
         "name": "dgv-GRCh38",
         "table": "DgvSvs",
-        "release": "20160831",
+        "release": "20200225",
         "converter": DgvConverter,
     },
     "exac-final.autosome-1pct-sq60-qc-prot-coding.cnv.bed": {

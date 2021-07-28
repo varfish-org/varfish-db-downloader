@@ -91,7 +91,7 @@ def build_header(contigs, species):
     return header
 
 
-def fasta_header_to_meta(line):
+def fasta_header_to_meta(line, have_chr):
     arr = line[1:].split(" ")
     if len(arr) == 5:
         exon, exon_len, in_frame, out_frame, location = arr
@@ -102,7 +102,9 @@ def fasta_header_to_meta(line):
         location = location.split(";")[0]
         location, strand = location[:-1], location[-1]
         chrom, range_ = location.split(":")
-        if chrom.startswith("chr"):
+        if have_chr and not chrom.startswith("chr"):
+            chrom = "chr%s" % chrom
+        elif not have_chr and chrom.startswith("chr"):
             chrom = chrom[3:]
         start, end = range_.split("-")
         location = (chrom, int(start) - 1, int(end), strand)
@@ -120,28 +122,28 @@ def fasta_header_to_meta(line):
     )
 
 
-def build_block(lines):
+def build_block(lines, have_chr):
     """Build ``AlignmentBlock`` from FASTA lines."""
-    hg_meta = fasta_header_to_meta(lines[0])
+    hg_meta = fasta_header_to_meta(lines[0], have_chr)
     species = []
     aa_seqs = []
     assert len(lines) % 2 == 0
     for i in range(0, len(lines), 2):
         header, aas = lines[i : i + 2]
-        meta = fasta_header_to_meta(header)
+        meta = fasta_header_to_meta(header, have_chr)
         species.append(meta.species)
         aa_seqs.append(aas)
     return AlignmentBlock(meta=hg_meta, species=species, aa_seqs=aa_seqs)
 
 
-def read_blocks(fa_gz):
+def read_blocks(fa_gz, have_chr):
     """Read and yield ``AlignmentBlock`` elements from ``fa_gz``."""
     buf = []
     for line in fa_gz:
         line = line.strip()
         if not line:
             if buf:
-                yield build_block(buf)
+                yield build_block(buf, have_chr)
                 buf = []
         else:
             buf.append(line)
@@ -289,7 +291,7 @@ def run(args):
 
     logging.info("Create VCF header and open output file")
     with gzip.open(args.input[0], "rt") as fa_gz:
-        for first_block in read_blocks(fa_gz):
+        for first_block in read_blocks(fa_gz, have_chr):
             break
     header = build_header(contigs, first_block.species)
     prev_contig = None
@@ -300,7 +302,7 @@ def run(args):
     with output as writer:
         with gzip.open(args.input[0], "rt") as fa_gz:
             prev_block = None
-            for block in read_blocks(fa_gz):
+            for block in read_blocks(fa_gz, have_chr):
                 records = list(block_to_records(block, prev_block))
                 if re.match(args.contig_regexp, records[0].CHROM):
                     if records[0].CHROM != prev_contig:

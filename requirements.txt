@@ -5,3 +5,5 @@ pysam==0.15.1
 obonet
 interval-binning
 tqdm
+beautifulsoup4
+biopython
