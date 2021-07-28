@@ -3,7 +3,7 @@
 
 rule grchxx_knowngeneaa_download:
     output:
-        fa="{genome_build}/knowngeneaa/latest/download/knownGene.exonAA.fa.gz",
+        fa="{genome_build}/knowngeneaa/{download_date}/download/knownGene.exonAA.fa.gz",
     shell:
         r"""
         if [[ {wildcards.genome_build} == GRCh37 ]]; then
@@ -18,13 +18,29 @@ rule grchxx_knowngeneaa_download:
         """
 
 
+def input_grchxx_knowngeneaa_to_vcf(wildcards):
+    if wildcards.genome_build == "GRCh37":
+        return {
+            "reference": "GRCh37/reference/hs37d5/hs37d5.fa",
+            "fa": "{genome_build}/knowngeneaa/{download_date}/download/knownGene.exonAA.fa.gz".format(
+                **wildcards
+            ),
+        }
+    else:
+        return {
+            "reference": "GRCh38/reference/hs38/hs38.fa",
+            "fa": "{genome_build}/knowngeneaa/{download_date}/download/knownGene.exonAA.fa.gz".format(
+                **wildcards
+            ),
+        }
+
+
 rule grchxx_knowngeneaa_to_vcf:
     input:
-        reference="{genome_build}/reference/hs37d5/hs37d5.fa",
-        fa="{genome_build}/knowngeneaa/latest/download/knownGene.exonAA.fa.gz",
+        unpack(input_grchxx_knowngeneaa_to_vcf),
     output:
-        vcf="{genome_build}/knowngeneaa/latest/knownGeneAA.vcf.gz",
-        tbi="{genome_build}/knowngeneaa/latest/knownGeneAA.vcf.gz.tbi",
+        vcf="{genome_build}/knowngeneaa/{download_date}/knownGeneAA.vcf.gz",
+        tbi="{genome_build}/knowngeneaa/{download_date}/knownGeneAA.vcf.gz.tbi",
     shell:
         r"""
         python tools/knowngeneaa.py \
@@ -38,13 +54,13 @@ rule grchxx_knowngeneaa_to_vcf:
         """
 
 
-rule grchxx_knowngeneaa_to_tsv:
+rule result_grchxx_knowngeneaa_to_tsv:
     input:
         header="header/knowngeneaa.txt",
-        vcf="{genome_build}/knowngeneaa/latest/knownGeneAA.vcf.gz",
+        vcf="{genome_build}/knowngeneaa/{download_date}/knownGeneAA.vcf.gz",
     output:
-        tsv="{genome_build}/knowngeneaa/latest/KnowngeneAA.tsv",
-        release_info="{genome_build}/knowngeneaa/latest/KnowngeneAA.release_info",
+        tsv="{genome_build}/knowngeneaa/{download_date}/KnowngeneAA.tsv",
+        release_info="{genome_build}/knowngeneaa/{download_date}/KnowngeneAA.release_info",
     shell:
         r"""
         (

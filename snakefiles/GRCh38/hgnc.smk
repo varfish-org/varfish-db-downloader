@@ -3,7 +3,7 @@
 
 rule grch38_hgnc_download:
     output:
-        txt="GRCh38/hgnc/latest/download/hgnc_complete_set.txt",
+        txt="GRCh38/hgnc/{download_date}/download/hgnc_complete_set.txt",
     shell:
         r"""
         wget \
@@ -14,7 +14,7 @@ rule grch38_hgnc_download:
 
 rule grch38_refseq_to_hgnc_download:
     output:
-        "GRCh38/hgnc/latest/download/GCF_000001405.39_GRCh38.p13_genomic.gff.gz",
+        "GRCh38/hgnc/{download_date}/download/GCF_000001405.39_GRCh38.p13_genomic.gff.gz",
     shell:
         r"""
         wget ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/annotation_releases/current/GCF_000001405.39_GRCh38.p13/GCF_000001405.39_GRCh38.p13_genomic.gff.gz \             
@@ -22,14 +22,14 @@ rule grch38_refseq_to_hgnc_download:
         """
 
 
-rule grch38_hgnc_to_tsv:
+rule result_grch38_hgnc_to_tsv:
     input:
         header="header/hgnc.txt",
         reference="GRCh38/reference/hs38/hs38.fa",
-        txt="GRCh38/hgnc/latest/download/hgnc_complete_set.txt",
+        txt="GRCh38/hgnc/{download_date}/download/hgnc_complete_set.txt",
     output:
-        tsv="GRCh38/hgnc/latest/Hgnc.tsv",
-        release_info="GRCh38/hgnc/latest/Hgnc.release_info",
+        tsv="GRCh38/hgnc/{download_date}/Hgnc.tsv",
+        release_info="GRCh38/hgnc/{download_date}/Hgnc.release_info",
     shell:
         r"""
         (
@@ -50,13 +50,13 @@ rule grch38_hgnc_to_tsv:
         """
 
 
-rule grch38_refseq_to_hgnc_to_tsv:
+rule result_grch38_refseq_to_hgnc_to_tsv:
     input:
         header="header/refseqtohgnc.txt",
-        gff="GRCh38/hgnc/latest/download/GCF_000001405.39_GRCh38.p13_genomic.gff.gz",
+        gff="GRCh38/hgnc/{download_date}/download/GCF_000001405.39_GRCh38.p13_genomic.gff.gz",
     output:
-        tsv="GRCh38/hgnc/latest/RefseqToHgnc.tsv",
-        release_info="GRCh38/hgnc/latest/RefseqToHgnc.release_info",
+        tsv="GRCh38/hgnc/{download_date}/RefseqToHgnc.tsv",
+        release_info="GRCh38/hgnc/{download_date}/RefseqToHgnc.release_info",
     shell:
         r"""
         (

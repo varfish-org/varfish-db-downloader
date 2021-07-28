@@ -3,7 +3,7 @@
 
 rule grch37_hgnc_download:
     output:
-        txt="GRCh37/hgnc/latest/download/hgnc_complete_set.txt",
+        txt="GRCh37/hgnc/{download_date}/download/hgnc_complete_set.txt",
     shell:
         r"""
         wget \
@@ -14,7 +14,7 @@ rule grch37_hgnc_download:
 
 rule grch37_refseq_to_hgnc_download:
     output:
-        "GRCh37/hgnc/latest/download/ref_GRCh37.p13_top_level.gff3.gz",
+        "GRCh37/hgnc/{download_date}/download/ref_GRCh37.p13_top_level.gff3.gz",
     shell:
         r"""
         wget ftp://ftp.ncbi.nlm.nih.gov/genomes/archive/old_refseq/H_sapiens/ARCHIVE/ANNOTATION_RELEASE.105/GFF/ref_GRCh37.p13_top_level.gff3.gz \             
@@ -22,14 +22,14 @@ rule grch37_refseq_to_hgnc_download:
         """
 
 
-rule grch37_hgnc_to_tsv:
+rule result_grch37_hgnc_to_tsv:
     input:
         header="header/hgnc.txt",
         reference="GRCh37/reference/hs37d5/hs37d5.fa",
-        txt="GRCh37/hgnc/latest/download/hgnc_complete_set.txt",
+        txt="GRCh37/hgnc/{download_date}/download/hgnc_complete_set.txt",
     output:
-        tsv="GRCh37/hgnc/latest/Hgnc.tsv",
-        release_info="GRCh37/hgnc/latest/Hgnc.release_info",
+        tsv="GRCh37/hgnc/{download_date}/Hgnc.tsv",
+        release_info="GRCh37/hgnc/{download_date}/Hgnc.release_info",
     shell:
         r"""
         (
@@ -50,13 +50,13 @@ rule grch37_hgnc_to_tsv:
         """
 
 
-rule grch37_refseq_to_hgnc_to_tsv:
+rule result_grch37_refseq_to_hgnc_to_tsv:
     input:
         header="header/refseqtohgnc.txt",
-        gff="GRCh37/hgnc/latest/download/ref_GRCh37.p13_top_level.gff3.gz",
+        gff="GRCh37/hgnc/{download_date}/download/ref_GRCh37.p13_top_level.gff3.gz",
     output:
-        tsv="GRCh37/hgnc/latest/RefseqToHgnc.tsv",
-        release_info="GRCh37/hgnc/latest/RefseqToHgnc.release_info",
+        tsv="GRCh37/hgnc/{download_date}/RefseqToHgnc.tsv",
+        release_info="GRCh37/hgnc/{download_date}/RefseqToHgnc.release_info",
     shell:
         r"""
         (

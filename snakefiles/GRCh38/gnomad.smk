@@ -96,7 +96,7 @@ rule grch38_gnomad_r3_1_1_normalize:
 ## For this release, there are no more hemizygote count annotations. Instead, our
 ## male counts correctly consider males as hemizygous in non-pseudo-autosomal (non-PAR)
 ## regions of the sex chromosomes and we provide a nonpar flag to identify all variants that are in the these regions.
-rule grch38_gnomad_exomes_r2_1_1_to_tsv:
+rule result_grch38_gnomad_exomes_r2_1_1_to_tsv:
     input:
         vcf="GRCh38/gnomAD_exomes/r2.1.1/download/gnomad.exomes.r2.1.1.sites.chr{chrom}.normalized.vcf.bgz",
         tbi="GRCh38/gnomAD_exomes/r2.1.1/download/gnomad.exomes.r2.1.1.sites.chr{chrom}.normalized.vcf.bgz.tbi",
@@ -251,7 +251,7 @@ rule grch38_gnomad_exomes_r2_1_1_to_tsv:
 
 
 # Rule to generate TSV files from chromosomes
-rule grch38_gnomad_genomes_r3_1_1_to_tsv:
+rule result_grch38_gnomad_genomes_r3_1_1_to_tsv:
     input:
         vcf="GRCh38/gnomAD_genomes/r3.1.1/download/gnomad.genomes.r3.1.1.sites.chr{chrom}.normalized.vcf.bgz",
         tbi="GRCh38/gnomAD_genomes/r3.1.1/download/gnomad.genomes.r3.1.1.sites.chr{chrom}.normalized.vcf.bgz.tbi",
@@ -414,7 +414,7 @@ rule grch38_gnomad_constraints_v2_1_1_download:
         """
 
 
-rule grch38_gnomad_constraints_v2_1_1_tsv:
+rule result_grch38_gnomad_constraints_v2_1_1_tsv:
     input:
         txt="GRCh38/gnomAD_constraints/v2.1.1/download/gnomad.v2.1.1.lof_metrics.by_gene.txt.bgz",
         header="header/gnomadconstraints.txt",

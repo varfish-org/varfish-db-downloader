@@ -1,6 +1,6 @@
 rule noref_refseq_to_ensembl_download:
     output:
-        "{noref}/refseqtoensembl/latest/download/gene2ensembl.gz",
+        "noref/refseqtoensembl/{download_date}/download/gene2ensembl.gz",
     shell:
         r"""
         wget \
@@ -9,13 +9,13 @@ rule noref_refseq_to_ensembl_download:
         """
 
 
-rule noref_refseq_to_ensembl_tsv:
+rule result_noref_refseq_to_ensembl_tsv:
     input:
         header="header/refseqtoensembl.txt",
-        gz="{noref}/refseqtoensembl/latest/download/gene2ensembl.gz",
+        gz="noref/refseqtoensembl/{download_date}/download/gene2ensembl.gz",
     output:
-        tsv="{noref}/refseqtoensembl/latest/RefseqToEnsembl.tsv",
-        release_info="{noref}/refseqtoensembl/latest/RefseqToEnsembl.release_info",
+        tsv="noref/refseqtoensembl/{download_date}/RefseqToEnsembl.tsv",
+        release_info="noref/refseqtoensembl/{download_date}/RefseqToEnsembl.release_info",
     shell:
         r"""
         (
@@ -24,5 +24,5 @@ rule noref_refseq_to_ensembl_tsv:
             | awk -F $"\t" 'BEGIN{{OFS=FS}}$1=="9606"{{split($5,a,".");print $2,$3,a[1]}}'
         ) > {output.tsv}
 
-        echo -e "table\tversion\tgenomebuild\tnull_value\nRefseqToEnsembl\t$(date +%Y/%m/%d)\t{wildcards.genome_build}\t-" > {output.release_info}
+        echo -e "table\tversion\tgenomebuild\tnull_value\nRefseqToEnsembl\t$(date +%Y/%m/%d)\t\t-" > {output.release_info}
         """

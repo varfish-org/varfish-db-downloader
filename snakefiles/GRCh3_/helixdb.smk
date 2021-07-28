@@ -178,7 +178,7 @@ rule GRCh38_helixmtdb_normalize:
         """
 
 
-rule GRChXX_helixmtdb_tsv:
+rule result_GRChXX_helixmtdb_tsv:
     input:
         txt=(
             "{genome_build}/HelixMTdb/20200327/download/HelixMTdb_20200327.splitted.normalized.vcf"

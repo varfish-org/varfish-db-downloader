@@ -7,16 +7,16 @@ rule grch37_clinvar_run_clinvar_tsv:
         hs37d5="GRCh37/reference/hs37d5/hs37d5.fa",
         hs38="GRCh38/reference/hs38/hs38.fa",
     output:
-        b38="GRCh37/clinvar/{clinvar_release}/clinvar_tsv_main/output/clinvar.b38.tsv.gz",
-        b38_tbi="GRCh37/clinvar/{clinvar_release}/clinvar_tsv_main/output/clinvar.b38.tsv.gz.tbi",
-        b37="GRCh37/clinvar/{clinvar_release}/clinvar_tsv_main/output/clinvar.b37.tsv.gz",
-        b37_tbi="GRCh37/clinvar/{clinvar_release}/clinvar_tsv_main/output/clinvar.b37.tsv.gz.tbi",
+        b38="GRCh37/clinvar/{download_date}/clinvar_tsv_main/output/clinvar.b38.tsv.gz",
+        b38_tbi="GRCh37/clinvar/{download_date}/clinvar_tsv_main/output/clinvar.b38.tsv.gz.tbi",
+        b37="GRCh37/clinvar/{download_date}/clinvar_tsv_main/output/clinvar.b37.tsv.gz",
+        b37_tbi="GRCh37/clinvar/{download_date}/clinvar_tsv_main/output/clinvar.b37.tsv.gz.tbi",
         done=[
-            touch("GRCh37/clinvar/{clinvar_release}/clinvar_tsv_main/.done"),
-            touch("GRCh38/clinvar/{clinvar_release}/clinvar_tsv_main/.done"),
+            touch("GRCh37/clinvar/{download_date}/clinvar_tsv_main/.done"),
+            touch("GRCh38/clinvar/{download_date}/clinvar_tsv_main/.done"),
         ],
     log:
-        "GRCh37/clinvar/{clinvar_release}/clinvar_tsv_main/clinvar_tsv.log",
+        "GRCh37/clinvar/{download_date}/clinvar_tsv_main/clinvar_tsv.log",
     shell:
         r"""
         set -x
@@ -31,14 +31,28 @@ rule grch37_clinvar_run_clinvar_tsv:
 
 
 # Copy TSV out to appropriate position, create release_info files.
-rule grchXX_clinvar_postprocess:
+
+
+def input_result_grcxx_clinvar_postprocess(wildcards):
+    vals = {
+        "download_date": wildcards.download_date,
+        "release": wildcards.genome_build.replace("GRCh", ""),
+    }
+    return {
+        "tsv": "GRCh37/clinvar/{download_date}/clinvar_tsv_main/output/clinvar.b{release}.tsv.gz".format(
+            **vals
+        ),
+        "done": "GRCh37/clinvar/{download_date}/clinvar_tsv_main/.done".format(**vals),
+    }
+
+
+rule result_grchxx_clinvar_postprocess:
     input:
-        tsv="GRCh37/clinvar/{clinvar_release}/clinvar_tsv_main/output/clinvar.b{release}.tsv.gz",
-        done="GRCh37/clinvar/{clinvar_release}/clinvar_tsv_main/.done",
+        unpack(input_result_grcxx_clinvar_postprocess),
     output:
-        tsv="GRCh{release}/clinvar/{clinvar_release}/Clinvar.tsv",
-        md5="GRCh{release}/clinvar/{clinvar_release}/Clinvar.tsv.md5",
-        release_info="GRCh{release}/clinvar/{clinvar_release}/Clinvar.release_info",
+        tsv="{genome_build}/clinvar/{download_date}/Clinvar.tsv",
+        md5="{genome_build}/clinvar/{download_date}/Clinvar.tsv.md5",
+        release_info="{genome_build}/clinvar/{download_date}/Clinvar.release_info",
     shell:
         r"""
         set -x
@@ -49,5 +63,5 @@ rule grchXX_clinvar_postprocess:
         md5sum $(basename {output.tsv}) >$(basename {output.tsv}).md5
         popd
 
-        echo -e "table\tversion\tgenomebuild\tnull_value\nClinvar\t$(date +%Y/%m/%d)\tGRCh{wildcards.release}\t" > {output.release_info}
+        echo -e "table\tversion\tgenomebuild\tnull_value\nClinvar\t$(date +%Y/%m/%d)\t{wildcards.genome_build}\t" > {output.release_info}
         """

@@ -4,7 +4,7 @@
 
 rule grchxx_ensembl_to_refseq_download:
     output:
-        "{genome_build}/ensembltorefseq/latest/download/ensembl_to_refseq.tsv",
+        "{genome_build}/ensembltorefseq/{download_date}/download/ensembl_to_refseq.tsv",
     shell:
         r"""
         if [[ {wildcards.genome_build} == GRCh37 ]]; then
@@ -19,13 +19,13 @@ rule grchxx_ensembl_to_refseq_download:
         """
 
 
-rule grchxx_ensembl_to_refseq_tsv:
+rule result_grchxx_ensembl_to_refseq_tsv:
     input:
         header="header/ensembltorefseq.txt",
-        tsv="{genome_build}/ensembltorefseq/latest/download/ensembl_to_refseq.tsv",
+        tsv="{genome_build}/ensembltorefseq/{download_date}/download/ensembl_to_refseq.tsv",
     output:
-        tsv="{genome_build}/ensembltorefseq/latest/EnsemblToRefseq.tsv",
-        release_info="{genome_build}/ensembltorefseq/latest/EnsemblToRefseq.release_info",
+        tsv="{genome_build}/ensembltorefseq/{download_date}/EnsemblToRefseq.tsv",
+        release_info="{genome_build}/ensembltorefseq/{download_date}/EnsemblToRefseq.release_info",
     shell:
         r"""
         (

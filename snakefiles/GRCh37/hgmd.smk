@@ -16,7 +16,7 @@ rule grch37_hgmd_public_download:
         """
 
 
-rule grch37_hgmd_public_to_tsv:
+rule result_grch37_hgmd_public_to_tsv:
     input:
         header="header/hgmd_public.txt",
         txt="GRCh37/hgmd_public/ensembl_r104/download/variation_feature.txt.gz",

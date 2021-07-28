@@ -1,6 +1,6 @@
 rule GRChxx_mgi_download:
     output:
-        "noref/mgi/latest/download/HOM_MouseHumanSequence.rpt",
+        "noref/mgi/{download_date}/download/HOM_MouseHumanSequence.rpt",
     shell:
         r"""
         wget http://www.informatics.jax.org/downloads/reports/HOM_MouseHumanSequence.rpt \
@@ -8,13 +8,13 @@ rule GRChxx_mgi_download:
         """
 
 
-rule GRChxx_mgi_tsv:
+rule result_GRChxx_mgi_tsv:
     input:
-        txt="noref/mgi/latest/download/HOM_MouseHumanSequence.rpt",
+        txt="noref/mgi/{download_date}/download/HOM_MouseHumanSequence.rpt",
         header="header/mgihommousehumansequence.txt",
     output:
-        tsv="noref/mgi/latest/MgiHomMouseHumanSequence.tsv",
-        release_info="noref/mgi/latest/MgiHomMouseHumanSequence.release_info",
+        tsv="noref/mgi/{download_date}/MgiHomMouseHumanSequence.tsv",
+        release_info="noref/mgi/{download_date}/MgiHomMouseHumanSequence.release_info",
     shell:
         r"""
         (
@@ -37,5 +37,5 @@ rule GRChxx_mgi_tsv:
         ) \
         > {output.tsv}
 
-        echo -e "table\tversion\tgenomebuild\tnull_value\nMgiHomMouseHumanSequence\tlatest\t{wildcards.genome_build}\t" > {output.release_info}
+        echo -e "table\tversion\tgenomebuild\tnull_value\nMgiHomMouseHumanSequence\t{wildcards.download_date}\t\t" > {output.release_info}
         """

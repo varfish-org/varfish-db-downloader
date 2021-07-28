@@ -1,6 +1,6 @@
 rule GRChXX_mtdb_download:
     output:
-        "{genome_build}/mtDB/latest/download/mtdb.tsv",
+        "{genome_build}/mtDB/{download_date}/download/mtdb.tsv",
     run:
         from bs4 import BeautifulSoup as bs
         import csv
@@ -32,14 +32,14 @@ rule GRChXX_mtdb_download:
             writer.writerows(result)
 
 
-rule GRChXX_mtdb_tsv:
+rule result_GRChXX_mtdb_tsv:
     input:
         ref="GRCh37/reference/hs37d5/hs37d5.fa",
-        txt="{genome_build}/mtDB/latest/download/mtdb.tsv",
+        txt="{genome_build}/mtDB/{download_date}/download/mtdb.tsv",
         header="header/mtdb.txt",
     output:
-        tsv="{genome_build}/mtDB/latest/MtDb.tsv",
-        release_info="{genome_build}/mtDB/latest/MtDb.release_info",
+        tsv="{genome_build}/mtDB/{download_date}/MtDb.tsv",
+        release_info="{genome_build}/mtDB/{download_date}/MtDb.release_info",
     run:
         import binning
         import csv

@@ -1,7 +1,7 @@
 rule grchXX_dbvar_latest_download:
     output:
         expand(
-            "{{genomebuild}}/dbVar/latest/download/{{type}}/{{genomebuild}}.nr_{{type}}.{ending}{md5}",
+            "{{genome_build}}/dbVar/{{download_date}}/download/{{type}}/{{genome_build}}.nr_{{type}}.{ending}{md5}",
             ending=["bed.gz", "bedpe.gz", "tsv.gz", "acmg_genes.tsv.gz"],
             md5=["", ".md5"],
         ),
@@ -10,7 +10,7 @@ rule grchXX_dbvar_latest_download:
         cd $(dirname $(dirname {output[0]}))
 
         # mirror server
-        echo 'mirror -P 8 --include="{wildcards.genomebuild}"' | lftp http://ftp.ncbi.nlm.nih.gov/pub/dbVar/sandbox/sv_datasets/nonredundant/
+        echo 'mirror -P 8 --include="{wildcards.genome_build}"' | lftp http://ftp.ncbi.nlm.nih.gov/pub/dbVar/sandbox/sv_datasets/nonredundant/
 
         # set rights as the image has no execute rights to access the folders.
         chmod ug+wX -R .
@@ -23,25 +23,25 @@ rule grchXX_dbvar_latest_download:
 rule grchXX_dbvar_latest_tsv:
     input:
         header="header/dbvarsv.txt",
-        tsv="{genomebuild}/dbVar/latest/download/{type}/{genomebuild}.nr_{type}.tsv.gz",
+        tsv="{genome_build}/dbVar/{download_date}/download/{type}/{genome_build}.nr_{type}.tsv.gz",
     output:
-        tsv=temp("{genomebuild}/dbVar/latest/DbVarSv:{type}.tsv"),
-        release_info=temp("{genomebuild}/dbVar/latest/DbVarSv:{type}.release_info"),
+        tsv=temp("{genome_build}/dbVar/{download_date}/DbVarSv:{type}.tsv"),
+        release_info=temp("{genome_build}/dbVar/{download_date}/DbVarSv:{type}.release_info"),
     run:
         to_tsv(input.tsv, output.tsv, output.release_info, input.header)
 
 
-rule grchXX_dbvar_merge_tsv:
+rule result_grchXX_dbvar_merge_tsv:
     input:
-        tsv_del="{genomebuild}/dbVar/latest/DbVarSv:deletions.tsv",
-        tsv_dup="{genomebuild}/dbVar/latest/DbVarSv:duplications.tsv",
-        tsv_ins="{genomebuild}/dbVar/latest/DbVarSv:insertions.tsv",
-        release_info_del="{genomebuild}/dbVar/latest/DbVarSv:deletions.release_info",
-        release_info_dup="{genomebuild}/dbVar/latest/DbVarSv:duplications.release_info",
-        release_info_ins="{genomebuild}/dbVar/latest/DbVarSv:insertions.release_info",
+        tsv_del="{genome_build}/dbVar/{download_date}/DbVarSv:deletions.tsv",
+        tsv_dup="{genome_build}/dbVar/{download_date}/DbVarSv:duplications.tsv",
+        tsv_ins="{genome_build}/dbVar/{download_date}/DbVarSv:insertions.tsv",
+        release_info_del="{genome_build}/dbVar/{download_date}/DbVarSv:deletions.release_info",
+        release_info_dup="{genome_build}/dbVar/{download_date}/DbVarSv:duplications.release_info",
+        release_info_ins="{genome_build}/dbVar/{download_date}/DbVarSv:insertions.release_info",
     output:
-        tsv="{genomebuild}/dbVar/latest/DbVarSv.tsv",
-        release_info="{genomebuild}/dbVar/latest/DbVarSv.release_info",
+        tsv="{genome_build}/dbVar/{download_date}/DbVarSv.tsv",
+        release_info="{genome_build}/dbVar/{download_date}/DbVarSv.release_info",
     shell:
         r"""
         (

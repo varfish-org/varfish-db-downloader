@@ -73,7 +73,7 @@ rule grch37_thousand_genomes_sv_download:
         """
 
 
-rule grch37_thousand_genomes_sv_tsv:
+rule result_grch37_thousand_genomes_sv_tsv:
     input:
         # ``tbi`` is required for vcf parsing but not passed to the to_tsv function.
         "GRCh37/thousand_genomes/phase3/download/ALL.wgs.mergedSV.v8.20130502.svs.genotypes.vcf.gz.tbi",
@@ -148,7 +148,7 @@ rule grch37_thousand_genomes_joint:
         """
 
 
-rule grch37_thousand_genomes_tsv:
+rule result_grch37_thousand_genomes_tsv:
     input:
         header="header/thousand_genomes.txt",
         vcf="GRCh37/thousand_genomes/phase3/ALL.phase3_shapeit2_mvncall_integrated_v5b.20130502.sites.vcf.gz",

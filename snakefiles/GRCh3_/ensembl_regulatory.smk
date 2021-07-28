@@ -1,6 +1,6 @@
 rule grchxx_ensembl_regulatory_download:
     output:
-        tsv="{genome_build}/ensembl_regulatory/latest/download/EnsemblRegulatoryFeature.tsv",
+        tsv="{genome_build}/ensembl_regulatory/{download_date}/download/EnsemblRegulatoryFeature.tsv",
     shell:
         r"""
         if [[ {wildcards.genome_build} == GRCh37 ]]; then
@@ -18,15 +18,15 @@ rule grchxx_ensembl_regulatory_download:
         """
 
 
-rule grchxx_ensembl_regulatory_tsv:
+rule result_grchxx_ensembl_regulatory_tsv:
     input:
-        tsv="{genome_build}/ensembl_regulatory/latest/download/EnsemblRegulatoryFeature.tsv",
+        tsv="{genome_build}/ensembl_regulatory/{download_date}/download/EnsemblRegulatoryFeature.tsv",
         header="header/ensembl_regulatory.txt",
     output:
-        tsv="{genome_build}/ensembl_regulatory/latest/EnsemblRegulatoryFeature.tsv",
-        release_info=(
-            "{genome_build}/ensembl_regulatory/latest/EnsemblRegulatoryFeature.release_info"
-        ),
+        tsv="{genome_build}/ensembl_regulatory/{download_date}/EnsemblRegulatoryFeature.tsv",
+        release_info="{genome_build}/ensembl_regulatory/{download_date}/EnsemblRegulatoryFeature.release_info",
+    wildcard_constraints:
+        download_date="[^/]+",
     shell:
         r"""
         (
@@ -37,5 +37,5 @@ rule grchxx_ensembl_regulatory_tsv:
         | python tools/ucsc_binning.py \
         > {output.tsv}
 
-        echo -e "table\tversion\tgenomebuild\tnull_value\nEnsemblRegulatoryFeature\tlatest\t{wildcards.genome_build}\t" > {output.release_info}
+        echo -e "table\tversion\tgenomebuild\tnull_value\nEnsemblRegulatoryFeature\t{wildcards.download_date}\t{wildcards.genome_build}\t" > {output.release_info}
         """

@@ -44,7 +44,7 @@ rule grch37_exac_v1_0_0_cnv_download:
         """
 
 
-rule grch37_exac_v1_0_0_cnv_tsv:
+rule result_grch37_exac_v1_0_0_cnv_tsv:
     input:
         header="header/exaccnv.txt",
         bed="GRCh37/ExAC/r1/download/exac-final.autosome-1pct-sq60-qc-prot-coding.cnv.bed",
@@ -82,7 +82,7 @@ rule grch37_exac_v1_0_0_normalize:
         """
 
 
-rule grch37_exac_v1_0_0_tsv:
+rule result_grch37_exac_v1_0_0_tsv:
     input:
         vcf="GRCh37/ExAC/r1/ExAC.r1.sites.vep.vcf.gz",
         tbi="GRCh37/ExAC/r1/ExAC.r1.sites.vep.vcf.gz.tbi",
@@ -171,7 +171,7 @@ rule grch37_exac_constraints_r0_3_1_download:
         """
 
 
-rule grch37_exac_constraints_r0_3_1_tsv:
+rule result_grch37_exac_constraints_r0_3_1_tsv:
     input:
         txt="GRCh37/ExAC_constraints/r0.3.1/download/fordist_cleaned_exac_r03_march16_z_pli_rec_null_data.txt",
         header="header/exacconstraints.txt",

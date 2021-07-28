@@ -1,9 +1,6 @@
-# TODO: rename "latest" to build date from configuration
-
-
 rule GRCh37_mitomap_download:
     output:
-        "GRCh37/MITOMAP/latest/download/polymorphisms.vcf",
+        "GRCh37/MITOMAP/{download_date}/download/polymorphisms.vcf",
     shell:
         r"""
         wget http://mitomap.org/cgi-bin/polymorphisms.cgi?format=vcf \
@@ -13,14 +10,14 @@ rule GRCh37_mitomap_download:
 
 rule GRChXX_mitomap_normalize:
     input:
-        vcf="GRCh37/MITOMAP/latest/download/polymorphisms.vcf",
+        vcf="GRCh37/MITOMAP/{download_date}/download/polymorphisms.vcf",
         ref="GRCh37/reference/hs37d5/hs37d5.fa",
     output:
-        vcf="{reference}/MITOMAP/latest/download/polymorphisms.normalized.annotated.vcf",
-        norm=temp("{reference}/MITOMAP/latest/download/polymorphisms.normalized.vcf"),
-        txt_tmp=temp("{reference}/MITOMAP/latest/download/query-result.txt"),
-        ann=temp("{reference}/MITOMAP/latest/download/annotate.bed.gz"),
-        anntbi=temp("{reference}/MITOMAP/latest/download/annotate.bed.gz.tbi"),
+        vcf="{reference}/MITOMAP/{download_date}/download/polymorphisms.normalized.annotated.vcf",
+        norm=temp("{reference}/MITOMAP/{download_date}/download/polymorphisms.normalized.vcf"),
+        txt_tmp=temp("{reference}/MITOMAP/{download_date}/download/query-result.txt"),
+        ann=temp("{reference}/MITOMAP/{download_date}/download/annotate.bed.gz"),
+        anntbi=temp("{reference}/MITOMAP/{download_date}/download/annotate.bed.gz.tbi"),
     shell:
         r"""
         perl -p -e 's/;HGFL=[^;\s]*;?//g' {input.vcf} | perl -p -e 's/;FreqCR=[^;\s]*;?//g' \
@@ -47,23 +44,25 @@ rule GRChXX_mitomap_normalize:
         """
 
 
-rule GRChXX_mitomap_tsv:
+rule result_GRChXX_mitomap_tsv:
     input:
-        vcf="{reference}/MITOMAP/latest/download/polymorphisms.normalized.annotated.vcf",
+        vcf=(
+            "{genome_build}/MITOMAP/{download_date}/download/polymorphisms.normalized.annotated.vcf"
+        ),
         header="header/mitomap.txt",
     output:
-        tsv="{reference}/MITOMAP/latest/Mitomap.tsv",
-        release_info="{reference}/MITOMAP/latest/Mitomap.release_info",
+        tsv="{genome_build}/MITOMAP/{download_date}/Mitomap.tsv",
+        release_info="{genome_build}/MITOMAP/{download_date}/Mitomap.release_info",
     shell:
         r"""
         (
             cat {input.header} | tr '\n' '\t' | sed -e 's/\t*$/\n/g';
             bcftools query \
-                -f "{wildcards.reference}\t%CHROM\t%POS\t%END\t\t%REF\t%ALT\t%AC\t%AN\t%AF\n" \
+                -f "{wildcards.genome_build}\t%CHROM\t%POS\t%END\t\t%REF\t%ALT\t%AC\t%AN\t%AF\n" \
                 {input.vcf}
         ) \
         | python tools/ucsc_binning.py \
         > {output.tsv}
 
-        echo -e "table\tversion\tgenomebuild\tnull_value\nMitomap\t$(date +%Y/%m/%d)\t{wildcards.reference}\t." > {output.release_info}
+        echo -e "table\tversion\tgenomebuild\tnull_value\nMitomap\t$(date +%Y/%m/%d)\t{wildcards.genome_build}\t." > {output.release_info}
         """

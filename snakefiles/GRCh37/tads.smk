@@ -12,7 +12,7 @@ rule GRCh37_tads_hesc_download:
         """
 
 
-rule GRCh37_tads_hesc_tsv:
+rule result_GRCh37_tads_hesc_tsv:
     input:
         header="header/tads.txt",
         tsv="GRCh37/tads_hesc/dixon2012/download/hESC_domains_hg19.bed",
@@ -47,7 +47,7 @@ rule GRCh37_tads_imr90_download:
         """
 
 
-rule GRCh37_tads_imr90_tsv:
+rule result_GRCh37_tads_imr90_tsv:
     input:
         header="header/tads.txt",
         tsv="GRCh37/tads_imr90/dixon2012/download/hESC_domains_hg19.bed",

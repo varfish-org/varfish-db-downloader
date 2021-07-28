@@ -38,7 +38,7 @@ rule grchXX_kegg_download_kegginfo:
         """
 
 
-rule grchXX_kegg_to_tsv:
+rule result_grchXX_kegg_to_tsv:
     input:
         header_ensembl_to_kegg="header/ensembltokegg.txt",
         header_refseq_to_kegg="header/refseqtokegg.txt",
@@ -92,7 +92,7 @@ rule grchXX_kegg_to_tsv:
         ) \
         > {output.kegg_info}
 
-        echo -e "table\tversion\tgenomebuild\tnull_value\nKeggInfo\tApril 2011 (via UCSC Genome Browser)\t{wildcards.genome_release}\t" > {output.release_info_kegginfo}
-        echo -e "table\tversion\tgenomebuild\tnull_value\nEnsemblToKegg\tApril 2011 (via UCSC Genome Browser)\t{wildcards.genome_release}\t" > {output.release_info_ensembltokegg}
-        echo -e "table\tversion\tgenomebuild\tnull_value\nRefseqToKegg\tApril 2011 (via UCSC Genome Browser)\t{wildcards.genome_release}\t" > {output.release_info_refseqtokegg}
+        echo -e "table\tversion\tgenomebuild\tnull_value\nKeggInfo\tApril 2011 (via UCSC Genome Browser)\t\t" > {output.release_info_kegginfo}
+        echo -e "table\tversion\tgenomebuild\tnull_value\nEnsemblToKegg\tApril 2011 (via UCSC Genome Browser)\t\t" > {output.release_info_ensembltokegg}
+        echo -e "table\tversion\tgenomebuild\tnull_value\nRefseqToKegg\tApril 2011 (via UCSC Genome Browser)\t\t" > {output.release_info_refseqtokegg}
         """

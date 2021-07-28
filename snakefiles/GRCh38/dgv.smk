@@ -24,7 +24,7 @@ rule grch38_dgv_2020_download:
         """
 
 
-rule grch38_dgv_2020_tsv:
+rule result_grch38_dgv_2020_tsv:
     input:
         header="header/dgvsvs.txt",
         txt="GRCh38/DGV/2020/download/GRCh38_hg38_variants_2020-02-25.txt",
@@ -35,7 +35,7 @@ rule grch38_dgv_2020_tsv:
         to_tsv(input.txt, output.tsv, output.release_info, input.header)
 
 
-rule grch38_dgv_goldstandard_2020_tsv:
+rule result_grch38_dgv_goldstandard_2020_tsv:
     input:
         header="header/dgvgoldstandardsvs.txt",
         gff="GRCh38/DGV/2020/download/DGV.GS.hg38.gff3",

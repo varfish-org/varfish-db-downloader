@@ -1,4 +1,4 @@
-rule noref_acmg:
+rule result_noref_acmg:
     output:
         tsv="output/noref/acmg/v3.0/Acmg.tsv",
         release_info="output/noref/acmg/v3.0/Acmg.release_info",
@@ -84,5 +84,5 @@ rule noref_acmg:
         ENSG00000184937    WT1    7490
 
         EOF
-        echo -e "table\tversion\tgenomebuild\tnull_value\nAcmg\tv3.0\t{wildcards.reference}\t" > {output.release_info}
+        echo -e "table\tversion\tgenomebuild\tnull_value\nAcmg\tv3.0\t\t" > {output.release_info}
         """

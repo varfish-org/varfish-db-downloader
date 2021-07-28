@@ -27,7 +27,7 @@ rule GRCh37_refseq_genes_download:
         """
 
 
-rule GRCh37_refseq_genes_tsv:
+rule result_GRCh37_refseq_genes_tsv:
     input:
         tsv="GRCh37/refseq_genes/r105/download/GeneInterval.tsv",
         header="header/genes.txt",
@@ -67,7 +67,7 @@ rule GRCh37_ensembl_genes_download:
         """
 
 
-rule GRCh37_ensembl_genes_tsv:
+rule result_GRCh37_ensembl_genes_tsv:
     input:
         tsv="GRCh37/ensembl_genes/r104/download/GeneInterval.tsv",
         header="header/genes.txt",

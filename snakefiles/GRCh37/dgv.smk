@@ -26,7 +26,7 @@ rule grch37_dgv_2016_download:
         """
 
 
-rule grch37_dgv_2020_tsv:
+rule result_grch37_dgv_2020_tsv:
     input:
         header="header/dgvsvs.txt",
         txt="GRCh37/DGV/2020/download/GRCh37_hg19_variants_2020-02-25.txt",
@@ -37,7 +37,7 @@ rule grch37_dgv_2020_tsv:
         to_tsv(input.txt, output.tsv, output.release_info, input.header)
 
 
-rule grch37_dgv_goldstandard_2016_tsv:
+rule result_grch37_dgv_goldstandard_2016_tsv:
     input:
         header="header/dgvgoldstandardsvs.txt",
         gff="GRCh37/DGV/2016/download/DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3",

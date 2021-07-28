@@ -72,7 +72,7 @@ rule grch38_dbsnp_b155_normalize:
         """
 
 
-rule grch38_dbsnp_b155_tsv:
+rule result_grch38_dbsnp_b155_tsv:
     input:
         header="header/dbsnp.txt",
         vcf="GRCh38/dbSNP/b155/download/GCF_000001405.39.normalized.{chrom}.vcf.gz",

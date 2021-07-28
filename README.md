@@ -87,3 +87,11 @@ release version and can be used with which VarFish Server version:
 
 - Use `wget` only and not `curl`.
   The rationale is that for the "test mode", we are overriding a single command with a helper command.
+- Output files either go to `GRCh37/...`, or `GRCh38/...` or `noref/...`.
+- All `*.smk` files in `snakefiles/*` are automatically included and the output files are dynamically computed from this.
+  This implies we have to follow some conventions in for rule names and output file list.
+    - When using the genome build as a wildcards, it must be called `{genome_build}`.
+    - Lists generating output files to be included in data release must be called `result_`.
+    - You can use `{chrom}` for the chromosomes `1, 2, ..., 22, X, Y`.
+    - Any other wildcard in the output file must be an entry in the configuration read from `configfile: "config.yaml"`.
+      The canonical example is `download_date`.

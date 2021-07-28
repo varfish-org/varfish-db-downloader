@@ -3,7 +3,7 @@
 
 rule grchXX_mim2gene_medgen_download:
     output:
-        txt="noref/mim2gene/latest/download/mim2gene_medgen",
+        txt="noref/mim2gene/{download_date}/download/mim2gene_medgen",
     shell:
         r"""
         wget \
@@ -12,13 +12,13 @@ rule grchXX_mim2gene_medgen_download:
         """
 
 
-rule grchXX_mim2gene_medgen_to_tsv:
+rule result_grchXX_mim2gene_medgen_to_tsv:
     input:
         header="header/mim2gene.txt",
-        txt="noref/mim2gene/latest/download/mim2gene_medgen",
+        txt="noref/mim2gene/{download_date}/download/mim2gene_medgen",
     output:
-        tsv="noref/mim2gene/latest/Mim2geneMedgen.tsv",
-        release_info="noref/mim2gene/latest/Mim2geneMedgen.release_info",
+        tsv="noref/mim2gene/{download_date}/Mim2geneMedgen.tsv",
+        release_info="noref/mim2gene/{download_date}/Mim2geneMedgen.release_info",
     shell:
         r"""
         (
@@ -27,5 +27,5 @@ rule grchXX_mim2gene_medgen_to_tsv:
         ) \
         > {output.tsv}
 
-        echo -e "table\tversion\tgenomebuild\tnull_value\nMim2geneMedgen\t$(date +%Y/%m/%d)\t{wildcards.genome_release}\t-" > {output.release_info}
+        echo -e "table\tversion\tgenomebuild\tnull_value\nMim2geneMedgen\t$(date +%Y/%m/%d)\t\t-" > {output.release_info}
         """

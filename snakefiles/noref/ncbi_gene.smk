@@ -3,10 +3,10 @@
 
 rule noref_ncbi_gene_download:
     output:
-        ags="noref/ncbi_gene/latest/download/Homo_sapiens.ags.gz",
-        ags_md5="noref/ncbi_gene/latest/download/Homo_sapiens.ags.gz.md5",
-        gene2xml="noref/ncbi_gene/latest/download/linux64.gene2xml",
-        gene2xml_md5="noref/ncbi_gene/latest/download/linux64.gene2xml.md5",
+        ags="noref/ncbi_gene/{download_date}/download/Homo_sapiens.ags.gz",
+        ags_md5="noref/ncbi_gene/{download_date}/download/Homo_sapiens.ags.gz.md5",
+        gene2xml="noref/ncbi_gene/{download_date}/download/linux64.gene2xml",
+        gene2xml_md5="noref/ncbi_gene/{download_date}/download/linux64.gene2xml.md5",
     shell:
         r"""
         cd $(dirname {output.ags})
@@ -29,15 +29,15 @@ rule noref_ncbi_gene_download:
         """
 
 
-rule noref_ncbi_gene_process:
+rule result_noref_ncbi_gene_process:
     input:
-        ags="noref/ncbi_gene/latest/download/Homo_sapiens.ags.gz",
-        gene2xml="noref/ncbi_gene/latest/download/linux64.gene2xml",
+        ags="noref/ncbi_gene/{download_date}/download/Homo_sapiens.ags.gz",
+        gene2xml="noref/ncbi_gene/{download_date}/download/linux64.gene2xml",
     output:
-        release_info_ncbi_gene_info="noref/ncbi_gene/latest/NcbiGeneInfo.release_info",
-        release_info_ncbi_gene_rif="noref/ncbi_gene/latest/NcbiGeneRif.release_info",
-        ncbi_gene_info_tsv="noref/ncbi_gene/latest/NcbiGeneInfo.tsv",
-        ncbi_gene_rif_tsv="noref/ncbi_gene/latest/NcbiGeneRif.tsv",
+        release_info_ncbi_gene_info="noref/ncbi_gene/{download_date}/NcbiGeneInfo.release_info",
+        release_info_ncbi_gene_rif="noref/ncbi_gene/{download_date}/NcbiGeneRif.release_info",
+        ncbi_gene_info_tsv="noref/ncbi_gene/{download_date}/NcbiGeneInfo.tsv",
+        ncbi_gene_rif_tsv="noref/ncbi_gene/{download_date}/NcbiGeneRif.tsv",
     shell:
         r"""
         ./{input.gene2xml} -b T -c T -i {input.ags} \
@@ -59,6 +59,6 @@ rule noref_ncbi_gene_process:
         md5sum $(basename {output.ncbi_gene_rif_tsv}) > $(basename {output.ncbi_gene_rif_tsv}).md5
         popd
 
-        echo -e "table\tversion\tgenomebuild\tnull_value\nNcbiGeneInfo\t$(date +%Y-%m-%d)\t{wildcards.genome_release}\t" > {output.release_info_ncbi_gene_info}
-        echo -e "table\tversion\tgenomebuild\tnull_value\nNcbiGeneRif\t$(date +%Y-%m-%d)\t{wildcards.genome_release}\t" > {output.release_info_ncbi_gene_rif}
+        echo -e "table\tversion\tgenomebuild\tnull_value\nNcbiGeneInfo\t$(date +%Y-%m-%d)\t\t" > {output.release_info_ncbi_gene_info}
+        echo -e "table\tversion\tgenomebuild\tnull_value\nNcbiGeneRif\t$(date +%Y-%m-%d)\t\t" > {output.release_info_ncbi_gene_rif}
         """

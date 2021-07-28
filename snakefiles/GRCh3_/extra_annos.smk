@@ -2,7 +2,7 @@ import sys
 import tqdm
 
 
-rule GRChXX_extra_annos_release_info:
+rule result_GRChXX_extra_annos_release_info:
     input:
         "{genome_build}/extra-annos/20200704/ExtraAnno.tsv",
         "{genome_build}/extra-annos/20200704/ExtraAnnoField.tsv",
@@ -16,7 +16,7 @@ rule GRChXX_extra_annos_release_info:
         """
 
 
-rule GRChXX_extra_annos_tsv_step_1:
+rule result_GRChXX_extra_annos_tsv_step_1:
     input:
         bed="{genome_build}/extra-annos/20200704/download/refseq_ensembl_exons.bed",
         cadd_snvs="{genome_build}/extra-annos/20200704/download/whole_genome_SNVs_inclAnno.tsv.gz",
@@ -74,7 +74,7 @@ class DecodeDotAsNull(json.JSONDecoder):
             return super().object_hook(obj)
 
 
-rule GRChXX_extra_annos_tsv_step_2:
+rule result_GRChXX_extra_annos_tsv_step_2:
     input:
         tsv="{genome_build}/extra-annos/20200704/download/ExtraAnno.tsv",
     output:

@@ -1,6 +1,6 @@
 rule GRCh37_vista_download:
     output:
-        tsv="GRCh37/vista/latest/download/VistaEnhancer.tsv",
+        tsv="GRCh37/vista/{download_date}/download/VistaEnhancer.tsv",
     shell:
         r"""
         2>/dev/null wget -O - 'https://enhancer.lbl.gov/cgi-bin/imagedb3.pl?page_size=100;show=1;search.result=yes;search.form=no;form=search;action=search;search.org=Both;search.sequence=1' \
@@ -17,13 +17,15 @@ rule GRCh37_vista_download:
         """
 
 
-rule GRCh37_vista_tsv:
+rule result_GRCh37_vista_tsv:
     input:
-        tsv="GRCh37/vista/latest/download/VistaEnhancer.tsv",
+        tsv="GRCh37/vista/{download_date}/download/VistaEnhancer.tsv",
         header="header/vista.txt",
     output:
-        tsv="GRCh37/vista/latest/VistaEnhancer.tsv",
-        release_info="GRCh37/vista/latest/VistaEnhancer.release_info",
+        tsv="GRCh37/vista/{download_date}/VistaEnhancer.tsv",
+        release_info="GRCh37/vista/{download_date}/VistaEnhancer.release_info",
+    wildcard_constraints:
+        download_date="[^/]+",
     shell:
         r"""
         (
@@ -34,5 +36,5 @@ rule GRCh37_vista_tsv:
         | python tools/ucsc_binning.py \
         > {output.tsv}
 
-        echo -e "table\tversion\tgenomebuild\tnull_value\nVistaEnhancer\tlatest\tGRCh37\t" > {output.release_info}
+        echo -e "table\tversion\tgenomebuild\tnull_value\nVistaEnhancer\t{wildcards.download_date}\tGRCh37\t" > {output.release_info}
         """

@@ -1,9 +1,11 @@
-rule grchxx_ensembl_to_genesymbol:
+rule result_grchxx_ensembl_to_genesymbol:
     input:
         "header/ensembltogenesymbol.txt",
     output:
-        tsv="{genome_build}/ensembltogenesymbol/latest/EnsemblToGeneSymbol.tsv",
-        release_info="{genome_build}/ensembltogenesymbol/latest/EnsemblToGeneSymbol.release_info",
+        tsv="{genome_build}/ensembltogenesymbol/{download_date}/EnsemblToGeneSymbol.tsv",
+        release_info=(
+            "{genome_build}/ensembltogenesymbol/{download_date}/EnsemblToGeneSymbol.release_info"
+        ),
     shell:
         r"""
         (
@@ -14,5 +16,5 @@ rule grchxx_ensembl_to_genesymbol:
         ) \
         > {output.tsv}
 
-        echo -e "table\tversion\tgenomebuild\tnull_value\nEnsemblToGeneSymbol\tlatest\t{wildcards.genome_build}\t" > {output.release_info}
+        echo -e "table\tversion\tgenomebuild\tnull_value\nEnsemblToGeneSymbol\t{wildcards.download_date}\t{wildcards.genome_build}\t" > {output.release_info}
         """
