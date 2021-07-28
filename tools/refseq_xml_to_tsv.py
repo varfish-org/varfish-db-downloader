@@ -49,7 +49,14 @@ def extract_generif_process_entrezgene(elem_entrezgene, writer):
             if elem_heading is not None and elem_heading.text == "Interactions":
                 continue  # skip, too noisy for our purposes
             elem_text = elem_commentary.find("./Gene-commentary_text")
-            elem_refs = "{%s}" % ",".join([ref.text for ref in elem_commentary.findall("./Gene-commentary_refs/Pub/Pub_pmid/PubMedId")])
+            elem_refs = "{%s}" % ",".join(
+                [
+                    ref.text
+                    for ref in elem_commentary.findall(
+                        "./Gene-commentary_refs/Pub/Pub_pmid/PubMedId"
+                    )
+                ]
+            )
             if elem_text is not None:
                 writer.writerow([gene_id, elem_text.text, elem_refs])
 

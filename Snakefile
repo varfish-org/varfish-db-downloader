@@ -1,4 +1,6 @@
+import glob
 import os
+import sys
 
 from snakemake import shell
 from tools.sv_db_to_tsv import to_tsv
@@ -8,7 +10,7 @@ from datetime import date
 shell.prefix("set -x; set -euo pipefail; ")
 
 
-CHROMS = (list(range(1, 23)) + ['X'])
+CHROMS = list(range(1, 23)) + ["X"]
 
 RELEASE_PATH = os.getenv("RELEASE_PATH", "releases")
 
@@ -16,21 +18,56 @@ DATA_RELEASE = os.getenv("DATA_RELEASE", date.today().strftime("%Y%m%d"))
 CLINVAR_RELEASE = os.getenv("CLINVAR_RELEASE", date.today().strftime("%Y%m%d"))
 JANNOVAR_RELEASE = os.getenv("JANNOVAR_RELEASE", date.today().strftime("%Y%m%d"))
 
-VARFISH_SERVER_BACKGROUND_PATH = expand("{release_path}/varfish-server-background-db-{date}", release_path=RELEASE_PATH, date=DATA_RELEASE)
-VARFISH_ANNOTATOR_DB_PATH = expand("{release_path}/varfish-annotator-db-{date}", release_path=RELEASE_PATH, date=DATA_RELEASE)
-VARFISH_ANNOTATOR_PATH = expand("{release_path}/varfish-annotator-{date}", release_path=RELEASE_PATH, date=DATA_RELEASE)
-JANNOVAR_DB_PATH = expand("{release_path}/jannovar-db-{date}", release_path=RELEASE_PATH, date=JANNOVAR_RELEASE)
+VARFISH_SERVER_BACKGROUND_PATH = expand(
+    "{release_path}/varfish-server-background-db-{date}",
+    release_path=RELEASE_PATH,
+    date=DATA_RELEASE,
+)
+VARFISH_ANNOTATOR_DB_PATH = expand(
+    "{release_path}/varfish-annotator-db-{date}", release_path=RELEASE_PATH, date=DATA_RELEASE
+)
+VARFISH_ANNOTATOR_PATH = expand(
+    "{release_path}/varfish-annotator-{date}", release_path=RELEASE_PATH, date=DATA_RELEASE
+)
+JANNOVAR_DB_PATH = expand(
+    "{release_path}/jannovar-db-{date}", release_path=RELEASE_PATH, date=JANNOVAR_RELEASE
+)
 
-VARFISH_ANNOTATOR_DB_FILE = expand("{varfish_annotator_db}.h2.db", varfish_annotator_db=VARFISH_ANNOTATOR_DB_PATH)
-JANNOVAR_FILES = expand("{jannovar_db_path}/hg19_{database}.ser", jannovar_db_path=JANNOVAR_DB_PATH, database=["ensembl", "refseq_curated"])
-VARFISH_ANNOTATOR_FILES = VARFISH_ANNOTATOR_DB_FILE + JANNOVAR_FILES + ["GRCh37/reference/hs37d5/hs37d5.fa", "GRCh37/reference/hs37d5/hs37d5.fa.fai"]
+VARFISH_ANNOTATOR_DB_FILE = expand(
+    "{varfish_annotator_db}.h2.db", varfish_annotator_db=VARFISH_ANNOTATOR_DB_PATH
+)
+JANNOVAR_FILES = expand(
+    "{jannovar_db_path}/hg19_{database}.ser",
+    jannovar_db_path=JANNOVAR_DB_PATH,
+    database=["ensembl", "refseq_curated"],
+)
+VARFISH_ANNOTATOR_FILES = (
+    VARFISH_ANNOTATOR_DB_FILE
+    + JANNOVAR_FILES
+    + ["GRCh37/reference/hs37d5/hs37d5.fa", "GRCh37/reference/hs37d5/hs37d5.fa.fai"]
+)
 VARFISH_ANNOTATOR_FILES_OUT = [os.path.basename(file) for file in VARFISH_ANNOTATOR_FILES]
 VARFISH_ANNOTATOR_H2_FILES = [
-    *expand("GRCh37/clinvar/{clinvar_release}/clinvar_tsv_main/output/clinvar.b37.tsv.gz{index}", clinvar_release=CLINVAR_RELEASE, index=["", ".tbi"]),
+    *expand(
+        "GRCh37/clinvar/{clinvar_release}/clinvar_tsv_main/output/clinvar.b37.tsv.gz{index}",
+        clinvar_release=CLINVAR_RELEASE,
+        index=["", ".tbi"],
+    ),
     *expand("GRCh37/ExAC/r1/download/ExAC.r1.sites.vep.vcf.gz{index}", index=["", ".tbi"]),
-    *expand("GRCh37/gnomAD_exomes/r2.1/download/gnomad.exomes.r2.1.sites.chr{chrom}.normalized.vcf.bgz{index}", chrom=CHROMS, index=["", ".tbi"]),
-    *expand("GRCh37/gnomAD_genomes/r2.1/download/gnomad.genomes.r2.1.sites.chr{chrom}.normalized.vcf.bgz{index}", chrom=CHROMS, index=["", ".tbi"]),
-    *expand("GRCh37/thousand_genomes/phase3/ALL.phase3_shapeit2_mvncall_integrated_v5a.20130502.sites.vcf.gz{index}", index=["", ".tbi"]),
+    *expand(
+        "GRCh37/gnomAD_exomes/r2.1/download/gnomad.exomes.r2.1.sites.chr{chrom}.normalized.vcf.bgz{index}",
+        chrom=CHROMS,
+        index=["", ".tbi"],
+    ),
+    *expand(
+        "GRCh37/gnomAD_genomes/r2.1/download/gnomad.genomes.r2.1.sites.chr{chrom}.normalized.vcf.bgz{index}",
+        chrom=CHROMS,
+        index=["", ".tbi"],
+    ),
+    *expand(
+        "GRCh37/thousand_genomes/phase3/ALL.phase3_shapeit2_mvncall_integrated_v5a.20130502.sites.vcf.gz{index}",
+        index=["", ".tbi"],
+    ),
     "GRCh37/hgmd_public/ensembl_r75/HgmdPublicLocus.tsv",
     "GRCh37/reference/hs37d5/hs37d5.fa",
     "GRCh37/reference/hs37d5/hs37d5.fa.fai",
@@ -42,8 +79,8 @@ VARFISH_FILES = [
     "GRCh38/clinvar/{}/Clinvar.tsv".format(CLINVAR_RELEASE),
     "GRCh38/clinvar/{}/Clinvar.release_info".format(CLINVAR_RELEASE),
     # dbsnp
-    *expand("GRCh37/dbSNP/b151/Dbsnp.{chrom}.tsv", chrom=CHROMS+['Y', 'MT']),
-    *expand("GRCh37/dbSNP/b151/Dbsnp.{chrom}.release_info", chrom=CHROMS+['Y', 'MT']),
+    *expand("GRCh37/dbSNP/b151/Dbsnp.{chrom}.tsv", chrom=CHROMS + ["Y", "MT"]),
+    *expand("GRCh37/dbSNP/b151/Dbsnp.{chrom}.release_info", chrom=CHROMS + ["Y", "MT"]),
     # exac
     "GRCh37/ExAC/r1/Exac.tsv",
     "GRCh37/ExAC/r1/Exac.release_info",
@@ -166,16 +203,22 @@ VARFISH_FILES_WITH_IMPORT = VARFISH_FILES + ["import_versions.tsv"]
 
 rule all:
     input:
-        expand("{linkout}/{file}", linkout=VARFISH_SERVER_BACKGROUND_PATH, file=VARFISH_FILES_WITH_IMPORT),
-        expand("{linkout}/{file}", linkout=VARFISH_ANNOTATOR_DB_PATH, file=VARFISH_ANNOTATOR_H2_FILES),
-        expand("{linkout}/{file}", linkout=VARFISH_ANNOTATOR_PATH, file=VARFISH_ANNOTATOR_FILES_OUT)
+        expand(
+            "{linkout}/{file}",
+            linkout=VARFISH_SERVER_BACKGROUND_PATH,
+            file=VARFISH_FILES_WITH_IMPORT,
+        ),
+        expand(
+            "{linkout}/{file}", linkout=VARFISH_ANNOTATOR_DB_PATH, file=VARFISH_ANNOTATOR_H2_FILES
+        ),
+        expand("{linkout}/{file}", linkout=VARFISH_ANNOTATOR_PATH, file=VARFISH_ANNOTATOR_FILES_OUT),
 
 
 rule generate_import_versions:
     input:
-        VARFISH_FILES
+        VARFISH_FILES,
     output:
-        "import_versions.tsv"
+        "import_versions.tsv",
     shell:
         r"""
         (
@@ -190,11 +233,15 @@ rule generate_import_versions:
 
 rule data_freeze_server_background_db:
     input:
-        VARFISH_FILES_WITH_IMPORT
+        VARFISH_FILES_WITH_IMPORT,
     output:
-        expand("{linkout}/{file}", linkout=VARFISH_SERVER_BACKGROUND_PATH, file=VARFISH_FILES_WITH_IMPORT)
+        expand(
+            "{linkout}/{file}",
+            linkout=VARFISH_SERVER_BACKGROUND_PATH,
+            file=VARFISH_FILES_WITH_IMPORT,
+        ),
     params:
-        linkout=VARFISH_SERVER_BACKGROUND_PATH
+        linkout=VARFISH_SERVER_BACKGROUND_PATH,
     shell:
         r"""
         for file in {input}
@@ -208,9 +255,11 @@ rule data_freeze_varfish_annotator_h2_db:
     input:
         VARFISH_ANNOTATOR_H2_FILES,
     output:
-        expand("{linkout}/{file}", linkout=VARFISH_ANNOTATOR_DB_PATH, file=VARFISH_ANNOTATOR_H2_FILES)
+        expand(
+            "{linkout}/{file}", linkout=VARFISH_ANNOTATOR_DB_PATH, file=VARFISH_ANNOTATOR_H2_FILES
+        ),
     params:
-        linkout=VARFISH_ANNOTATOR_DB_PATH
+        linkout=VARFISH_ANNOTATOR_DB_PATH,
     shell:
         r"""
         for file in {input}
@@ -222,13 +271,15 @@ rule data_freeze_varfish_annotator_h2_db:
 
 rule data_freeze_build_varfish_annotator_h2_db:
     input:
-        expand("{linkout}/{file}", linkout=VARFISH_ANNOTATOR_DB_PATH, file=VARFISH_ANNOTATOR_H2_FILES)
+        expand(
+            "{linkout}/{file}", linkout=VARFISH_ANNOTATOR_DB_PATH, file=VARFISH_ANNOTATOR_H2_FILES
+        ),
     output:
-        VARFISH_ANNOTATOR_DB_FILE
+        VARFISH_ANNOTATOR_DB_FILE,
     params:
         release_path=RELEASE_PATH,
         data_release=DATA_RELEASE,
-        clinvar_release=CLINVAR_RELEASE
+        clinvar_release=CLINVAR_RELEASE,
     shell:
         r"""
         ANNOTATOR_VERSION=$(conda list varfish-annotator-cli | tail -1 | awk '{{print $2}}')
@@ -283,9 +334,9 @@ rule data_freeze_varfish_annotator:
     input:
         VARFISH_ANNOTATOR_FILES,
     output:
-        expand("{linkout}/{file}", linkout=VARFISH_ANNOTATOR_PATH, file=VARFISH_ANNOTATOR_FILES_OUT)
+        expand("{linkout}/{file}", linkout=VARFISH_ANNOTATOR_PATH, file=VARFISH_ANNOTATOR_FILES_OUT),
     params:
-        linkout=VARFISH_ANNOTATOR_PATH
+        linkout=VARFISH_ANNOTATOR_PATH,
     shell:
         r"""
         for file in {input}
@@ -295,61 +346,15 @@ rule data_freeze_varfish_annotator:
         """
 
 
-include: "snakefiles/GRCh37/acmg.snake"
-include: "snakefiles/GRCh37/clinvar.snake"
-include: "snakefiles/GRCh37/dbsnp.snake"
-include: "snakefiles/GRCh37/dbvar.snake"
-include: "snakefiles/GRCh37/DGV.snake"
-include: "snakefiles/GRCh37/ensembl2genesymbol.snake"
-include: "snakefiles/GRCh37/ensembl2refseq.snake"
-include: "snakefiles/GRCh37/ensembl_regulatory.snake"
-include: "snakefiles/GRCh37/exac.snake"
-include: "snakefiles/GRCh37/extra_annos.snake"
-include: "snakefiles/GRCh37/genes.snake"
-include: "snakefiles/GRCh37/gnomad.snake"
-include: "snakefiles/GRCh37/helixdb.snake"
-include: "snakefiles/GRCh37/hgmd.snake"
-include: "snakefiles/GRCh37/hgnc.snake"
-include: "snakefiles/GRCh37/kegg.snake"
-include: "snakefiles/GRCh37/knowngeneaa.snake"
-include: "snakefiles/GRCh37/mgi.snake"
-include: "snakefiles/GRCh37/mim2gene.snake"
-include: "snakefiles/GRCh37/mitomap.snake"
-include: "snakefiles/GRCh37/mtdb.snake"
-include: "snakefiles/GRCh37/ncbi_gene.snake"
-include: "snakefiles/GRCh37/reference.snake"
-include: "snakefiles/GRCh37/refseq2ensembl.snake"
-include: "snakefiles/GRCh37/refseq2genesymbol.snake"
-include: "snakefiles/GRCh37/tads.snake"
-include: "snakefiles/GRCh37/thousand_genomes.snake"
-include: "snakefiles/GRCh37/vista.snake"
+snakefiles = list(sorted(glob.glob("snakefiles/*/*.snake")))
+print("Loading Snakefiles...\n  - %s" % "\n  - ".join(snakefiles), file=sys.stderr)
 
-# GRCh37 rule for ACMG also creates GRCh38
-# GRCh37 rule for ClinVar also creates GRCh38
-include: "snakefiles/GRCh38/dbsnp.snake"
-# GRCh37 also works for dbvar
-include: "snakefiles/GRCh38/DGV.snake"
-include: "snakefiles/GRCh38/ensembl2genesymbol.snake"
-include: "snakefiles/GRCh38/ensembl2refseq.snake"
-include: "snakefiles/GRCh38/ensembl_regulatory.snake"
-# NO EXAC (probably ever)
-include: "snakefiles/GRCh38/extra_annos.snake"
-include: "snakefiles/GRCh38/genes.snake"
-include: "snakefiles/GRCh38/gnomad.snake"
-# helixmtdb same as GRCh37
-include: "snakefiles/GRCh38/hgmd.snake"
-include: "snakefiles/GRCh38/hgnc.snake"
-include: "snakefiles/GRCh38/hpo.snake"
-# kegg same as GRCh37
-include: "snakefiles/GRCh38/knowngeneaa.snake"
-# mgi same as GRCh37
-# mim2gene same as GRCh37
-# MITOMAP same as GRCh37
-# MTDB same as GRCh37
-# ncbi_genes same as GRCh37
-include: "snakefiles/GRCh38/reference.snake"
-# refseq2ensembl same as GRCh37
-# refseq2genesymbol same as GRCh37
-# NO TADS (YET, TODO: lift over)
-# NO THOUSAND GENOMES (probably ever)
-# NO VISTA (YET, TODO: lift over)
+for path in snakefiles:
+
+    include: path
+
+
+import pdb
+
+
+pdb.set_trace()

@@ -43,8 +43,7 @@ def setup_logging(args):
 
 
 def read_contigs(fai_path):
-    """Read contig information (name, length) from FAI file at ``fai_path``.
-    """
+    """Read contig information (name, length) from FAI file at ``fai_path``."""
     with open(fai_path, "rt") as fai:
         for line in fai:
             arr = line.split("\t")
@@ -164,8 +163,8 @@ def pos_magic(exon_location, rel_start, rel_end):
 
 def block_to_records(block, prev_block):
     """Given an alignment block, yield the VCF records.
-    
-    NB: the first/last amino acids are stored for the exon with the major part of the codon. 
+
+    NB: the first/last amino acids are stored for the exon with the major part of the codon.
     """
     logging.debug("Starting new block")
     meta = block.meta

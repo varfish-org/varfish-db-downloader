@@ -6,6 +6,11 @@ JANNOVAR_RELEASE = $(DATA_RELEASE)
 all: pack_server pack_annotator pack_jannovar
 
 
+black:
+	snakefmt -l 100 .
+	black -l 100 .
+
+
 pack_server:
 	cd $(RELEASE_PATH) && tar \
 		--owner=0 \

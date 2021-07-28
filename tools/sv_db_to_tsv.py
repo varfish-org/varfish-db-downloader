@@ -17,7 +17,6 @@ def list_to_str(liste):
     return "{" + ",".join(['"""%s"""' % x for x in liste if liste]) + "}"
 
 
-
 class DgvGoldStandardConverter:
     """Class for the import of the DGV SV GFF3 file."""
 
@@ -85,40 +84,48 @@ class DgvGoldStandardConverter:
             for key, value in [x.split(" ") for x in attributes["PopulationSummary"].split(":")]
         }
         self.fh_tsv.write(
-            "\t".join([
-                self.genome_release,
-                values["seqid"],
-                attributes["outer_start"],
-                attributes["inner_start"],
-                attributes["inner_end"],
-                attributes["outer_end"],
-                str(binning.assign_bin(
-                    int(attributes["outer_start"]) - 1, int(attributes["outer_end"])
-                )),
-                attributes["ID"],
-                attributes["variant_type"],
-                attributes["variant_sub_type"],
-                attributes["num_studies"],
-                list_to_str(attributes["Studies"].split(",")),
-                attributes["num_platforms"],
-                list_to_str(attributes["Platforms"].split(",")),
-                attributes["number_of_algorithms"],
-                list_to_str(attributes["algorithms"].split(",")),
-                attributes["num_variants"],
-                attributes["num_samples"],
-                attributes.get("num_unique_samples_tested", attributes.get("Number_of_unique_samples_tested")),
-                pop_sum["African"],
-                pop_sum["Asian"],
-                pop_sum["European"],
-                pop_sum["Mexican"],
-                pop_sum["MiddleEast"],
-                pop_sum["NativeAmerican"],
-                pop_sum["NorthAmerican"],
-                pop_sum["Oceania"],
-                pop_sum["SouthAmerican"],
-                pop_sum["Admixed"],
-                pop_sum["Unknown"],
-            ]) + "\n"
+            "\t".join(
+                [
+                    self.genome_release,
+                    values["seqid"],
+                    attributes["outer_start"],
+                    attributes["inner_start"],
+                    attributes["inner_end"],
+                    attributes["outer_end"],
+                    str(
+                        binning.assign_bin(
+                            int(attributes["outer_start"]) - 1, int(attributes["outer_end"])
+                        )
+                    ),
+                    attributes["ID"],
+                    attributes["variant_type"],
+                    attributes["variant_sub_type"],
+                    attributes["num_studies"],
+                    list_to_str(attributes["Studies"].split(",")),
+                    attributes["num_platforms"],
+                    list_to_str(attributes["Platforms"].split(",")),
+                    attributes["number_of_algorithms"],
+                    list_to_str(attributes["algorithms"].split(",")),
+                    attributes["num_variants"],
+                    attributes["num_samples"],
+                    attributes.get(
+                        "num_unique_samples_tested",
+                        attributes.get("Number_of_unique_samples_tested"),
+                    ),
+                    pop_sum["African"],
+                    pop_sum["Asian"],
+                    pop_sum["European"],
+                    pop_sum["Mexican"],
+                    pop_sum["MiddleEast"],
+                    pop_sum["NativeAmerican"],
+                    pop_sum["NorthAmerican"],
+                    pop_sum["Oceania"],
+                    pop_sum["SouthAmerican"],
+                    pop_sum["Admixed"],
+                    pop_sum["Unknown"],
+                ]
+            )
+            + "\n"
         )
 
 
@@ -177,21 +184,24 @@ class DgvConverter:
     def write_to_tsv(self, values):
         """Insert record into database."""
         self.fh_tsv.write(
-            "\t".join([
-                self.genome_release,
-                values["chr"],
-                values["start"],
-                values["end"],
-                str(binning.assign_bin(int(values["start"]) - 1, int(values["end"]))),
-                values["variantaccession"],
-                values["varianttype"],
-                values["variantsubtype"],
-                values["reference"],
-                list_to_str(values["platform"].split(",")),
-                values["samplesize"] or "0",
-                values["observedgains"] or "0",
-                values["observedlosses"] or "0",
-            ]) + "\n"
+            "\t".join(
+                [
+                    self.genome_release,
+                    values["chr"],
+                    values["start"],
+                    values["end"],
+                    str(binning.assign_bin(int(values["start"]) - 1, int(values["end"]))),
+                    values["variantaccession"],
+                    values["varianttype"],
+                    values["variantsubtype"],
+                    values["reference"],
+                    list_to_str(values["platform"].split(",")),
+                    values["samplesize"] or "0",
+                    values["observedgains"] or "0",
+                    values["observedlosses"] or "0",
+                ]
+            )
+            + "\n"
         )
 
 
@@ -235,22 +245,23 @@ class ExacCnvConverter:
                 else:
                     arr = line.split()
                     self.fh_tsv.write(
-                        "\t".join([
-                            self.genome_release,
-                            arr[0][len("chr") :],
-                            arr[1],
-                            arr[2],
-                            str(binning.assign_bin(int(arr[1]) - 1, int(arr[2]))),
-                            var_type,
-                            arr[3].split("-")[1],
-                            arr[4],
-                        ]) + "\n"
+                        "\t".join(
+                            [
+                                self.genome_release,
+                                arr[0][len("chr") :],
+                                arr[1],
+                                arr[2],
+                                str(binning.assign_bin(int(arr[1]) - 1, int(arr[2]))),
+                                var_type,
+                                arr[3].split("-")[1],
+                                arr[4],
+                            ]
+                        )
+                        + "\n"
                     )
                     # read next line
                     if chrom != arr[0]:
-                        print(
-                            "Starting sv type {} on contig {}".format(var_type, arr[0])
-                        )
+                        print("Starting sv type {} on contig {}".format(var_type, arr[0]))
                     chrom = arr[0]
 
 
@@ -374,11 +385,12 @@ class ThousandGenomesConverter:
                     list_to_str(record.INFO.get("MEINFO", [])),
                     str(num_samples),
                     str(num_alleles["All"]),
-                    str(num_var_alleles["All"])
-                ] +
-                [str(num_alleles[key]) for key in super_pops if key != "All"] +
-                [str(num_var_alleles[key]) for key in super_pops if key != "All"]
-            ) + "\n"
+                    str(num_var_alleles["All"]),
+                ]
+                + [str(num_alleles[key]) for key in super_pops if key != "All"]
+                + [str(num_var_alleles[key]) for key in super_pops if key != "All"]
+            )
+            + "\n"
         )
 
 
@@ -423,7 +435,7 @@ class DbVarConverter:
                 if not first_line:
                     first_line = line
                     if first_line != "#NR_SVs %s" % self.genome_release:
-                        raise Exception("First line must be '#NR_SVs %s'" %self.genome_release)
+                        raise Exception("First line must be '#NR_SVs %s'" % self.genome_release)
                 elif not second_line:
                     second_line = line
                     if not second_line.startswith("#chr"):
@@ -435,9 +447,7 @@ class DbVarConverter:
                         print("Starting on chrom %s" % values["chr"])
                         chrom = values["chr"]
                     if i % 10000 == 0:
-                        print(
-                            "  @ {}:{:,}".format(values["chr"], int(values["outermost_start"]))
-                        )
+                        print("  @ {}:{:,}".format(values["chr"], int(values["outermost_start"])))
                     self.create_record(values)
 
     def create_record(self, values):
@@ -449,9 +459,11 @@ class DbVarConverter:
                     values["chr"],
                     values["outermost_start"],
                     values["outermost_stop"],
-                    str(binning.assign_bin(
-                        int(values["outermost_start"]) - 1, int(values["outermost_stop"])
-                    )),
+                    str(
+                        binning.assign_bin(
+                            int(values["outermost_start"]) - 1, int(values["outermost_stop"])
+                        )
+                    ),
                     values["variant_count"],
                     values["variant_type"],
                     values["method"],
@@ -464,7 +476,8 @@ class DbVarConverter:
                     values.get("min_insertion_length", ""),
                     values.get("max_insertion_length", ""),
                 ]
-            ) + "\n"
+            )
+            + "\n"
         )
 
 
@@ -602,7 +615,8 @@ class GnomadSvConverter:
                     str(record.INFO.get("OTH_FREQ_HET", 0.0)),
                     str(record.INFO.get("OTH_FREQ_HOMALT", 0.0)),
                 ]
-            ) + "\n"
+            )
+            + "\n"
         )
 
 
@@ -705,12 +719,14 @@ DATABASES = {
 def _write_release_info(release_info, values):
     with open(release_info, "w") as fh:
         fh.write("table\tversion\tgenomebuild\tnull_value\n")
-        fh.write("{}\t{}\t{}\t{}".format(values["table"], values["release"], values["genomebuild"], ""))
+        fh.write(
+            "{}\t{}\t{}\t{}".format(values["table"], values["release"], values["genomebuild"], "")
+        )
 
 
 def _read_header(header):
     result = []
-    with open(header, 'r') as fh:
+    with open(header, "r") as fh:
         for line in fh.readlines():
             line = line.rstrip()
             if not line:
@@ -722,9 +738,7 @@ def _read_header(header):
 def to_tsv(path, output_tsv, release_info, header):
     database = DATABASES.get(os.path.basename(path))
     if not database:
-        raise Exception(
-            "File name {} is not known".format(os.path.basename(path))
-        )
+        raise Exception("File name {} is not known".format(os.path.basename(path)))
     kwargs = {}
     if database["name"] == "thousand-genomes-svs-GRCh37":
         kwargs["panel_path"] = database["panel_path"]
@@ -745,5 +759,5 @@ def to_tsv(path, output_tsv, release_info, header):
             "table": database["table"],
             "release": database["release"],
             "comment": "",
-        }
+        },
     )

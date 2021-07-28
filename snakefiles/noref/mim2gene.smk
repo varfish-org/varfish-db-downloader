@@ -1,0 +1,31 @@
+# Obtain current dump of mim2gene_medgen file from NCBI.
+
+
+rule grchXX_mim2gene_medgen_download:
+    output:
+        txt="noref/mim2gene/latest/download/mim2gene_medgen",
+    shell:
+        r"""
+        wget \
+            -O {output.txt} \
+            ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/mim2gene_medgen
+        """
+
+
+rule grchXX_mim2gene_medgen_to_tsv:
+    input:
+        header="header/mim2gene.txt",
+        txt="noref/mim2gene/latest/download/mim2gene_medgen",
+    output:
+        tsv="noref/mim2gene/latest/Mim2geneMedgen.tsv",
+        release_info="noref/mim2gene/latest/Mim2geneMedgen.release_info",
+    shell:
+        r"""
+        (
+            cat {input.header} | tr '\n' '\t' | sed -e 's/\t*$/\n/g';
+            tail -n +2 {input.txt}
+        ) \
+        > {output.tsv}
+
+        echo -e "table\tversion\tgenomebuild\tnull_value\nMim2geneMedgen\t$(date +%Y/%m/%d)\t{wildcards.genome_release}\t-" > {output.release_info}
+        """

@@ -22,7 +22,9 @@ def run(args):
             try:
                 record["end"] = str(int(record["start"]) + len(record["reference"]) - 1)
             except KeyError:
-                raise KeyError("Please make sure `end` column is filled when not providing `alternative` column.")
+                raise KeyError(
+                    "Please make sure `end` column is filled when not providing `alternative` column."
+                )
         record["bin"] = str(binning.assign_bin(int(record["start"]) - 1, int(record["end"])))
         args.output.write("%s\n" % "\t".join(v for v in record.values()))
 
@@ -33,18 +35,18 @@ def main(argv=None):
         "``start`` and ``end`` column must be present in TSV file."
     )
     parser.add_argument(
-        '--input',
-        type=argparse.FileType('r'),
-        nargs='?',
+        "--input",
+        type=argparse.FileType("r"),
+        nargs="?",
         default=sys.stdin,
-        help="Input tsv file to fill the binning column."
+        help="Input tsv file to fill the binning column.",
     )
     parser.add_argument(
-        '--output',
-        type=argparse.FileType('w'),
-        nargs='?',
+        "--output",
+        type=argparse.FileType("w"),
+        nargs="?",
         default=sys.stdout,
-        help="Output tsv file with filled binning column."
+        help="Output tsv file with filled binning column.",
     )
     args = parser.parse_args(argv)
     return run(args)
@@ -52,4 +54,3 @@ def main(argv=None):
 
 if __name__ == "__main__":
     sys.exit(main())
-
