@@ -5,6 +5,7 @@ logs/
 run.sh
 config.yaml
 .snakemake
+/noref
 /GRCh37
 /GRCh38
 src/
