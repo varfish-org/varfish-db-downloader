@@ -1,19 +1,39 @@
 rule grchxx_ensembl_regulatory_download:
     output:
+        tsv="{genome_build}/ensembl_regulatory/{download_date}/download/hsapiens_regulatory_feature__regulatory_feature__main.txt.gz",
+    shell:
+        r"""
+        if [[ {wildcards.genome_build} == GRCh37 ]]; then
+            infix=/grch37
+        else
+            infix=
+        fi
+
+        wget -O {output.tsv} http://ftp.ensembl.org/pub${{infix}}/release-104/mysql/regulation_mart_104/hsapiens_regulatory_feature__regulatory_feature__main.txt.gz
+        """
+
+
+rule grchxx_ensembl_regulatory_merge:
+    input:
+        tsv="{genome_build}/ensembl_regulatory/{download_date}/download/hsapiens_regulatory_feature__regulatory_feature__main.txt.gz",
+    output:
         tsv="{genome_build}/ensembl_regulatory/{download_date}/download/EnsemblRegulatoryFeature.tsv",
     shell:
         r"""
         if [[ {wildcards.genome_build} == GRCh37 ]]; then
-            prefix=grch37.
+            chr=
         else
-            prefix=
+            chr=chr
         fi
 
         echo -e "Chromosome/scaffold name\tStart (bp)\tEnd (bp)\tRegulatory stable ID\tFeature type\tFeature type description\tSO term accession\tSO term name" \
         > {output.tsv}
-        wget -O - 'http://grch37.ensembl.org/biomart/martservice?query=<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE Query> <Query  virtualSchemaName = "default" formatter = "TSV" header = "0" uniqueRows = "0" count = "" datasetConfigVersion = "0.6" > <Dataset name = "hsapiens_regulatory_feature" interface = "default" > <Attribute name = "chromosome_name" /> <Attribute name = "chromosome_start" /> <Attribute name = "chromosome_end" /> <Attribute name = "regulatory_stable_id" /> <Attribute name = "feature_type_name" /> <Attribute name = "feature_type_description" /> <Attribute name = "so_accession" /> <Attribute name = "epigenome_name" /> <Attribute name = "epigenome_description" /> <Attribute name = "efo_id" /> </Dataset> </Query>' \
+
+        zcat {input} \
+        | awk -F $'\t' 'BEGIN {{ OFS = FS }} {{ print $6, $10, $11, $7, $3, $1, $5, $8 }}' \
         | grep '^[0-9XYM]' \
         | LC_ALL=C sort -k1,1g -k2,2n -k3,3n \
+        | sed -e "s/^/$chr/" \
         >> {output.tsv}
         """
 

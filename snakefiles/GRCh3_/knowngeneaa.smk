@@ -14,7 +14,7 @@ rule grchxx_knowngeneaa_download:
 
         wget \
             -O {output.fa} \
-            "http://hgdownload.cse.ucsc.edu/goldenpath/${ucsc_name}/multiz100way/alignments/knownGene.exonAA.fa.gz"
+            "http://hgdownload.cse.ucsc.edu/goldenpath/${{ucsc_name}}/multiz100way/alignments/knownGene.exonAA.fa.gz"
         """
 
 

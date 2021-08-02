@@ -5,6 +5,9 @@ logs/
 run.sh
 config.yaml
 .snakemake
+/slurm_log
+/old
+/tmp
 /noref
 /GRCh37
 /GRCh38

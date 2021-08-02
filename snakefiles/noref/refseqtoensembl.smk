@@ -4,8 +4,8 @@ rule noref_refseq_to_ensembl_download:
     shell:
         r"""
         wget \
-            'ftp://ftp.ncbi.nih.gov/gene/DATA/gene2ensembl.gz' \
-            -O {output}
+            -O {output} \
+            'http://ftp.ncbi.nih.gov/gene/DATA/gene2ensembl.gz'
         """
 
 

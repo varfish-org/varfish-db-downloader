@@ -17,8 +17,9 @@ rule grch38_refseq_to_hgnc_download:
         "GRCh38/hgnc/{download_date}/download/GCF_000001405.39_GRCh38.p13_genomic.gff.gz",
     shell:
         r"""
-        wget ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/annotation_releases/current/GCF_000001405.39_GRCh38.p13/GCF_000001405.39_GRCh38.p13_genomic.gff.gz \             
-            -O {output}
+        wget \
+            -O {output} \
+            http://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/annotation_releases/current/GCF_000001405.39_GRCh38.p13/GCF_000001405.39_GRCh38.p13_genomic.gff.gz
         """
 
 

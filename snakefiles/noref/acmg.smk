@@ -82,7 +82,6 @@ rule result_noref_acmg:
         ENSG00000155657    TTN    7273
         ENSG00000134086    VHL    7428
         ENSG00000184937    WT1    7490
-
-        EOF
+EOF
         echo -e "table\tversion\tgenomebuild\tnull_value\nAcmg\tv3.0\t\t" > {output.release_info}
         """

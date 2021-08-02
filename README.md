@@ -93,5 +93,6 @@ release version and can be used with which VarFish Server version:
     - When using the genome build as a wildcards, it must be called `{genome_build}`.
     - Lists generating output files to be included in data release must be called `result_`.
     - You can use `{chrom}` for the chromosomes `1, 2, ..., 22, X, Y`.
+      Use `{chrom_no_y}` for `1, 1, ..., 22, X` without `Y`.
     - Any other wildcard in the output file must be an entry in the configuration read from `configfile: "config.yaml"`.
       The canonical example is `download_date`.

@@ -1,4 +1,5 @@
 import glob
+from itertools import product
 import os
 import re
 import sys
@@ -19,13 +20,16 @@ configfile: "config.yaml"
 
 # Print configuration.
 print("Configuration:", file=sys.stderr)
-print("\n---\n%s\n---\n" % json.dumps(config, indent="  "))
+print("\n---\n%s\n---\n" % json.dumps(config, indent="  "), file=sys.stderr)
 
 #: Use strict mode and also print each command.
 shell.prefix("set -x; set -euo pipefail; ")
 
+#: The canonical chromosome names (without "Y").
+CHROMS_NO_Y = list(map(str, range(1, 23))) + ["X"]
+
 #: The canonical chromosome names.
-CHROMS = list(range(1, 23)) + ["X", "Y"]
+CHROMS = CHROMS_NO_Y + ["Y"]
 
 #: List for collecting all result files below.
 ALL_RESULT = []
@@ -42,7 +46,7 @@ rule all:
 
 # Load all snakemake files `snakefiles/*/*.smk`.
 snakefiles = list(sorted(glob.glob("snakefiles/*/*.smk")))
-print("Loading Snakefiles...\n  - %s" % "\n  - ".join(snakefiles), file=sys.stderr)
+print("Loading Snakefiles...", file=sys.stderr)
 
 for path in snakefiles:
 
@@ -62,9 +66,10 @@ for rule in workflow.rules:
                     chroms = CHROMS
                 else:
                     chroms = ["-"]
-                for chrom in chroms:
-                    print(rule.name, chrom, vals, path)
+                if "{chrom_no_y}" in path:
+                    chroms_no_y = CHROMS_NO_Y
+                else:
+                    chroms_no_y = ["-"]
+                for chrom, chrom_no_y in product(chroms, chroms_no_y):
                     path = re.sub(r"{([^,]+)(,.*)?}", r"{\1}", path)
-                    ALL_RESULT.append(path.format(chrom=chrom, **vals))
-
-print("  - " + "\n  - ".join(sorted(ALL_RESULT)), file=sys.stderr)
+                    ALL_RESULT.append(path.format(chrom=chrom, chrom_no_y=chrom_no_y, **vals))

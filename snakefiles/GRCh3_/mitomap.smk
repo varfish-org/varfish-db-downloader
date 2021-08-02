@@ -3,8 +3,10 @@ rule GRCh37_mitomap_download:
         "GRCh37/MITOMAP/{download_date}/download/polymorphisms.vcf",
     shell:
         r"""
-        wget http://mitomap.org/cgi-bin/polymorphisms.cgi?format=vcf \
-            -O {output}
+        wget \
+            --no-check-certificate \
+            -O {output} \
+            https://mitomap.org/cgi-bin/polymorphisms.cgi?format=vcf
         """
 
 

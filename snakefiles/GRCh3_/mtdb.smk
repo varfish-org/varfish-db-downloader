@@ -1,41 +1,7 @@
-rule GRChXX_mtdb_download:
-    output:
-        "{genome_build}/mtDB/{download_date}/download/mtdb.tsv",
-    run:
-        from bs4 import BeautifulSoup as bs
-        import csv
-        from urllib.request import urlopen
-
-
-        result = []
-
-        # 1..17
-        for i in range(1, 18):
-            soup = bs(
-                urlopen("http://www.mtdb.igp.uu.se/Polysites/andpoly_%d.html" % i),
-                features="html.parser",
-            )
-            # there is a parent table, and a sibling table before the one we want
-            table = soup.find_all("table")[2]
-            # an iterable is not necessarily an iterator, right?
-            rows = iter(table.find_all("tr"))
-            # table has two header rows, first header row is irrelevant for us
-            next(rows)
-            # we only need the header once
-            if i > 1:
-                next(rows)
-            for row in rows:
-                result.append([col.text.replace(u"\xa0", u"") for col in row.find_all("td")])
-
-        with open(output[0], "w") as out:
-            writer = csv.writer(out, delimiter="\t")
-            writer.writerows(result)
-
-
 rule result_GRChXX_mtdb_tsv:
     input:
         ref="GRCh37/reference/hs37d5/hs37d5.fa",
-        txt="{genome_build}/mtDB/{download_date}/download/mtdb.tsv",
+        txt="tools/data/mtdb.tsv",
         header="header/mtdb.txt",
     output:
         tsv="{genome_build}/mtDB/{download_date}/MtDb.tsv",

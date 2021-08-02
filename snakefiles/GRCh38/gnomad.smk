@@ -144,15 +144,15 @@ rule result_grch38_gnomad_exomes_r2_1_1_to_tsv:
         %AF_nfe\t\
         %AF_oth\t\
         %AF_sas\t\
-        %AC_male\t\
-        %AC_afr_male\t\
-        %AC_amr_male\t\
-        %AC_asj_male\t\
-        %AC_eas_male\t\
-        %AC_fin_male\t\
-        %AC_nfe_male\t\
-        %AC_oth_male\t\
-        %AC_sas_male\t\
+        %AC_XY\t\
+        %AC_afr_XY\t\
+        %AC_amr_XY\t\
+        %AC_asj_XY\t\
+        %AC_eas_XY\t\
+        %AC_fin_XY\t\
+        %AC_nfe_XY\t\
+        %AC_oth_XY\t\
+        %AC_sas_XY\t\
         %nhomalt\t\
         %nhomalt_afr\t\
         %nhomalt_amr\t\
@@ -195,15 +195,15 @@ rule result_grch38_gnomad_exomes_r2_1_1_to_tsv:
         %controls_AN_nfe\t\
         %controls_AN_oth\t\
         %controls_AN_sas\t\
-        %controls_AC_male\t\
-        %controls_AC_afr_male\t\
-        %controls_AC_amr_male\t\
-        %controls_AC_asj_male\t\
-        %controls_AC_eas_male\t\
-        %controls_AC_fin_male\t\
-        %controls_AC_nfe_male\t\
-        %controls_AC_oth_male\t\
-        %controls_AC_sas_male\t\
+        %controls_AC_XY\t\
+        %controls_AC_afr_XY\t\
+        %controls_AC_amr_XY\t\
+        %controls_AC_asj_XY\t\
+        %controls_AC_eas_XY\t\
+        %controls_AC_fin_XY\t\
+        %controls_AC_nfe_XY\t\
+        %controls_AC_oth_XY\t\
+        %controls_AC_sas_XY\t\
         %controls_nhomalt\t\
         %controls_nhomalt_afr\t\
         %controls_nhomalt_amr\t\
@@ -220,7 +220,7 @@ rule result_grch38_gnomad_exomes_r2_1_1_to_tsv:
         .\t\
         %controls_nhomalt_popmax\t\
         %nonpar\n" \
-                    | sort -t $'\t' -u -k 2,2 -k 3,3 -k 4,4 -k 6,6 -k 7,7 -S 80% \
+                    | sort -t $'\t' -u -k 2,2 -k 3,3 -k 4,4 -k 6,6 -k 7,7 -S {config[sort_memory]} \
                     | awk -F $'\t' \
                         'BEGIN {{
                             OFS = FS
@@ -296,14 +296,14 @@ rule result_grch38_gnomad_genomes_r3_1_1_to_tsv:
         %AF_fin\t\
         %AF_nfe\t\
         %AF_oth\t\
-        %AC_male\t\
-        %AC_afr_male\t\
-        %AC_amr_male\t\
-        %AC_asj_male\t\
-        %AC_eas_male\t\
-        %AC_fin_male\t\
-        %AC_nfe_male\t\
-        %AC_oth_male\t\
+        %AC_XY\t\
+        %AC_afr_XY\t\
+        %AC_amr_XY\t\
+        %AC_asj_XY\t\
+        %AC_eas_XY\t\
+        %AC_fin_XY\t\
+        %AC_nfe_XY\t\
+        %AC_oth_XY\t\
         %nhomalt\t\
         %nhomalt_afr\t\
         %nhomalt_amr\t\
@@ -318,54 +318,54 @@ rule result_grch38_gnomad_genomes_r3_1_1_to_tsv:
         %AF_popmax\t\
         .\t\
         %nhomalt_popmax\t\
-        %controls_AC\t\
-        %controls_AC_afr\t\
-        %controls_AC_amr\t\
-        %controls_AC_asj\t\
-        %controls_AC_eas\t\
-        %controls_AC_fin\t\
-        %controls_AC_nfe\t\
-        %controls_AC_oth\t\
-        %controls_AF\t\
-        %controls_AF_afr\t\
-        %controls_AF_amr\t\
-        %controls_AF_asj\t\
-        %controls_AF_eas\t\
-        %controls_AF_fin\t\
-        %controls_AF_nfe\t\
-        %controls_AF_oth\t\
-        %controls_AN\t\
-        %controls_AN_afr\t\
-        %controls_AN_amr\t\
-        %controls_AN_asj\t\
-        %controls_AN_eas\t\
-        %controls_AN_fin\t\
-        %controls_AN_nfe\t\
-        %controls_AN_oth\t\
-        %controls_AC_male\t\
-        %controls_AC_afr_male\t\
-        %controls_AC_amr_male\t\
-        %controls_AC_asj_male\t\
-        %controls_AC_eas_male\t\
-        %controls_AC_fin_male\t\
-        %controls_AC_nfe_male\t\
-        %controls_AC_oth_male\t\
-        %controls_nhomalt\t\
-        %controls_nhomalt_afr\t\
-        %controls_nhomalt_amr\t\
-        %controls_nhomalt_asj\t\
-        %controls_nhomalt_eas\t\
-        %controls_nhomalt_fin\t\
-        %controls_nhomalt_nfe\t\
-        %controls_nhomalt_oth\t\
-        %controls_popmax\t\
-        %controls_AC_popmax\t\
-        %controls_AN_popmax\t\
-        %controls_AF_popmax\t\
+        %AC_controls_and_biobanks\t\
+        %AC_controls_and_biobanks_afr\t\
+        %AC_controls_and_biobanks_amr\t\
+        %AC_controls_and_biobanks_asj\t\
+        %AC_controls_and_biobanks_eas\t\
+        %AC_controls_and_biobanks_fin\t\
+        %AC_controls_and_biobanks_nfe\t\
+        %AC_controls_and_biobanks_oth\t\
+        %AF_controls_and_biobanks\t\
+        %AF_controls_and_biobanks_afr\t\
+        %AF_controls_and_biobanks_amr\t\
+        %AF_controls_and_biobanks_asj\t\
+        %AF_controls_and_biobanks_eas\t\
+        %AF_controls_and_biobanks_fin\t\
+        %AF_controls_and_biobanks_nfe\t\
+        %AF_controls_and_biobanks_oth\t\
+        %AN_controls_and_biobanks\t\
+        %AN_controls_and_biobanks_afr\t\
+        %AN_controls_and_biobanks_amr\t\
+        %AN_controls_and_biobanks_asj\t\
+        %AN_controls_and_biobanks_eas\t\
+        %AN_controls_and_biobanks_fin\t\
+        %AN_controls_and_biobanks_nfe\t\
+        %AN_controls_and_biobanks_oth\t\
+        %AC_controls_and_biobanks_XY\t\
+        %AC_controls_and_biobanks_afr_XY\t\
+        %AC_controls_and_biobanks_amr_XY\t\
+        %AC_controls_and_biobanks_asj_XY\t\
+        %AC_controls_and_biobanks_eas_XY\t\
+        %AC_controls_and_biobanks_fin_XY\t\
+        %AC_controls_and_biobanks_nfe_XY\t\
+        %AC_controls_and_biobanks_oth_XY\t\
+        %nhomalt_controls_and_biobanks\t\
+        %nhomalt_controls_and_biobanks_afr\t\
+        %nhomalt_controls_and_biobanks_amr\t\
+        %nhomalt_controls_and_biobanks_asj\t\
+        %nhomalt_controls_and_biobanks_eas\t\
+        %nhomalt_controls_and_biobanks_fin\t\
+        %nhomalt_controls_and_biobanks_nfe\t\
+        %nhomalt_controls_and_biobanks_oth\t\
         .\t\
-        %controls_nhomalt_popmax\t\
+        .\t\
+        .\t\
+        .\t\
+        .\t\
+        .\t\
         %nonpar\n" \
-                    | sort -t $'\t' -u -k 2,2 -k 3,3 -k 4,4 -k 6,6 -k 7,7 -S 80% \
+                    | sort -t $'\t' -u -k 2,2 -k 3,3 -k 4,4 -k 6,6 -k 7,7 -S {config[sort_memory]} \
                     | awk -F $'\t' \
                         'BEGIN {{
                             OFS = FS
@@ -427,7 +427,7 @@ rule result_grch38_gnomad_constraints_v2_1_1_tsv:
             cat {input.header} | tr '\n' '\t' | sed -e 's/\t*$/\n/g';
             zcat {input.txt} \
             | tail -n +2 \
-            | sort -u -S 80% \
+            | sort -u -S {config[sort_memory]} \
             | awk -F $'\t' '
                 BEGIN {{ OFS = FS }}
                 {{

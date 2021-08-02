@@ -165,7 +165,7 @@ rule grch37_exac_constraints_r0_3_1_download:
         r"""
         wget \
             -O {output} \
-            ftp://ftp.broadinstitute.org/pub/ExAC_release/release0.3.1/functional_gene_constraint/fordist_cleaned_exac_r03_march16_z_pli_rec_null_data.txt            
+            http://ftp.broadinstitute.org/pub/ExAC_release/release0.3.1/functional_gene_constraint/fordist_cleaned_exac_r03_march16_z_pli_rec_null_data.txt            
         cd $(dirname {output})
         md5sum $(basename {output}) > $(basename {output}).md5
         """
@@ -183,7 +183,7 @@ rule result_grch37_exac_constraints_r0_3_1_tsv:
         (
             cat {input.header} | tr '\n' '\t' | sed -e 's/\t*$/\n/g';
             tail -n +2 {input.txt} \
-            | sort -u -S 80% \
+            | sort -u -S {config[sort_memory]} \
             | awk -F $'\t' '
                 BEGIN {{ OFS = FS }}
                 {{

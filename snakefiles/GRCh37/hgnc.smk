@@ -17,8 +17,9 @@ rule grch37_refseq_to_hgnc_download:
         "GRCh37/hgnc/{download_date}/download/ref_GRCh37.p13_top_level.gff3.gz",
     shell:
         r"""
-        wget ftp://ftp.ncbi.nlm.nih.gov/genomes/archive/old_refseq/H_sapiens/ARCHIVE/ANNOTATION_RELEASE.105/GFF/ref_GRCh37.p13_top_level.gff3.gz \             
-            -O {output}
+        wget \
+            -O {output} \
+            http://ftp.ncbi.nlm.nih.gov/genomes/archive/old_refseq/H_sapiens/ARCHIVE/ANNOTATION_RELEASE.105/GFF/ref_GRCh37.p13_top_level.gff3.gz \             
         """
 
 

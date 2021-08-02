@@ -177,7 +177,7 @@ rule result_grch37_gnomad_exomes_r2_1_1_to_tsv:
         .\t\
         %controls_nhomalt_popmax\t\
         %nonpar\n" \
-                    | sort -t $'\t' -u -k 2,2 -k 3,3 -k 4,4 -k 6,6 -k 7,7 -S 80% \
+                    | sort -t $'\t' -u -k 2,2 -k 3,3 -k 4,4 -k 6,6 -k 7,7 -S {config[sort_memory]} \
                     | awk -F $'\t' \
                         'BEGIN {{
                             OFS = FS
@@ -210,12 +210,12 @@ rule result_grch37_gnomad_exomes_r2_1_1_to_tsv:
 # Rule to generate TSV files from chromosomes
 rule result_grch37_gnomad_genomes_r2_1_1_to_tsv:
     input:
-        vcf="GRCh37/gnomAD_genomes/r2.1.1/download/gnomad.genomes.r2.1.1.sites.chr{chrom}.normalized.vcf.bgz",
-        tbi="GRCh37/gnomAD_genomes/r2.1.1/download/gnomad.genomes.r2.1.1.sites.chr{chrom}.normalized.vcf.bgz.tbi",
+        vcf="GRCh37/gnomAD_genomes/r2.1.1/download/gnomad.genomes.r2.1.1.sites.chr{chrom_no_y}.normalized.vcf.bgz",
+        tbi="GRCh37/gnomAD_genomes/r2.1.1/download/gnomad.genomes.r2.1.1.sites.chr{chrom_no_y}.normalized.vcf.bgz.tbi",
         header="header/gnomad_genomes.txt",
     output:
-        tsv="GRCh37/gnomAD_genomes/r2.1.1/GnomadGenomes.{chrom}.tsv",
-        release_info="GRCh37/gnomAD_genomes/r2.1.1/GnomadGenomes.{chrom}.release_info",
+        tsv="GRCh37/gnomAD_genomes/r2.1.1/GnomadGenomes.{chrom_no_y}.tsv",
+        release_info="GRCh37/gnomAD_genomes/r2.1.1/GnomadGenomes.{chrom_no_y}.release_info",
     shell:
         r"""
                 (
@@ -322,7 +322,7 @@ rule result_grch37_gnomad_genomes_r2_1_1_to_tsv:
         .\t\
         %controls_nhomalt_popmax\t\
         %nonpar\n" \
-                    | sort -t $'\t' -u -k 2,2 -k 3,3 -k 4,4 -k 6,6 -k 7,7 -S 80% \
+                    | sort -t $'\t' -u -k 2,2 -k 3,3 -k 4,4 -k 6,6 -k 7,7 -S {config[sort_memory]} \
                     | awk -F $'\t' \
                         'BEGIN {{
                             OFS = FS
@@ -406,7 +406,7 @@ rule result_grch37_gnomad_constraints_v2_1_1_tsv:
             cat {input.header} | tr '\n' '\t' | sed -e 's/\t*$/\n/g';
             zcat {input.txt} \
             | tail -n +2 \
-            | sort -u -S 80% \
+            | sort -u -S {config[sort_memory]} \
             | awk -F $'\t' '
                 BEGIN {{ OFS = FS }}
                 {{

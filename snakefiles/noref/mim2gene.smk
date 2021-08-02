@@ -8,7 +8,7 @@ rule grchXX_mim2gene_medgen_download:
         r"""
         wget \
             -O {output.txt} \
-            ftp://ftp.ncbi.nlm.nih.gov/gene/DATA/mim2gene_medgen
+            http://ftp.ncbi.nlm.nih.gov/gene/DATA/mim2gene_medgen
         """
 
 

@@ -4,25 +4,29 @@ import tqdm
 
 rule result_GRChXX_extra_annos_release_info:
     input:
-        "{genome_build}/extra-annos/20200704/ExtraAnno.tsv",
-        "{genome_build}/extra-annos/20200704/ExtraAnnoField.tsv",
+        "{genome_build}/extra_annos/{download_date}/ExtraAnno.tsv",
+        "{genome_build}/extra_annos/{download_date}/ExtraAnnoField.tsv",
     output:
-        anno="{genome_build}/extra-annos/20200704/ExtraAnno.release_info",
-        annofield="{genome_build}/extra-annos/20200704/ExtraAnnoField.release_info",
+        anno="{genome_build}/extra_annos/{download_date}/ExtraAnno.release_info",
+        annofield="{genome_build}/extra_annos/{download_date}/ExtraAnnoField.release_info",
+    wildcard_constraints:
+        download_date="[^/]+",
     shell:
         r"""
-        echo -e "table\tversion\tgenomebuild\tnull_value\nExtraAnno\t20200704\t{wildcards.genome_build}\t" > {output.anno}
-        echo -e "table\tversion\tgenomebuild\tnull_value\nExtraAnnoField\t20200704\t{wildcards.genome_build}\t" > {output.annofield}
+        echo -e "table\tversion\tgenomebuild\tnull_value\nExtraAnno\t{download_date}\t{wildcards.genome_build}\t" > {output.anno}
+        echo -e "table\tversion\tgenomebuild\tnull_value\nExtraAnnoField\t{download_date}\t{wildcards.genome_build}\t" > {output.annofield}
         """
 
 
 rule result_GRChXX_extra_annos_tsv_step_1:
     input:
-        bed="{genome_build}/extra-annos/20200704/download/refseq_ensembl_exons.bed",
-        cadd_snvs="{genome_build}/extra-annos/20200704/download/whole_genome_SNVs_inclAnno.tsv.gz",
+        bed="{genome_build}/extra_annos/{download_date}/download/refseq_ensembl_exons.bed",
+        cadd_snvs="{genome_build}/extra_annos/{download_date}/download/whole_genome_SNVs_inclAnno.tsv.gz",
     output:
-        tsv="{genome_build}/extra-annos/20200704/download/ExtraAnno.tsv",
-        fields="{genome_build}/extra-annos/20200704/ExtraAnnoField.tsv",
+        tsv="{genome_build}/extra_annos/{download_date}/download/ExtraAnno.tsv",
+        fields="{genome_build}/extra_annos/{download_date}/ExtraAnnoField.tsv",
+    wildcard_constraints:
+        download_date="[^/]+",
     shell:
         r"""
         cut_expr=94-102,113,114,116
@@ -76,9 +80,9 @@ class DecodeDotAsNull(json.JSONDecoder):
 
 rule result_GRChXX_extra_annos_tsv_step_2:
     input:
-        tsv="{genome_build}/extra-annos/20200704/download/ExtraAnno.tsv",
+        tsv="{genome_build}/extra_annos/{download_date}/download/ExtraAnno.tsv",
     output:
-        tsv="{genome_build}/extra-annos/20200704/ExtraAnno.tsv",
+        tsv="{genome_build}/extra_annos/{download_date}/ExtraAnno.tsv",
     run:
         import json
         import csv
@@ -130,8 +134,8 @@ rule result_GRChXX_extra_annos_tsv_step_2:
 
 rule GRChXX_extra_annos_download:
     output:
-        vcf="{genome_build}/extra-annos/20200704/download/whole_genome_SNVs_inclAnno.tsv.gz",
-        tbi="{genome_build}/extra-annos/20200704/download/whole_genome_SNVs_inclAnno.tsv.gz.tbi",
+        vcf="{genome_build}/extra_annos/{download_date}/download/whole_genome_SNVs_inclAnno.tsv.gz",
+        tbi="{genome_build}/extra_annos/{download_date}/download/whole_genome_SNVs_inclAnno.tsv.gz.tbi",
     shell:
         r"""
         wget \
@@ -144,12 +148,12 @@ rule GRChXX_extra_annos_download:
 
 
 rule GRChXX_extra_annos_prepare_bed:
+    input:
+        "tmp/{genome_build}/ensembl_exons.bed",
+        "tmp/{genome_build}/refseq_exons.bed",
     output:
-        bed="{genome_build}/extra-annos/20200704/download/refseq_ensembl_exons.bed",
+        bed="{genome_build}/extra_annos/{download_date}/download/refseq_ensembl_exons.bed",
     shell:
         r"""
-        bedops -m \
-            /fast/projects/cubit/20.05/static_data/exon_list/ENSEMBL/75/{genome_build}/ENSEMBL_75_plus_100bp.bed \
-            /fast/projects/cubit/20.05/static_data/exon_list/RefSeq/81/{genome_build}/RefSeq_81_release_105_plus_100bp.bed \
-        > {output.bed}
+        bedops --range 100 -m {input} > {output.bed}
         """

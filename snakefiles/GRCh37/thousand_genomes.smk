@@ -62,8 +62,8 @@ rule grch37_thousand_genomes_sv_download:
         cd $(dirname {output[0]})
 
         echo "mget ALL.* README*" \
-            | lftp ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase3/integrated_sv_map
-        wget ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/integrated_call_samples_v3.20130502.ALL.panel \
+            | lftp http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase3/integrated_sv_map
+        wget http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/integrated_call_samples_v3.20130502.ALL.panel \
             -o $(basename {log})
 
         for i in {output[0]} {output[1]} {output[2]} {output[3]} {output[4]}
@@ -164,7 +164,7 @@ rule result_grch37_thousand_genomes_tsv:
                 -e "ALT ~ 'CN'" \
             | bcftools query \
                 -f "GRCh37\t%CHROM\t%POS\t%END\t%REF\t%ALT\t%AC\t%AN\t%AF\t%AFR_AF\t%AMR_AF\t%EAS_AF\t%EUR_AF\t%SAS_AF\t[%GT\t]\n" \
-            | sort -u -k 2,2 -k 3,3 -k 4,4 -k 5,5 -k 6,6 -S 80% \
+            | sort -u -k 2,2 -k 3,3 -k 4,4 -k 5,5 -k 6,6 -S {config[sort_memory]} \
             | awk -F $'\t' \
                 'BEGIN {{
                     OFS = FS
