@@ -4,8 +4,10 @@ rule result_grch37_release_annotator_db:
             **config
         ),
     output:
-        gz="releases/{release_name}/annotator-db-{release_name}-grch37.h2.db.gz".format(**config),
-        sha256="releases/{release_name}/annotator-db-{release_name}-grch37.h2.db.gz.sha256".format(
+        gz="releases/{release_name}/varfish-annotator-db-{release_name}-grch37.h2.db.gz".format(
+            **config
+        ),
+        sha256="releases/{release_name}/varfish-annotator-db-{release_name}-grch37.h2.db.gz.sha256".format(
             **config
         ),
     shell:
@@ -22,8 +24,10 @@ rule result_grch38_release_annotator_db:
             **config
         ),
     output:
-        gz="releases/{release_name}/annotator-db-{release_name}-grch38.h2.db.gz".format(**config),
-        sha256="releases/{release_name}/annotator-db-{release_name}-grch38.h2.db.gz.sha256".format(
+        gz="releases/{release_name}/varfish-annotator-db-{release_name}-grch38.h2.db.gz".format(
+            **config
+        ),
+        sha256="releases/{release_name}/varfish-annotator-db-{release_name}-grch38.h2.db.gz.sha256".format(
             **config
         ),
     shell:
