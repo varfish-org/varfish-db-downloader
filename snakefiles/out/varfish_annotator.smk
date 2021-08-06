@@ -1,39 +1,3 @@
-"""
-    init-db      Initialize or update DB
-      Usage: init-db [options]
-        Options:
-          --clinvar-path
-            Path to Clinvar TSV file(s) to use for import, see documentation 
-            for more information
-        * --db-path
-            Path to H2 file to initialize/update
-          --db-release-info
-            Provide database release information as "$db:$release" for storage 
-            in DB
-          --exac-path
-            Path to ExAC VCF file to use for import, see documentation for 
-            more information
-          --gnomad-exomes-path
-            Path to gnomAD exomes VCF file to use for import, see 
-            documentation for more information
-          --gnomad-genomes-path
-            Path to gnomAD genomes VCF file to use for import, see 
-            documentation for more information
-          --help
-
-          --hgmd-public
-            Path to HTMD Public TSV file to use for import, see documentation 
-            for more information
-        * --ref-path
-            Path to reference FASTA file, used for variant normalization
-          --region
-            Genomic region CHR:START-END (1-based) to import
-          --thousand-genomes-path
-            Path to 1000 genomes VCF file to use for import, see documentation 
-            for more information
-"""
-
-
 rule result_grch37_varfish_annotator_db:
     input:
         reference="GRCh37/reference/hs37d5/hs37d5.fa",
@@ -46,7 +10,9 @@ rule result_grch37_varfish_annotator_db:
         thousand_genomes="GRCh37/thousand_genomes/phase3/ALL.phase3_shapeit2_mvncall_integrated_v5b.20130502.sites.vcf.gz",
         hgmd="GRCh37/hgmd_public/ensembl_r104/HgmdPublicLocus.tsv",
     output:
-        "releases/{release_name}/varfish-annotator-db-grch37-{release_name}.h2.db".format(**config),
+        "GRCh37/varfish-annotator-db/varfish-annotator-db-{release_name}-grch37.h2.db".format(
+            **config
+        ),
     shell:
         r"""
         _out={output}
@@ -97,7 +63,9 @@ rule result_grch38_varfish_annotator_db:
         gnomad_genomes_chr1="GRCh38/gnomAD_genomes/r3.1.1/download/gnomad.genomes.r3.1.1.sites.chr1.normalized.vcf.bgz",
         hgmd="GRCh38/hgmd_public/ensembl_r104/HgmdPublicLocus.tsv",
     output:
-        "releases/{release_name}/varfish-annotator-db-grch38-{release_name}.h2.db".format(**config),
+        "GRCh38/varfish-annotator-db/varfish-annotator-db-{release_name}-grch38.h2.db".format(
+            **config
+        ),
     shell:
         r"""
         _out={output}
