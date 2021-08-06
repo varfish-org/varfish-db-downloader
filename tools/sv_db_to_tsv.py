@@ -613,7 +613,7 @@ class GnomadSvConverter:
             str(record.INFO.get("OTH_FREQ_HET", 0.0)),
             str(record.INFO.get("OTH_FREQ_HOMALT", 0.0)),
         ]
-        self.fh_tsv.write("\t".join(vals)+ "\n")
+        self.fh_tsv.write("\t".join(vals) + "\n")
 
 
 DATABASES = {

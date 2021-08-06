@@ -128,7 +128,8 @@ rule grch37_thousand_genomes_joint:
         vcf=expand(
             "GRCh37/thousand_genomes/phase3/ALL.chr{chr}.phase3_shapeit2_mvncall_integrated_v5b.20130502.sites.vcf.gz",
             chr=range(1, 23),
-        ) + [
+        )
+        + [
             "GRCh37/thousand_genomes/phase3/ALL.chrX.phase3_shapeit2_mvncall_integrated_v1c.20130502.sites.vcf.gz",
             "GRCh37/thousand_genomes/phase3/ALL.chrY.phase3_integrated_v2b.20130502.sites.vcf.gz",
             "GRCh37/thousand_genomes/phase3/ALL.chrMT.phase3_callmom-v0_4.20130502.sites.vcf.gz",

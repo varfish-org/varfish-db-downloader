@@ -26,6 +26,7 @@ rule tmp_grch38_refseq_exons:
         > {output.bed}
         """
 
+
 rule tmp_grch38_ensembl_exons:
     output:
         bed="tmp/GRCh38/ensembl_exons.bed",
