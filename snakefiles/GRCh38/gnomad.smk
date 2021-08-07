@@ -116,7 +116,7 @@ rule result_grch38_gnomad_exomes_r2_1_1_to_tsv:
                             OFS = FS
                             nonpar = 110
                         }}
-                        {{
+                        ((length($6) <= 512) && (length($7) <= 512)) {{
                             # nonpar is a flag. it will take either "." if not set or "1" if set.
                             if ($nonpar == ".") {{
                                 # hemi values
@@ -161,7 +161,7 @@ rule result_grch38_gnomad_genomes_r3_1_1_to_tsv:
                             OFS = FS
                             nonpar = 100
                         }}
-                        {{
+                        ((length($6) <= 512) && (length($7) <= 512)) {{
                             # nonpar is a flag. it will take either "." if not set or "1" if set.
                             if ($nonpar == ".") {{
                                 # hemi values

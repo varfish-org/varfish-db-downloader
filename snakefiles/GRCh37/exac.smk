@@ -124,7 +124,7 @@ rule result_grch37_exac_v1_0_0_tsv:
                     hom = 24
                     popmax = offset + 33
                 }}
-                {{
+                ((length($6) <= 512) && (length($7) <= 512)) {{
                     if ($popmax == "NA") {{
                         ac_popmax = "."
                         an_popmax = "."

@@ -86,6 +86,7 @@ rule result_grch38_dbsnp_b155_tsv:
             cat {input.header} | tr '\n' '\t' | sed -e 's/\t*$/\n/g';
             bcftools query {input.vcf} \
                 -f 'GRCh38\t%CHROM\t%POS\t%END\t\t%REF\t%ALT\t%ID\n' \
+            | awk -F $'\t' 'BEGIN {{ OFS=FS }} ((length($6) <= 512) && (length($7) <= 512)) {{ print }}' \
             | sort -u -t $'\t' -k 2,2 -k 3,3 -k 6,6 -k 7,7 -S {config[sort_memory]}
         ) \
         | python tools/ucsc_binning.py \

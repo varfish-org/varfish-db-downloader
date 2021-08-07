@@ -170,7 +170,7 @@ rule result_grch37_thousand_genomes_tsv:
                 'BEGIN {{
                     OFS = FS
                 }}
-                {{
+                ((length($6) <= 512) && (length($7) <= 512)) {{
                     delete a
                     a["0|1"] = 0
                     a["1|0"] = 0
