@@ -3,6 +3,7 @@ from itertools import product
 import os
 import re
 import sys
+import textwrap
 import json
 
 from snakemake import shell

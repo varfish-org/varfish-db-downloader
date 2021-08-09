@@ -66,13 +66,17 @@ rule grch37_exac_v1_0_0_normalize:
         tbi_md5="GRCh37/ExAC/r1/ExAC.r1.sites.vep.vcf.gz.tbi.md5",
     shell:
         r"""
-        bcftools norm \
+        bcftools reheader \
+            -h tools/data/ExAC.r1.sites.vep.header.txt \
+            {input.vcf} \
+        | bcftools norm \
+            --check-ref x \
             --threads 8 \
             --multiallelics - \
             --fasta-ref {input.reference} \
             -O z \
             -o {output.vcf} \
-            {input.vcf}
+            -
         tabix -f {output.vcf}
 
         pushd $(dirname {output.vcf})

@@ -27,6 +27,7 @@ mkdir -p ${LOGDIR}
 
 # Using the medium project/queue is a sensible default.
 snakemake \
+    --keep-going \
     --printshellcmds \
     --jobs ${MAX_JOBS} \
     --drmaa " --partition=critical --mem=20000 --time=48:00:00 --cpus-per-task=8 --output=${PWD}/${LOGDIR}/slurm-%x-%J.log" \
