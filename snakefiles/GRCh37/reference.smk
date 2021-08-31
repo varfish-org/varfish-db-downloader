@@ -29,8 +29,7 @@ rule grch37_get_hs37d5:
         fasta="GRCh37/reference/hs37d5/hs37d5.fa.log",
     shell:
         r"""
-        GZIP="-q" zcat {input} \
-        > {output.fasta} || true
+        GZIP="-q" zcat {input} > {output.fasta}
 
         samtools faidx {output.fasta}
         pushd $(dirname {output.fasta})

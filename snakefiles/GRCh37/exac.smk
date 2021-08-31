@@ -164,12 +164,12 @@ rule result_grch37_exac_v1_0_0_tsv:
 
 rule grch37_exac_constraints_r0_3_1_download:
     output:
-        "GRCh37/ExAC_constraints/r0.3.1/download/fordist_cleaned_exac_r03_march16_z_pli_rec_null_data.txt",
+        "GRCh37/ExAC_constraints/r0.3.1/download/forweb_cleaned_exac_r03_march16_z_data_pLI_CNV-final.txt.gz",
     shell:
         r"""
         wget \
             -O {output} \
-            http://ftp.broadinstitute.org/pub/ExAC_release/release0.3.1/functional_gene_constraint/fordist_cleaned_exac_r03_march16_z_pli_rec_null_data.txt            
+            https://storage.googleapis.com/gcp-public-data--gnomad/legacy/exac_browser/forweb_cleaned_exac_r03_march16_z_data_pLI_CNV-final.txt.gz
         cd $(dirname {output})
         md5sum $(basename {output}) > $(basename {output}).md5
         """
@@ -177,7 +177,7 @@ rule grch37_exac_constraints_r0_3_1_download:
 
 rule result_grch37_exac_constraints_r0_3_1_tsv:
     input:
-        txt="GRCh37/ExAC_constraints/r0.3.1/download/fordist_cleaned_exac_r03_march16_z_pli_rec_null_data.txt",
+        txt="GRCh37/ExAC_constraints/r0.3.1/download/forweb_cleaned_exac_r03_march16_z_data_pLI_CNV-final.txt.gz",
         header="header/exacconstraints.txt",
     output:
         tsv="GRCh37/ExAC_constraints/r0.3.1/ExacConstraints.tsv",
@@ -186,7 +186,8 @@ rule result_grch37_exac_constraints_r0_3_1_tsv:
         r"""
         (
             cat {input.header} | tr '\n' '\t' | sed -e 's/\t*$/\n/g';
-            tail -n +2 {input.txt} \
+            zcat {input.txt} \
+            | tail -n +2 \
             | sort -u -S {config[sort_memory]} \
             | awk -F $'\t' '
                 BEGIN {{ OFS = FS }}

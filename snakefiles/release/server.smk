@@ -99,7 +99,7 @@ def input_result_grch38_release_server_db(wildcards):
     other = [
         "GRCh38/clinvar/{download_date}/Clinvar.release_info",
         "GRCh38/dbVar/{download_date}/DbVarSv.release_info",
-        "GRCh38/DGV/2016/DgvSvs.release_info",
+        "GRCh38/DGV/2020/DgvSvs.release_info",
         "GRCh38/DGV/2020/DgvGoldStandardSvs.release_info",
         "GRCh38/ensembl_genes/r104/GeneInterval.release_info",
         "GRCh38/ensembl_regulatory/{download_date}/EnsemblRegulatoryFeature.release_info",

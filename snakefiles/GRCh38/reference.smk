@@ -28,8 +28,7 @@ rule grch38_get_hs38:
         fai="GRCh38/reference/hs38/hs38.fa.fai",
     shell:
         r"""
-        GZIP="-q" zcat {input.fasta} \
-        > {output.fasta} || true
+        GZIP="-q" zcat {input.fasta} > {output.fasta}
 
         samtools faidx {output.fasta}
         pushd $(dirname {output.fasta})

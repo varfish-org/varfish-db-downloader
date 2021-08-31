@@ -13,6 +13,6 @@ dependencies:
 - bedtools ==2.27.1
 - var-agg ==0.1.1
 - lftp
-- varfish-annotator-cli
+- varfish-annotator-cli ==0.16
 - jannovar-cli
 - snakefmt

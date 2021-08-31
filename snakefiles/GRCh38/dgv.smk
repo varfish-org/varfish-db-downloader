@@ -30,7 +30,7 @@ rule result_grch38_dgv_2020_tsv:
         txt="GRCh38/DGV/2020/download/GRCh38_hg38_variants_2020-02-25.txt",
     output:
         tsv="GRCh38/DGV/2020/DgvSvs.tsv",
-        release_info="GRCh38/DGV/2016/DgvSvs.release_info",
+        release_info="GRCh38/DGV/2020/DgvSvs.release_info",
     run:
         to_tsv(input.txt, output.tsv, output.release_info, input.header)
 
