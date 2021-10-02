@@ -7,3 +7,5 @@ interval-binning
 tqdm
 beautifulsoup4
 biopython
+pytest
+logzero
