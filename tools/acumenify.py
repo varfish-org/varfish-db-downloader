@@ -13,6 +13,7 @@ import time
 import typing
 
 import attr
+import pandas as pd
 import cattr
 from tqdm import tqdm
 
@@ -436,6 +437,9 @@ class ReportMessage:
     table: str
     msg: str
 
+    def is_known(self, known_issues) -> bool:
+        return any(k.matches(self) for k in known_issues)
+
 
 @attr.s(frozen=True, auto_attribs=True)
 class ReportKey:
@@ -584,13 +588,45 @@ def report(args: ReportArgs):
     logger.info("Loading Reports")
     reports: typing.Dict[ReportKey, typing.Dict] = {}
     for path_stats in paths_stats:
-        logger.info("considering %s", path_stats)
+        logger.debug("considering %s", path_stats)
         for path_json in path_stats.glob("*.json"):
             key = ReportKey(path_stats.name, *path_json.name.split(".")[:3])
-            logger.info("  loading %s", path_json)
+            logger.debug("  loading %s", path_json)
             with path_json.open("rt") as inputf:
                 reports[key] = json.load(inputf)
 
+    # Build per contig report.
+    per_contig_dicts = []
+    for key, report in reports.items():
+        if report["$schema_version"] != "0.1.0":
+            raise RuntimError("Cannot handle schema version %s" % report["$schema_version"])
+        for contig, count in report["by_chrom"].items():
+            if len(report["by_chrom"]) == 1 or contig != ".":
+                per_contig_dicts.append(
+                    {
+                        "dataset": key.stats,
+                        "table_group": report["import_version"]["table_group"],
+                        "table": key.table,
+                        "version": report["import_version"]["version"],
+                        "contig": contig,
+                        "count": count,
+                    }
+                )
+    df_per_contig = pd.DataFrame(per_contig_dicts)
+    logger.info("Per contig results:\n\n%s\n", df_per_contig)
+
+    df_pivoted = pd.pivot_table(
+        data=df_per_contig,
+        index=["table_group", "table", "contig"],
+        columns=["dataset"],
+        values=["count"],
+        aggfunc="median",
+        margins=True,
+        margins_name="median",
+    )
+    logger.info("Pivoted results:\n\n%s\n", df_pivoted)
+
+    # Build overall sanity check results.
     logger.info("Running sanity checks")
     results = []
     for key, report in reports.items():
@@ -598,35 +634,44 @@ def report(args: ReportArgs):
             if key.matches(check.report_key):
                 results += check.check(key, report, args)
 
-    logger.info("Here is your report")
-    fn = {
-        ReportLevel.INFO: logger.info,
-        ReportLevel.WARNING: logger.warning,
-        ReportLevel.ERROR: logger.error,
+    df_result = pd.DataFrame(
+        [
+            {
+                "known_issue": msg.is_known(KNOWN_ISSUES),
+                "level": msg.level.name,
+                "stats": msg.stats,
+                "table_group": msg.table_group,
+                "table": msg.table,
+                "msg": msg.msg,
+            }
+            for msg in results
+        ]
+    )
+    logger.info("Overall sanity check messages:\n\n%s\n", df_result)
+
+    summary_counts = {
+        "known": 0,
+        ReportLevel.INFO.name: 0,
+        ReportLevel.WARNING.name: 0,
+        ReportLevel.ERROR.name: 0,
     }
-    counts = {k: 0 for k in ReportLevel}
-    known = 0
     for msg in results:
-        txt = (
-            "%s | %s | %s | %s | %s",
-            msg.level.name,
-            msg.stats,
-            msg.table_group,
-            msg.table,
-            msg.msg,
-        )
-        for k in KNOWN_ISSUES:
-            if k.matches(msg):
-                known += 1
-                logger.info("KNOWN " + txt[0], *txt[1:])
-                break
+        if msg.is_known(KNOWN_ISSUES):
+            summary_counts["known"] += 1
         else:
-            counts[msg.level] += 1
-            fn[msg.level](*txt)
-    logger.info("# ___ SUMMARY ___")
-    logger.info("# known: %d", known)
-    for l in ReportLevel:
-        logger.info("# %s: %d", l.name, counts[l])
+            counts[msg.level.name] += 1
+
+    df_summary = pd.DataFrame([{"level": k, "count": v} for k, v in summary_counts.items()])
+    logger.info("Overall sanity check stats:\n\n%s\n", df_summary)
+
+    logger.info("Writing output file %s", args.path_report)
+    with pd.ExcelWriter(args.path_report) as writer:
+        df_summary.to_excel(writer, sheet_name="Overall Stats")
+        df_result.to_excel(writer, sheet_name="Sanity Checks")
+        df_per_contig.to_excel(writer, sheet_name="Counts")
+        df_pivoted.to_excel(writer, sheet_name="Pivoted Counts")
+
+    logger.info("All done. Have a nice day!")
 
 
 def main(argv=None):
