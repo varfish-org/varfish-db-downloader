@@ -3,7 +3,9 @@
 import argparse
 import collections
 import enum
+import functools
 import json
+import multiprocessing
 from pathlib import Path
 import re
 import sys
@@ -34,6 +36,8 @@ class ExtractArgs:
     path_import_versions: str
     #: Path to write statistics files to.
     path_stats: str
+    #: Degree of parallelism
+    processes: int = 0
     #: Optionally, number of lines to read.
     line_limit: typing.Optional[int] = None
     #: Optionally, name of table group to process.
@@ -84,6 +88,46 @@ class ColumnType(enum.Enum):
     FLOAT = 5
     DNA = 6
 
+    def with_generalized(self, other):
+        return {
+            (ColumnType.UNKNOWN, ColumnType.UNKNOWN): ColumnType.UNKNOWN,
+            (ColumnType.UNKNOWN, ColumnType.ENUM): ColumnType.ENUM,
+            (ColumnType.UNKNOWN, ColumnType.STRING): ColumnType.STRING,
+            (ColumnType.UNKNOWN, ColumnType.INT): ColumnType.INT,
+            (ColumnType.UNKNOWN, ColumnType.FLOAT): ColumnType.FLOAT,
+            (ColumnType.UNKNOWN, ColumnType.DNA): ColumnType.DNA,
+            (ColumnType.ENUM, ColumnType.UNKNOWN): ColumnType.ENUM,
+            (ColumnType.ENUM, ColumnType.ENUM): ColumnType.ENUM,
+            (ColumnType.ENUM, ColumnType.STRING): ColumnType.STRING,
+            (ColumnType.ENUM, ColumnType.INT): ColumnType.STRING,
+            (ColumnType.ENUM, ColumnType.FLOAT): ColumnType.STRING,
+            (ColumnType.ENUM, ColumnType.DNA): ColumnType.STRING,
+            (ColumnType.STRING, ColumnType.UNKNOWN): ColumnType.STRING,
+            (ColumnType.STRING, ColumnType.ENUM): ColumnType.STRING,
+            (ColumnType.STRING, ColumnType.STRING): ColumnType.STRING,
+            (ColumnType.STRING, ColumnType.INT): ColumnType.STRING,
+            (ColumnType.STRING, ColumnType.FLOAT): ColumnType.STRING,
+            (ColumnType.STRING, ColumnType.DNA): ColumnType.STRING,
+            (ColumnType.INT, ColumnType.UNKNOWN): ColumnType.INT,
+            (ColumnType.INT, ColumnType.ENUM): ColumnType.STRING,
+            (ColumnType.INT, ColumnType.STRING): ColumnType.STRING,
+            (ColumnType.INT, ColumnType.INT): ColumnType.INT,
+            (ColumnType.INT, ColumnType.FLOAT): ColumnType.STRING,
+            (ColumnType.INT, ColumnType.DNA): ColumnType.STRING,
+            (ColumnType.FLOAT, ColumnType.UNKNOWN): ColumnType.FLOAT,
+            (ColumnType.FLOAT, ColumnType.ENUM): ColumnType.STRING,
+            (ColumnType.FLOAT, ColumnType.STRING): ColumnType.STRING,
+            (ColumnType.FLOAT, ColumnType.INT): ColumnType.FLOAT,
+            (ColumnType.FLOAT, ColumnType.FLOAT): ColumnType.FLOAT,
+            (ColumnType.FLOAT, ColumnType.DNA): ColumnType.STRING,
+            (ColumnType.DNA, ColumnType.UNKNOWN): ColumnType.DNA,
+            (ColumnType.DNA, ColumnType.ENUM): ColumnType.STRING,
+            (ColumnType.DNA, ColumnType.STRING): ColumnType.STRING,
+            (ColumnType.DNA, ColumnType.INT): ColumnType.STRING,
+            (ColumnType.DNA, ColumnType.FLOAT): ColumnType.STRING,
+            (ColumnType.DNA, ColumnType.DNA): ColumnType.DNA,
+        }[(self, other)]
+
 
 #: Header known to hold chromosomes.
 HEADER_CHROM = "chromosome"
@@ -119,6 +163,10 @@ class ChromHarmonizer:
             return value
 
 
+def identity(x):
+    return x
+
+
 class ColAggregator:
     """Helper class for aggregating column values."""
 
@@ -126,10 +174,11 @@ class ColAggregator:
         #: Column name
         self.name = name
         #: Chromozome harmoniser.
+        self.chrom_harmonizer = chrom_harmonizer
         if self.name == HEADER_CHROM:
             self.fn_harmonize = chrom_harmonizer.apply
         else:
-            self.fn_harmonize = lambda x: x  # identity
+            self.fn_harmonize = identity
         #: Number of records to base guess on.
         self.guess_len = guess_len
         #: Maximal enumeration length.
@@ -142,6 +191,26 @@ class ColAggregator:
         self.values = {}
         #: Number of records read so far.
         self.counter = 0
+
+    def with_added(self, other):
+        """Return sum of this and other col aggregator."""
+        assert self.name == other.name
+        assert self.guess_len == other.guess_len
+        assert self.max_enum_size == other.max_enum_size
+        res = ColAggregator(self.name, self.chrom_harmonizer, self.guess_len, self.max_enum_size)
+        res.type_ = self.type_.with_generalized(other.type_)
+        if self.values is None and other.values is None:
+            res.values = None
+        elif self.values is None:
+            res.values = dict(other.values)
+        elif other.values is None:
+            res.values = dict(self.values)
+        else:
+            res.values = {}
+            for k in self.values.keys() | other.values.keys():
+                res.values[k] = self.values.get(k, 0) + other.values.get(k, 0)
+        res.counter = self.counter + other.counter
+        return res
 
     def process(self, value):
         self.counter += 1
@@ -189,12 +258,29 @@ class Aggregator:
     """Helper class for aggregating values"""
 
     def __init__(self, header, chrom_harmonizer):
+        #: Header.
+        self.header = header
         #: Chromozome harmoniser.
         self.chrom_harmonizer = chrom_harmonizer
         #: Count by chromosome, if any, else None.
         self.by_chrom = {}
         #: Aggregate statistics for each column.
         self.by_column = {col: ColAggregator(col, chrom_harmonizer) for col in header}
+
+    def with_added(self, other):
+        assert self.header == other.header
+        assert self.by_column.keys() == other.by_column.keys()
+        res = Aggregator(self.header, self.chrom_harmonizer)
+        res.by_chrom = dict(self.by_chrom)
+        for k, v in other.by_chrom.items():
+            res.by_chrom[k] = res.by_chrom.get(k, 0) + v
+        for k in self.by_column.keys():
+            v1 = self.by_column[k]
+            v1.finish()
+            v2 = other.by_column[k]
+            v2.finish()
+            res.by_column[k] = v1.with_added(v2)
+        return res
 
     def process(self, record: typing.Dict):
         chrom = self.chrom_harmonizer.apply(record.get(HEADER_CHROM, "."))
@@ -208,6 +294,48 @@ class Aggregator:
             a.finish()
         if "." not in self.by_chrom:
             self.by_chrom["."] = sum(self.by_chrom.values())
+
+
+def do_extraction_job(path: Path, args: ExtractArgs):
+    disable_tqdm = args.processes > 1
+    logger.info(
+        "  processing file %s%s",
+        path,
+        " (at most %s lines)" % args.line_limit if args.line_limit else "",
+    )
+    agg = None
+    header = None
+    with path.open("rt") as inputf:
+        prev = time.time()
+        modulo = 200_000
+        for lineno, line in tqdm(enumerate(inputf), unit="rec", disable=disable_tqdm):
+            if disable_tqdm and lineno and lineno % modulo == 0:
+                curr = time.time()
+                lines_per_sec = modulo / (curr - prev)
+                prev = curr
+                logger.info(
+                    "... processing %s ... at line %s (%.2f per sec)",
+                    path.name,
+                    "{:,}".format(lineno),
+                    lines_per_sec,
+                )
+            if args.line_limit and lineno > args.line_limit:
+                logger.debug("Stopping at line limit of %s", args.line_limit)
+                break
+            arr = line.strip().split("\t")
+            if not header:
+                header = arr
+                agg = Aggregator(
+                    header, ChromHarmonizer(args.harmonize_chroms, args.harmonize_chrmt)
+                )
+            else:
+                if len(header) != len(arr):
+                    raise ExtractionError(
+                        "Record %s has %d fields but header had %s", lineno, len(arr), len(header)
+                    )
+                agg.process(dict(zip(header, arr)))
+    agg.finish()
+    return agg
 
 
 def do_extraction(path_base: Path, record: ImportVersion, args: ExtractArgs):
@@ -225,55 +353,20 @@ def do_extraction(path_base: Path, record: ImportVersion, args: ExtractArgs):
     # Process for each table.
     result = {}
     for table, paths in by_table.items():
-        header = None
         logger.info("processing table %s in %s", table, record.table_group)
-        agg = None
-        for path in sorted(set(paths)):
-            logger.info(
-                "  processing file %s%s",
-                path,
-                " (at most %s lines)" % args.line_limit if args.line_limit else "",
+        if args.processes >= 1:
+            pool = multiprocessing.Pool(args.processes)
+            aggs = list(
+                pool.map(
+                    functools.partial(do_extraction_job, args=args), sorted(set(paths)), chunksize=1
+                )
             )
-            this_header = None
-            with path.open("rt") as inputf:
-                prev = time.time()
-                modulo = 200_000
-                for lineno, line in tqdm(enumerate(inputf), unit="rec", disable=DISABLE_TQDM):
-                    if DISABLE_TQDM and lineno and lineno % modulo == 0:
-                        curr = time.time()
-                        lines_per_sec = modulo / (curr - prev)
-                        prev = curr
-                        logger.info(
-                            "... processing ... at line %s (%.2f per sec)",
-                            "{:,}".format(lineno),
-                            lines_per_sec,
-                        )
-                    if args.line_limit and lineno > args.line_limit:
-                        logger.debug("Stopping at line limit of %s", args.line_limit)
-                        break
-                    arr = line.strip().split("\t")
-                    if not this_header:
-                        this_header = arr
-                        if not header:
-                            header = this_header
-                            agg = Aggregator(
-                                header, ChromHarmonizer(args.harmonize_chroms, args.harmonize_chrmt)
-                            )
-                        else:
-                            if header != this_header:
-                                raise ExtractionError(
-                                    "Incompatible headers, this: %s, first: %s", this_header, header
-                                )
-                    else:
-                        if len(this_header) != len(arr):
-                            raise ExtractionError(
-                                "Record %s has %d fields but header had %s",
-                                lineno,
-                                len(arr),
-                                len(header),
-                            )
-                        agg.process(dict(zip(header, arr)))
-        agg.finish()
+        else:
+            # args.processes <= 0, do not use multiprocessing.
+            aggs = [do_extraction_job(path, args) for path in sorted(set(paths))]
+        agg = aggs[0]
+        for a in aggs[1:]:
+            agg = agg.with_added(a)
         result[table] = {
             "$schema_version": "0.1.0",
             "import_version": vars(record),
@@ -545,6 +638,7 @@ def main(argv=None):
     parser_extract.add_argument(dest="path_import_versions", type=str)
     parser_extract.add_argument("--line-limit", type=int)
     parser_extract.add_argument("--only", type=str)
+    parser_extract.add_argument("--processes", type=int, default=0, help="Number of processes")
 
     parser_report = subparsers.add_parser("report", help="Generate report based on statistics TSV.")
     parser_report.set_defaults(func=report, args_class=ReportArgs)

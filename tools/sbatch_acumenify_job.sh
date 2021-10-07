@@ -2,10 +2,10 @@
 
 #SBATCH --output=slurm_log/slurm-%j.log
 #
-#SBATCH --ntasks=2
+#SBATCH --ntasks=8
 #SBATCH --nodes=1
 #SBATCH --time=4-00:00:00
-#SBATCH --mem-per-cpu=4G
+#SBATCH --mem-per-cpu=1G
 
 OUT=$1
 IN=$2
