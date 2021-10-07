@@ -314,13 +314,13 @@ def do_extraction_job(path: Path, args: ExtractArgs):
                 lines_per_sec = modulo / (curr - prev)
                 prev = curr
                 logger.info(
-                    "... processing %s ... at line %s (%.2f per sec)",
+                    "    ... processing %s ... at line %s (%.2f per sec)",
                     path.name,
                     "{:,}".format(lineno),
                     lines_per_sec,
                 )
             if args.line_limit and lineno > args.line_limit:
-                logger.debug("Stopping at line limit of %s", args.line_limit)
+                logger.debug("    ~> stopping at line limit of %s", args.line_limit)
                 break
             arr = line.strip().split("\t")
             if not header:
@@ -335,6 +335,7 @@ def do_extraction_job(path: Path, args: ExtractArgs):
                     )
                 agg.process(dict(zip(header, arr)))
     agg.finish()
+    logger.info("    => done with %s", path.name)
     return agg
 
 
