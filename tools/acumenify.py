@@ -351,10 +351,16 @@ class ReportKey:
     table: typing.Optional[str] = None
 
     def matches(self, other):
+        def lower(s):
+            if not s:
+                return s
+            else:
+                return s.lower()
+
         matches = True
         for k in ("stats", "release", "table_group", "table"):
             if getattr(other, k):
-                matches = getattr(self, k) == getattr(other, k)
+                matches = lower(getattr(self, k)) == lower(getattr(other, k))
         return matches
 
 
@@ -372,6 +378,7 @@ def sc_allchroms(
     result = []
 
     exceptions = {
+        ReportKey(table_group="acmg"): [h(c) for c in CHROMS],
         ReportKey(table_group="DGV", table="DgvGoldStandardSvs"): [h("MT")],
         ReportKey(table_group="DGV", table="DgvSvs"): [h("MT")],
         ReportKey(table_group="ensembl_regulatory", table="EnsemblRegulatoryFeature"): [h("MT")],
@@ -379,23 +386,29 @@ def sc_allchroms(
             h(c) for c in CHROMS
         ],
         ReportKey(table_group="ExAC_constraints", table="ExacConstraints"): [h("MT")],
+        ReportKey(table_group="ExAC", table="ExacCnv"): [h("MT"), h("X"), h("Y")],
+        ReportKey(table_group="ExAC", table="Exac"): [h("MT")],
+        ReportKey(table_group="extra_annos", table="ExtraAnno"): [h("MT")],
+        ReportKey(table_group="extra-annos", table="ExtraAnnoField"): [h(c) for c in CHROMS],
         ReportKey(table_group="gnomAD_constraints", table="GnomadConstraints"): [h("MT")],
-        ReportKey(table_group="gnomAD_exomes", table="GnomadExomes"): [h("MT"), h("Y")],
+        ReportKey(table_group="gnomAD_exomes", table="GnomadExomes"): [h("MT")],
+        ReportKey(table_group="gnomAD_genomes", table="GnomadGenomes"): [h("MT"), h("Y")],
         ReportKey(table_group="gnomAD_SV", table="GnomAdSv"): [h("MT")],
         ReportKey(table_group="HelixMTdb", table="HelixMtDb"): [h(c) for c in CHROMS if c != "MT"],
         ReportKey(table_group="hgmd_public", table="HgmdPublicLocus"): [h("MT")],
+        ReportKey(table_group="kegg"): [h(c) for c in CHROMS],
         ReportKey(table_group="knowngeneaa", table="KnowngeneAA"): [h("MT")],
         ReportKey(table_group="mgi", table="MgiHomMouseHumanSequence"): [h(c) for c in CHROMS],
         ReportKey(table_group="mim2gene", table="Mim2geneMedgen"): [h(c) for c in CHROMS],
         ReportKey(table_group="MITOMAP", table="Mitomap"): [h(c) for c in CHROMS if c != "MT"],
         ReportKey(table_group="mtDB", table="MtDb"): [h(c) for c in CHROMS if c != "MT"],
-        ReportKey(table_group="refseqtoensembl", table="RefseqToEnsembl"): [h(c) for c in CHROMS],
-        ReportKey(table_group="refseqtoensembl", table="RefseqToGeneSymbol"): [
-            h(c) for c in CHROMS
-        ],
+        ReportKey(table_group="refseqtoensembl"): [h(c) for c in CHROMS],
+        ReportKey(table_group="refseqtogenesymbol"): [h(c) for c in CHROMS],
         ReportKey(table_group="tads_hesc", table="TadInterval"): [h("MT"), h("Y")],
         ReportKey(table_group="tads_imr90", table="TadInterval"): [h("MT"), h("Y")],
+        ReportKey(table_group="thousand_genomes", table="ThousandGenomesSv"): [h("MT"), h("Y")],
         ReportKey(table_group="vista", table="VistaEnhancer"): [h("MT"), h("Y")],
+        ReportKey(table_group="refseq_genes", release="39", table="GeneInterval"): [h("MT")],
     }
 
     chroms = set(map(h, CHROMS)) | {"."}
@@ -419,6 +432,53 @@ def sc_allchroms(
 
 #: Defined simple sanity checks that work on one report at a time."""
 SANITY_CHECKS = (SanityCheck(ReportKey(), sc_allchroms),)
+
+
+@attr.s(frozen=True, auto_attribs=True)
+class KnownIssue:
+    dataset: str
+    table_group: str
+    table: str
+    message: str
+
+    def matches(self, msg: ReportMessage):
+        return all(
+            (
+                self.dataset == msg.stats,
+                self.table_group == msg.table_group,
+                self.table == msg.table,
+                re.match(self.message, msg.msg),
+            )
+        )
+
+
+#: Known issues.
+KNOWN_ISSUES = (
+    KnownIssue(
+        "stats-2020",
+        "clinvar",
+        "Clinvar",
+        re.escape("No count for 3 chromosomes: ['chrM', 'chrX', 'chrY']"),
+    ),
+    KnownIssue(
+        "stats-2020",
+        "gnomAD_exomes",
+        "GnomadExomes",
+        re.escape("No count for 1 chromosomes: ['chrY']"),
+    ),
+    KnownIssue(
+        "stats-2020",
+        "gnomAD_exomes",
+        "GnomadExomes",
+        re.escape("No count for 1 chromosomes: ['chrY']"),
+    ),
+    KnownIssue(
+        "stats-2020",
+        "ensembl_regulatory",
+        "EnsemblRegulatoryFeature",
+        re.escape("No count for 1 chromosomes: ['chrY']"),
+    ),
+)
 
 
 def report(args: ReportArgs):
@@ -451,12 +511,26 @@ def report(args: ReportArgs):
         ReportLevel.ERROR: logger.error,
     }
     counts = {k: 0 for k in ReportLevel}
+    known = 0
     for msg in results:
-        counts[msg.level] += 1
-        fn[msg.level](
-            "%s | %s | %s | %s | %s", msg.level.name, msg.stats, msg.table_group, msg.table, msg.msg
+        txt = (
+            "%s | %s | %s | %s | %s",
+            msg.level.name,
+            msg.stats,
+            msg.table_group,
+            msg.table,
+            msg.msg,
         )
+        for k in KNOWN_ISSUES:
+            if k.matches(msg):
+                known += 1
+                logger.info("KNOWN " + txt[0], *txt[1:])
+                break
+        else:
+            counts[msg.level] += 1
+            fn[msg.level](*txt)
     logger.info("# ___ SUMMARY ___")
+    logger.info("# known: %d", known)
     for l in ReportLevel:
         logger.info("# %s: %d", l.name, counts[l])
 

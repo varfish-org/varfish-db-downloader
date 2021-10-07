@@ -1,5 +1,21 @@
+NOREFS = [
+    "noref/acmg/v3.0/Acmg.release_info",
+    "noref/hpo/{download_date}/HpoName.release_info",
+    "noref/hpo/{download_date}/Hpo.release_info",
+    "noref/kegg/april2011/KeggInfo.release_info",
+    "noref/kegg/april2011/EnsemblToKegg.release_info",
+    "noref/kegg/april2011/RefseqToKegg.release_info",
+    "noref/mgi/{download_date}/MgiHomMouseHumanSequence.release_info",
+    "noref/mim2gene/{download_date}/Mim2geneMedgen.release_info",
+    "noref/ncbi_gene/{download_date}/NcbiGeneInfo.release_info",
+    "noref/ncbi_gene/{download_date}/NcbiGeneRif.release_info",
+    "noref/refseqtoensembl/{download_date}/RefseqToEnsembl.release_info",
+    "noref/refseqtogenesymbol/{download_date}/RefseqToGeneSymbol.release_info",
+]
+
+
 def input_result_grch37_release_server_db(wildcards):
-    dbsnp = expand("GRCh37/dbSNP/b155/Dbsnp.{chrom}.release_info", chrom=CHROMS)
+    dbsnp = expand("GRCh37/dbSNP/b155/Dbsnp.{chrom}.release_info", chrom=CHROMS + ["MT"])
     gnomad_exomes = expand(
         "GRCh37/gnomAD_exomes/r2.1.1/GnomadExomes.{chrom}.release_info", chrom=CHROMS
     )
@@ -36,7 +52,7 @@ def input_result_grch37_release_server_db(wildcards):
         "GRCh37/thousand_genomes/phase3/ThousandGenomesSv.release_info",
         "GRCh37/vista/{download_date}/VistaEnhancer.release_info",
     ]
-    all = dbsnp + gnomad_exomes + gnomad_genomes + other
+    all = NOREFS + dbsnp + gnomad_exomes + gnomad_genomes + other
     return [s.format(**config) for s in all]
 
 
@@ -44,20 +60,16 @@ rule result_grch37_release_server_db:
     input:
         input_result_grch37_release_server_db,
     output:
-        tar="releases/{release_name}/varfish-server-background-db-{release_name}-grch37.tar.gz".format(
-            **config
-        ),
-        sha256="releases/{release_name}/varfish-server-background-db-{release_name}-grch37.tar.gz.sha256".format(
-            **config
-        ),
+        "releases/{release_name}/varfish-server-background-db-{release_name}-grch37/.done",
     shell:
         r"""
         export TMPDIR=$(mktemp -d)
         trap "rm -rf $TMPDIR" EXIT ERR
 
-        mkdir -p $TMPDIR/varfish-server-background-db-{config[release_name]}-grch37
+        out_dir=$(dirname {output})
+        mkdir -p $out_dir
 
-        import_versions=$TMPDIR/varfish-server-background-db-{config[release_name]}-grch37/import_versions.tsv
+        import_versions=$out_dir/import_versions.tsv
 
         echo -e "build\ttable_group\tversion" > $import_versions
 
@@ -68,18 +80,40 @@ rule result_grch37_release_server_db:
             genome=$(echo $path | cut -d / -f 1)
             abs=$(readlink -f $path)
 
-            echo -e "${{genome}}\t${{db}}\t${{version}}" >> $import_versions
+            echo -e "${{genome}}\t${{db}}\t${{version}}" >> $TMPDIR/import_versions
 
             ( \
-                cd $TMPDIR/varfish-server-background-db-{config[release_name]}-grch37; \
+                cd $out_dir; \
                 mkdir -p $genome/$db/$version; \
-                ln -s $abs $path; \
-                ln -s ${{abs%.release_info}}.tsv ${{path%.release_info}}.tsv \
+                test -e $path || ln -s $abs $path; \
+                test -e ${{path%.release_info}}.tsv || ln -s ${{abs%.release_info}}.tsv ${{path%.release_info}}.tsv \
             )
         done
 
+        sort -u $TMPDIR/import_versions >> $import_versions
+
+        touch "{output}"
+        """
+
+
+rule result_grch37_release_server_db_tar:
+    input:
+        "releases/{release_name}/varfish-server-background-db-{release_name}-grch37/.done".format(
+            **config
+        ),
+    output:
+        tar="releases/{release_name}/varfish-server-background-db-{release_name}-grch37.tar.gz".format(
+            **config
+        ),
+        sha256="releases/{release_name}/varfish-server-background-db-{release_name}-grch37.tar.gz.sha256".format(
+            **config
+        ),
+    shell:
+        r"""
+        in_dir=$(dirname {input})
+
         tar \
-            -C $TMPDIR \
+            -C $in_dir/.. \
             -vhczf $(readlink -f {output.tar}) \
             varfish-server-background-db-{config[release_name]}-grch37
         pushd $(dirname {output.tar})
@@ -88,7 +122,7 @@ rule result_grch37_release_server_db:
 
 
 def input_result_grch38_release_server_db(wildcards):
-    dbsnp = expand("GRCh38/dbSNP/b155/Dbsnp.{chrom}.release_info", chrom=CHROMS)
+    dbsnp = expand("GRCh38/dbSNP/b155/Dbsnp.{chrom}.release_info", chrom=CHROMS + ["M"])
     gnomad_exomes = expand(
         "GRCh38/gnomAD_exomes/r2.1.1/GnomadExomes.{chrom}.release_info", chrom=CHROMS
     )
@@ -117,7 +151,7 @@ def input_result_grch38_release_server_db(wildcards):
         "GRCh38/mtDB/{download_date}/MtDb.release_info",
         "GRCh38/refseq_genes/r39/GeneInterval.release_info",
     ]
-    all = dbsnp + gnomad_exomes + gnomad_genomes + other
+    all = NOREFS + dbsnp + gnomad_exomes + gnomad_genomes + other
     return [s.format(**config) for s in all]
 
 
@@ -125,20 +159,16 @@ rule result_grch38_release_server_db:
     input:
         input_result_grch38_release_server_db,
     output:
-        tar="releases/{release_name}/varfish-server-background-db-{release_name}-grch38.tar.gz".format(
-            **config
-        ),
-        sha256="releases/{release_name}/varfish-server-background-db-{release_name}-grch38.tar.gz.sha256".format(
-            **config
-        ),
+        "releases/{release_name}/varfish-server-background-db-{release_name}-grch38/.done",
     shell:
         r"""
         export TMPDIR=$(mktemp -d)
         trap "rm -rf $TMPDIR" EXIT ERR
 
-        mkdir -p $TMPDIR/varfish-server-background-db-{config[release_name]}-grch38
+        out_dir=$(dirname {output})
+        mkdir -p $out_dir
 
-        import_versions=$TMPDIR/varfish-server-background-db-{config[release_name]}-grch38/import_versions.tsv
+        import_versions=$out_dir/import_versions.tsv
 
         echo -e "build\ttable_group\tversion" > $import_versions
 
@@ -149,18 +179,40 @@ rule result_grch38_release_server_db:
             genome=$(echo $path | cut -d / -f 1)
             abs=$(readlink -f $path)
 
-            echo -e "${{genome}}\t${{db}}\t${{version}}" >> $import_versions
+            echo -e "${{genome}}\t${{db}}\t${{version}}" >> $TMPDIR/import_versions
 
             ( \
-                cd $TMPDIR/varfish-server-background-db-{config[release_name]}-grch38; \
+                cd $out_dir; \
                 mkdir -p $genome/$db/$version; \
-                ln -s $abs $path; \
-                ln -s ${{abs%.release_info}}.tsv ${{path%.release_info}}.tsv \
+                test -e $path || ln -s $abs $path; \
+                test -e ${{path%.release_info}}.tsv || ln -s ${{abs%.release_info}}.tsv ${{path%.release_info}}.tsv \
             )
         done
 
+        sort -u $TMPDIR/import_versions >> $import_versions
+
+        touch "{output}"
+        """
+
+
+rule result_grch38_release_server_db_tar:
+    input:
+        "releases/{release_name}/varfish-server-background-db-{release_name}-grch38/.done".format(
+            **config
+        ),
+    output:
+        tar="releases/{release_name}/varfish-server-background-db-{release_name}-grch38.tar.gz".format(
+            **config
+        ),
+        sha256="releases/{release_name}/varfish-server-background-db-{release_name}-grch38.tar.gz.sha256".format(
+            **config
+        ),
+    shell:
+        r"""
+        in_dir=$(dirname {input})
+
         tar \
-            -C $TMPDIR \
+            -C $in_dir/.. \
             -vhczf $(readlink -f {output.tar}) \
             varfish-server-background-db-{config[release_name]}-grch38
         pushd $(dirname {output.tar})

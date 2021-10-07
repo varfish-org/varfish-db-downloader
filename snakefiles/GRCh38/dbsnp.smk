@@ -29,13 +29,13 @@ rule grch38_dbsnp_b155_map_chr:
         vcf="GRCh38/dbSNP/b155/download/GCF_000001405.39.gz",
         tbi="GRCh38/dbSNP/b155/download/GCF_000001405.39.gz.tbi",
     output:
-        map=temp("GRCh38/dbSNP/b155/download/GCF_000001405.39.map_chr"),
+        map="GRCh38/dbSNP/b155/download/GCF_000001405.39.map_chr.txt",
         vcf="GRCh38/dbSNP/b155/download/GCF_000001405.39.map_chr.gz",
         tbi="GRCh38/dbSNP/b155/download/GCF_000001405.39.map_chr.gz.tbi",
     shell:
         r"""
         awk -v RS="(\r)?\n" 'BEGIN {{ FS="\t" }} !/^#/ {{ if ($10 != "na") print $7,$10; else print $7,$5 }}' \
-            tools/data/GCF_000001405.25_GRCh37.p13_assembly_report.txt \
+            tools/data/GCF_000001405.38_GRCh38.p12_assembly_report.txt \
         > {output.map}
 
         bcftools annotate --threads=2 --rename-chrs {output.map} {input.vcf} -O z -o {output.vcf}
@@ -58,7 +58,7 @@ rule grch38_dbsnp_b155_normalize:
         r"""
         bcftools norm \
             --check-ref s \
-            --targets "{wildcards.chrom}" \
+            --regions "chr{wildcards.chrom}" \
             --threads 16 \
             --multiallelics - \
             --fasta-ref {input.reference} \

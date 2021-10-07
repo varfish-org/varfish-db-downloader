@@ -1,6 +1,6 @@
 rule result_noref_acmg:
     input:
-        "tools/data/Acmg.tsv"
+        "tools/data/Acmg.tsv",
     output:
         tsv="noref/acmg/v3.0/Acmg.tsv",
         release_info="noref/acmg/v3.0/Acmg.release_info",

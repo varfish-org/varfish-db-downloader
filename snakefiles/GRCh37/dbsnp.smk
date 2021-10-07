@@ -60,7 +60,7 @@ rule grch37_dbsnp_b155_normalize:
         r"""
         bcftools norm \
             --check-ref s \
-            --targets "{wildcards.chrom}" \
+            --regions "{wildcards.chrom}" \
             --threads 16 \
             --multiallelics - \
             --fasta-ref {input.reference} \

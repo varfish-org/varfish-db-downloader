@@ -9,8 +9,8 @@ IN=$2
 
 mkdir -p slurm_log
 
-for table_group in $(tail -n +2 $IN  | sort -u | cut -f 2 | grep -v gnomAD_genomes); do
-    if [[ -e $OUT/*.$table_group.*.json ]]; then
+for table_group in $(tail -n +2 $IN  | sort -u | cut -f 2 | grep -i dbsnp); do
+    if [[ -e $OUT/*.$table_group.*json ]]; then
         >&2 echo "skipping $table_group"
         continue
     fi

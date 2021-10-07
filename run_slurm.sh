@@ -5,7 +5,7 @@ MAX_JOBS=1000
 # Maximal number of jobs per second
 MAX_JOBS_PER_SECOND=10
 # Number of times to restart jobs
-RESTART_TIMES=5
+RESTART_TIMES=0
 
 # Check preconditions -------------------------------------------------------
 
@@ -30,7 +30,7 @@ snakemake \
     --keep-going \
     --printshellcmds \
     --jobs ${MAX_JOBS} \
-    --drmaa " --partition=critical --mem=20000 --time=48:00:00 --cpus-per-task=8 --output=${PWD}/${LOGDIR}/slurm-%x-%J.log" \
+    --drmaa " --partition=critical --mem=20000 --time=96:00:00 --cpus-per-task=8 --output=${PWD}/${LOGDIR}/slurm-%x-%J.log" \
     --restart-times ${RESTART_TIMES} \
     --rerun-incomplete \
     -- \

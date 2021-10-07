@@ -4,7 +4,7 @@
 #
 #SBATCH --ntasks=2
 #SBATCH --nodes=1
-#SBATCH --time=1-00:00:00
+#SBATCH --time=4-00:00:00
 #SBATCH --mem-per-cpu=4G
 
 OUT=$1
