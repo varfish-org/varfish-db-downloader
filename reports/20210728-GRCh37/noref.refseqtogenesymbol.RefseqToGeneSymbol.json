@@ -1,0 +1,19 @@
+{
+  "$schema_version": "0.1.0",
+  "import_version": {
+    "build": "noref",
+    "table_group": "refseqtogenesymbol",
+    "version": "20210728"
+  },
+  "by_chrom": {
+    ".": 62222
+  },
+  "by_col": {
+    "entrez_id": {
+      "type": "INT"
+    },
+    "gene_symbol": {
+      "type": "STRING"
+    }
+  }
+}

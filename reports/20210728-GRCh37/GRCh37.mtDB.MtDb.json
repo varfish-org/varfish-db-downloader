@@ -1,0 +1,124 @@
+{
+  "$schema_version": "0.1.0",
+  "import_version": {
+    "build": "GRCh37",
+    "table_group": "mtDB",
+    "version": "20210728"
+  },
+  "by_chrom": {
+    "chrM": 4054,
+    ".": 4054
+  },
+  "by_col": {
+    "release": {
+      "type": "ENUM",
+      "values": [
+        "GRCh37"
+      ]
+    },
+    "chromosome": {
+      "type": "ENUM",
+      "values": [
+        "chrM"
+      ]
+    },
+    "start": {
+      "type": "INT"
+    },
+    "end": {
+      "type": "INT"
+    },
+    "bin": {
+      "type": "INT"
+    },
+    "reference": {
+      "type": "DNA"
+    },
+    "alternative": {
+      "type": "DNA"
+    },
+    "location": {
+      "type": "ENUM",
+      "values": [
+        "12S rRNA",
+        "16S rRNA",
+        "ATPase6",
+        "ATPase8",
+        "COI",
+        "COII",
+        "COIII",
+        "Cytb",
+        "D-loop",
+        "ND1",
+        "ND2",
+        "ND3",
+        "ND4",
+        "ND4L",
+        "ND5",
+        "ND6",
+        "Non-coding 1",
+        "Non-coding 10",
+        "Non-coding 3",
+        "Non-coding 4",
+        "Non-coding 5",
+        "Non-coding 7",
+        "Non-coding 9",
+        "OL",
+        "tRNA Ala",
+        "tRNA Arg",
+        "tRNA Asn",
+        "tRNA Asp",
+        "tRNA Cys",
+        "tRNA Gln",
+        "tRNA Glu",
+        "tRNA Gly",
+        "tRNA His",
+        "tRNA Ile",
+        "tRNA Leu",
+        "tRNA Leu(1)",
+        "tRNA Lys",
+        "tRNA Met",
+        "tRNA Phe",
+        "tRNA Pro",
+        "tRNA Ser(1)",
+        "tRNA Ser(2)",
+        "tRNA Thr",
+        "tRNA Trp",
+        "tRNA Tyr",
+        "tRNA Val"
+      ]
+    },
+    "codon": {
+      "type": "STRING"
+    },
+    "position": {
+      "type": "ENUM",
+      "values": [
+        "",
+        "1",
+        "2",
+        "3"
+      ]
+    },
+    "aa_change": {
+      "type": "STRING"
+    },
+    "synonymous": {
+      "type": "ENUM",
+      "values": [
+        "",
+        "False",
+        "True"
+      ]
+    },
+    "ac": {
+      "type": "INT"
+    },
+    "an": {
+      "type": "INT"
+    },
+    "af": {
+      "type": "INT"
+    }
+  }
+}

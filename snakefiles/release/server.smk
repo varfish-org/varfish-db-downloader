@@ -11,6 +11,7 @@ NOREFS = [
     "noref/ncbi_gene/{download_date}/NcbiGeneRif.release_info",
     "noref/refseqtoensembl/{download_date}/RefseqToEnsembl.release_info",
     "noref/refseqtogenesymbol/{download_date}/RefseqToGeneSymbol.release_info",
+    "noref/ExAC_constraints/r0.3.1/ExacConstraints.release_info",
 ]
 
 
@@ -31,7 +32,6 @@ def input_result_grch37_release_server_db(wildcards):
         "GRCh37/ensembl_regulatory/{download_date}/EnsemblRegulatoryFeature.release_info",
         "GRCh37/ensembltogenesymbol/{download_date}/EnsemblToGeneSymbol.release_info",
         "GRCh37/ensembltorefseq/{download_date}/EnsemblToRefseq.release_info",
-        "GRCh37/ExAC_constraints/r0.3.1/ExacConstraints.release_info",
         "GRCh37/ExAC/r1/ExacCnv.release_info",
         "GRCh37/ExAC/r1/Exac.release_info",
         "GRCh37/extra_annos/{download_date}/ExtraAnnoField.release_info",

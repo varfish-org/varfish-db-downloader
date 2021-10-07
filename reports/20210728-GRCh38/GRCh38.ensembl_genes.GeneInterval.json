@@ -1,0 +1,92 @@
+{
+  "$schema_version": "0.1.0",
+  "import_version": {
+    "build": "GRCh38",
+    "table_group": "ensembl_genes",
+    "version": "r104"
+  },
+  "by_chrom": {
+    "chr1": 2048,
+    "chr10": 727,
+    "chr11": 1309,
+    "chr12": 1034,
+    "chr13": 322,
+    "chr14": 610,
+    "chr15": 596,
+    "chr16": 853,
+    "chr17": 1182,
+    "chr18": 269,
+    "chr19": 1469,
+    "chr2": 1244,
+    "chr20": 545,
+    "chr21": 235,
+    "chr22": 444,
+    "chr3": 1074,
+    "chr4": 752,
+    "chr5": 883,
+    "chr6": 1047,
+    "chr7": 919,
+    "chr8": 684,
+    "chr9": 775,
+    "chrM": 13,
+    "chrX": 856,
+    "chrY": 46,
+    ".": 19936
+  },
+  "by_col": {
+    "release": {
+      "type": "ENUM",
+      "values": [
+        "GRCh38"
+      ]
+    },
+    "chromosome": {
+      "type": "ENUM",
+      "values": [
+        "chr1",
+        "chr10",
+        "chr11",
+        "chr12",
+        "chr13",
+        "chr14",
+        "chr15",
+        "chr16",
+        "chr17",
+        "chr18",
+        "chr19",
+        "chr2",
+        "chr20",
+        "chr21",
+        "chr22",
+        "chr3",
+        "chr4",
+        "chr5",
+        "chr6",
+        "chr7",
+        "chr8",
+        "chr9",
+        "chrM",
+        "chrX",
+        "chrY"
+      ]
+    },
+    "start": {
+      "type": "INT"
+    },
+    "end": {
+      "type": "INT"
+    },
+    "bin": {
+      "type": "INT"
+    },
+    "database": {
+      "type": "ENUM",
+      "values": [
+        "ensembl"
+      ]
+    },
+    "gene_id": {
+      "type": "STRING"
+    }
+  }
+}

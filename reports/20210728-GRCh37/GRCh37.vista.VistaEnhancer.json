@@ -1,0 +1,89 @@
+{
+  "$schema_version": "0.1.0",
+  "import_version": {
+    "build": "GRCh37",
+    "table_group": "vista",
+    "version": "20210728"
+  },
+  "by_chrom": {
+    "chrX": 28,
+    "chr1": 169,
+    "chr2": 226,
+    "chr3": 124,
+    "chr4": 78,
+    "chr5": 123,
+    "chr6": 107,
+    "chr7": 147,
+    "chr8": 68,
+    "chr9": 101,
+    "chr10": 91,
+    "chr11": 68,
+    "chr12": 52,
+    "chr13": 55,
+    "chr14": 77,
+    "chr15": 50,
+    "chr16": 143,
+    "chr17": 53,
+    "chr18": 76,
+    "chr19": 17,
+    "chr20": 42,
+    "chr21": 18,
+    "chr22": 26,
+    ".": 1939
+  },
+  "by_col": {
+    "release": {
+      "type": "ENUM",
+      "values": [
+        "GRCh37"
+      ]
+    },
+    "chromosome": {
+      "type": "ENUM",
+      "values": [
+        "chr1",
+        "chr10",
+        "chr11",
+        "chr12",
+        "chr13",
+        "chr14",
+        "chr15",
+        "chr16",
+        "chr17",
+        "chr18",
+        "chr19",
+        "chr2",
+        "chr20",
+        "chr21",
+        "chr22",
+        "chr3",
+        "chr4",
+        "chr5",
+        "chr6",
+        "chr7",
+        "chr8",
+        "chr9",
+        "chrX"
+      ]
+    },
+    "start": {
+      "type": "INT"
+    },
+    "end": {
+      "type": "INT"
+    },
+    "bin": {
+      "type": "INT"
+    },
+    "element_id": {
+      "type": "STRING"
+    },
+    "validation_result": {
+      "type": "ENUM",
+      "values": [
+        "negative",
+        "positive"
+      ]
+    }
+  }
+}

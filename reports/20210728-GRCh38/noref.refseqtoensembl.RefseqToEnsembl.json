@@ -1,0 +1,22 @@
+{
+  "$schema_version": "0.1.0",
+  "import_version": {
+    "build": "noref",
+    "table_group": "refseqtoensembl",
+    "version": "20210728"
+  },
+  "by_chrom": {
+    ".": 64424
+  },
+  "by_col": {
+    "entrez_id": {
+      "type": "INT"
+    },
+    "ensembl_gene_id": {
+      "type": "STRING"
+    },
+    "ensembl_transcript_id": {
+      "type": "STRING"
+    }
+  }
+}

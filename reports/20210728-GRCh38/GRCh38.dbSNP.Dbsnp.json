@@ -1,0 +1,92 @@
+{
+  "$schema_version": "0.1.0",
+  "import_version": {
+    "build": "GRCh38",
+    "table_group": "dbSNP",
+    "version": "b155"
+  },
+  "by_chrom": {
+    "chr1": 97168824,
+    "chr10": 56751623,
+    "chr11": 58244677,
+    "chr12": 56171692,
+    "chr13": 42331154,
+    "chr14": 37486405,
+    "chr15": 35173030,
+    "chr16": 39048990,
+    "chr17": 34241719,
+    "chr18": 33223949,
+    "chr19": 26072229,
+    "chr2": 102835063,
+    "chr20": 27040761,
+    "chr21": 16308092,
+    "chr22": 16922287,
+    "chr3": 83858188,
+    "chr4": 80926413,
+    "chr5": 75635064,
+    "chr6": 70380097,
+    "chr7": 67954907,
+    "chr8": 64479268,
+    "chr9": 53832991,
+    "chrM": 8173,
+    "chrX": 48685465,
+    "chrY": 2913556,
+    ".": 1227694617
+  },
+  "by_col": {
+    "release": {
+      "type": "ENUM",
+      "values": [
+        "GRCh38"
+      ]
+    },
+    "chromosome": {
+      "type": "ENUM",
+      "values": [
+        "chr1",
+        "chr10",
+        "chr11",
+        "chr12",
+        "chr13",
+        "chr14",
+        "chr15",
+        "chr16",
+        "chr17",
+        "chr18",
+        "chr19",
+        "chr2",
+        "chr20",
+        "chr21",
+        "chr22",
+        "chr3",
+        "chr4",
+        "chr5",
+        "chr6",
+        "chr7",
+        "chr8",
+        "chr9",
+        "chrM",
+        "chrX",
+        "chrY"
+      ]
+    },
+    "start": {
+      "type": "INT"
+    },
+    "end": {
+      "type": "INT"
+    },
+    "bin": {
+      "type": "INT"
+    },
+    "reference": {
+      "type": "DNA"
+    },
+    "alternative": {
+      "type": "DNA"
+    },
+    "rsid": {
+      "type": "STRING"
+    }
+  }
+}

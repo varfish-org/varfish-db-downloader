@@ -1,0 +1,135 @@
+{
+  "$schema_version": "0.1.0",
+  "import_version": {
+    "build": "noref",
+    "table_group": "ExAC_constraints",
+    "version": "r0.3.1"
+  },
+  "by_chrom": {
+    "chr7": 821,
+    "chr12": 985,
+    "chr2": 1154,
+    "chr6": 958,
+    "chr4": 694,
+    "chr3": 1018,
+    "chr11": 1222,
+    "chr8": 609,
+    "chr17": 1088,
+    "chr16": 764,
+    "chr19": 1316,
+    "chr1": 1908,
+    "chr5": 813,
+    "chr14": 578,
+    "chr10": 686,
+    "chr18": 258,
+    "chr20": 501,
+    "chr13": 292,
+    "chrX": 727,
+    "chr22": 402,
+    "chr15": 555,
+    "chrY": 14,
+    "chr9": 712,
+    "chr21": 207,
+    ".": 18282
+  },
+  "by_col": {
+    "ensembl_transcript_id": {
+      "type": "STRING"
+    },
+    "symbol": {
+      "type": "STRING"
+    },
+    "chromosome": {
+      "type": "ENUM",
+      "values": [
+        "chr1",
+        "chr10",
+        "chr11",
+        "chr12",
+        "chr13",
+        "chr14",
+        "chr15",
+        "chr16",
+        "chr17",
+        "chr18",
+        "chr19",
+        "chr2",
+        "chr20",
+        "chr21",
+        "chr22",
+        "chr3",
+        "chr4",
+        "chr5",
+        "chr6",
+        "chr7",
+        "chr8",
+        "chr9",
+        "chrX",
+        "chrY"
+      ]
+    },
+    "n_exons": {
+      "type": "INT"
+    },
+    "cds_start": {
+      "type": "INT"
+    },
+    "cds_end": {
+      "type": "INT"
+    },
+    "bp": {
+      "type": "INT"
+    },
+    "mu_syn": {
+      "type": "INT"
+    },
+    "mu_mis": {
+      "type": "INT"
+    },
+    "mu_lof": {
+      "type": "INT"
+    },
+    "n_syn": {
+      "type": "INT"
+    },
+    "n_mis": {
+      "type": "INT"
+    },
+    "n_lof": {
+      "type": "INT"
+    },
+    "exp_syn": {
+      "type": "INT"
+    },
+    "exp_mis": {
+      "type": "INT"
+    },
+    "exp_lof": {
+      "type": "INT"
+    },
+    "syn_z": {
+      "type": "INT"
+    },
+    "mis_z": {
+      "type": "INT"
+    },
+    "lof_z": {
+      "type": "INT"
+    },
+    "pLI": {
+      "type": "INT"
+    },
+    "pRec": {
+      "type": "ENUM",
+      "values": [
+        "."
+      ]
+    },
+    "pNull": {
+      "type": "ENUM",
+      "values": [
+        "."
+      ]
+    }
+  }
+}

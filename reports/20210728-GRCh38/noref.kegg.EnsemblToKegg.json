@@ -1,0 +1,19 @@
+{
+  "$schema_version": "0.1.0",
+  "import_version": {
+    "build": "noref",
+    "table_group": "kegg",
+    "version": "april2011"
+  },
+  "by_chrom": {
+    ".": 16204
+  },
+  "by_col": {
+    "gene_id": {
+      "type": "STRING"
+    },
+    "kegginfo_id": {
+      "type": "STRING"
+    }
+  }
+}

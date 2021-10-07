@@ -1,0 +1,170 @@
+{
+  "$schema_version": "0.1.0",
+  "import_version": {
+    "build": "GRCh37",
+    "table_group": "clinvar",
+    "version": "20210728"
+  },
+  "by_chrom": {
+    "chr1": 77532,
+    "chr10": 35358,
+    "chr11": 58813,
+    "chr12": 42310,
+    "chr13": 26546,
+    "chr14": 29782,
+    "chr15": 32892,
+    "chr16": 53737,
+    "chr17": 69684,
+    "chr18": 15510,
+    "chr19": 45558,
+    "chr2": 101264,
+    "chr20": 17225,
+    "chr21": 10850,
+    "chr22": 18078,
+    "chr3": 48936,
+    "chr4": 29367,
+    "chr5": 51543,
+    "chr6": 41276,
+    "chr7": 44360,
+    "chr8": 32946,
+    "chr9": 43691,
+    "chrM": 2832,
+    "chrX": 40277,
+    "chrY": 45,
+    ".": 970412
+  },
+  "by_col": {
+    "release": {
+      "type": "ENUM",
+      "values": [
+        "GRCh37"
+      ]
+    },
+    "chromosome": {
+      "type": "ENUM",
+      "values": [
+        "chr1",
+        "chr10",
+        "chr11",
+        "chr12",
+        "chr13",
+        "chr14",
+        "chr15",
+        "chr16",
+        "chr17",
+        "chr18",
+        "chr19",
+        "chr2",
+        "chr20",
+        "chr21",
+        "chr22",
+        "chr3",
+        "chr4",
+        "chr5",
+        "chr6",
+        "chr7",
+        "chr8",
+        "chr9",
+        "chrM",
+        "chrX",
+        "chrY"
+      ]
+    },
+    "start": {
+      "type": "INT"
+    },
+    "end": {
+      "type": "INT"
+    },
+    "bin": {
+      "type": "INT"
+    },
+    "reference": {
+      "type": "DNA"
+    },
+    "alternative": {
+      "type": "DNA"
+    },
+    "variation_type": {
+      "type": "ENUM",
+      "values": [
+        "indel",
+        "mnv",
+        "snv"
+      ]
+    },
+    "symbols": {
+      "type": "STRING"
+    },
+    "hgnc_ids": {
+      "type": "STRING"
+    },
+    "vcv": {
+      "type": "STRING"
+    },
+    "point_rating": {
+      "type": "INT"
+    },
+    "pathogenicity": {
+      "type": "ENUM",
+      "values": [
+        "benign",
+        "likely benign",
+        "likely pathogenic",
+        "pathogenic",
+        "uncertain significance"
+      ]
+    },
+    "review_status": {
+      "type": "ENUM",
+      "values": [
+        "criteria provided, conflicting interpretations",
+        "criteria provided, single submitter",
+        "multiple submitters, no conflicts",
+        "no assertion criteria provided",
+        "no assertion provided",
+        "practice guideline",
+        "reviewed by expert panel"
+      ]
+    },
+    "pathogenicity_summary": {
+      "type": "ENUM",
+      "values": [
+        "benign",
+        "likely benign",
+        "likely benign(1); benign(1)",
+        "likely pathogenic",
+        "likely pathogenic(1); benign(1)",
+        "likely pathogenic(1); likely benign(1)",
+        "likely pathogenic(1); likely benign(1); benign(1)",
+        "likely pathogenic(1); uncertain significance(1)",
+        "likely pathogenic(1); uncertain significance(1); benign(1)",
+        "likely pathogenic(1); uncertain significance(1); likely benign(1)",
+        "likely pathogenic(1); uncertain significance(1); likely benign(1); benign(1)",
+        "pathogenic",
+        "pathogenic(1); benign(1)",
+        "pathogenic(1); likely benign(1)",
+        "pathogenic(1); likely benign(1); benign(1)",
+        "pathogenic(1); likely pathogenic(1)",
+        "pathogenic(1); likely pathogenic(1); benign(1)",
+        "pathogenic(1); likely pathogenic(1); likely benign(1)",
+        "pathogenic(1); likely pathogenic(1); likely benign(1); benign(1)",
+        "pathogenic(1); likely pathogenic(1); uncertain significance(1)",
+        "pathogenic(1); likely pathogenic(1); uncertain significance(1); benign(1)",
+        "pathogenic(1); likely pathogenic(1); uncertain significance(1); likely benign(1)",
+        "pathogenic(1); likely pathogenic(1); uncertain significance(1); likely benign(1); benign(1)",
+        "pathogenic(1); uncertain significance(1)",
+        "pathogenic(1); uncertain significance(1); benign(1)",
+        "pathogenic(1); uncertain significance(1); likely benign(1)",
+        "pathogenic(1); uncertain significance(1); likely benign(1); benign(1)",
+        "uncertain significance",
+        "uncertain significance(1); benign(1)",
+        "uncertain significance(1); likely benign(1)",
+        "uncertain significance(1); likely benign(1); benign(1)"
+      ]
+    },
+    "details": {
+      "type": "STRING"
+    }
+  }
+}

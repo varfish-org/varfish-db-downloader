@@ -1,0 +1,33 @@
+{
+  "$schema_version": "0.1.0",
+  "import_version": {
+    "build": "GRCh38",
+    "table_group": "extra_annos",
+    "version": "20210728"
+  },
+  "by_chrom": {
+    ".": 12
+  },
+  "by_col": {
+    "field": {
+      "type": "INT"
+    },
+    "label": {
+      "type": "ENUM",
+      "values": [
+        "EncodeH2AFZ-sum",
+        "EncodeH3K27me3-max",
+        "EncodeH3K27me3-sum",
+        "EncodeH3K36me3-max",
+        "EncodeH3K36me3-sum",
+        "EncodeH3K79me2-max",
+        "EncodeH3K79me2-sum",
+        "EncodeH4K20me1-max",
+        "EncodeH4K20me1-sum",
+        "MMSp_acceptor",
+        "MMSp_acceptorIntron",
+        "MMSp_donor"
+      ]
+    }
+  }
+}

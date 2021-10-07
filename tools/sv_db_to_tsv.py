@@ -68,6 +68,8 @@ class DgvGoldStandardConverter:
                     continue
                 else:
                     self.seen_ids.add(values["attributes"]["ID"])
+                if ("_" in values["seqid"]) or (values["seqid"] in ("", "chr")):
+                    continue
                 if values["seqid"].startswith("chr") and self.genome_release == "GRCh37":
                     values["seqid"] = values["seqid"][3:]
                 self.write_to_tsv(values)
@@ -157,29 +159,30 @@ class DgvConverter:
             chrom = None
             header = inputf.readline()[:-1].split("\t")
             # Read file and insert into database.
-            buffer = inputf.readline()
-            while buffer:
-                if buffer:
-                    buffer = buffer[:-1]
-                if not buffer:
+            linebuf = inputf.readline()
+            while linebuf:
+                if linebuf:
+                    linebuf = linebuf[:-1]
+                if not linebuf:
                     continue  # skip empty lines
-                arr = buffer.split("\t")
+                arr = linebuf.split("\t")
                 if len(arr) != len(header):
                     raise Exception(
-                        "Too few entries (%d vs %d) in line %s"
-                        % (len(header), len(arr), repr(buffer))
+                        "Too few entries (%d vs %d) in line %s (%s)"
+                        % (len(header), len(arr), repr(linebuf), repr(header))
                     )
                 values = dict(zip(header, arr))
                 if values["chr"].startswith("chr") and self.genome_release == "GRCh37":
                     values["chr"] = values["chr"][3:]
                 elif not values["chr"].startswith("chr") and self.genome_release != "GRCh37":
                     values["chr"] = "chr%s" % values["chr"]
-                self.write_to_tsv(values)
+                if ("_" not in values["chr"]) and (values["chr"] not in ("", "chr", "N", "chrN")):
+                    self.write_to_tsv(values)
                 # read next line
                 if chrom != values["chr"]:
                     print("Starting contig {}".format(values["chr"]))
                 chrom = values["chr"]
-                buffer = inputf.readline()
+                linebuf = inputf.readline()
 
     def write_to_tsv(self, values):
         """Insert record into database."""

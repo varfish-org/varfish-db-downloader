@@ -1,0 +1,212 @@
+{
+  "$schema_version": "0.1.0",
+  "import_version": {
+    "build": "GRCh37",
+    "table_group": "DGV",
+    "version": "2020"
+  },
+  "by_chrom": {
+    "chr1": 60872,
+    "chr10": 38553,
+    "chr11": 38055,
+    "chr12": 38366,
+    "chr13": 27627,
+    "chr14": 25453,
+    "chr15": 23685,
+    "chr16": 28718,
+    "chr17": 26935,
+    "chr18": 22644,
+    "chr19": 25214,
+    "chr2": 63907,
+    "chr20": 18770,
+    "chr21": 13091,
+    "chr22": 14621,
+    "chr3": 50026,
+    "chr4": 53652,
+    "chr5": 48709,
+    "chr6": 48119,
+    "chr7": 50452,
+    "chr8": 42949,
+    "chr9": 37131,
+    "chrX": 26511,
+    "chrY": 2519,
+    ".": 826579
+  },
+  "by_col": {
+    "release": {
+      "type": "ENUM",
+      "values": [
+        "GRCh37"
+      ]
+    },
+    "chromosome": {
+      "type": "ENUM",
+      "values": [
+        "chr1",
+        "chr10",
+        "chr11",
+        "chr12",
+        "chr13",
+        "chr14",
+        "chr15",
+        "chr16",
+        "chr17",
+        "chr18",
+        "chr19",
+        "chr2",
+        "chr20",
+        "chr21",
+        "chr22",
+        "chr3",
+        "chr4",
+        "chr5",
+        "chr6",
+        "chr7",
+        "chr8",
+        "chr9",
+        "chrX",
+        "chrY"
+      ]
+    },
+    "start": {
+      "type": "INT"
+    },
+    "end": {
+      "type": "INT"
+    },
+    "bin": {
+      "type": "INT"
+    },
+    "accession": {
+      "type": "STRING"
+    },
+    "sv_type": {
+      "type": "ENUM",
+      "values": [
+        "CNV",
+        "OTHER"
+      ]
+    },
+    "sv_sub_type": {
+      "type": "ENUM",
+      "values": [
+        "alu deletion",
+        "alu insertion",
+        "complex",
+        "deletion",
+        "duplication",
+        "gain",
+        "gain+loss",
+        "herv deletion",
+        "herv insertion",
+        "insertion",
+        "inversion",
+        "line1 deletion",
+        "line1 insertion",
+        "loss",
+        "mobile element deletion",
+        "mobile element insertion",
+        "novel sequence insertion",
+        "sequence alteration",
+        "sva deletion",
+        "sva insertion",
+        "tandem duplication"
+      ]
+    },
+    "study": {
+      "type": "ENUM",
+      "values": [
+        "1000_Genomes_Consortium_Phase_1",
+        "1000_Genomes_Consortium_Phase_3",
+        "1000_Genomes_Consortium_Pilot_Project",
+        "Ahn_et_al_2009",
+        "Alkan_et_al_2009",
+        "Alsmadi_et_al_2014",
+        "Altshuler_et_al_2010",
+        "Arlt_et_al_2011",
+        "Audano_et_al_2019",
+        "Banerjee_et_al_2011",
+        "Bentley_et_al_2008",
+        "Besenbacher_et_al_2015",
+        "Boomsma_et_al_2014",
+        "Campbell_et_al_2011",
+        "Chia_et_al_2012",
+        "Coe_et_al_2014",
+        "Conrad_et_al_2006",
+        "Conrad_et_al_2009",
+        "Cooper_et_al_2008",
+        "Cooper_et_al_2011",
+        "Dogan_et_al_2014",
+        "Feuk_et_al_2005",
+        "Forsberg_et_al_2012",
+        "Giglio_et_al_2002",
+        "Gusev_et_al_2009",
+        "Hinds_et_al_2006",
+        "Iafrate_et_al_2004",
+        "Itsara_et_al_2009",
+        "Jakobsson_et_al_2008",
+        "John_et_al_2014",
+        "Ju_et_al_2010",
+        "Kidd_et_al_2008",
+        "Kidd_et_al_2010",
+        "Kidd_et_al_2010b",
+        "Kim_et_al_2009",
+        "Korbel_et_al_2007",
+        "Levy_et_al_2007",
+        "Locke_et_al_2006",
+        "Lou_et_al_2015",
+        "McCarroll_et_al_2006",
+        "McCarroll_et_al_2008",
+        "McKernan_et_al_2009",
+        "Mills_et_al_2006",
+        "Mokhtar_et_al_2014",
+        "Pang_et_al_2010",
+        "Pang_et_al_2013b",
+        "Park_et_al_2010",
+        "Perry_et_al_2008",
+        "Perry_et_al_2008b",
+        "Pinto_et_al_2007",
+        "Redon_et_al_2006",
+        "Schrider_et_al_2013",
+        "Schuster_et_al_2010",
+        "Sebat_et_al_2004",
+        "Shaikh_et_al_2009",
+        "Sharp_et_al_2005",
+        "Simon-Sanchez_et_al_2007",
+        "Stefansson_et_al_2005",
+        "Sudmant_et_al_2013",
+        "Suktitipat_et_al_2014",
+        "Teague_et_al_2010",
+        "Thareja_et_al_2015",
+        "Tuzun_et_al_2005",
+        "Uddin_et_al_2014",
+        "Vogler_et_al_2010",
+        "Wang_et_al_2007",
+        "Wang_et_al_2008",
+        "Watson_et_al_2013",
+        "Wheeler_et_al_2008",
+        "Wong_et_al_2007",
+        "Wong_et_al_2012b",
+        "Young_et_al_2008",
+        "Zhu_et_al_2011",
+        "de_Smith_et_al_2007",
+        "gnomAD_Structural_Variants"
+      ]
+    },
+    "platform": {
+      "type": "ENUM",
+      "values": [
+        "{\"\"\"\"\"\"}"
+      ]
+    },
+    "num_samples": {
+      "type": "INT"
+    },
+    "observed_gains": {
+      "type": "INT"
+    },
+    "observed_losses": {
+      "type": "INT"
+    }
+  }
+}

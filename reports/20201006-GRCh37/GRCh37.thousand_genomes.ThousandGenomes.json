@@ -1,0 +1,125 @@
+{
+  "$schema_version": "0.1.0",
+  "import_version": {
+    "build": "GRCh37",
+    "table_group": "thousand_genomes",
+    "version": "phase3"
+  },
+  "by_chrom": {
+    "chr1": 6496068,
+    "chr10": 4010655,
+    "chr11": 4064185,
+    "chr12": 3886190,
+    "chr13": 2870802,
+    "chr14": 2667362,
+    "chr15": 2435776,
+    "chr16": 2711910,
+    "chr17": 2340071,
+    "chr18": 2277437,
+    "chr19": 1841737,
+    "chr2": 7112673,
+    "chr20": 1820930,
+    "chr21": 1111441,
+    "chr22": 1109367,
+    "chr3": 5858448,
+    "chr4": 5759560,
+    "chr5": 5290077,
+    "chr6": 5048001,
+    "chr7": 4737816,
+    "chr8": 4619392,
+    "chr9": 3577159,
+    "chrM": 4241,
+    "chrX": 3489347,
+    "chrY": 61932,
+    ".": 85202577
+  },
+  "by_col": {
+    "release": {
+      "type": "ENUM",
+      "values": [
+        "GRCh37"
+      ]
+    },
+    "chromosome": {
+      "type": "ENUM",
+      "values": [
+        "chr1",
+        "chr10",
+        "chr11",
+        "chr12",
+        "chr13",
+        "chr14",
+        "chr15",
+        "chr16",
+        "chr17",
+        "chr18",
+        "chr19",
+        "chr2",
+        "chr20",
+        "chr21",
+        "chr22",
+        "chr3",
+        "chr4",
+        "chr5",
+        "chr6",
+        "chr7",
+        "chr8",
+        "chr9",
+        "chrM",
+        "chrX",
+        "chrY"
+      ]
+    },
+    "start": {
+      "type": "INT"
+    },
+    "end": {
+      "type": "INT"
+    },
+    "bin": {
+      "type": "INT"
+    },
+    "reference": {
+      "type": "DNA"
+    },
+    "alternative": {
+      "type": "DNA"
+    },
+    "ac": {
+      "type": "ENUM",
+      "values": [
+        "."
+      ]
+    },
+    "an": {
+      "type": "ENUM",
+      "values": [
+        "."
+      ]
+    },
+    "af": {
+      "type": "INT"
+    },
+    "af_afr": {
+      "type": "INT"
+    },
+    "af_amr": {
+      "type": "INT"
+    },
+    "af_eas": {
+      "type": "INT"
+    },
+    "af_eur": {
+      "type": "INT"
+    },
+    "af_sas": {
+      "type": "INT"
+    },
+    "het": {
+      "type": "INT"
+    },
+    "hom": {
+      "type": "INT"
+    }
+  }
+}

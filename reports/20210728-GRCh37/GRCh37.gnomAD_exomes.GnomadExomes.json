@@ -1,0 +1,415 @@
+{
+  "$schema_version": "0.1.0",
+  "import_version": {
+    "build": "GRCh37",
+    "table_group": "gnomAD_exomes",
+    "version": "r2.1.1"
+  },
+  "by_chrom": {
+    "chr1": 1707146,
+    ".": 17209970,
+    "chr10": 665745,
+    "chr11": 1044543,
+    "chr12": 889014,
+    "chr13": 287655,
+    "chr14": 589647,
+    "chr15": 611216,
+    "chr16": 866022,
+    "chr17": 1031902,
+    "chr18": 253290,
+    "chr19": 1231679,
+    "chr2": 1230614,
+    "chr20": 429586,
+    "chr21": 187702,
+    "chr22": 416866,
+    "chr3": 958850,
+    "chr4": 642129,
+    "chr5": 740678,
+    "chr6": 835212,
+    "chr7": 845891,
+    "chr8": 621220,
+    "chr9": 713431,
+    "chrX": 403070,
+    "chrY": 6862
+  },
+  "by_col": {
+    "release": {
+      "type": "ENUM",
+      "values": [
+        "GRCh37"
+      ]
+    },
+    "chromosome": {
+      "type": "ENUM",
+      "values": [
+        "chr1",
+        "chr10",
+        "chr11",
+        "chr12",
+        "chr13",
+        "chr14",
+        "chr15",
+        "chr16",
+        "chr17",
+        "chr18",
+        "chr19",
+        "chr2",
+        "chr20",
+        "chr21",
+        "chr22",
+        "chr3",
+        "chr4",
+        "chr5",
+        "chr6",
+        "chr7",
+        "chr8",
+        "chr9",
+        "chrX",
+        "chrY"
+      ]
+    },
+    "start": {
+      "type": "INT"
+    },
+    "end": {
+      "type": "INT"
+    },
+    "bin": {
+      "type": "INT"
+    },
+    "reference": {
+      "type": "DNA"
+    },
+    "alternative": {
+      "type": "DNA"
+    },
+    "ac": {
+      "type": "INT"
+    },
+    "ac_afr": {
+      "type": "INT"
+    },
+    "ac_amr": {
+      "type": "INT"
+    },
+    "ac_asj": {
+      "type": "INT"
+    },
+    "ac_eas": {
+      "type": "INT"
+    },
+    "ac_fin": {
+      "type": "INT"
+    },
+    "ac_nfe": {
+      "type": "INT"
+    },
+    "ac_oth": {
+      "type": "INT"
+    },
+    "ac_sas": {
+      "type": "INT"
+    },
+    "an": {
+      "type": "INT"
+    },
+    "an_afr": {
+      "type": "INT"
+    },
+    "an_amr": {
+      "type": "INT"
+    },
+    "an_asj": {
+      "type": "INT"
+    },
+    "an_eas": {
+      "type": "INT"
+    },
+    "an_fin": {
+      "type": "INT"
+    },
+    "an_nfe": {
+      "type": "INT"
+    },
+    "an_oth": {
+      "type": "INT"
+    },
+    "an_sas": {
+      "type": "INT"
+    },
+    "af": {
+      "type": "STRING"
+    },
+    "af_afr": {
+      "type": "STRING"
+    },
+    "af_amr": {
+      "type": "STRING"
+    },
+    "af_asj": {
+      "type": "STRING"
+    },
+    "af_eas": {
+      "type": "STRING"
+    },
+    "af_fin": {
+      "type": "STRING"
+    },
+    "af_nfe": {
+      "type": "STRING"
+    },
+    "af_oth": {
+      "type": "STRING"
+    },
+    "af_sas": {
+      "type": "STRING"
+    },
+    "hemi": {
+      "type": "STRING"
+    },
+    "hemi_afr": {
+      "type": "STRING"
+    },
+    "hemi_amr": {
+      "type": "STRING"
+    },
+    "hemi_asj": {
+      "type": "STRING"
+    },
+    "hemi_eas": {
+      "type": "STRING"
+    },
+    "hemi_fin": {
+      "type": "STRING"
+    },
+    "hemi_nfe": {
+      "type": "STRING"
+    },
+    "hemi_oth": {
+      "type": "STRING"
+    },
+    "hemi_sas": {
+      "type": "STRING"
+    },
+    "hom": {
+      "type": "INT"
+    },
+    "hom_afr": {
+      "type": "INT"
+    },
+    "hom_amr": {
+      "type": "INT"
+    },
+    "hom_asj": {
+      "type": "INT"
+    },
+    "hom_eas": {
+      "type": "INT"
+    },
+    "hom_fin": {
+      "type": "INT"
+    },
+    "hom_nfe": {
+      "type": "INT"
+    },
+    "hom_oth": {
+      "type": "INT"
+    },
+    "hom_sas": {
+      "type": "INT"
+    },
+    "popmax": {
+      "type": "ENUM",
+      "values": [
+        ".",
+        "afr",
+        "amr",
+        "eas",
+        "nfe",
+        "sas"
+      ]
+    },
+    "ac_popmax": {
+      "type": "STRING"
+    },
+    "an_popmax": {
+      "type": "STRING"
+    },
+    "af_popmax": {
+      "type": "STRING"
+    },
+    "hemi_popmax": {
+      "type": "ENUM",
+      "values": [
+        "."
+      ]
+    },
+    "hom_popmax": {
+      "type": "STRING"
+    },
+    "controls_ac": {
+      "type": "INT"
+    },
+    "controls_ac_afr": {
+      "type": "INT"
+    },
+    "controls_ac_amr": {
+      "type": "INT"
+    },
+    "controls_ac_asj": {
+      "type": "INT"
+    },
+    "controls_ac_eas": {
+      "type": "INT"
+    },
+    "controls_ac_fin": {
+      "type": "INT"
+    },
+    "controls_ac_nfe": {
+      "type": "INT"
+    },
+    "controls_ac_oth": {
+      "type": "INT"
+    },
+    "controls_ac_sas": {
+      "type": "INT"
+    },
+    "controls_af": {
+      "type": "STRING"
+    },
+    "controls_af_afr": {
+      "type": "STRING"
+    },
+    "controls_af_amr": {
+      "type": "STRING"
+    },
+    "controls_af_asj": {
+      "type": "STRING"
+    },
+    "controls_af_eas": {
+      "type": "STRING"
+    },
+    "controls_af_fin": {
+      "type": "STRING"
+    },
+    "controls_af_nfe": {
+      "type": "STRING"
+    },
+    "controls_af_oth": {
+      "type": "STRING"
+    },
+    "controls_af_sas": {
+      "type": "STRING"
+    },
+    "controls_an": {
+      "type": "INT"
+    },
+    "controls_an_afr": {
+      "type": "INT"
+    },
+    "controls_an_amr": {
+      "type": "INT"
+    },
+    "controls_an_asj": {
+      "type": "INT"
+    },
+    "controls_an_eas": {
+      "type": "INT"
+    },
+    "controls_an_fin": {
+      "type": "INT"
+    },
+    "controls_an_nfe": {
+      "type": "INT"
+    },
+    "controls_an_oth": {
+      "type": "INT"
+    },
+    "controls_an_sas": {
+      "type": "INT"
+    },
+    "controls_hemi": {
+      "type": "STRING"
+    },
+    "controls_hemi_afr": {
+      "type": "STRING"
+    },
+    "controls_hemi_amr": {
+      "type": "STRING"
+    },
+    "controls_hemi_asj": {
+      "type": "STRING"
+    },
+    "controls_hemi_eas": {
+      "type": "STRING"
+    },
+    "controls_hemi_fin": {
+      "type": "STRING"
+    },
+    "controls_hemi_nfe": {
+      "type": "STRING"
+    },
+    "controls_hemi_oth": {
+      "type": "STRING"
+    },
+    "controls_hemi_sas": {
+      "type": "STRING"
+    },
+    "controls_hom": {
+      "type": "INT"
+    },
+    "controls_hom_afr": {
+      "type": "INT"
+    },
+    "controls_hom_amr": {
+      "type": "INT"
+    },
+    "controls_hom_asj": {
+      "type": "INT"
+    },
+    "controls_hom_eas": {
+      "type": "INT"
+    },
+    "controls_hom_fin": {
+      "type": "INT"
+    },
+    "controls_hom_nfe": {
+      "type": "INT"
+    },
+    "controls_hom_oth": {
+      "type": "INT"
+    },
+    "controls_hom_sas": {
+      "type": "INT"
+    },
+    "controls_popmax": {
+      "type": "ENUM",
+      "values": [
+        ".",
+        "afr",
+        "amr",
+        "eas",
+        "nfe",
+        "sas"
+      ]
+    },
+    "controls_ac_popmax": {
+      "type": "STRING"
+    },
+    "controls_an_popmax": {
+      "type": "STRING"
+    },
+    "controls_af_popmax": {
+      "type": "STRING"
+    },
+    "controls_hemi_popmax": {
+      "type": "ENUM",
+      "values": [
+        "."
+      ]
+    },
+    "controls_hom_popmax": {
+      "type": "STRING"
+    }
+  }
+}

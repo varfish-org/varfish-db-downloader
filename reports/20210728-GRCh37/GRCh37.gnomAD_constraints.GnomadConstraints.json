@@ -1,0 +1,434 @@
+{
+  "$schema_version": "0.1.0",
+  "import_version": {
+    "build": "GRCh37",
+    "table_group": "gnomAD_constraints",
+    "version": "v2.1.1"
+  },
+  "by_chrom": {
+    "chr19": 1428,
+    "chr10": 747,
+    "chr12": 1042,
+    "chr1": 2024,
+    "chr22": 440,
+    "chr3": 1062,
+    "chr4": 742,
+    "chr9": 773,
+    "chr15": 597,
+    "chr2": 1250,
+    "chr11": 1294,
+    "chr17": 1174,
+    "chr20": 542,
+    "chr8": 683,
+    "chr6": 1031,
+    "chr16": 846,
+    "chr7": 904,
+    "chrX": 768,
+    "chr13": 318,
+    "chr14": 636,
+    "chr21": 232,
+    "chr18": 272,
+    "chr5": 874,
+    "chrY": 25,
+    ".": 19704
+  },
+  "by_col": {
+    "symbol": {
+      "type": "STRING"
+    },
+    "ensembl_transcript_id": {
+      "type": "STRING"
+    },
+    "obs_mis": {
+      "type": "INT"
+    },
+    "exp_mis": {
+      "type": "INT"
+    },
+    "oe_mis": {
+      "type": "INT"
+    },
+    "mu_mis": {
+      "type": "INT"
+    },
+    "possible_mis": {
+      "type": "INT"
+    },
+    "obs_mis_pphen": {
+      "type": "STRING"
+    },
+    "exp_mis_pphen": {
+      "type": "STRING"
+    },
+    "oe_mis_pphen": {
+      "type": "STRING"
+    },
+    "possible_mis_pphen": {
+      "type": "STRING"
+    },
+    "obs_syn": {
+      "type": "INT"
+    },
+    "exp_syn": {
+      "type": "INT"
+    },
+    "oe_syn": {
+      "type": "INT"
+    },
+    "mu_syn": {
+      "type": "INT"
+    },
+    "possible_syn": {
+      "type": "INT"
+    },
+    "obs_lof": {
+      "type": "STRING"
+    },
+    "mu_lof": {
+      "type": "STRING"
+    },
+    "possible_lof": {
+      "type": "STRING"
+    },
+    "exp_lof": {
+      "type": "STRING"
+    },
+    "pLI": {
+      "type": "STRING"
+    },
+    "pNull": {
+      "type": "STRING"
+    },
+    "pRec": {
+      "type": "STRING"
+    },
+    "oe_lof": {
+      "type": "STRING"
+    },
+    "oe_syn_lower": {
+      "type": "INT"
+    },
+    "oe_syn_upper": {
+      "type": "INT"
+    },
+    "oe_mis_lower": {
+      "type": "INT"
+    },
+    "oe_mis_upper": {
+      "type": "INT"
+    },
+    "oe_lof_lower": {
+      "type": "STRING"
+    },
+    "oe_lof_upper": {
+      "type": "STRING"
+    },
+    "constraint_flag": {
+      "type": "ENUM",
+      "values": [
+        "",
+        "lof_too_many",
+        "lof_too_many|mis_too_many",
+        "lof_too_many|mis_too_many|syn_outlier",
+        "mis_too_many",
+        "mis_too_many|no_exp_lof",
+        "mis_too_many|no_exp_lof|syn_outlier",
+        "mis_too_many|syn_outlier",
+        "no_exp_lof",
+        "no_exp_lof|no_variants",
+        "no_exp_lof|syn_outlier",
+        "no_exp_mis|no_exp_syn|no_variants",
+        "no_variants",
+        "syn_outlier"
+      ]
+    },
+    "syn_z": {
+      "type": "INT"
+    },
+    "mis_z": {
+      "type": "INT"
+    },
+    "lof_z": {
+      "type": "STRING"
+    },
+    "oe_lof_upper_rank": {
+      "type": "STRING"
+    },
+    "oe_lof_upper_bin": {
+      "type": "ENUM",
+      "values": [
+        "",
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9"
+      ]
+    },
+    "oe_lof_upper_bin_6": {
+      "type": "ENUM",
+      "values": [
+        "",
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    "n_sites": {
+      "type": "STRING"
+    },
+    "classic_caf": {
+      "type": "STRING"
+    },
+    "max_af": {
+      "type": "STRING"
+    },
+    "no_lofs": {
+      "type": "STRING"
+    },
+    "obs_het_lof": {
+      "type": "STRING"
+    },
+    "obs_hom_lof": {
+      "type": "STRING"
+    },
+    "defined": {
+      "type": "STRING"
+    },
+    "p": {
+      "type": "STRING"
+    },
+    "exp_hom_lof": {
+      "type": "STRING"
+    },
+    "classic_caf_afr": {
+      "type": "STRING"
+    },
+    "classic_caf_amr": {
+      "type": "STRING"
+    },
+    "classic_caf_asj": {
+      "type": "STRING"
+    },
+    "classic_caf_eas": {
+      "type": "STRING"
+    },
+    "classic_caf_fin": {
+      "type": "STRING"
+    },
+    "classic_caf_nfe": {
+      "type": "STRING"
+    },
+    "classic_caf_oth": {
+      "type": "STRING"
+    },
+    "classic_caf_sas": {
+      "type": "STRING"
+    },
+    "p_afr": {
+      "type": "STRING"
+    },
+    "p_amr": {
+      "type": "STRING"
+    },
+    "p_asj": {
+      "type": "STRING"
+    },
+    "p_eas": {
+      "type": "STRING"
+    },
+    "p_fin": {
+      "type": "STRING"
+    },
+    "p_nfe": {
+      "type": "STRING"
+    },
+    "p_oth": {
+      "type": "STRING"
+    },
+    "p_sas": {
+      "type": "STRING"
+    },
+    "transcript_type": {
+      "type": "ENUM",
+      "values": [
+        "protein_coding"
+      ]
+    },
+    "ensembl_gene_id": {
+      "type": "STRING"
+    },
+    "transcript_level": {
+      "type": "INT"
+    },
+    "cds_length": {
+      "type": "INT"
+    },
+    "num_coding_exons": {
+      "type": "INT"
+    },
+    "gene_type": {
+      "type": "ENUM",
+      "values": [
+        "polymorphic_pseudogene",
+        "protein_coding"
+      ]
+    },
+    "gene_length": {
+      "type": "INT"
+    },
+    "exac_pLI": {
+      "type": "STRING"
+    },
+    "exac_obs_lof": {
+      "type": "ENUM",
+      "values": [
+        "",
+        "0",
+        "1",
+        "10",
+        "107",
+        "108",
+        "11",
+        "111",
+        "118",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "165",
+        "17",
+        "18",
+        "19",
+        "2",
+        "20",
+        "21",
+        "22",
+        "23",
+        "24",
+        "247",
+        "25",
+        "26",
+        "27",
+        "28",
+        "29",
+        "3",
+        "30",
+        "31",
+        "32",
+        "33",
+        "34",
+        "35",
+        "36",
+        "37",
+        "38",
+        "39",
+        "4",
+        "40",
+        "41",
+        "42",
+        "43",
+        "44",
+        "45",
+        "46",
+        "47",
+        "48",
+        "49",
+        "5",
+        "50",
+        "51",
+        "52",
+        "53",
+        "54",
+        "55",
+        "56",
+        "57",
+        "58",
+        "59",
+        "6",
+        "60",
+        "61",
+        "62",
+        "63",
+        "64",
+        "65",
+        "66",
+        "67",
+        "68",
+        "69",
+        "7",
+        "71",
+        "72",
+        "74",
+        "76",
+        "77",
+        "79",
+        "8",
+        "80",
+        "82",
+        "83",
+        "88",
+        "9",
+        "94",
+        "96",
+        "97"
+      ]
+    },
+    "exac_exp_lof": {
+      "type": "STRING"
+    },
+    "exac_oe_lof": {
+      "type": "STRING"
+    },
+    "brain_expression": {
+      "type": "ENUM",
+      "values": [
+        ""
+      ]
+    },
+    "chromosome": {
+      "type": "ENUM",
+      "values": [
+        "chr1",
+        "chr10",
+        "chr11",
+        "chr12",
+        "chr13",
+        "chr14",
+        "chr15",
+        "chr16",
+        "chr17",
+        "chr18",
+        "chr19",
+        "chr2",
+        "chr20",
+        "chr21",
+        "chr22",
+        "chr3",
+        "chr4",
+        "chr5",
+        "chr6",
+        "chr7",
+        "chr8",
+        "chr9",
+        "chrX",
+        "chrY"
+      ]
+    },
+    "start_position": {
+      "type": "INT"
+    },
+    "end_position": {
+      "type": "INT"
+    }
+  }
+}

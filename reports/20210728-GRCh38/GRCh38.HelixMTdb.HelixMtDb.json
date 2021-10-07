@@ -1,0 +1,68 @@
+{
+  "$schema_version": "0.1.0",
+  "import_version": {
+    "build": "GRCh38",
+    "table_group": "HelixMTdb",
+    "version": "20200327"
+  },
+  "by_chrom": {
+    "chrM": 14178,
+    ".": 14178
+  },
+  "by_col": {
+    "release": {
+      "type": "ENUM",
+      "values": [
+        "GRCh38"
+      ]
+    },
+    "chromosome": {
+      "type": "ENUM",
+      "values": [
+        "chrM"
+      ]
+    },
+    "start": {
+      "type": "INT"
+    },
+    "end": {
+      "type": "INT"
+    },
+    "bin": {
+      "type": "INT"
+    },
+    "reference": {
+      "type": "DNA"
+    },
+    "alternative": {
+      "type": "DNA"
+    },
+    "ac_hom": {
+      "type": "INT"
+    },
+    "an": {
+      "type": "INT"
+    },
+    "af": {
+      "type": "INT"
+    },
+    "ac_het": {
+      "type": "INT"
+    },
+    "ac_het_mean": {
+      "type": "INT"
+    },
+    "ac_het_stdev": {
+      "type": "INT"
+    },
+    "ac_het_min": {
+      "type": "INT"
+    },
+    "ac_het_max": {
+      "type": "INT"
+    },
+    "is_triallelic": {
+      "type": "INT"
+    }
+  }
+}

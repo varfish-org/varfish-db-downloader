@@ -1,0 +1,66 @@
+{
+  "$schema_version": "0.1.0",
+  "import_version": {
+    "build": "noref",
+    "table_group": "mim2gene",
+    "version": "20210728"
+  },
+  "by_chrom": {
+    ".": 26586
+  },
+  "by_col": {
+    "omim_id": {
+      "type": "INT"
+    },
+    "entrez_id": {
+      "type": "STRING"
+    },
+    "omim_type": {
+      "type": "ENUM",
+      "values": [
+        "gene",
+        "phenotype"
+      ]
+    },
+    "source": {
+      "type": "ENUM",
+      "values": [
+        " GeneMap",
+        " GeneMap; GeneReviews",
+        " GeneMap; GeneTests",
+        " GeneMap; NCBI curation",
+        " GeneMap; NCBI curation; OMIM",
+        " GeneMap; OMIM",
+        " GeneReviews",
+        " GeneReviews; NCBI curation",
+        " GeneTests",
+        " NCBI curation",
+        " OMIM",
+        "-"
+      ]
+    },
+    "medgen_cui": {
+      "type": "STRING"
+    },
+    "comment": {
+      "type": "ENUM",
+      "values": [
+        "-",
+        "nondisease",
+        "nondisease; QTL 2",
+        "nondisease; QTL 2; susceptibility",
+        "nondisease; nondisease; QTL 2",
+        "nondisease; nondisease; question",
+        "nondisease; question",
+        "nondisease; susceptibility",
+        "question",
+        "susceptibility",
+        "susceptibility; QTL 1",
+        "susceptibility; modifier",
+        "susceptibility; modifier; question",
+        "susceptibility; question",
+        "susceptibility; somatic"
+      ]
+    }
+  }
+}

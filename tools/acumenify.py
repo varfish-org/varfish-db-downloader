@@ -323,7 +323,9 @@ def do_extraction_job(path: Path, args: ExtractArgs):
             if args.line_limit and lineno > args.line_limit:
                 logger.debug("    ~> stopping at line limit of %s", args.line_limit)
                 break
-            arr = line.strip().split("\t")
+            while line and line[-1] in "\r\n":
+                line = line[:-1]
+            arr = line.split("\t")
             if not header:
                 header = arr
                 agg = Aggregator(
@@ -332,7 +334,8 @@ def do_extraction_job(path: Path, args: ExtractArgs):
             else:
                 if len(header) != len(arr):
                     raise ExtractionError(
-                        "Record %s has %d fields but header had %s", lineno, len(arr), len(header)
+                        "Record %s has %d fields but header had %s"
+                        % (lineno, len(arr), len(header))
                     )
                 agg.process(dict(zip(header, arr)))
     agg.finish()
@@ -345,6 +348,7 @@ def do_extraction(path_base: Path, record: ImportVersion, args: ExtractArgs):
     # Collect files for each table.
     by_table = {}
     path_dir = path_base / record.build / record.table_group / record.version
+    logger.debug("  path = %s", path_dir)
     for path_file in path_dir.glob("*.tsv"):
         num_dots = str(path_file.name).count(".")
         if num_dots in (1, 2):
@@ -407,7 +411,9 @@ def extract(args: ExtractArgs):
                 if record in stats:
                     logger.debug("Ignoring second occurence of %s", record)
                 elif args.only and record.table_group not in args.only:
-                    logger.info("Table group %s is not in --only=%s", record.table_group, args.only)
+                    logger.debug(
+                        "Table group %s is not in --only=%s", record.table_group, args.only
+                    )
                 else:
                     logger.debug("Handling %s", record)
                     stats[record] = True
@@ -464,14 +470,15 @@ class ReportKey:
 
 @attr.s(frozen=True, auto_attribs=True)
 class SanityCheck:
-    report_key: ReportKey
-    check: typing.Callable[[ReportKey, typing.Dict, ReportArgs], typing.List[ReportMessage]]
+    check: typing.Callable[
+        [ReportKey, typing.Dict, ReportArgs, typing.Dict], typing.List[ReportMessage]
+    ]
 
 
-def sc_allchroms(
-    key: ReportKey, report: typing.Dict, args: ReportArgs
+def sc_report_allchroms(
+    key: ReportKey, report: typing.Dict, args: ReportArgs, all_reports: typing.Dict
 ) -> typing.List[ReportMessage]:
-    """Sanity checks that tests that there is data for all chromosomes."""
+    """Sanity check that tests that there is data for all chromosomes."""
     h = ChromHarmonizer(args.harmonize_chroms, args.harmonize_chrmt).apply
     result = []
 
@@ -528,24 +535,79 @@ def sc_allchroms(
     return result
 
 
-#: Defined simple sanity checks that work on one report at a time."""
-SANITY_CHECKS = (SanityCheck(ReportKey(), sc_allchroms),)
+def sc_report_noextrachroms(
+    key: ReportKey, report: typing.Dict, args: ReportArgs, all_reports: typing.Dict
+) -> typing.List[ReportMessage]:
+    """Sanity check that tests that there are only chr1..chr22, chrY, chrX, chrMT."""
+    h = ChromHarmonizer(args.harmonize_chroms, args.harmonize_chrmt).apply
+    result = []
+
+    chroms = set(map(h, CHROMS)) | {"."}
+    extra = report["by_chrom"].keys() - chroms
+    if extra:
+        result.append(
+            ReportMessage(
+                ReportLevel.WARNING,
+                key.stats,
+                key.table_group,
+                key.table,
+                "Counts for %d unexpected chromosomes: %s" % (len(extra), list(sorted(extra))),
+            )
+        )
+
+    return result
+
+
+def sc_global_missingtable(
+    key: ReportKey, report: typing.Dict, args: ReportArgs, all_reports: typing.Dict
+) -> typing.List[ReportMessage]:
+    """A "global" sanity check that tests that checks for missing tables."""
+    result = []
+
+    all_stats = set()
+
+    by_table = {}
+    for key in all_reports.keys():
+        all_stats.add(key.stats)
+        by_table.setdefault((key.table_group, key.table), set()).add(key.stats)
+
+    for (table_group, table), stats in by_table.items():
+        if stats != all_stats:
+            for s in all_stats - stats:
+                result.append(
+                    ReportMessage(
+                        ReportLevel.ERROR,
+                        s,
+                        table_group,
+                        table,
+                        "Missing table %s/%s for dataset %s" % (table_group, table, s),
+                    )
+                )
+
+    return result
+
+
+#: Define the sanity checks to run per report.
+SANITY_CHECKS_PER_REPORT = (SanityCheck(sc_report_allchroms), SanityCheck(sc_report_noextrachroms))
+#: Define sanity checks to be run once globally.
+SANITY_CHECKS_GLOBAL = (SanityCheck(sc_global_missingtable),)
 
 
 @attr.s(frozen=True, auto_attribs=True)
 class KnownIssue:
-    dataset: str
+    dataset: typing.Optional[str]
     table_group: str
     table: str
     message: str
+    comment: typing.Optional[str] = None
 
     def matches(self, msg: ReportMessage):
         return all(
             (
-                self.dataset == msg.stats,
-                self.table_group == msg.table_group,
-                self.table == msg.table,
-                re.match(self.message, msg.msg),
+                not self.dataset or re.match(self.dataset, msg.stats),
+                not self.table_group or re.match(self.table_group, msg.table_group),
+                not self.table or re.match(self.table, msg.table),
+                not self.message or re.match(self.message, msg.msg),
             )
         )
 
@@ -553,34 +615,53 @@ class KnownIssue:
 #: Known issues.
 KNOWN_ISSUES = (
     KnownIssue(
-        "stats-2020",
+        "20201006-GRCh37",
         "clinvar",
         "Clinvar",
         re.escape("No count for 3 chromosomes: ['chrM', 'chrX', 'chrY']"),
+        "The first data release only has autosomal chromosomes.",
     ),
     KnownIssue(
-        "stats-2020",
+        "20201006-GRCh37",
         "gnomAD_exomes",
         "GnomadExomes",
         re.escape("No count for 1 chromosomes: ['chrY']"),
+        "The first data release has an old gnomAD version without chrY.",
     ),
     KnownIssue(
-        "stats-2020",
-        "gnomAD_exomes",
-        "GnomadExomes",
-        re.escape("No count for 1 chromosomes: ['chrY']"),
-    ),
-    KnownIssue(
-        "stats-2020",
+        "20201006-GRCh37",
         "ensembl_regulatory",
         "EnsemblRegulatoryFeature",
         re.escape("No count for 1 chromosomes: ['chrY']"),
+        "The first data release was accidentally missing chrY for ensembl regulatory features.",
     ),
+    KnownIssue(".*-GRCh38", "ExAC", "Exac", None, "ExAC is not available for GRCh38."),
+    KnownIssue(".*-GRCh38", "gnomAD_SV", "GnomAdSv", None, "ExAC is not available for GRCh38."),
+    KnownIssue(
+        ".*-GRCh38",
+        r"tads_imr90|tads_hesc",
+        None,
+        None,
+        "These TAD files are not available for GRCh38.",
+    ),
+    KnownIssue(
+        ".*-GRCh38",
+        r"thousand_genomes",
+        None,
+        None,
+        "Thousand genomes data not availablef or GRCh38.",
+    ),
+    KnownIssue(".*-GRCh38", r"vista", None, None, "VISTA is not available for GRCh38."),
 )
 
 
 def report(args: ReportArgs):
     """Run report generation."""
+
+    def normalize(s):
+        """Normalize table (group) name."""
+        return s.replace("-", "_")
+
     logger.info("Running extraction with args\n\n%s", json.dumps(vars(args), indent=2))
     path_report = Path(args.path_report)
     paths_stats = list(map(Path, args.paths_stats))
@@ -590,7 +671,7 @@ def report(args: ReportArgs):
     for path_stats in paths_stats:
         logger.debug("considering %s", path_stats)
         for path_json in path_stats.glob("*.json"):
-            key = ReportKey(path_stats.name, *path_json.name.split(".")[:3])
+            key = ReportKey(path_stats.name, *map(normalize, path_json.name.split(".")[:3]))
             logger.debug("  loading %s", path_json)
             with path_json.open("rt") as inputf:
                 reports[key] = json.load(inputf)
@@ -605,8 +686,8 @@ def report(args: ReportArgs):
                 per_contig_dicts.append(
                     {
                         "dataset": key.stats,
-                        "table_group": report["import_version"]["table_group"],
-                        "table": key.table,
+                        "table_group": normalize(report["import_version"]["table_group"]),
+                        "table": normalize(key.table),
                         "version": report["import_version"]["version"],
                         "contig": contig,
                         "count": count,
@@ -630,9 +711,10 @@ def report(args: ReportArgs):
     logger.info("Running sanity checks")
     results = []
     for key, report in reports.items():
-        for check in SANITY_CHECKS:
-            if key.matches(check.report_key):
-                results += check.check(key, report, args)
+        for check in SANITY_CHECKS_PER_REPORT:
+            results += check.check(key, report, args, reports)
+    for check in SANITY_CHECKS_GLOBAL:
+        results += check.check(key, None, args, reports)
 
     df_result = pd.DataFrame(
         [
@@ -659,7 +741,7 @@ def report(args: ReportArgs):
         if msg.is_known(KNOWN_ISSUES):
             summary_counts["known"] += 1
         else:
-            counts[msg.level.name] += 1
+            summary_counts[msg.level.name] += 1
 
     df_summary = pd.DataFrame([{"level": k, "count": v} for k, v in summary_counts.items()])
     logger.info("Overall sanity check stats:\n\n%s\n", df_summary)

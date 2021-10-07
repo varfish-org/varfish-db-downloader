@@ -1,0 +1,125 @@
+{
+  "$schema_version": "0.1.0",
+  "import_version": {
+    "build": "GRCh37",
+    "table_group": "thousand_genomes",
+    "version": "phase3"
+  },
+  "by_chrom": {
+    "chr1": 44370,
+    "chr10": 46543,
+    "chr11": 45195,
+    "chr12": 21513,
+    "chr13": 7783,
+    "chr14": 165012,
+    "chr15": 65133,
+    "chr16": 22642,
+    "chr17": 46504,
+    "chr18": 21830,
+    "chr19": 3334,
+    "chr2": 14972,
+    "chr20": 1820930,
+    "chr21": 1111441,
+    "chr22": 76186,
+    "chr3": 40190,
+    "chr4": 124450,
+    "chr5": 20395,
+    "chr6": 21798,
+    "chr7": 3161,
+    "chr8": 44575,
+    "chr9": 398,
+    "chrM": 4241,
+    "chrX": 159400,
+    "chrY": 61932,
+    ".": 3993928
+  },
+  "by_col": {
+    "release": {
+      "type": "ENUM",
+      "values": [
+        "GRCh37"
+      ]
+    },
+    "chromosome": {
+      "type": "ENUM",
+      "values": [
+        "chr1",
+        "chr10",
+        "chr11",
+        "chr12",
+        "chr13",
+        "chr14",
+        "chr15",
+        "chr16",
+        "chr17",
+        "chr18",
+        "chr19",
+        "chr2",
+        "chr20",
+        "chr21",
+        "chr22",
+        "chr3",
+        "chr4",
+        "chr5",
+        "chr6",
+        "chr7",
+        "chr8",
+        "chr9",
+        "chrM",
+        "chrX",
+        "chrY"
+      ]
+    },
+    "start": {
+      "type": "INT"
+    },
+    "end": {
+      "type": "INT"
+    },
+    "bin": {
+      "type": "INT"
+    },
+    "reference": {
+      "type": "DNA"
+    },
+    "alternative": {
+      "type": "DNA"
+    },
+    "ac": {
+      "type": "ENUM",
+      "values": [
+        "."
+      ]
+    },
+    "an": {
+      "type": "ENUM",
+      "values": [
+        "."
+      ]
+    },
+    "af": {
+      "type": "INT"
+    },
+    "af_afr": {
+      "type": "INT"
+    },
+    "af_amr": {
+      "type": "INT"
+    },
+    "af_eas": {
+      "type": "INT"
+    },
+    "af_eur": {
+      "type": "INT"
+    },
+    "af_sas": {
+      "type": "INT"
+    },
+    "het": {
+      "type": "INT"
+    },
+    "hom": {
+      "type": "INT"
+    }
+  }
+}

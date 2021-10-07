@@ -1,0 +1,50 @@
+{
+  "$schema_version": "0.1.0",
+  "import_version": {
+    "build": "GRCh38",
+    "table_group": "MITOMAP",
+    "version": "20210728"
+  },
+  "by_chrom": {
+    "chrM": 19051,
+    ".": 19051
+  },
+  "by_col": {
+    "release": {
+      "type": "ENUM",
+      "values": [
+        "GRCh38"
+      ]
+    },
+    "chromosome": {
+      "type": "ENUM",
+      "values": [
+        "chrM"
+      ]
+    },
+    "start": {
+      "type": "INT"
+    },
+    "end": {
+      "type": "INT"
+    },
+    "bin": {
+      "type": "INT"
+    },
+    "reference": {
+      "type": "DNA"
+    },
+    "alternative": {
+      "type": "DNA"
+    },
+    "ac": {
+      "type": "INT"
+    },
+    "an": {
+      "type": "INT"
+    },
+    "af": {
+      "type": "INT"
+    }
+  }
+}

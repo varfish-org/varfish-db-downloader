@@ -1,0 +1,129 @@
+{
+  "$schema_version": "0.1.0",
+  "import_version": {
+    "build": "GRCh37",
+    "table_group": "ExAC_constraints",
+    "version": "r0.3.1"
+  },
+  "by_chrom": {
+    "chr7": 818,
+    "chr12": 983,
+    "chr2": 1153,
+    "chr6": 956,
+    "chr4": 693,
+    "chr3": 1016,
+    "chr11": 1215,
+    "chr8": 606,
+    "chr17": 1083,
+    "chr16": 758,
+    "chr19": 1309,
+    "chr1": 1904,
+    "chr5": 813,
+    "chr14": 572,
+    "chr10": 684,
+    "chr18": 257,
+    "chr20": 501,
+    "chr13": 292,
+    "chrX": 727,
+    "chr22": 402,
+    "chr15": 553,
+    "chrY": 14,
+    "chr9": 710,
+    "chr21": 206,
+    ".": 18225
+  },
+  "by_col": {
+    "ensembl_transcript_id": {
+      "type": "STRING"
+    },
+    "symbol": {
+      "type": "STRING"
+    },
+    "chromosome": {
+      "type": "ENUM",
+      "values": [
+        "chr1",
+        "chr10",
+        "chr11",
+        "chr12",
+        "chr13",
+        "chr14",
+        "chr15",
+        "chr16",
+        "chr17",
+        "chr18",
+        "chr19",
+        "chr2",
+        "chr20",
+        "chr21",
+        "chr22",
+        "chr3",
+        "chr4",
+        "chr5",
+        "chr6",
+        "chr7",
+        "chr8",
+        "chr9",
+        "chrX",
+        "chrY"
+      ]
+    },
+    "n_exons": {
+      "type": "INT"
+    },
+    "cds_start": {
+      "type": "INT"
+    },
+    "cds_end": {
+      "type": "INT"
+    },
+    "bp": {
+      "type": "INT"
+    },
+    "mu_syn": {
+      "type": "INT"
+    },
+    "mu_mis": {
+      "type": "INT"
+    },
+    "mu_lof": {
+      "type": "INT"
+    },
+    "n_syn": {
+      "type": "INT"
+    },
+    "n_mis": {
+      "type": "INT"
+    },
+    "n_lof": {
+      "type": "INT"
+    },
+    "exp_syn": {
+      "type": "INT"
+    },
+    "exp_mis": {
+      "type": "INT"
+    },
+    "exp_lof": {
+      "type": "INT"
+    },
+    "syn_z": {
+      "type": "INT"
+    },
+    "mis_z": {
+      "type": "INT"
+    },
+    "lof_z": {
+      "type": "INT"
+    },
+    "pLI": {
+      "type": "INT"
+    },
+    "pRec": {
+      "type": "INT"
+    },
+    "pNull": {
+      "type": "INT"
+    }
+  }
+}
