@@ -1,4 +1,37 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
+"""Sanity checking for releases as built by ``varfish-db-downloader``.
+
+This tool takes as the input a release built by ``varfish-db-downloader`` which is identified as
+a path to the ``import_versions.tsv`` file that is generated in the release directory.  For each
+table in the release it will create a JSON file in an outupt directory that contains summary
+statistics.
+
+
+-----
+Usage
+-----
+
+First point the ``extract`` command at a release directory with ``import_versions.tsv`` file.
+
+::
+
+    python acumenify.py extract \\
+        reports/20210728-GRCh37 \\
+        releases/20210728/grch37/import_versions.tsv
+
+This will generate report JSON files in the folder ``reports/20210728-GRCh37``.
+
+You can then run sanity checks on one or multiple report folders and also see a tabular report on
+the number of lines per chromosome in each file by running the ``report`` command.
+
+::
+
+    python tools/acumenify.py report report.xlsx reports/*
+
+Note that this will also print the report parts to the stderr but large tables will be abbreviated.
+Essentially this converts pandas data frames to strings which will leave out columns and rows as
+not to overload the user's terminal.
+"""
 
 import argparse
 import collections
@@ -33,6 +66,8 @@ class ExtractionError(Exception):
 
 @attr.s(frozen=True, auto_attribs=True)
 class ExtractArgs:
+    """Arguments for the ``extract`` command."""
+
     #: Path to ``import_versions.tsv`` file.
     path_import_versions: str
     #: Path to write statistics files to.
@@ -51,6 +86,8 @@ class ExtractArgs:
 
 @attr.s(frozen=True, auto_attribs=True)
 class ReportArgs:
+    """Arguments for the ``report`` command."""
+
     #: Path to write report file to.
     path_report: str
     #: Path to ``import_versions.tsv`` file.
@@ -63,33 +100,56 @@ class ReportArgs:
 
 @attr.s(frozen=True, auto_attribs=True)
 class ImportVersion:
+    """A record from ``import_versions.tsv`` files."""
+
+    #: The genome build, e.g., ``"GRCh37"``.
     build: str
+    #: The table group name.
     table_group: str
+    #: The table name.
     version: str
 
-    def get_key(self):
+    def get_key(self) -> str:
         """Return separated key for import version"""
         return "%s.%s" % (self.build, self.table_group)
 
 
 @attr.s(frozen=True, auto_attribs=True)
 class StatsKey:
+    """The key for a statics entry."""
+
+    #: The table group name.
     table_group: str
+    #: The table name.
     table: str
+    #: The version of data that the statistics were created for.
     chrom: str
 
 
 class ColumnType(enum.Enum):
     """Enumeration for colum types."""
 
+    #: Type is not known yet.
     UNKNOWN = 1
+    #: Type is an enumerate (String-typed with relatively few values).
     ENUM = 2
+    #: Arbitrary string.
     STRING = 3
+    #: Integer.
     INT = 4
+    #: Floating point number.
     FLOAT = 5
+    #: DNA String.
     DNA = 6
 
-    def with_generalized(self, other):
+    def with_generalized(self, other: "ColumnType") -> "ColumnType":
+        """Return a ``Column`` that is the generalizatio of ``self`` and ``other``.
+
+        The generalization is a type that is capable of representing values of both ``self`` and
+        ``other``.  Note that ``UNKNOWN`` is seen as a wild card and replaced by the other
+        respective type.
+        """
+
         return {
             (ColumnType.UNKNOWN, ColumnType.UNKNOWN): ColumnType.UNKNOWN,
             (ColumnType.UNKNOWN, ColumnType.ENUM): ColumnType.ENUM,
@@ -139,10 +199,37 @@ RE_DNA = r"^[ACGTNacgtn]+$"
 
 @attr.s(frozen=True, auto_attribs=True)
 class ChromHarmonizer:
+    """Helper class that harmonizes chromosome name.
+
+    ..code-block:: python
+
+        >>> h = ChromHarmonizer("chr", "M")
+        >>> h.apply("chrX")
+        "chrX"
+        >>> h.apply("X")
+        "chrX"
+        >>> h.apply("M")
+        "chrM"
+        >>> h.apply("MT")
+        "chrM"
+        >>> h = ChromHarmonizer("", "MT")
+        >>> h.apply("chrX")
+        "X"
+        >>> h.apply("X")
+        "X"
+        >>> h.apply("M")
+        "MT"
+        >>> h.apply("MT")
+        "MT"
+    """
+
+    #: Prefix to apply to chromosomes, either ``"chr"`` or ``""``.
     harmonize_chroms: str
+    #: The name to normalize the mitochondrial chromosome to, e.g., ``"M"``.
     harmonize_chrmt: str
 
-    def apply(self, value):
+    def apply(self, value: str) -> str:
+        """Apply harmonization to chromosome name ``value``."""
         if value == ".":
             return value
         value = self._apply_chr(value)
@@ -164,14 +251,26 @@ class ChromHarmonizer:
             return value
 
 
-def identity(x):
+def _identity(x):
+    """Identity function."""
     return x
 
 
 class ColAggregator:
-    """Helper class for aggregating column values."""
+    """Helper class for aggregating column values.
+    
+    The aggregator will consider at most ``guess_len`` values and then guess the values based on
+    this.  The distinction between enumerations and strings is made based the value set
+    cardinality being not above ``max_enum_size``.  Guessing can be forced by calling ``finished()``.
+    """
 
-    def __init__(self, name, chrom_harmonizer, guess_len=10000, max_enum_size=100):
+    def __init__(
+        self,
+        name,
+        chrom_harmonizer: ChromHarmonizer,
+        guess_len: int = 10000,
+        max_enum_size: int = 100,
+    ):
         #: Column name
         self.name = name
         #: Chromozome harmoniser.
@@ -179,7 +278,7 @@ class ColAggregator:
         if self.name == HEADER_CHROM:
             self.fn_harmonize = chrom_harmonizer.apply
         else:
-            self.fn_harmonize = identity
+            self.fn_harmonize = _identity
         #: Number of records to base guess on.
         self.guess_len = guess_len
         #: Maximal enumeration length.
@@ -193,8 +292,11 @@ class ColAggregator:
         #: Number of records read so far.
         self.counter = 0
 
-    def with_added(self, other):
-        """Return sum of this and other col aggregator."""
+    def with_added(self, other: "ColAggregator") -> "ColAggregator":
+        """Return sum of this and other col aggregator.
+        
+        That is, the count values will be added and the set values will be merged.
+        """
         assert self.name == other.name
         assert self.guess_len == other.guess_len
         assert self.max_enum_size == other.max_enum_size
@@ -213,7 +315,8 @@ class ColAggregator:
         res.counter = self.counter + other.counter
         return res
 
-    def process(self, value):
+    def process(self, value: str) -> None:
+        """Process one value occuring in a column's cell."""
         self.counter += 1
         if self.counter >= self.guess_len:
             self.finish()
@@ -222,7 +325,7 @@ class ColAggregator:
             self.values.setdefault(value, 0)
             self.values[value] += 1
 
-    def finish(self):
+    def finish(self) -> None:
         """Force guessing of value if not done so far."""
         if self.type_ != ColumnType.UNKNOWN:
             return
@@ -247,7 +350,7 @@ class ColAggregator:
         if self.type_ != ColumnType.ENUM:
             self.values = None
 
-    def to_dict(self):
+    def to_dict(self) -> typing.Dict:
         """Return dict with results."""
         result = {"type": self.type_.name}
         if self.type_ == ColumnType.ENUM:
@@ -256,7 +359,7 @@ class ColAggregator:
 
 
 class Aggregator:
-    """Helper class for aggregating values"""
+    """Helper class for aggregating values column-wise, in multiple columns."""
 
     def __init__(self, header, chrom_harmonizer):
         #: Header.
@@ -269,6 +372,10 @@ class Aggregator:
         self.by_column = {col: ColAggregator(col, chrom_harmonizer) for col in header}
 
     def with_added(self, other):
+        """Return ``Aggregator`` object with added values.
+
+        That is, the count values will be added and the set values will be merged.
+        """
         assert self.header == other.header
         assert self.by_column.keys() == other.by_column.keys()
         res = Aggregator(self.header, self.chrom_harmonizer)
@@ -283,7 +390,11 @@ class Aggregator:
             res.by_column[k] = v1.with_added(v2)
         return res
 
-    def process(self, record: typing.Dict):
+    def process(self, record: typing.Dict) -> None:
+        """Process a record.
+
+        A record is a ``dict`` that maps header names to column/cell values.
+        """
         chrom = self.chrom_harmonizer.apply(record.get(HEADER_CHROM, "."))
         self.by_chrom.setdefault(chrom, 0)
         self.by_chrom[chrom] += 1
@@ -291,26 +402,36 @@ class Aggregator:
             self.by_column[k].process(v)
 
     def finish(self):
+        """Force guessing of values if not done so far and compute sum of values for all
+        chromosomes with chromosome key ``"."``.
+        """
         for a in self.by_column.values():
             a.finish()
         if "." not in self.by_chrom:
             self.by_chrom["."] = sum(self.by_chrom.values())
 
 
-def do_extraction_job(path: Path, args: ExtractArgs):
+def do_extraction_job(path: Path, args: ExtractArgs) -> Aggregator:
+    """Run one aggregation job for the file at the given ``path``.
+
+    Will display progress using the ``tqdm`` library if only one thread is used and otherwise
+    will display progress to logging.
+    """
     disable_tqdm = args.processes > 1
     logger.info(
         "  processing file %s%s",
         path,
         " (at most %s lines)" % args.line_limit if args.line_limit else "",
     )
+
     agg = None
     header = None
+
     with path.open("rt") as inputf:
         prev = time.time()
-        modulo = 200_000
+        modulo = 200_000  # print progress every so many lines
         for lineno, line in tqdm(enumerate(inputf), unit="rec", disable=disable_tqdm):
-            if disable_tqdm and lineno and lineno % modulo == 0:
+            if disable_tqdm and lineno and lineno % modulo == 0:  # progress to logs
                 curr = time.time()
                 lines_per_sec = modulo / (curr - prev)
                 prev = curr
@@ -323,28 +444,37 @@ def do_extraction_job(path: Path, args: ExtractArgs):
             if args.line_limit and lineno > args.line_limit:
                 logger.debug("    ~> stopping at line limit of %s", args.line_limit)
                 break
-            while line and line[-1] in "\r\n":
+
+            while line and line[-1] in "\r\n":  # trim line endings but no other space
                 line = line[:-1]
+
             arr = line.split("\t")
-            if not header:
+            if not header:  # first line, initialize header and aggregator
                 header = arr
                 agg = Aggregator(
                     header, ChromHarmonizer(args.harmonize_chroms, args.harmonize_chrmt)
                 )
-            else:
+            else:  # every line after the first, process record
                 if len(header) != len(arr):
                     raise ExtractionError(
                         "Record %s has %d fields but header had %s"
                         % (lineno, len(arr), len(header))
                     )
                 agg.process(dict(zip(header, arr)))
+
+    # Finish up.
     agg.finish()
     logger.info("    => done with %s", path.name)
     return agg
 
 
-def do_extraction(path_base: Path, record: ImportVersion, args: ExtractArgs):
+def do_extraction(path_base: Path, record: ImportVersion, args: ExtractArgs) -> typing.Dict:
+    """Perform extraction for all tables belonging to the table group defined in ``record``.
+
+    The payload data is assumed to be relative to ``path_base``, parametrize based on ``args``.
+    """
     logger.info("Looking into %s", record)
+
     # Collect files for each table.
     by_table = {}
     path_dir = path_base / record.build / record.table_group / record.version
@@ -356,6 +486,7 @@ def do_extraction(path_base: Path, record: ImportVersion, args: ExtractArgs):
         else:
             logger.error("No or more than two dots in filename %s", path_file.name)
             return 1
+
     # Process for each table.
     result = {}
     for table, paths in by_table.items():
@@ -379,15 +510,15 @@ def do_extraction(path_base: Path, record: ImportVersion, args: ExtractArgs):
             "by_chrom": agg.by_chrom,
             "by_col": {k: v.to_dict() for k, v in agg.by_column.items()},
         }
+
     return result
 
 
 def extract(args: ExtractArgs):
-    """Run extraction."""
+    """Run extraction command based on configuration in ``args``."""
     logger.info("Running extraction with args\n\n%s", json.dumps(vars(args), indent=2))
     path_import_versions = Path(args.path_import_versions)
     path_stats = Path(args.path_stats)
-
     if not path_import_versions.exists():
         logger.error("Input file '%s' does not exist", path_import_versions)
         return 1
@@ -401,20 +532,20 @@ def extract(args: ExtractArgs):
     with path_import_versions.open("rt") as inputf:
         for line in inputf:
             arr = line.strip().split("\t")
-            if not header:
+            if not header:  # first line, read header
                 expected = ["build", "table_group", "version"]
                 header = arr
                 if header != expected:
                     logger.error("Header unexpected, WAS: %s, expected: %s", header, expected)
-            else:
+            else:  # any other line, start extraction for table group
                 record = ImportVersion(**dict(zip(header, arr)))
-                if record in stats:
+                if record in stats:  # ignore duplicates
                     logger.debug("Ignoring second occurence of %s", record)
-                elif args.only and record.table_group not in args.only:
+                elif args.only and record.table_group not in args.only:  # allow filter on group
                     logger.debug(
                         "Table group %s is not in --only=%s", record.table_group, args.only
                     )
-                else:
+                else:  # the actual handling of the extraction
                     logger.debug("Handling %s", record)
                     stats[record] = True
                     try:
@@ -430,31 +561,52 @@ def extract(args: ExtractArgs):
 
 
 class ReportLevel(enum.Enum):
+    """Enumeration for report levels."""
+
+    #: Informative message in report.
     INFO = 1
+    #: Warning message in report.
     WARNING = 2
+    #: Error message in report.
     ERROR = 3
 
 
 @attr.s(frozen=True, auto_attribs=True)
 class ReportMessage:
+    """An overall message in the output report."""
+
+    #: The level of the message.
     level: ReportLevel
+    #: The name of the input folder.
     stats: str
+    #: The table group.
     table_group: str
+    #: The table.
     table: str
+    #: The message text.
     msg: str
 
-    def is_known(self, known_issues) -> bool:
+    def is_known(self, known_issues: typing.List["KnownIssue"]) -> bool:
+        """Return whether ``self`` is known given the list of ``known_issues``."""
         return any(k.matches(self) for k in known_issues)
 
 
 @attr.s(frozen=True, auto_attribs=True)
 class ReportKey:
+    """Key for an entry in a report."""
+
+    #: The input folder.
     stats: typing.Optional[str] = None
+    #: The data release.
     release: typing.Optional[str] = None
+    #: The Table group.
     table_group: typing.Optional[str] = None
+    #: The table.
     table: typing.Optional[str] = None
 
-    def matches(self, other):
+    def matches(self, other: "ReportKey") -> bool:
+        """Whether or not ``self`` matches ``other`` with ``None`` representing wildcars."""
+
         def lower(s):
             if not s:
                 return s
@@ -470,6 +622,9 @@ class ReportKey:
 
 @attr.s(frozen=True, auto_attribs=True)
 class SanityCheck:
+    """Wrapper container for sanity check function."""
+
+    #: The sanity check function.
     check: typing.Callable[
         [ReportKey, typing.Dict, ReportArgs, typing.Dict], typing.List[ReportMessage]
     ]
@@ -595,10 +750,17 @@ SANITY_CHECKS_GLOBAL = (SanityCheck(sc_global_missingtable),)
 
 @attr.s(frozen=True, auto_attribs=True)
 class KnownIssue:
+    """A known issue."""
+
+    #: Regular expression for dataset name.
     dataset: typing.Optional[str]
+    #: Regular expression for table group.
     table_group: str
+    #: Regular expression for table name.
     table: str
+    #: Regular expression for message.
     message: str
+    #: A comment for the known issue.
     comment: typing.Optional[str] = None
 
     def matches(self, msg: ReportMessage):
@@ -655,7 +817,7 @@ KNOWN_ISSUES = (
 )
 
 
-def report(args: ReportArgs):
+def report(args: ReportArgs) -> none:
     """Run report generation."""
 
     def normalize(s):
@@ -757,6 +919,7 @@ def report(args: ReportArgs):
 
 
 def main(argv=None):
+    """Main entry point."""
     parser = argparse.ArgumentParser(description="Sanity checks for varfish-db-downloader results")
     subparsers = parser.add_subparsers(help="sub command help")
 
