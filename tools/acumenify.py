@@ -31,6 +31,97 @@ the number of lines per chromosome in each file by running the ``report`` comman
 Note that this will also print the report parts to the stderr but large tables will be abbreviated.
 Essentially this converts pandas data frames to strings which will leave out columns and rows as
 not to overload the user's terminal.
+
+-------------
+Report Format
+-------------
+
+See below for an annotated report of MITOMAP that serves as the example.
+
+::
+
+    {
+    "$schema_version": "0.1.0",
+
+The current report JSON "schema" format version.
+
+::
+
+    "import_version": {
+        "build": "GRCh37",
+        "table_group": "MITOMAP",
+        "version": "20210728"
+    },
+
+Describes the data version.
+
+::
+
+    "by_chrom": {
+        "chrM": 19051,
+        ".": 19051
+    },
+
+
+Counts by chromosome, with ``"."`` representing the overall count.  If there is no ``chromosome``
+column then ``"."`` (e.g., if there is a line per gene) represents the overall number of entries.
+
+::
+
+    "by_col": {
+        "release": {
+            "type": "ENUM",
+            "values": [
+                "GRCh37"
+            ]
+        },
+
+By colum information, with detected type.  E.g., here the ``release`` column is detected as having
+the type enum, i.e., being string-type and having few values.  The only value is ``"GRCh37"``.
+
+::
+
+            "chromosome": {
+                "type": "ENUM",
+                "values": [
+                    "chrM"
+                ]
+            },
+
+The ``chromosome`` column is always set to typ enum.
+
+::
+
+            "start": {
+                "type": "INT"
+            },
+            "end": {
+                "type": "INT"
+            },
+            "bin": {
+                "type": "INT"
+            },
+            "reference": {
+                "type": "DNA"
+            },
+            "alternative": {
+                "type": "DNA"
+            },
+            "ac": {
+                "type": "INT"
+            },
+            "an": {
+                "type": "INT"
+            },
+            "af": {
+                "type": "INT"
+            }
+        }
+    }
+
+
+The ``start`` column, detected as integer.  ``reference`` and ``alternative`` columns detected as
+DNA strings etc.
 """
 
 import argparse
