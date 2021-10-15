@@ -11,4 +11,4 @@ OUT=$1
 IN=$2
 ONLY=$3
 
-python $SCRIPT_DIR/acumenify.py extract "$OUT" "$IN" --only "$ONLY"
+python $SCRIPT_DIR/acumenify.py extract --processes=8 "$OUT" "$IN" --only "$ONLY"

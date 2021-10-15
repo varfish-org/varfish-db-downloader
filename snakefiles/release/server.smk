@@ -113,9 +113,13 @@ rule result_grch37_release_server_db_tar:
         in_dir=$(dirname {input})
 
         tar \
+            --owner=0 \
+            --group=0 \
             -C $in_dir/.. \
-            -vhczf $(readlink -f {output.tar}) \
-            varfish-server-background-db-{config[release_name]}-grch37
+            -vhczf - \
+            varfish-server-background-db-{config[release_name]}-grch37 \
+        | pigz \
+        > $(readlink -f {output.tar})
         pushd $(dirname {output.tar})
         sha256sum $(basename {output.tar}) >$(basename {output.tar}).sha256
         """
@@ -212,9 +216,13 @@ rule result_grch38_release_server_db_tar:
         in_dir=$(dirname {input})
 
         tar \
+            --owner=0 \
+            --group=0 \
             -C $in_dir/.. \
-            -vhczf $(readlink -f {output.tar}) \
-            varfish-server-background-db-{config[release_name]}-grch38
+            -vhczf - \
+            varfish-server-background-db-{config[release_name]}-grch38 \
+        | pigz \
+        > $(readlink -f {output.tar})
         pushd $(dirname {output.tar})
         sha256sum $(basename {output.tar}) >$(basename {output.tar}).sha256
         """

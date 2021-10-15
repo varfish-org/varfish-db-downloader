@@ -30,6 +30,8 @@ rule result_grch38_release_jannovar_db:
     shell:
         r"""
         tar \
+            --owner=0 \
+            --group=0 \
             -czvf {output.tar} \
             --transform "s|^.*/|jannovar-db-{config[release_name]}-grch38/|" \
             {input}

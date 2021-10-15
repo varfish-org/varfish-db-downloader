@@ -29,7 +29,7 @@ rule result_GRChXX_extra_annos_tsv_step_1:
         download_date="[^/]+",
     shell:
         r"""
-        cut_expr=94-102,113,114,116
+        cut_expr=109-112,113-117,129,130,134
         cols=$({{ zcat {input.cadd_snvs} || true; }} | head -n 2 | tail -n 1| cut -f $cut_expr)
 
         (
@@ -43,26 +43,59 @@ rule result_GRChXX_extra_annos_tsv_step_1:
         | sed -e 's/PHRED/CADD-PHRED/g' \
         > {output.fields}
 
-        (
-            echo -e "release\tchromosome\tstart\tend\tbin\treference\talternative\tanno_data";
-            tabix -R {input.bed} {input.cadd_snvs} \
-            | cut -f 1-4,$cut_expr \
-            | awk -F $'\t' 'BEGIN {{ OFS=FS }} {{
-                printf("{wildcards.genome_build}\t%s\t%d\t%d\t-1\t%s\t%s\t[", $1, $2, $2, $3, $4);
-                for (i = 5; i <= NF; i++) {{
-                    x = ($i == "NA" || $i == ".") ? "null" : $i;
-                    if (i != 5) {{
-                        printf(",%s", x);
-                    }} else {{
-                        printf("%s", x);
+        if [[ "{wildcards.genome_build}" == GRCh37 ]]; then
+          prefix=""
+        else
+          prefix="chr"
+        fi
+
+        export TMPDIR=$(mktemp -d)
+        #trap "rm -rf $TMPDIR" EXIT ERR
+
+        mkdir -p $TMPDIR/split.d
+        split -n l/1028 {input.bed} $TMPDIR/split.d/exons
+
+        export prefix
+        export cut_expr
+        export cols
+
+        write-chunk()
+        {{
+            set -x
+            set -euo pipefail
+            input=$1
+            output=$TMPDIR/out.d/$(basename $input)
+
+            mkdir -p $TMPDIR/out.d
+
+            (
+                echo -e "release\tchromosome\tstart\tend\tbin\treference\talternative\tanno_data";
+                tabix -R $input {input.cadd_snvs} \
+                | cut -f 1-4,$cut_expr \
+                | awk -v "prefix=$prefix" -F $'\t' 'BEGIN {{ OFS=FS }} {{
+                    printf("{wildcards.genome_build}\t%s\t%d\t%d\t-1\t%s\t%s\t[", prefix $1, $2, $2, $3, $4);
+                    for (i = 5; i <= NF; i++) {{
+                        x = ($i == "NA" || $i == ".") ? "null" : $i;
+                        if (i != 5) {{
+                            printf(",%s", x);
+                        }} else {{
+                            printf("%s", x);
+                        }}
                     }}
-                }}
-                printf("]\n");
-            }}';
-        ) \
-        | python tools/ucsc_binning.py \
-        | sort -k2,2g -k7,7n \
-        | uniq \
+                    printf("]\n");
+                }}';
+            ) \
+            | python tools/ucsc_binning.py \
+            | tail -n +2 \
+            | sort -S 1G -k2,2g -k7,7n -o $output
+        }}
+        export -f write-chunk
+                
+        echo -e "release\tchromosome\tstart\tend\tbin\treference\talternative\tanno_data" \
+        > {output.tsv}
+
+        parallel -j 16 -t 'write-chunk {{}}' ::: $TMPDIR/split.d/*
+        sort -m -k2,2g -k7,7n $TMPDIR/out.d/* \
         >> {output.tsv}
         """
 

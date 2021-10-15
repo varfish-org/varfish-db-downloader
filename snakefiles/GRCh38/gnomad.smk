@@ -90,6 +90,28 @@ rule grch38_gnomad_r3_1_1_normalize:
         """
 
 
+# Remove annotations that are not needed by varfish annotator.
+rule grch3x_gnomad_strip:
+    input:
+        vcf="{genomebuild}/gnomAD_{dataset}/{release}/download/gnomad.{dataset}.{release}.sites.chr{chrom}.normalized.vcf.bgz",
+    output:
+        vcf="{genomebuild}/gnomAD_{dataset}/{release}/download/gnomad.{dataset}.{release}.sites.chr{chrom}.stripped.vcf.bgz",
+        tbi="{genomebuild}/gnomAD_{dataset}/{release}/download/gnomad.{dataset}.{release}.sites.chr{chrom}.stripped.vcf.bgz.tbi",
+    shell:
+        r"""
+        bcftools annotate \
+            --threads 8 \
+            -x "^INFO/nonpar,INFO/AC_male,INFO/AC_XY,INFO/nhomalt,INFO/AC,INFO/AF" \
+            -O z \
+            -o {output.vcf} \
+            {input.vcf}
+        tabix -f {output.vcf}
+
+        pushd $(dirname {output.vcf})
+        md5sum $(basename {output.vcf}) >$(basename {output.vcf}).md5
+        """
+
+
 # Rule to generate TSV files from chromosomes
 ## Note: From the release notes (https://macarthurlab.org/2018/10/17/gnomad-v2-1/)
 ## Hemizygote counts
