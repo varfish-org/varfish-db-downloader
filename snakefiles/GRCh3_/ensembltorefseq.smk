@@ -31,7 +31,9 @@ rule result_grchxx_ensembl_to_refseq_tsv:
         (
             cat {input.header} | tr '\n' '\t' | sed -e 's/\t*$/\n/g';
             cat {input.tsv}
-        ) > {output.tsv}
+        ) \
+        | awk -F $'\t' 'BEGIN {{ OFS=FS }} ($NF != "")' \
+        > {output.tsv}
 
         echo -e "table\tversion\tgenomebuild\tnull_value\nEnsemblToRefseq\t$(date +%Y/%m/%d)\t{wildcards.genome_build}\t" > {output.release_info}
         """

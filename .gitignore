@@ -1,6 +1,8 @@
 /stats-*/
 /*.xlsx
 .~*
+core.*
+/report.NEW
 
 *~
 .*.sw?

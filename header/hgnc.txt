@@ -47,4 +47,8 @@ lncrnadb
 enzyme_id
 intermediate_filament_db
 rna_central_ids
+lncipedia
+gtrnadb
+agr
+mane_select
 ucsc_id_novers
