@@ -3,7 +3,7 @@ rule GRCh37_vista_download:
         tsv="GRCh37/vista/{download_date}/download/VistaEnhancer.tsv",
     shell:
         r"""
-        2>/dev/null wget -O - 'https://enhancer.lbl.gov/cgi-bin/imagedb3.pl?page_size=100;show=1;search.result=yes;search.form=no;form=search;action=search;search.org=Both;search.sequence=1' \
+        2>/dev/null wget --no-check-certificate -O - 'https://enhancer.lbl.gov/cgi-bin/imagedb3.pl?page_size=100;show=1;search.result=yes;search.form=no;form=search;action=search;search.org=Both;search.sequence=1' \
         | sed -e 's/<pre>//g' \
         | sed -e 's/<\/pre>//g' \
         | grep '^>' \

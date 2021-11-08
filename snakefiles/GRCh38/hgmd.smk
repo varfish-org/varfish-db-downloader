@@ -5,7 +5,7 @@ rule grch38_hgmd_public_download:
         "GRCh38/hgmd_public/ensembl_r104/download/variation_feature.txt.gz_log",
     shell:
         r"""
-        wget \
+        wget --no-check-certificate \
             -o {log} \
             -O {output} \
             http://ftp.ensembl.org/pub/release-104/mysql/homo_sapiens_variation_104_38/variation_feature.txt.gz

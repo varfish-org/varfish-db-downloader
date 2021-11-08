@@ -9,11 +9,11 @@ rule grch37_exac_v1_0_0_download:
         "GRCh37/ExAC/r1/download/ExAC.r1.sites.vep.vcf.gz.log",
     shell:
         r"""
-        wget \
+        wget --no-check-certificate \
             -o {log} \
             -O {output.vcf} \
             https://storage.googleapis.com/gcp-public-data--gnomad/legacy/exac_browser/ExAC.r1.sites.vep.vcf.gz
-        wget \
+        wget --no-check-certificate \
             -o {log} \
             -O {output.tbi} \
             https://storage.googleapis.com/gcp-public-data--gnomad/legacy/exac_browser/ExAC.r1.sites.vep.vcf.gz.tbi
@@ -36,7 +36,7 @@ rule grch37_exac_v1_0_0_cnv_download:
         cd $(dirname {output.md5sums})
         # mirror server
         for x in {output}; do
-            wget -O $(basename $x) \
+            wget --no-check-certificate -O $(basename $x) \
                 https://storage.googleapis.com/gcp-public-data--gnomad/legacy/exacv1_downloads/release0.3.1/cnv/$(basename $x)
         done
         # check md5 sums

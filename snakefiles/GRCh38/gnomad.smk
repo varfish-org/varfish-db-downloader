@@ -7,11 +7,11 @@ rule grch38_gnomad_r2_1_1_download:
         "GRCh38/gnomAD_exomes/r2.1.1/download/gnomad.exomes.r2.1.1.sites.chr{chrom}.vcf.bgz.log",
     shell:
         r"""
-        wget \
+        wget --no-check-certificate \
             -o {log} \
             -O {output.vcf} \
             https://storage.googleapis.com/gcp-public-data--gnomad/release/2.1.1/liftover_grch38/vcf/exomes/gnomad.exomes.r2.1.1.sites.{wildcards.chrom}.liftover_grch38.vcf.bgz
-        wget \
+        wget --no-check-certificate \
             -o {log} \
             -O {output.tbi} \
             https://storage.googleapis.com/gcp-public-data--gnomad/release/2.1.1/liftover_grch38/vcf/exomes/gnomad.exomes.r2.1.1.sites.{wildcards.chrom}.liftover_grch38.vcf.bgz.tbi
@@ -30,11 +30,11 @@ rule grch38_gnomad_r3_1_1_download:
         "GRCh38/gnomAD_genomes/r3.1.1/download/gnomad.genomes.r3.1.1.sites.chr{chrom}.vcf.bgz.log",
     shell:
         r"""
-        wget \
+        wget --no-check-certificate \
             -o {log} \
             -O {output.vcf} \
             https://storage.googleapis.com/gcp-public-data--gnomad/release/3.1.1/vcf/genomes/gnomad.genomes.v3.1.1.sites.chr{wildcards.chrom}.vcf.bgz            
-        wget \
+        wget --no-check-certificate \
             -o {log} \
             -O {output.tbi} \
             https://storage.googleapis.com/gcp-public-data--gnomad/release/3.1.1/vcf/genomes/gnomad.genomes.v3.1.1.sites.chr{wildcards.chrom}.vcf.bgz.tbi
@@ -217,7 +217,7 @@ rule grch38_gnomad_constraints_v2_1_1_download:
         "GRCh38/gnomAD_constraints/v2.1.1/download/gnomad.v2.1.1.lof_metrics.by_gene.txt.bgz",
     shell:
         r"""
-        wget \
+        wget --no-check-certificate \
             -O {output} \
             https://storage.googleapis.com/gcp-public-data--gnomad/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.by_gene.txt.bgz
 

@@ -6,9 +6,9 @@ rule grch37_hgnc_download:
         txt="GRCh37/hgnc/{download_date}/download/hgnc_complete_set.txt",
     shell:
         r"""
-        wget \
+        wget --no-check-certificate \
             -O {output.txt} \
-                        http://ftp.ebi.ac.uk/pub/databases/genenames/hgnc/tsv/hgnc_complete_set.txt
+            http://ftp.ebi.ac.uk/pub/databases/genenames/hgnc/tsv/hgnc_complete_set.txt
         """
 
 
@@ -17,7 +17,7 @@ rule grch37_refseq_to_hgnc_download:
         "GRCh37/hgnc/{download_date}/download/ref_GRCh37.p13_top_level.gff3.gz",
     shell:
         r"""
-        wget \
+        wget --no-check-certificate \
             -O {output} \
             http://ftp.ncbi.nlm.nih.gov/genomes/archive/old_refseq/H_sapiens/ARCHIVE/ANNOTATION_RELEASE.105/GFF/ref_GRCh37.p13_top_level.gff3.gz \             
         """

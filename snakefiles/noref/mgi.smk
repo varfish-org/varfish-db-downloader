@@ -3,7 +3,7 @@ rule GRChxx_mgi_download:
         "noref/mgi/{download_date}/download/HOM_MouseHumanSequence.rpt",
     shell:
         r"""
-        wget http://www.informatics.jax.org/downloads/reports/HOM_MouseHumanSequence.rpt \
+        wget --no-check-certificate http://www.informatics.jax.org/downloads/reports/HOM_MouseHumanSequence.rpt \
             -O {output}
         """
 

@@ -9,14 +9,14 @@ rule grch38_dgv_2020_download:
     shell:
         r"""
         pushd $(dirname {output.gff})
-        wget \
+        wget --no-check-certificate \
             http://dgv.tcag.ca/dgv/docs/DGV.GS.hg38.gff3 \
             -o $(basename {log})
         md5sum $(basename {output.gff}) > $(basename {output.gff_md5})
         popd
 
         pushd $(dirname {output.txt})
-        wget \
+        wget --no-check-certificate \
             http://dgv.tcag.ca/dgv/docs/GRCh38_hg38_variants_2020-02-25.txt \
             -o $(basename {log})
         md5sum $(basename {output.txt}) > $(basename {output.txt_md5})

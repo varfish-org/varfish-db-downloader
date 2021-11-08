@@ -3,7 +3,7 @@ rule noref_refseq_to_ensembl_download:
         "noref/refseqtoensembl/{download_date}/download/gene2ensembl.gz",
     shell:
         r"""
-        wget \
+        wget --no-check-certificate \
             -O {output} \
             'http://ftp.ncbi.nih.gov/gene/DATA/gene2ensembl.gz'
         """

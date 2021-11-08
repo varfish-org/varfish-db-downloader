@@ -6,12 +6,12 @@ rule GRCh38_refseq_genes_download:
         export TMPDIR=$(mktemp -d)
         trap "rm -rf $TMPDIR" EXIT ERR
 
-        wget -O - 'http://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/latest_assembly_versions/GCF_000001405.39_GRCh38.p13/GCF_000001405.39_GRCh38.p13_assembly_structure/Primary_Assembly/assembled_chromosomes/chr2acc' \
+        wget --no-check-certificate -O - 'http://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/latest_assembly_versions/GCF_000001405.39_GRCh38.p13/GCF_000001405.39_GRCh38.p13_assembly_structure/Primary_Assembly/assembled_chromosomes/chr2acc' \
         | awk 'BEGIN {{ OFS="\t" }} !/^#/ {{ print $2, $1 }}' \
         | LC_ALL=C sort -k1,1 \
         > $TMPDIR/names
 
-        wget -O - 'http://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/annotation_releases/current/GCF_000001405.39_GRCh38.p13/GCF_000001405.39_GRCh38.p13_genomic.gff.gz' \
+        wget --no-check-certificate -O - 'http://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/annotation_releases/current/GCF_000001405.39_GRCh38.p13/GCF_000001405.39_GRCh38.p13_genomic.gff.gz' \
         | zgrep -v '^#' \
         | LC_ALL=C sort -k1,1 \
         > $TMPDIR/genes
@@ -53,7 +53,7 @@ rule GRCh38_ensembl_genes_download:
         tsv="GRCh38/ensembl_genes/r104/download/GeneInterval.tsv",
     shell:
         r"""
-        wget -O - 'http://ftp.ensembl.org/pub/release-104/gtf/homo_sapiens/Homo_sapiens.GRCh38.104.gtf.gz' \
+        wget --no-check-certificate -O - 'http://ftp.ensembl.org/pub/release-104/gtf/homo_sapiens/Homo_sapiens.GRCh38.104.gtf.gz' \
         | zcat \
         | awk '
             BEGIN {{ OFS="\t" }}

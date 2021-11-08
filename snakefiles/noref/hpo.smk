@@ -6,7 +6,7 @@ rule noref_hpo_download:
         txt="noref/hpo/{download_date}/download/phenotype.hpoa",
     shell:
         r"""
-        wget \
+        wget --no-check-certificate \
             -O {output.txt} \
             http://purl.obolibrary.org/obo/hp/hpoa/phenotype.hpoa
         """

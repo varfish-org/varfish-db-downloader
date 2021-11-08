@@ -16,7 +16,7 @@ rule result_grchxx_ensembl_to_genesymbol:
 
         (
             cat {input} | tr '\n' '\t' | sed -e 's/\t*$/\n/g';
-            wget \
+            wget --no-check-certificate \
                 -O- \
                 http://${{prefix}}ensembl.org'/biomart/martservice?query=<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE Query><Query  virtualSchemaName = "default" formatter = "TSV" header = "0" uniqueRows = "0" count = "" datasetConfigVersion = "0.6" ><Dataset name = "hsapiens_gene_ensembl" interface = "default" ><Attribute name = "ensembl_gene_id" /><Attribute name = "external_gene_name" /></Dataset></Query>' \
         ) \

@@ -9,7 +9,7 @@ rule grch38_download_hs38:
         "GRCh38/reference/hs38/download/GCA_000001405.15_GRCh38_full_analysis_set.fna.gz.log",
     shell:
         r"""
-        wget \
+        wget --no-check-certificate \
             -O {output.fasta} \
             -o {log} \
             http://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/GCA_000001405.15_GRCh38/seqs_for_alignment_pipelines.ucsc_ids/GCA_000001405.15_GRCh38_full_analysis_set.fna.gz

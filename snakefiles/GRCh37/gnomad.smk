@@ -9,11 +9,11 @@ rule grch37_gnomad_r2_1_1_download:
         "GRCh37/gnomAD_{kind}/r2.1.1/download/gnomad.{kind}.r2.1.1.sites.chr{chrom}.vcf.bgz.log",
     shell:
         r"""
-        wget \
+        wget --no-check-certificate \
             -o {log} \
             -O {output.vcf} \
             https://storage.googleapis.com/gcp-public-data--gnomad/release/2.1.1/vcf/{wildcards.kind}/gnomad.{wildcards.kind}.r2.1.1.sites.{wildcards.chrom}.vcf.bgz                     
-        wget \
+        wget --no-check-certificate \
             -o {log} \
             -O {output.tbi} \
             https://storage.googleapis.com/gcp-public-data--gnomad/release/2.1.1/vcf/{wildcards.kind}/gnomad.{wildcards.kind}.r2.1.1.sites.{wildcards.chrom}.vcf.bgz.tbi
@@ -148,8 +148,8 @@ rule grch37_gnomad_genomes_sv_v2_1_download:
         tbi="GRCh37/gnomAD_SV/v2.1/download/gnomad_v2.1_sv.sites.vcf.gz.tbi",
     shell:
         r"""
-        wget -O {output.vcf} https://storage.googleapis.com/gcp-public-data--gnomad/papers/2019-sv/gnomad_v2.1_sv.sites.vcf.gz
-        wget -O {output.tbi} https://storage.googleapis.com/gcp-public-data--gnomad/papers/2019-sv/gnomad_v2.1_sv.sites.vcf.gz.tbi
+        wget --no-check-certificate -O {output.vcf} https://storage.googleapis.com/gcp-public-data--gnomad/papers/2019-sv/gnomad_v2.1_sv.sites.vcf.gz
+        wget --no-check-certificate -O {output.tbi} https://storage.googleapis.com/gcp-public-data--gnomad/papers/2019-sv/gnomad_v2.1_sv.sites.vcf.gz.tbi
 
         cd $(dirname {output.vcf})
         md5sum gnomad_v2.1_sv.sites.vcf.gz >gnomad_v2.1_sv.sites.vcf.gz.md5
@@ -174,7 +174,7 @@ rule grch37_gnomad_constraints_v2_1_1_download:
         "GRCh37/gnomAD_constraints/v2.1.1/download/gnomad.v2.1.1.lof_metrics.by_gene.txt.bgz",
     shell:
         r"""
-        wget \
+        wget --no-check-certificate \
             -O {output} \
             https://storage.googleapis.com/gcp-public-data--gnomad/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.by_gene.txt.bgz
 

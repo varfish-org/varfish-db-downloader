@@ -6,12 +6,12 @@ rule GRCh37_refseq_genes_download:
         export TMPDIR=$(mktemp -d)
         trap "rm -rf $TMPDIR" EXIT ERR
 
-        wget -O - 'http://ftp.ncbi.nlm.nih.gov/genomes/archive/old_refseq/H_sapiens/ARCHIVE/ANNOTATION_RELEASE.105/Assembled_chromosomes/chr_accessions_GRCh37.p13' \
+        wget --no-check-certificate -O - 'http://ftp.ncbi.nlm.nih.gov/genomes/archive/old_refseq/H_sapiens/ARCHIVE/ANNOTATION_RELEASE.105/Assembled_chromosomes/chr_accessions_GRCh37.p13' \
         | awk 'BEGIN {{ OFS="\t" }} !/^#/ {{ print $2, $1 }}' \
         | LC_ALL=C sort -k1,1 \
         > $TMPDIR/names
 
-        wget -O - 'http://ftp.ncbi.nlm.nih.gov/genomes/archive/old_refseq/H_sapiens/ARCHIVE/ANNOTATION_RELEASE.105/GFF/ref_GRCh37.p13_top_level.gff3.gz' \
+        wget --no-check-certificate -O - 'http://ftp.ncbi.nlm.nih.gov/genomes/archive/old_refseq/H_sapiens/ARCHIVE/ANNOTATION_RELEASE.105/GFF/ref_GRCh37.p13_top_level.gff3.gz' \
         | zgrep -v '^#' \
         | LC_ALL=C sort -k1,1 \
         > $TMPDIR/genes
@@ -53,7 +53,7 @@ rule GRCh37_ensembl_genes_download:
         tsv="GRCh37/ensembl_genes/r104/download/GeneInterval.tsv",
     shell:
         r"""
-        wget -O - 'http://ftp.ensembl.org/pub/grch37/release-104/gtf/homo_sapiens/Homo_sapiens.GRCh37.87.gtf.gz' \
+        wget --no-check-certificate -O - 'http://ftp.ensembl.org/pub/grch37/release-104/gtf/homo_sapiens/Homo_sapiens.GRCh37.87.gtf.gz' \
         | zcat \
         | awk '
             BEGIN {{ OFS="\t" }}

@@ -5,7 +5,7 @@ rule GRCh37_tads_hesc_download:
         r"""
         base_url="http://compbio.med.harvard.edu/modencode/webpage/hic"
 
-        wget -O - $base_url/hESC_domains_hg19.bed \
+        wget --no-check-certificate -O - $base_url/hESC_domains_hg19.bed \
         | cut -b 4- \
         | sed 's/\r$//' \
         > {output.tsv}
@@ -40,7 +40,7 @@ rule GRCh37_tads_imr90_download:
         r"""
         base_url="http://compbio.med.harvard.edu/modencode/webpage/hic"
 
-        wget -O - $base_url/hESC_domains_hg19.bed \
+        wget --no-check-certificate -O - $base_url/hESC_domains_hg19.bed \
         | cut -b 4- \
         | sed 's/\r$//' \
         > {output.tsv}

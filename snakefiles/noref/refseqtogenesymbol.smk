@@ -3,7 +3,7 @@ rule noref_refseq_to_genesymbol_dl:
         "noref/refseqtogenesymbol/{download_date}/download/gene2accession.gz",
     shell:
         r"""
-        wget -O {output} http://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2accession.gz
+        wget --no-check-certificate -O {output} http://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2accession.gz
         """
 
 

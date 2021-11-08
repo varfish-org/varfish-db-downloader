@@ -1,9 +1,8 @@
 rule grchXX_dbvar_latest_download:
     output:
         expand(
-            "{{genome_build}}/dbVar/{{download_date}}/download/{{type}}/{{genome_build}}.nr_{{type}}.{ending}{md5}",
+            "{{genome_build}}/dbVar/{{download_date}}/download/{{type}}/{{genome_build}}.nr_{{type}}.{ending}",
             ending=["bed.gz", "bedpe.gz", "tsv.gz", "acmg_genes.tsv.gz"],
-            md5=["", ".md5"],
         ),
     shell:
         r"""

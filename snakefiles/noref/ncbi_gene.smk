@@ -12,14 +12,14 @@ rule noref_ncbi_gene_download:
         cd $(dirname {output.ags})
 
         if [[ ! -e Homo_sapiens.ags.gz.md5 ]]; then
-            wget \
+            wget --no-check-certificate \
                 -O Homo_sapiens.ags.gz \
                 http://ftp.ncbi.nih.gov/gene/DATA/ASN_BINARY/Mammalia/Homo_sapiens.ags.gz
             md5sum Homo_sapiens.ags.gz >Homo_sapiens.ags.gz.md5
         fi
 
         if [[ ! -e linux64.gene2xml.md5 ]]; then
-            wget \
+            wget --no-check-certificate \
                 -O linux64.gene2xml.gz \
                 http://ftp.ncbi.nlm.nih.gov/asn1-converters/by_program/gene2xml/linux64.gene2xml.gz
             gzip -d -c linux64.gene2xml.gz > linux64.gene2xml

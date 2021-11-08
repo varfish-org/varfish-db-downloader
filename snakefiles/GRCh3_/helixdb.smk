@@ -3,7 +3,7 @@ rule grchXX_helixmtdb_download:
         "{genome_build}/HelixMTdb/20200327/download/HelixMTdb_20200327.tsv",
     shell:
         r"""
-        wget https://helix-research-public.s3.amazonaws.com/mito/HelixMTdb_20200327.tsv \
+        wget --no-check-certificate https://helix-research-public.s3.amazonaws.com/mito/HelixMTdb_20200327.tsv \
             -O {output}
         """
 

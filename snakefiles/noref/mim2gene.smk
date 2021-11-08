@@ -6,7 +6,7 @@ rule grchXX_mim2gene_medgen_download:
         txt="noref/mim2gene/{download_date}/download/mim2gene_medgen",
     shell:
         r"""
-        wget \
+        wget --no-check-certificate \
             -O {output.txt} \
             http://ftp.ncbi.nlm.nih.gov/gene/DATA/mim2gene_medgen
         """

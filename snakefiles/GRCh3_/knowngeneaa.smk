@@ -12,7 +12,7 @@ rule grchxx_knowngeneaa_download:
             ucsc_name=hg38
         fi
 
-        wget \
+        wget --no-check-certificate \
             -O {output.fa} \
             "http://hgdownload.cse.ucsc.edu/goldenpath/${{ucsc_name}}/multiz100way/alignments/knownGene.exonAA.fa.gz"
         """

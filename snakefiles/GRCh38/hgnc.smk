@@ -6,9 +6,9 @@ rule grch38_hgnc_download:
         txt="GRCh38/hgnc/{download_date}/download/hgnc_complete_set.txt",
     shell:
         r"""
-        wget \
+        wget --no-check-certificate \
             -O {output.txt} \
-                        http://ftp.ebi.ac.uk/pub/databases/genenames/hgnc/tsv/hgnc_complete_set.txt
+            http://ftp.ebi.ac.uk/pub/databases/genenames/hgnc/tsv/hgnc_complete_set.txt
         """
 
 
@@ -17,7 +17,7 @@ rule grch38_refseq_to_hgnc_download:
         "GRCh38/hgnc/{download_date}/download/GCF_000001405.39_GRCh38.p13_genomic.gff.gz",
     shell:
         r"""
-        wget \
+        wget --no-check-certificate \
             -O {output} \
             http://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/annotation_releases/current/GCF_000001405.39_GRCh38.p13/GCF_000001405.39_GRCh38.p13_genomic.gff.gz
         """

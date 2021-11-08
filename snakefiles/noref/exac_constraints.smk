@@ -3,7 +3,7 @@ rule noref_exac_constraints_r0_3_1_download:
         "noref/ExAC_constraints/r0.3.1/download/forweb_cleaned_exac_r03_march16_z_data_pLI_CNV-final.txt.gz",
     shell:
         r"""
-        wget \
+        wget --no-check-certificate \
             -O {output} \
             https://storage.googleapis.com/gcp-public-data--gnomad/legacy/exac_browser/forweb_cleaned_exac_r03_march16_z_data_pLI_CNV-final.txt.gz
         cd $(dirname {output})

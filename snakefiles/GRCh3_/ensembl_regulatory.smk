@@ -9,7 +9,7 @@ rule grchxx_ensembl_regulatory_download:
             infix=
         fi
 
-        wget -O {output.tsv} http://ftp.ensembl.org/pub${{infix}}/release-104/mysql/regulation_mart_104/hsapiens_regulatory_feature__regulatory_feature__main.txt.gz
+        wget --no-check-certificate -O {output.tsv} http://ftp.ensembl.org/pub${{infix}}/release-104/mysql/regulation_mart_104/hsapiens_regulatory_feature__regulatory_feature__main.txt.gz
         """
 
 

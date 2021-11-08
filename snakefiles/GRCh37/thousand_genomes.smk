@@ -9,7 +9,7 @@ rule grch37_thousand_genomes_download:
         "GRCh37/thousand_genomes/phase3/download/{filename}.log",
     shell:
         r"""
-        wget \
+        wget --no-check-certificate \
             -O {output.file} \
             -o {log} \
             http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/{wildcards.filename}
@@ -63,7 +63,7 @@ rule grch37_thousand_genomes_sv_download:
 
         echo "mget ALL.* README*" \
             | lftp http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/phase3/integrated_sv_map
-        wget http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/integrated_call_samples_v3.20130502.ALL.panel \
+        wget --no-check-certificate http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/integrated_call_samples_v3.20130502.ALL.panel \
             -o $(basename {log})
 
         for i in {output[0]} {output[1]} {output[2]} {output[3]} {output[4]}

@@ -9,11 +9,11 @@ rule grch38_dbsnp_b155_download:
         "GRCh38/dbSNP/b155/download/GCF_000001405.39.gz.log",
     shell:
         r"""
-        wget \
+        wget --no-check-certificate \
             -o {log} \
             -O {output.vcf} \
             http://ftp.ncbi.nih.gov/snp/latest_release/VCF/GCF_000001405.39.gz
-        wget \
+        wget --no-check-certificate \
             -a {log} \
             -O {output.tbi} \
             http://ftp.ncbi.nih.gov/snp/latest_release/VCF/GCF_000001405.39.gz.tbi

@@ -171,10 +171,10 @@ rule GRChXX_extra_annos_download:
         tbi="{genome_build}/extra_annos/{download_date}/download/whole_genome_SNVs_inclAnno.tsv.gz.tbi",
     shell:
         r"""
-        wget \
+        wget --no-check-certificate \
             https://kircherlab.bihealth.org/download/CADD/v1.6/{genome_build}/whole_genome_SNVs_inclAnno.tsv.gz \
             -O {output.vcf}
-        wget \
+        wget --no-check-certificate \
             https://kircherlab.bihealth.org/download/CADD/v1.6/{genome_build}/whole_genome_SNVs_inclAnno.tsv.gz.tbi \
             -O {output.tbi}
         """
