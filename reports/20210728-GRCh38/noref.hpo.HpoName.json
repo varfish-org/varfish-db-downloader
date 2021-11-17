@@ -2,20 +2,17 @@
   "$schema_version": "0.1.0",
   "import_version": {
     "build": "noref",
-    "table_group": "refseqtoensembl",
+    "table_group": "hpo",
     "version": "20210728"
   },
   "by_chrom": {
-    ".": 64382
+    ".": 16290
   },
   "by_col": {
-    "entrez_id": {
-      "type": "INT"
-    },
-    "ensembl_gene_id": {
+    "hpo_id": {
       "type": "STRING"
     },
-    "ensembl_transcript_id": {
+    "name": {
       "type": "STRING"
     }
   }

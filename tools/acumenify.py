@@ -908,7 +908,7 @@ KNOWN_ISSUES = (
 )
 
 
-def report(args: ReportArgs) -> none:
+def report(args: ReportArgs) -> None:
     """Run report generation."""
 
     def normalize(s):

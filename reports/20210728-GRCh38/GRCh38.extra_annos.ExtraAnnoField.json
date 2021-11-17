@@ -15,18 +15,18 @@
     "label": {
       "type": "ENUM",
       "values": [
-        "EncodeH2AFZ-sum",
-        "EncodeH3K27me3-max",
-        "EncodeH3K27me3-sum",
-        "EncodeH3K36me3-max",
-        "EncodeH3K36me3-sum",
-        "EncodeH3K79me2-max",
-        "EncodeH3K79me2-sum",
-        "EncodeH4K20me1-max",
-        "EncodeH4K20me1-sum",
+        "CADD-PHRED",
         "MMSp_acceptor",
         "MMSp_acceptorIntron",
-        "MMSp_donor"
+        "MMSp_donor",
+        "MMSp_donorIntron",
+        "MMSp_exon",
+        "SpliceAI-acc-gain",
+        "SpliceAI-acc-loss",
+        "SpliceAI-don-gain",
+        "SpliceAI-don-loss",
+        "dbscSNV-ada_score",
+        "dbscSNV-rf_score"
       ]
     }
   }

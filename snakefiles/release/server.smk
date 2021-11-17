@@ -116,7 +116,7 @@ rule result_grch37_release_server_db_tar:
             --owner=0 \
             --group=0 \
             -C $in_dir/.. \
-            -vhczf - \
+            -vhcf - \
             varfish-server-background-db-{config[release_name]}-grch37 \
         | pigz \
         > $(readlink -f {output.tar})
@@ -219,7 +219,7 @@ rule result_grch38_release_server_db_tar:
             --owner=0 \
             --group=0 \
             -C $in_dir/.. \
-            -vhczf - \
+            -vhcf - \
             varfish-server-background-db-{config[release_name]}-grch38 \
         | pigz \
         > $(readlink -f {output.tar})

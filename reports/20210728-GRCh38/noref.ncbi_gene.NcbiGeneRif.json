@@ -2,20 +2,20 @@
   "$schema_version": "0.1.0",
   "import_version": {
     "build": "noref",
-    "table_group": "refseqtoensembl",
+    "table_group": "ncbi_gene",
     "version": "20210728"
   },
   "by_chrom": {
-    ".": 64382
+    ".": 841956
   },
   "by_col": {
     "entrez_id": {
       "type": "INT"
     },
-    "ensembl_gene_id": {
+    "rif_text": {
       "type": "STRING"
     },
-    "ensembl_transcript_id": {
+    "pubmed_ids": {
       "type": "STRING"
     }
   }
