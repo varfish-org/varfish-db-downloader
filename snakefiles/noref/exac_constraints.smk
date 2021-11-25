@@ -30,7 +30,7 @@ rule result_noref_exac_constraints_r0_3_1_tsv:
                 BEGIN {{ OFS = FS }}
                 {{
                     sub(/\.[0-9]+$/, "", $1)
-                    print $0, ".", "."
+                    print $0, -1, -1
                 }}'
         ) > {output.tsv}
 
