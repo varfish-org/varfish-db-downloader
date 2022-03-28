@@ -2,15 +2,16 @@
 HISTORY / CHANGELOG
 ===================
 
------------------
-HEAD (unreleased)
------------------
+------
+v0.3.0
+------
 
 General
 =======
 
 - Updated ``Makefile`` command for packing the VarFish Annotator data.
-- Updated ``READMED.md`` on how to build specific tables.
+- Updated ``README.md`` on how to build specific tables.
+- Various upgrades to to build the ``20210728`` data download and the VarFish v1 release.
 
 -----------------
 v0.2 (2020-10-26)
