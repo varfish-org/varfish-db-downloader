@@ -172,10 +172,10 @@ rule GRChXX_extra_annos_download:
     shell:
         r"""
         wget --no-check-certificate \
-            https://kircherlab.bihealth.org/download/CADD/v1.6/{genome_build}/whole_genome_SNVs_inclAnno.tsv.gz \
+            https://kircherlab.bihealth.org/download/CADD/v1.6/{wildcards.genome_build}/whole_genome_SNVs_inclAnno.tsv.gz \
             -O {output.vcf}
         wget --no-check-certificate \
-            https://kircherlab.bihealth.org/download/CADD/v1.6/{genome_build}/whole_genome_SNVs_inclAnno.tsv.gz.tbi \
+            https://kircherlab.bihealth.org/download/CADD/v1.6/{wildcards.genome_build}/whole_genome_SNVs_inclAnno.tsv.gz.tbi \
             -O {output.tbi}
         """
 
