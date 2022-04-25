@@ -64,6 +64,7 @@ rule result_grch38_refseq_to_hgnc_to_tsv:
             cat {input.header} | tr '\n' '\t' | sed -e 's/\t*$/\n/g';
             zcat {input.gff} \
             | perl -ne 'if (/GeneID:([^,;]+)[,;]HGNC:([^,;]+)[,;]/) {{print $1,"\tHGNC:",$2,"\n"}}' \
+            | sed -e 's/HGNC:HGNC:/HGNC:/g' \
             | sort -u
         ) \
         > {output.tsv}
