@@ -4,32 +4,36 @@ import tqdm
 
 rule result_GRChXX_extra_annos_release_info:
     input:
-        "{genome_build}/extra_annos/{download_date}/ExtraAnno.tsv",
-        "{genome_build}/extra_annos/{download_date}/ExtraAnnoField.tsv",
+        "{genome_build}/extra_annos/{release_name}/ExtraAnno.tsv",
+        "{genome_build}/extra_annos/{release_name}/ExtraAnnoField.tsv",
     output:
-        anno="{genome_build}/extra_annos/{download_date}/ExtraAnno.release_info",
-        annofield="{genome_build}/extra_annos/{download_date}/ExtraAnnoField.release_info",
+        anno="{genome_build}/extra_annos/{release_name}/ExtraAnno.release_info",
+        annofield="{genome_build}/extra_annos/{release_name}/ExtraAnnoField.release_info",
     wildcard_constraints:
-        download_date="[^/]+",
+        release_name="[^/]+",
     shell:
         r"""
-        echo -e "table\tversion\tgenomebuild\tnull_value\nExtraAnno\t{wildcards.download_date}\t{wildcards.genome_build}\t" > {output.anno}
-        echo -e "table\tversion\tgenomebuild\tnull_value\nExtraAnnoField\t{wildcards.download_date}\t{wildcards.genome_build}\t" > {output.annofield}
+        echo -e "table\tversion\tgenomebuild\tnull_value\nExtraAnno\t{wildcards.release_name}\t{wildcards.genome_build}\t" > {output.anno}
+        echo -e "table\tversion\tgenomebuild\tnull_value\nExtraAnnoField\t{wildcards.release_name}\t{wildcards.genome_build}\t" > {output.annofield}
         """
 
 
 rule result_GRChXX_extra_annos_tsv_step_1:
     input:
-        bed="{genome_build}/extra_annos/{download_date}/download/refseq_ensembl_exons.bed",
-        cadd_snvs="{genome_build}/extra_annos/{download_date}/download/whole_genome_SNVs_inclAnno.tsv.gz",
+        bed="{genome_build}/extra_annos/{release_name}/download/refseq_ensembl_exons.bed",
+        cadd_snvs="{genome_build}/extra_annos/{release_name}/download/whole_genome_SNVs_inclAnno.tsv.gz",
     output:
-        tsv="{genome_build}/extra_annos/{download_date}/download/ExtraAnno.tsv",
-        fields="{genome_build}/extra_annos/{download_date}/ExtraAnnoField.tsv",
+        tsv="{genome_build}/extra_annos/{release_name}/download/ExtraAnno.tsv",
+        fields="{genome_build}/extra_annos/{release_name}/ExtraAnnoField.tsv",
     wildcard_constraints:
-        download_date="[^/]+",
+        release_name="[^/]+",
     shell:
         r"""
-        cut_expr=109-112,113-117,129,130,134
+        if [[ "{wildcards.release_name}" == "GRCh38" ]]; then
+          cut_expr=109-112,113-117,129,130,134
+        else
+          cut_expr=94-102,113,114,116
+        fi
         cols=$({{ zcat {input.cadd_snvs} || true; }} | head -n 2 | tail -n 1| cut -f $cut_expr)
 
         (
@@ -113,9 +117,9 @@ class DecodeDotAsNull(json.JSONDecoder):
 
 rule result_GRChXX_extra_annos_tsv_step_2:
     input:
-        tsv="{genome_build}/extra_annos/{download_date}/download/ExtraAnno.tsv",
+        tsv="{genome_build}/extra_annos/{release_name}/download/ExtraAnno.tsv",
     output:
-        tsv="{genome_build}/extra_annos/{download_date}/ExtraAnno.tsv",
+        tsv="{genome_build}/extra_annos/{release_name}/ExtraAnno.tsv",
     run:
         import json
         import csv
@@ -167,8 +171,8 @@ rule result_GRChXX_extra_annos_tsv_step_2:
 
 rule GRChXX_extra_annos_download:
     output:
-        vcf="{genome_build}/extra_annos/{download_date}/download/whole_genome_SNVs_inclAnno.tsv.gz",
-        tbi="{genome_build}/extra_annos/{download_date}/download/whole_genome_SNVs_inclAnno.tsv.gz.tbi",
+        vcf="{genome_build}/extra_annos/{release_name}/download/whole_genome_SNVs_inclAnno.tsv.gz",
+        tbi="{genome_build}/extra_annos/{release_name}/download/whole_genome_SNVs_inclAnno.tsv.gz.tbi",
     shell:
         r"""
         wget --no-check-certificate \
@@ -185,7 +189,7 @@ rule GRChXX_extra_annos_prepare_bed:
         "tmp/{genome_build}/ensembl_exons.bed",
         "tmp/{genome_build}/refseq_exons.bed",
     output:
-        bed="{genome_build}/extra_annos/{download_date}/download/refseq_ensembl_exons.bed",
+        bed="{genome_build}/extra_annos/{release_name}/download/refseq_ensembl_exons.bed",
     shell:
         r"""
         bedops --range 100 -m {input} > {output.bed}
