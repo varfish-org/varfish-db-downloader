@@ -94,7 +94,7 @@ rule result_GRChXX_extra_annos_tsv_step_1:
             | sort -S 1G -k2,2g -k7,7n -o $output
         }}
         export -f write-chunk
-                
+
         echo -e "release\tchromosome\tstart\tend\tbin\treference\talternative\tanno_data" \
         > {output.tsv}
 
@@ -147,7 +147,16 @@ rule result_GRChXX_extra_annos_tsv_step_2:
             return result
 
 
-        header = ["release", "chromosome", "start", "end", "bin", "reference", "alternative", "anno_data"]
+        header = [
+            "release",
+            "chromosome",
+            "start",
+            "end",
+            "bin",
+            "reference",
+            "alternative",
+            "anno_data",
+        ]
         rows = []
         print("Reading from %s" % input.tsv, file=sys.stderr)
         with open(input.tsv, "rt") as inputf:

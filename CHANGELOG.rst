@@ -2,6 +2,12 @@
 HISTORY / CHANGELOG
 ===================
 
+-----------------
+HEAD (unreleased)
+-----------------
+
+- Fixing varfish-annotator database creation (#17).
+
 ------
 v0.3.0
 ------
