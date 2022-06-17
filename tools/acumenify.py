@@ -349,7 +349,7 @@ def _identity(x):
 
 class ColAggregator:
     """Helper class for aggregating column values.
-    
+
     The aggregator will consider at most ``guess_len`` values and then guess the values based on
     this.  The distinction between enumerations and strings is made based the value set
     cardinality being not above ``max_enum_size``.  Guessing can be forced by calling ``finished()``.
@@ -385,7 +385,7 @@ class ColAggregator:
 
     def with_added(self, other: "ColAggregator") -> "ColAggregator":
         """Return sum of this and other col aggregator.
-        
+
         That is, the count values will be added and the set values will be merged.
         """
         assert self.name == other.name
