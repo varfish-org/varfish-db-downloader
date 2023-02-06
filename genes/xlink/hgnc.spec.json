@@ -1,0 +1,21 @@
+{
+    "dc:format": "text/tsv",
+    "dc:identifier": "gene-centric/xlink/hgnc.tsv:2023-02-06",
+    "dc:title": "HGNC gene cross-link table (2023-02-06)",
+    "dc:description": "This is a gene identifier cross-link table as downloaded from HGNC. It is used to map between Entrez/NCBI gene IDs, ENSEMBL gene IDs, HGNC approved symbols, and HGNC ID. Note that HGNC and ENSEMBL are are inconsistent and incomplete for some genes.",
+    "dc:created": "2023-02-06",
+    "dc:creator": "EMBL-EBI ENSEMBL",
+    "dc:contributor": [
+        "VarFish Developer Team"
+    ],
+    "dc:source": [
+        "PMID:31691826",
+        "https://www.ensembl.org/biomart/martview/"
+    ],
+    "tsv:columns": {
+      "hgnc_id": "HGNC ID",
+      "ensembl_gene_id": "ENSEMBL gene ID",
+      "entrez_id": "Entrez/NCBI gene ID",
+      "gene_symbol": "Gene symbol"
+    }
+}

@@ -1,0 +1,20 @@
+{
+  "dc:format": "text/x-bed",
+  "dc:identifier": "features/GRCh37/masked/segdup.bed.gz:2020-02-20",
+  "dc:title": "Segmental Duplications",
+  "dc:description": "This BED contains the segmental duplication annotation from UCSC Genome Browser.",
+  "dc:created": "2011-09-26",
+  "dc:creator": "UCSC Genome Browser Team",
+  "dc:contributor": [
+      "VarFish Developer Team"
+  ],
+  "dc:source": [
+      "https://genome-euro.ucsc.edu/cgi-bin/hgc?db=hg19&g=genomicSuperDups"
+  ],
+  "tsv:columns": {
+    "chrom": "Chromosome name without chr prefix",
+    "begin": "0-based begin position",
+    "end": "0-based end position",
+    "label": "label describing the segmental duplication"
+  }
+}

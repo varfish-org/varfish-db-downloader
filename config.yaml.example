@@ -2,10 +2,10 @@
 
 # String to use for the download data of data that is not explicitely versioned such as
 # ENSEMBL BioMart or VISTA.
-download_date: 20210728
+download_date: 20230115
 
 # String to use for the release name.
-release_name: 20210728b
+release_name: bollonaster
 
 # Memory to use for sorting (passed to sort -S).
 sort_memory: 16G

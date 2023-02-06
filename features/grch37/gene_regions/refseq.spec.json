@@ -1,0 +1,21 @@
+{
+  "dc:format": "text/x-bed",
+  "dc:identifier": "features/GRCh37/gene-regions/refseq.bed:105.20220307",
+  "dc:title": "NCBI RefSeq gene regions (105.20220307) for GRCh37",
+  "dc:description": "This BED file contains the gene RefSeq gene regions (release 105.20220307).",
+  "dc:created": "2023-02-06",
+  "dc:creator": "NCBI",
+  "dc:contributor": [
+      "VarFish Developer Team"
+  ],
+  "dc:source": [
+      "PMID:24259432",
+      "https://www.ncbi.nlm.nih.gov/genome/annotation_euk/Homo_sapiens/105.20220307/"
+  ],
+  "tsv:columns": {
+    "chrom": "Chromosome name without chr prefix",
+    "begin": "0-based begin position",
+    "end": "0-based end position",
+    "entrez_id": "The Entrez/NCBI gene ID"
+  }
+}

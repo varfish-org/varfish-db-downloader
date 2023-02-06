@@ -1,0 +1,18 @@
+{
+    "dc:format": "text/tsv",
+    "dc:identifier": "gene-centric/omim/mim2gene.tsv:2023-02-06",
+    "dc:title": "OMIM disease to gene link table (2023-02-06)",
+    "dc:description": "This table contains the link from OMIM disease ID to Entrez gene ID. It is generated from the mim2gene_medgen.",
+    "dc:created": "2023-02-06",
+    "dc:creator": "NCBI MedGen",
+    "dc:contributor": [
+        "VarFish Developer Team"
+    ],
+    "dc:source": [
+        "https://www.ncbi.nlm.nih.gov/medgen/docs/faq/"
+    ],
+    "tsv:columns": {
+      "omim_id": "OMIM disease ID",
+      "entrez_id": "Entrez/NCBI gene ID"
+    }
+}

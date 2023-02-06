@@ -1,0 +1,91 @@
+hgnc_id	ensembl_gene_id	ncbi_gene_id	gene_symbol	mim_gene_id	disease_phenotype	disorder_mim	phenotype_category	inheritance	sf_list_version	variants_to_report
+HGNC:130	ENSG00000107796	59	ACTA2	102620	Familial thoracic aortic aneurysm	611788	Cardiovascular	AD	1.0	All P and LP
+HGNC:143	ENSG00000159251	70	ACTC1	102540	Hypertrophic cardiomyopathy	612098	Cardiovascular	AD	1.0	All P and LP
+HGNC:175	ENSG00000139567	94	ACVRL1	601284	Hereditary hemorrhagic telangiectasia	600376	Miscellaneous	AD	3.0	All P and LP
+HGNC:583	ENSG00000134982	324	APC	611731	Familial adenomatous polyposis	175100	Cancer	AD 	1.0	All P and LP
+HGNC:603	ENSG00000084674	338	APOB	107730	Familial hypercholesterolemia	144010	Cardiovascular	AD	1.0	All P and LP
+HGNC:870	ENSG00000123191	540	ATP7B	606882	Wilson disease	277900	Miscellaneous	AR	2.0	P and LP (2 variants)
+HGNC:939	ENSG00000151929	9531	BAG3	603883	Dilated cardiomyopathy	613881	Cardiovascular	AD	3.1	All P and LP
+HGNC:939	ENSG00000151929	9531	BAG3	603883	Myofibrillar myopathy	612954	Cardiovascular	AD	3.1	All P and LP
+HGNC:1076	ENSG00000107779	657	BMPR1A	601299	Juvenile polyposis syndrome	174900	Cancer	AD	1.0	All P and LP
+HGNC:1100	ENSG00000012048	672	BRCA1	113705	Hereditary breast and ovarian cancer	604370	Cancer	AD	1.0	All P and LP
+HGNC:1101	ENSG00000139618	675	BRCA2	600185	Hereditary breast and ovarian cancer	612555	Cancer	AD	1.0	All P and LP
+HGNC:1122	ENSG00000169814	686	BTD	609019	Biotinidase deficiency	253260	Metabolic	AR	3.0	P and LP (2 variants)
+HGNC:1397	ENSG00000081248	779	CACNA1S	114208	Malignant hyperthermia	601887	Miscellaneous	AD	1.0	All P and LP
+HGNC:1513	ENSG00000118729	845	CASQ2	114251	Catecholaminergic polymorphic ventricular tachycardia	611938	Cardiovascular	AR	3.0	P and LP (2 variants)
+HGNC:2201	ENSG00000168542	1281	COL3A1	120180	Ehlers-Danlos syndrome, vascular type	130050	Cardiovascular	AD	1.0	All P and LP
+HGNC:2770	ENSG00000175084	1674	DES	125660	Dliated cardiomyopathy	604765	Cardiovascular	AD	3.1	All P and LP
+HGNC:2770	ENSG00000175084	1674	DES	125660	Myofibrillar myopathy	601419	Cardiovascular	AD	3.1	All P and LP
+HGNC:3036	ENSG00000134755	1824	DSC2	125645	Arrhythmogenic right ventricular cardiomyopathy	610476	Cardiovascular	AD	1.0	All P and LP
+HGNC:3049	ENSG00000046604	1829	DSG2	125671	Arrhythmogenic right ventricular cardiomyopathy	610193	Cardiovascular	AD	1.0	All P and LP
+HGNC:3052	ENSG00000096696	1832	DSP	125647	Arrhythmogenic right ventricular cardiomyopathy	607450	Cardiovascular	AD	1.0	All P and LP
+HGNC:3052	ENSG00000096696	1832	DSP	125647	Dilated cardiomyopathy	615821	Cardiovascular	AD	1.0	All P and LP
+HGNC:3349	ENSG00000106991	2022	ENG	131195	Hereditary hemorrhagic telangiectasia	187300	Miscellaneous	AD	3.0	All P and LP
+HGNC:3603	ENSG00000166147	2200	FBN1	134797	Marfan syndrome	154700	Cardiovascular	AD	1.0	All P and LP
+HGNC:3756	ENSG00000128591	2318	FLNC	102565	Dilated cardiomyopathy	617047	Cardiovascular	AD	3.0	All P and LP
+HGNC:3756	ENSG00000128591	2318	FLNC	102565	Myofibrillar myopathy	609524	Cardiovascular	AD	3.0	All P and LP
+HGNC:4065	ENSG00000171298	2548	GAA	606800	Pompe disease	232300	Metabolic	AR	3.0	P and LP (2 variants)
+HGNC:4296	ENSG00000102393	2717	GLA	300644	Fabry disease	301500	Cardiovascular Metabolic	XL	1.0	All hemi, het, homozygous P and LP
+HGNC:4886	ENSG00000010704	3077	HFE	613609	Hereditary hemochromatosis (c.845G>A; p.C282Y homozygotes only)	235200	Miscellaneous	AR	3.0	p.C282Y homozygotes only
+HGNC:11621	ENSG00000135100	6927	HNF1A	142410	Maturity-Onset of Diabetes of the Young	600496	Miscellaneous	AD	3.0	All P and LP
+HGNC:6251	ENSG00000055118	3757	KCNH2	152427	Long-QT syndrome type 2	613688	Cardiovascular	AD	1.0	All P and LP
+HGNC:6294	ENSG00000053918	3784	KCNQ1	607542	Long-QT syndrome type 1	192500	Cardiovascular	AD	1.0	All P and LP
+HGNC:6547	ENSG00000130164	3949	LDLR	606945	Familial hypercholesterolemia	143890	Cardiovascular	AD	1.0	All P and LP
+HGNC:6636	ENSG00000160789	4000	LMNA	150330	Dilated cardiomyopathy	115200	Cardiovascular	AD	1.0	All P and LP
+HGNC:6913	ENSG00000125952	4149	MAX	154950	Hereditary paraganglioma-pheochromocytoma syndrome	171300	Cancer	AD	3.0	All P and LP
+HGNC:7010	ENSG00000133895	4221	MEN1	613733	Multiple endocrine neoplasia type 1	131100	Cancer	AD	1.0	All P and LP
+HGNC:7127	ENSG00000076242	4292	MLH1	120436	Lynch syndrome	609310	Cancer	AD	1.0	All P and LP
+HGNC:7325	ENSG00000095002	4436	MSH2	609309	Lynch syndrome	120435	Cancer	AD	1.0	All P and LP
+HGNC:7329	ENSG00000116062	2956	MSH6	600678	Lynch syndrome	614350	Cancer	AD	1.0	All P and LP
+HGNC:7527	ENSG00000132781	4595	MUTYH	604933	MUTYH-associated polyposis	608456	Cancer	AR	1.0	P and LP (2 variants)
+HGNC:7551	ENSG00000134571	4607	MYBPC3	600958	Hypertrophic cardiomyopathy	115197	Cardiovascular	AD	1.0	All P and LP
+HGNC:7569	ENSG00000133392	4629	MYH11	160745	Familial thoracic aortic aneurysm	132900	Cardiovascular	AD	1.0	All P and LP
+HGNC:7577	ENSG00000092054	4625	MYH7	160760	Hypertrophic cardiomyopathy	192600	Cardiovascular	AD	1.0	All P and LP
+HGNC:7577	ENSG00000092054	4625	MYH7	160760	Dilated cardiomyopathy	613426	Cardiovascular	AD	1.0	All P and LP
+HGNC:7583	ENSG00000111245	4633	MYL2	160781	Hypertrophic cardiomyopathy	608758	Cardiovascular	AD	1.0	All P and LP
+HGNC:7584	ENSG00000160808	4634	MYL3	160790	Hypertrophic cardiomyopathy	608751	Cardiovascular	AD	1.0	All P and LP
+HGNC:7773	ENSG00000186575	4771	NF2	607379	Neurofibromatosis type 2	101000	Cancer	AD	1.0	All P and LP
+HGNC:8512	ENSG00000036473	5009	OTC	300461	Ornithine transcarbamylase deficiency	311250	Metabolic	XL	2.0	All hemi, het, homozygous P and LP
+HGNC:26144	ENSG00000083093	79728	PALB2	610355	Hereditary breast cancer	114480	Cancer	AD	3.0	All P and LP
+HGNC:20001	ENSG00000169174	255738	PCSK9	607786	Familial hypercholesterolemia	603776	Cardiovascular	AD	1.0	All P and LP
+HGNC:9024	ENSG00000057294	5318	PKP2	602861	Arrhythmogenic right ventricular cardiomyopathy	609040	Cardiovascular	AD	1.0	All P and LP
+HGNC:9122	ENSG00000122512	5395	PMS2	600259	Lynch syndrome	614337	Cancer	AD	1.0	All P and LP
+HGNC:9386	ENSG00000106617	51422	PRKAG2	602743	Hypertrophic cardiomyopathy	600858	Cardiovascular Metabolic	AD	1.0	All P and LP
+HGNC:9588	ENSG00000171862	5728	PTEN	601728	PTEN hamartoma tumor syndrome	158350	Cancer	AD	1.0	All P and LP
+HGNC:9884	ENSG00000139687	5925	RB1	614041	Retinoblastoma	180200	Cancer	AD	1.0	All P and LP
+HGNC:27424	ENSG00000203867	282996	RBM20	613171	Dliated cardiomyopathy	613172	Cardiovascular	AD	3.1	All P and LP
+HGNC:9967	ENSG00000165731	5979	RET	164761	Familial medullary thyroid cancer	155240	Cancer	AD	1.0	All P and LP
+HGNC:9967	ENSG00000165731	5979	RET	164761	Multiple endocrine neoplasia type 2A	171400	Cancer	AD	1.0	All P and LP
+HGNC:9967	ENSG00000165731	5979	RET	164761	Multiple endocrine neoplasia type 2B	162300	Cancer	AD	1.0	All P and LP
+HGNC:10294	ENSG00000116745	6121	RPE65	180069	RPE65-related retinopathy	204100, 613794	Miscellaneous	AR	3.0	P and LP (2 variants)
+HGNC:10483	ENSG00000196218	6261	RYR1	180901	Malignant hyperthermia	145600	Miscellaneous	AD	1.0	All P and LP
+HGNC:10484	ENSG00000198626	6262	RYR2	180902	Catecholaminergic polymorphic ventricular tachycardia	604772	Cardiovascular	AD	1.0	All P and LP
+HGNC:10593	ENSG00000183873	6331	SCN5A	600163	Long QT syndrome type 3	603830	Cardiovascular	AD	1.0	All P and LP
+HGNC:10593	ENSG00000183873	6331	SCN5A	600163	Brugada syndrome	601144	Cardiovascular	AD	1.0	All P and LP
+HGNC:10593	ENSG00000183873	6331	SCN5A	600163	Dilated cardiomyopathy	601154	Cardiovascular	AD	1.0	All P and LP
+HGNC:26034	ENSG00000167985	54949	SDHAF2	613019	Hereditary paraganglioma-pheochromocytoma syndrome	601650	Cancer	AD	1.0	All P and LP
+HGNC:10681	ENSG00000117118	6390	SDHB	185470	Hereditary paraganglioma-pheochromocytoma syndrome	115310, 171300	Cancer	AD	1.0	All P and LP
+HGNC:10682	ENSG00000143252	6391	SDHC	602413	Hereditary paraganglioma-pheochromocytoma syndrome	605373	Cancer	AD	1.0	All P and LP
+HGNC:10683	ENSG00000204370	6392	SDHD	602690	Hereditary paraganglioma-pheochromocytoma syndrome	168000, 171300	Cancer	AD	1.0	All P and LP
+HGNC:6769	ENSG00000166949	4088	SMAD3	603109	Loeys-Dietz syndrome	613795	Cardiovascular	AD	1.0	All P and LP
+HGNC:6770	ENSG00000141646	4089	SMAD4	600993	Juvenile polyposis syndrome	174900	Cancer	AD	1.0	All P and LP
+HGNC:6770	ENSG00000141646	4089	SMAD4	600993	Hereditary hemorrhagic telangiectasia	175050	Miscellaneous	AD	1.0	All P and LP
+HGNC:11389	ENSG00000118046	6794	STK11	602216	Peutz-Jeghers syndrome	175200	Cancer	AD	1.0	All P and LP
+HGNC:11772	ENSG00000106799	7046	TGFBR1	190181	Loeys-Dietz syndrome	609192	Cardiovascular	AD	1.0	All P and LP
+HGNC:11773	ENSG00000163513	7048	TGFBR2	190182	Loeys-Dietz syndrome	610168	Cardiovascular	AD	1.0	All P and LP
+HGNC:26038	ENSG00000135956	55654	TMEM127	613403	Hereditary paraganglioma-pheochromocytoma syndrome	171300	Cancer	AD	3.0	All P and LP
+HGNC:28472	ENSG00000170876	79188	TMEM43	612048	Arrhythmogenic right ventricular cardiomyopathy	604400	Cardiovascular	AD	1.0	All P and LP
+HGNC:11943	ENSG00000114854	7134	TNNC1	191040	Dilated cardiomyopathy	611879	Cardiovascular	AD	3.1	All P and LP
+HGNC:11947	ENSG00000129991	7137	TNNI3	191044	Hypertrophic cardiomyopathy	613690	Cardiovascular	AD	1.0	All P and LP
+HGNC:11949	ENSG00000118194	7139	TNNT2	191045	Dilated cardiomyopathy	601494	Cardiovascular	AD	1.0	All P and LP
+HGNC:11949	ENSG00000118194	7139	TNNT2	191045	Hypertrophic cardiomyopathy	115195	Cardiovascular	AD	1.0	All P and LP
+HGNC:11998	ENSG00000141510	7157	TP53	191170	Li-Fraumeni syndrome	151623	Cancer	AD	1.0	All P and LP
+HGNC:12010	ENSG00000140416	7168	TPM1	191010	Hypertrophic cardiomyopathy	115196	Cardiovascular	AD	1.0	All P and LP
+HGNC:12261	ENSG00000186439	10345	TRDN	603283	Catecholaminergic polymorphic ventricular tachycardia	615441	Cardiovascular	AR	3.0	All P and LP
+HGNC:12261	ENSG00000186439	10345	TRDN	603283	Long QT syndrome	n/a	Cardiovascular	AR	3.0	All P and LP
+HGNC:12362	ENSG00000165699	7248	TSC1	605284	Tuberous sclerosis complex	191100	Cancer	AD	1.0	All P and LP
+HGNC:12363	ENSG00000103197	7249	TSC2	191092	Tuberous sclerosis complex	613254	Cancer	AD	1.0	All P and LP
+HGNC:12403	ENSG00000155657	7273	TTN	188840	Dilated cardiomyopathy (truncating variants only)	604145	Cardiovascular	AD	3.0	P and LP (truncating variants only)
+HGNC:12405	ENSG00000118271	7276	TTR	176300	Hereditary transthyretin-related amyloidosis	105210	Miscellaneous	AD	3.1	All P and LP
+HGNC:12687	ENSG00000134086	7428	VHL	608537	Von Hippel-Lindau syndrome	193300	Cancer	AD	1.0	All P and LP
+HGNC:12796	ENSG00000184937	7490	WT1	607102	WT1-related Wilms tumor	194070	Cancer	AD	1.0	All P and LP

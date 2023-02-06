@@ -41,14 +41,15 @@ rule result_noref_ncbi_gene_process:
     shell:
         r"""
         ./{input.gene2xml} -b T -c T -i {input.ags} \
+        | tee some.xml
         | tee >(
-            python3 tools/refseq_xml_to_tsv.py \
+            python3 scripts/refseq_xml_to_tsv.py \
                 --input /dev/stdin \
                 --output /dev/stdout \
                 --info-type generif \
             > {output.ncbi_gene_rif_tsv}
             ) \
-        | python3 tools/refseq_xml_to_tsv.py \
+        | python3 scripts/refseq_xml_to_tsv.py \
             --input /dev/stdin \
             --output /dev/stdout \
             --info-type summary \

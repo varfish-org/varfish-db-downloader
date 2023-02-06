@@ -1,0 +1,42 @@
+{
+    "dc:format": "text/tsv",
+    "dc:identifier": "gene-centric/gnomad-constraints/gnomad-gene-constraints.tsv:2.1.1",
+    "dc:title": "gnomAD constraint data by gene (v2.1.1)",
+    "dc:description": "This is version 2.1.1 of the gnomAD constraint data. We obtained the 'pLoF Metrics by Gene TSV' file 'gnomad.v2.1.1.lof_metrics.by_gene.txt.bgz' from the gnomAD website. The file was sorted by chromosomal position and filtered to the columns necessary to obtain the gnomAD LEUF, pLI, Z syn, Z mis scores, and existing ExAC scores. The ENSEMBL transcript ID was replaced by ENSEMBL and Entrez/NCBI gene ID.",
+    "dc:created": "2022-02-03",
+    "dc:creator": "Genome Aggregation Database (gnomAD)",
+    "dc:contributor": [
+        "VarFish Developer Team"
+    ],
+    "dc:source": [
+        "PMID:32461654",
+        "https://gnomad.broadinstitute.org/downloads#v2-constraint"
+    ],
+    "tsv:columns": {
+      "ensembl_gene_id": "ENSEMBL gene ID",
+      "entrez_id": "Entrez/NCBI gene ID",
+      "gene_symbol": "HGNC gene symbol",
+      "exp_lof": "Number of expected pLoF variants in transcript",
+      "exp_mis": "Number of expected missense variants in transcript",
+      "exp_syn": "Number of expected synonymous variants in transcript",
+      "mis_z": "Z score for missense variants in gene. Higher (more positive) Z scores indicate that the transcript is more intolerant of variation (more constrained)",
+      "obs_lof": "Number of observed predicted loss-of-function (pLoF) variants in transcrip",
+      "obs_mis": "Number of observed missense variants in transcript",
+      "obs_syn": "Number of observed synonymous variants in transcript",
+      "oe_lof": "Observed over expected ratio for pLoF variants in transcript (obs_lof divided by exp_lof)",
+      "oe_lof_lower": "Lower bound of 90% confidence interval for o/e ratio for pLoF variants",
+      "oe_lof_upper": "LOEUF: upper bound of 90% confidence interval for o/e ratio for pLoF variants (lower values indicate more constrained)",
+      "oe_mis": "Observed over expected ratio for missense variants in transcript (obs_mis divided by exp_mis)",
+      "oe_mis_lower": "Lower bound of 90% confidence interval for o/e ratio for missense variants",
+      "oe_mis_upper": "Upper bound of 90% confidence interval for o/e ratio for missense variants",
+      "oe_syn": "Observed over expected ratio for missense variants in transcript (obs_syn divided by exp_syn)",
+      "oe_syn_lower": "Lower bound of 90% confidence interval for o/e ratio for synonymous variants",
+      "oe_syn_upper": "Upper bound of 90% confidence interval for o/e ratio for synonymous variants",
+      "pLI": " Probability of loss-of-function intolerance; probability that transcript falls into distribution of haploinsufficient genes (~9% o/e pLoF ratio; computed from gnomAD data)",
+      "syn_z": "Z score for synonymous variants in gene. Higher (more positive) Z scores indicate that the transcript is more intolerant of variation (more constrained). Extreme values of syn_z indicate likely data quality issues",
+      "exac_pLI": "pLI score calculated from ExAC",
+      "exac_obs_lof": "Number of observed pLoF variants in gene in ExAC",
+      "exac_exp_lof": "Number of expected pLoF variants in gene in ExAC",
+      "exac_oe_lof": "Observed to expected ratio of pLoF variants in ExAC"
+    }
+}

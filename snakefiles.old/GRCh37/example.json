@@ -1,0 +1,51 @@
+{
+    "prefix": {
+        "vf": "https://varfish-org.github.io/"
+    },
+    "entity": {
+        "http://dgv.tcag.ca/dgv/docs/DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3": {
+            "prov:type": "file",
+            "vf:checksum": "sha256:XXX"
+        },
+        "GRCh37/DGV/2016/download/DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3": {
+            "prov:type": "file",
+            "vf:checksum": "sha256:XXX"
+        },
+        "GRCh37/DGV/2016/download/DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3.md5": {
+            "prov:type": "file",
+            "vf:checksum": "sha256:XXX"
+        }
+    },
+    "wasDerivedFrom": {
+        "_:GRCh37/DGV/2016/download/DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3": {
+            "prov:generatedEntity": "GRCh37/DGV/2016/download/DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3",
+            "prov:usedEntity": "http://dgv.tcag.ca/dgv/docs/DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3"
+        },
+        "_:GRCh37/DGV/2016/download/DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3.md5": {
+            "prov:generatedEntity": "GRCh37/DGV/2016/download/DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3.md5",
+            "prov:usedEntity": "GRCh37/DGV/2016/download/DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3"
+        }
+    },
+    "activity": {
+        "download-GRCh37/DGV/2016/download/DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3": {
+            "prov:type": "download",
+            "vf:tool": "wget"
+        },
+        "md5sum-GRCh37/DGV/2016/download/DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3.md5": {
+            "prov:type": "command execution",
+            "vf:tool": "md5sum"
+        }
+    }
+}
+
+document
+ entity(http://dgv.tcag.ca/dgv/docs/DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3)
+ entity(GRCh37/DGV/2016/download/DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3)
+ entity(GRCh37/DGV/2016/download/DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3.md5)
+
+ activity(download-GRCh37/DGV/2016/download/DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3)
+ activity(md5sum-GRCh37/DGV/2016/download/DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3.md5)
+
+ wasGeneratedBy(download-GRCh37/DGV/2016/download/DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3, GRCh37/DGV/2016/download/DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3, -, [ex:fct="save"])
+ wasGeneratedBy(md5sum-GRCh37/DGV/2016/download/DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3.md5, GRCh37/DGV/2016/download/DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3.md5, -, [ex:fct="save"])
+endDocument

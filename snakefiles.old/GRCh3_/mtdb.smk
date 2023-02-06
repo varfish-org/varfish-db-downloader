@@ -45,11 +45,11 @@ rule result_GRChXX_mtdb_tsv:
                             )
                         )
                         reference = mitochondrium[start - 1]
-                # Collect total number of alleles and all alternatice allele counts
+                        # Collect total number of alleles and all alternatice allele counts
                 for alt in set(alts).difference(reference):
                     alts[alt] = int(record.get(alt) or 0)
                     an += alts[alt]
-                # Is an alternative registered, add it to the results list (normalization step)
+                    # Is an alternative registered, add it to the results list (normalization step)
                 for alt, ac in alts.items():
                     if ac > 0:
                         _af = ac / an

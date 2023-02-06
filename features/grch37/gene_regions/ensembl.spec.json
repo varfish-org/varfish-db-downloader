@@ -1,0 +1,21 @@
+{
+  "dc:format": "text/x-bed",
+  "dc:identifier": "features/GRCh37/gene-regions/ensembl.bed:r87",
+  "dc:title": "ENSEMBL gene regions (r87) for GRCh37",
+  "dc:description": "This BED file contains the gene ENSEMBL gene regions (release r87 from 2017).",
+  "dc:created": "2023-02-06",
+  "dc:creator": "ENSEMBL Team",
+  "dc:contributor": [
+      "VarFish Developer Team"
+  ],
+  "dc:source": [
+      "PMID:34791404",
+      "http://ftp.ensembl.org/pub/grch37/current/gtf/homo_sapiens/"
+  ],
+  "tsv:columns": {
+    "chrom": "Chromosome name without chr prefix",
+    "begin": "0-based begin position",
+    "end": "0-based end position",
+    "ensembl_gene_id": "ENSEMBL gene ID"
+  }
+}

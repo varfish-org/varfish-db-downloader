@@ -1,0 +1,20 @@
+{
+  "dc:format": "text/x-bed",
+  "dc:identifier": "features/GRCh37/masked/repeat.bed.gz:2020-02-20",
+  "dc:title": "Repeat Masked Sequence",
+  "dc:description": "This BED contains the repeat masked sequence from UCSC genome browser as created by Repeat Masker.",
+  "dc:created": "2023-02-06",
+  "dc:creator": "UCSC Genome Browser Team",
+  "dc:contributor": [
+      "VarFish Developer Team"
+  ],
+  "dc:source": [
+      "https://genome-euro.ucsc.edu/cgi-bin/hgTrackUi?db=hg19&g=rmsk"
+  ],
+  "tsv:columns": {
+    "chrom": "Chromosome name without chr prefix",
+    "begin": "0-based begin position",
+    "end": "0-based end position",
+    "label": "label describing the repeat"
+  }
+}
