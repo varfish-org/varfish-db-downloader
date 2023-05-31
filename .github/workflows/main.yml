@@ -35,7 +35,7 @@ jobs:
 
       - name: Check formating
         run: |
-          conda activate varfish-db-downloader
+          mamba activate varfish-db-downloader
           make ci
         shell: bash -el {0}
 
