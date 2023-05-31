@@ -13,7 +13,6 @@ import attrs
 import cattrs
 import vcfpy
 
-
 # Default value for species.
 DEFAULT_SPECIES = (
     "hg19,panTro4,gorGor3,ponAbe2,nomLeu3,rheMac3,macFas5,papHam1,chlSab1,calJac3,saiBol1,"
