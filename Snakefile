@@ -1,4 +1,12 @@
+import os
+
 from tools.sv_db_to_tsv import to_tsv
+
+# Activate test mode by prepending the path to the "test-mode-bin" directory to the PATH.
+if os.environ.get("CI", "false").lower() == "true":
+    cwd = os.getcwd()
+    old_path = os.environ["PATH"]
+    os.environ["PATH"] = f"{cwd}/test-mode-bin:{old_path}"
 
 
 rule default:
@@ -7,7 +15,7 @@ rule default:
         "annos/grch37/dbnsfp-4.4a/.done",
         "annos/grch37/dbnsfp-4.4c/.done",
         "annos/grch37/dbscsnv/.done",
-        "annos/grch37/helixmtdb/helixmtdb.vcf",
+        "annos/grch37/helixmtdb/helixmtdb.vcf.gz",
         "annos/grch37/gnomad_mtdna/gnomad_mtdna.vcf.gz",
         "annos/grch37/ucsc_conservation/ucsc_conservation.tsv",
         "annos/grch37/dbsnp/dbsnp.vcf.gz",
@@ -19,7 +27,7 @@ rule default:
         "annos/grch38/gnomad_exomes/.done",
         "annos/grch38/gnomad_genomes/.done",
         "annos/grch38/gnomad_mtdna/gnomad_mtdna.vcf.gz",
-        "annos/grch38/helixmtdb/helixmtdb.vcf",
+        "annos/grch38/helixmtdb/helixmtdb.vcf.gz",
         "features/grch37/tads/imr90.bed",
         "features/grch37/tads/hesc.bed",
         "features/grch37/gene_regions/refseq.bed.gz",
@@ -36,7 +44,7 @@ rule default:
         "tracks/grch37/ucsc_rmsk.bed.gz",
         "tracks/grch37/ucsc_fixSeqLiftOverPsl.bed.gz",
         "tracks/grch37/ucsc_altSeqLiftOverPsl.bed.gz",
-        "vardbs/grch37/strucvar/clinvar.bed.gz",
+        # "vardbs/grch37/strucvar/clinvar.bed.gz",
         "vardbs/grch37/strucvar/dbvar.bed.gz",
         "vardbs/grch37/strucvar/dgv.bed.gz",
         "vardbs/grch37/strucvar/dgv_gs.bed.gz",

@@ -8,7 +8,7 @@ rule genes_xlink_ensembl:
 
         wget --no-check-certificate \
             -O- \
-            'http://ensembl.org/biomart/martservice?query=<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE Query><Query  virtualSchemaName = "default" formatter = "TSV" header = "0" uniqueRows = "0" count = "" datasetConfigVersion = "0.6" ><Dataset name = "hsapiens_gene_ensembl" interface = "default" ><Attribute name = "ensembl_gene_id" /><Attribute name = "ensembl_transcript_id" /><Attribute name = "entrezgene_id" /><Attribute name = "external_gene_name" /></Dataset></Query>' \
+            'https://ensembl.org/biomart/martservice?query=<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE Query><Query  virtualSchemaName = "default" formatter = "TSV" header = "0" uniqueRows = "0" count = "" datasetConfigVersion = "0.6" ><Dataset name = "hsapiens_gene_ensembl" interface = "default" ><Attribute name = "ensembl_gene_id" /><Attribute name = "ensembl_transcript_id" /><Attribute name = "entrezgene_id" /><Attribute name = "external_gene_name" /></Dataset></Query>' \
         | sort -u \
         >> {output.tsv}
 
@@ -18,7 +18,7 @@ rule genes_xlink_ensembl:
 
 rule genes_xlink_hgnc:
     output:
-        download_json=temp("genes/xlink/download/hgnc/hgnc_complete_set.json"),
+        download_json="genes/xlink/download/hgnc/hgnc_complete_set.json",
         tsv="genes/xlink/hgnc.tsv",
         tsv_md5="genes/xlink/hgnc.tsv.md5",
     shell:
@@ -27,7 +27,7 @@ rule genes_xlink_hgnc:
 
         wget --no-check-certificate \
             -O {output.download_json} \
-            http://ftp.ebi.ac.uk/pub/databases/genenames/hgnc/json/hgnc_complete_set.json
+            https://ftp.ebi.ac.uk/pub/databases/genenames/hgnc/json/hgnc_complete_set.json
 
         jq \
             --raw-output \
@@ -137,8 +137,8 @@ rule genes_gnomad_constraints_v2_1_1_to_tsv:
         bgz="genes/gnomad_constraints/download/gnomad.v2.1.1.lof_metrics.by_gene.txt.bgz",
         xlink_ensembl="genes/xlink/ensembl.tsv",
     output:
-        txt_tmp=temp("genes/gnomad_constraints/download/gnomad.v2.1.1.lof_metrics.by_gene.txt"),
-        tsv_tmp=temp("genes/gnomad_constraints/download/gnomad_constraints-subset.tsv"),
+        txt_tmp="genes/gnomad_constraints/download/gnomad.v2.1.1.lof_metrics.by_gene.txt",
+        tsv_tmp="genes/gnomad_constraints/download/gnomad_constraints-subset.tsv",
         tsv="genes/gnomad_constraints/gnomad_constraints.tsv",
         tsv_md5="genes/gnomad_constraints/gnomad_constraints.tsv.md5",
     run:
@@ -147,7 +147,7 @@ rule genes_gnomad_constraints_v2_1_1_to_tsv:
 
 rule genes_mim2gene:
     output:
-        download=temp("genes/mim2gene/download/mim2gene_medgen"),
+        download="genes/mim2gene/download/mim2gene_medgen",
         tsv="genes/mim2gene/mim2gene.tsv",
         tsv_md5="genes/mim2gene/mim2gene.tsv.md5",
     shell:
@@ -173,22 +173,26 @@ rule genes_gene_download:
         gene2xml_md5="genes/ncbi/download/linux64.gene2xml.md5",
     shell:
         r"""
-        cd $(dirname {output.ags})
+        set -x
 
-        if [[ ! -e Homo_sapiens.ags.gz.md5 ]]; then
+        if [[ ! -e $(dirname {output.ags})/Homo_sapiens.ags.gz.md5 ]]; then
             wget --no-check-certificate \
-                -O Homo_sapiens.ags.gz \
-                http://ftp.ncbi.nih.gov/gene/DATA/ASN_BINARY/Mammalia/Homo_sapiens.ags.gz
-            md5sum Homo_sapiens.ags.gz >Homo_sapiens.ags.gz.md5
+                -O $(dirname {output.ags})/Homo_sapiens.ags.gz \
+                https://ftp.ncbi.nih.gov/gene/DATA/ASN_BINARY/Mammalia/Homo_sapiens.ags.gz
+            pushd $(dirname {output.ags})
+            md5sum Homo_sapiens.ags.gz > Homo_sapiens.ags.gz.md5
+            popd
         fi
 
-        if [[ ! -e linux64.gene2xml.md5 ]]; then
+        if [[ ! -e $(dirname {output.ags})/linux64.gene2xml.md5 ]]; then
             wget --no-check-certificate \
-                -O linux64.gene2xml.gz \
-                http://ftp.ncbi.nlm.nih.gov/asn1-converters/by_program/gene2xml/linux64.gene2xml.gz
+                -O $(dirname {output.ags})/linux64.gene2xml.gz \
+                https://ftp.ncbi.nlm.nih.gov/asn1-converters/by_program/gene2xml/linux64.gene2xml.gz
+            pushd $(dirname {output.ags})
             gzip -d -c linux64.gene2xml.gz > linux64.gene2xml
             chmod +x linux64.gene2xml
             md5sum linux64.gene2xml > linux64.gene2xml.md5
+            popd
         fi
         """
 
@@ -213,12 +217,8 @@ rule result_noref_ncbi_gene_process:
 # file from UCSC uses these IDs.
 rule genes_enst_ensg_grch37:
     output:
-        download_txt=temp(
-            "genes/enst_ensg/grch37/download/knowntoEnsembl.txt.gz",
-        ),
-        download_gtf=temp(
-            "genes/enst_ensg/grch37/download/GCF_000001405.25_GRCh37.p13_genomic.gtf.gz"
-        ),
+        download_txt="genes/enst_ensg/grch37/download/knowntoEnsembl.txt.gz",
+        download_gtf="genes/enst_ensg/grch37/download/GCF_000001405.25_GRCh37.p13_genomic.gtf.gz",
         tmp1="genes/enst_ensg/grch37/download/tmp1.txt",
         tmp2="genes/enst_ensg/grch37/download/tmp2.txt",
         tsv="genes/enst_ensg/grch37/enst_ensg.tsv",
@@ -230,7 +230,7 @@ rule genes_enst_ensg_grch37:
 
         wget --no-check-certificate \
             -O {output.download_gtf} \
-            'http://ftp.ensembl.org/pub/grch37/current/gtf/homo_sapiens/Homo_sapiens.GRCh37.87.gtf.gz'
+            'https://ftp.ensembl.org/pub/grch37/current/gtf/homo_sapiens/Homo_sapiens.GRCh37.87.gtf.gz'
         wget --no-check-certificate \
             -O {output.download_txt} \
             'https://hgdownload.soe.ucsc.edu/goldenPath/hg19/database/knownToEnsembl.txt.gz'
@@ -255,7 +255,7 @@ rule genes_enst_ensg_grch37:
 
 
 # We use the full dbNSFP genes information file.
-rule genes_:
+rule genes_dbnsfp_genes_copy:
     input:
         tsv=f"annos/grch37/dbnsfp-{DBNSFP_VERSION}a/download/dbNSFP{DBNSFP_VERSION}_gene.complete.gz",
     output:
@@ -268,7 +268,7 @@ rule genes_:
 
         zcat {input.tsv} \
         | pigz -c \
-        > {output.tsv
+        > {output.tsv}
 
         md5sum {output.tsv} >{output.tsv_md5}
         """

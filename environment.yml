@@ -4,7 +4,6 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python =3.10
   - snakemake-minimal =7
   - bedops =2
   - bcftools =1.15
@@ -17,11 +16,19 @@ dependencies:
   - vcfpy
   - tqdm
   - prov =2
-  - attrs
-  - cattrs
   - jq
   - aria2
   - pigz
+  # Elementary Python dependencies
+  - python =3.10
+  - setuptools-scm
+  - attrs
+  - cattrs
+  - click
+  - loguru
+  - pyyaml
+  - requests
+  - requests-ftp
   # Python and Snakemake formatting and linting.
   - black >=23.0,<24.0
   - snakefmt >=0.8,<0.9

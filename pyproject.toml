@@ -1,0 +1,50 @@
+[project]
+name = "varfish-db-downloader"
+authors = [
+  { name="Manuel Holtgrewe", email="manuel.holtgrewe@bih-charite.de" },
+]
+description = "Download and transform public data for VarFish"
+readme = "README.md"
+license = { file="LICENSE.txt" }
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Healthcare Industry",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Topic :: Scientific/Engineering :: Medical Science Apps."
+]
+keywords = [
+    "varfish",
+    "download"
+    ]
+dynamic = ["version"]
+
+[project.urls]
+"Homepage" = "https://github.com/bihealth/varfish-db-downloader"
+"Bug Tracker" = "https://github.com/bihealth/varfish-db-downloader/issues"
+
+[project.scripts]
+"varfish-db-downloader" = "varfish_db_downloader.cli:main"
+
+
+[build-system]
+requires = [
+	 "setuptools >= 65.3",
+   	 "setuptools_scm[toml] ~= 7.0"
+	 ]
+build-backend = "setuptools.build_meta"
+
+
+[tool.setuptools_scm]
+
+[tool.black]
+line-length = 100

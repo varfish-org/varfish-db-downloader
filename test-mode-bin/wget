@@ -1,0 +1,6 @@
+#!/usr/bin/bash
+
+# This is a stub for wget.  By placing its parent directory at the front of
+# the PATH, we can ensure that the real wget is not used during tests.
+
+varfish-db-downloader wget run-stub-wget "$@"

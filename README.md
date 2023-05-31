@@ -169,6 +169,22 @@ Import the files into VarFish:
 $ python manage.py import_tables --tables-path /path/to/varfish-db-downloader
 ```
 
+## Running in Test Mode
+
+The download of files can be disabled to enable a test mode.
+Instead, the files in `excerpt-data` are used when `CI=true` is set in the environment.
+
+This is done by overriding the download executables `wget` and `aria2` in the Snakemake file when `CI=true` has been set.
+This again is done by overriding the `PATH` environment variable.
+
+The files can be updated by calling
+
+```
+# varfish-db-downloader wget urls-download
+```
+
+The known URLs are managed in `download_urls.yml`.
+
 ## Managing GitHub Project with Terraform
 
 ```

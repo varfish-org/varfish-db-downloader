@@ -55,7 +55,7 @@ rule annos_helixmtdb_convert:
 
         if [[ {wildcards.genome_build} == GRCh37 ]]; then
             sed -e 's/chrM/MT/g' {output.vcf}.tmp \
-            | bgzip -c >
+            | bgzip -c \
             > {output.vcf}
         else
             bgzip -c {output.vcf}.tmp >{output.vcf}
@@ -111,6 +111,7 @@ rule annos_gnomad_nuclear_download_2:
     shell:
         r"""
         aria2c \
+            --check-certificate=false \
             --file-allocation=trunc \
             --out={output.vcf} \
             --split=8 \
@@ -118,6 +119,7 @@ rule annos_gnomad_nuclear_download_2:
             --max-connection-per-server=8 \
             {GNOMAD_PREFIX}/{wildcards.version}/vcf/{wildcards.kind}/gnomad.{wildcards.kind}.r{wildcards.version}.sites.{wildcards.chrom}.vcf.bgz
         aria2c \
+            --check-certificate=false \
             --file-allocation=trunc \
             --out={output.vcf_tbi} \
             --split=8 \
@@ -134,6 +136,7 @@ rule annos_gnomad_nuclear_download_liftover_2:
     shell:
         r"""
         aria2c \
+            --check-certificate=false \
             --file-allocation=trunc \
             --out={output.vcf} \
             --split=8 \
@@ -141,6 +144,7 @@ rule annos_gnomad_nuclear_download_liftover_2:
             --max-connection-per-server=8 \
             {GNOMAD_PREFIX}/{wildcards.version}/liftover_grch38/vcf/{wildcards.kind}/gnomad.{wildcards.kind}.r{wildcards.version}.sites.{wildcards.chrom}.liftover_grch38.vcf.bgz
         aria2c \
+            --check-certificate=false \
             --file-allocation=trunc \
             --out={output.vcf_tbi} \
             --split=8 \
@@ -157,6 +161,7 @@ rule annos_gnomad_nuclear_download_3:
     shell:
         r"""
         aria2c \
+            --check-certificate=false \
             --file-allocation=trunc \
             --out={output.vcf} \
             --split=8 \
@@ -164,6 +169,7 @@ rule annos_gnomad_nuclear_download_3:
             --max-connection-per-server=8 \
             {GNOMAD_PREFIX}/{wildcards.version}/vcf/{wildcards.kind}/gnomad.{wildcards.kind}.v{wildcards.version}.sites.chr{wildcards.chrom}.vcf.bgz
         aria2c \
+            --check-certificate=false \
             --file-allocation=trunc \
             --out={output.vcf_tbi} \
             --split=8 \
@@ -220,12 +226,13 @@ rule annos_ucsc_conservation_download:
         fi
 
         aria2c \
+            --check-certificate=false \
             --file-allocation=trunc \
             --out={output.fa} \
             --split=8 \
             --max-concurrent-downloads=8 \
             --max-connection-per-server=8 \
-            "http://hgdownload.cse.ucsc.edu/goldenpath/${{ucsc_name}}/multiz100way/alignments/knownGene.exonAA.fa.gz"
+            "https://hgdownload.cse.ucsc.edu/goldenpath/${{ucsc_name}}/multiz100way/alignments/knownGene.exonAA.fa.gz"
         """
 
 
@@ -279,6 +286,7 @@ rule annos_dbsnp_download:
     shell:
         r"""
         aria2c \
+            --check-certificate=false \
             --file-allocation=trunc \
             --out={output.vcf} \
             --split=8 \
@@ -302,6 +310,7 @@ rule annos_cadd_download:
         for path in {output};
         do
             aria2c \
+                --check-certificate=false \
                 --file-allocation=trunc \
                 --out=$path \
                 --split=16 \
@@ -391,6 +400,7 @@ rule annos_dbnsfp_download:
         fi
 
         aria2c \
+            --check-certificate=false \
             --file-allocation=trunc \
             --out={output.zip} \
             --split=8 \
@@ -423,6 +433,7 @@ rule annos_dbscsnv_download:
     shell:
         r"""
         aria2c \
+            --check-certificate=false \
             --file-allocation=trunc \
             --out={output.zip} \
             --split=8 \
