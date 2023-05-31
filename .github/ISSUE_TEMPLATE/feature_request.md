@@ -2,10 +2,18 @@
 name: Feature request
 about: Suggest an idea for this project
 title: ''
-labels: ''
+labels: enhancement
 assignees: ''
 
 ---
+
+<!--
+For general questions please use the Discussions section of the project:
+
+https://github.com/bihealth/varfish-server/discussions
+
+For bug reports and feature requests please open a ticket using the templates!
+-->
 
 **Is your feature request related to a problem? Please describe.**
 A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]

@@ -1,45 +1,41 @@
-DATA_RELEASE = 20201006
-RELEASE_PATH = releases
-JANNOVAR_RELEASE = $(DATA_RELEASE)
+# Set the shell to bash with printing of all commands (`-x`) and unofficial
+# strict mode (`-euo pipefail`).
+SHELL := bash -x -euo pipefail
 
+# Default target, run on CI.  Runs all checks.
+.PHONY: ci
+ci: \
+	lint-bash \
+	check-format-bash \
+	lint-awk
 
-all: pack_server pack_annotator pack_jannovar
+# Run bash linting using spellcheck.
+.PHONY: lint-bash
+lint-bash:
+	shellcheck -s bash scripts/*.sh
 
+# Run bash formatting checks using beautysh.
+.PHONY: check-format-bash
+check-format-bash:
+	for file in scripts/*.sh; do \
+		beautysh --check --indent-size 4 $$file --force-function-style paronly; \
+	done
 
-black:
-	snakefmt -l 100 .
-	black -l 100 .
+# Run awk linting using gawk.
+.PHONY: lint-awk
+lint-awk:
+	for file in scripts/*.awk; do \
+		gawk -f $$file -Lfatal /dev/null >/dev/null; \
+	done
 
+# Run all automatic code formatting.
+.PHONY: format
+format:	\
+	format-bash
 
-pack_server:
-	cd $(RELEASE_PATH) && tar \
-		--owner=0 \
-		--group=0 \
-		-chzvf varfish-server-background-db-$(DATA_RELEASE).tar.gz \
-		varfish-server-background-db-$(DATA_RELEASE)/
-	cd $(RELEASE_PATH) && sha256sum \
-		varfish-server-background-db-$(DATA_RELEASE).tar.gz \
-		> varfish-server-background-db-$(DATA_RELEASE).tar.gz.sha256
-
-
-pack_annotator:
-	cd $(RELEASE_PATH) && tar \
-		--owner=0 \
-		--group=0 \
-		-chzvf varfish-annotator-$(DATA_RELEASE).tar.gz \
-		varfish-annotator-$(DATA_RELEASE)/
-	cd $(RELEASE_PATH) && sha256sum \
-		varfish-annotator-$(DATA_RELEASE).tar.gz \
-		> varfish-annotator-$(DATA_RELEASE).tar.gz.sha256
-
-
-pack_jannovar:
-	cd $(RELEASE_PATH) && tar \
-		--owner=0 \
-		--group=0 \
-		-czvf jannovar-db-$(JANNOVAR_RELEASE).tar.gz \
-		jannovar-db-$(JANNOVAR_RELEASE)/*.ser
-	cd $(RELEASE_PATH) && sha256sum \
-		jannovar-db-$(JANNOVAR_RELEASE).tar.gz \
-		> jannovar-db-$(JANNOVAR_RELEASE).tar.gz.sha256
-
+# Run bash formatting using beautysh.
+.PHONY: format-bash
+format-bash:
+	for file in scripts/*.sh; do \
+		beautysh --indent-size 4 $$file --force-function-style paronly; \
+	done

@@ -1,0 +1,28 @@
+name: varfish-db-downloader
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - python =3.10
+  - snakemake-minimal =7
+  - bedops =2
+  - bcftools =1.15
+  - htslib =1.16
+  - samtools =1.16
+  - bedtools =2.30
+  - var-agg ==0.1.1
+  - lftp
+  - snakefmt
+  - interval-binning =1
+  - vcfpy
+  - tqdm
+  - prov =2
+  - attrs
+  - cattrs
+  - jq
+  - aria2
+  - pigz
+  # Shell formatting and linting.
+  - beautysh
+  - shellcheck
