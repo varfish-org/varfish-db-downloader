@@ -35,7 +35,6 @@ jobs:
 
       - name: Check formating
         run: |
-          mamba activate varfish-db-downloader
           make ci
         shell: bash -el {0}
 
@@ -46,5 +45,5 @@ jobs:
           message: |
             Please check for formatting and linting issues.  You can use `make lint` to:
 
-            - Check your Bash style with `beautysh`` and formatting with `shellcheck``.
+            - Check your Bash style with `beautysh` and formatting with `shellcheck`.
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
