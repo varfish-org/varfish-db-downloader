@@ -1,7 +1,8 @@
-import sys
-import binning
 import argparse
+import sys
 from collections import OrderedDict
+
+import binning
 
 
 def tsv_reader(fh, header):

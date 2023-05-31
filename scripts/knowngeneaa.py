@@ -13,6 +13,7 @@ import attrs
 import cattrs
 import vcfpy
 
+
 @attrs.frozen()
 class HgncEntry:
     hgnc_id: str
@@ -70,7 +71,7 @@ def build_header(contigs, species):
         header.add_contig_line({"ID": name, "length": length})
         seen.add(name)
     for a, b in (("M", "MT"), ("MT", "M"), ("chrM", "chrMT"), ("chrMT", "chrM")):
-        if a in seen and not b in seen:
+        if a in seen and b not in seen:
             header.add_contig_line({"ID": b, "length": contig_map[a]})
     header.add_line(vcfpy.HeaderLine("species", ",".join(species)))
     header.add_info_line(
@@ -136,7 +137,7 @@ def fasta_header_to_meta(line, have_chr, enst_to_hgnc_id, enst_to_real):
         location = None
     return AlignmentMeta(
         hgnc_id=hgnc_id,
-        enst_id=enst_to_real[enst_id.split('.')[0]],
+        enst_id=enst_to_real[enst_id.split(".")[0]],
         species=species,
         exon_idx=int(exon_no),
         exon_count=int(exon_count),
@@ -333,7 +334,7 @@ def run(args):
     with open(args.hgnc_jsonl[0], "rt") as inputf:
         for line in inputf:
             record = json.loads(line)
-            if not "ensembl_gene_id" in record:
+            if "ensembl_gene_id" not in record:
                 continue
             entry: HgncEntry = cattrs.structure(record, HgncEntry)
             for enst in ensg_to_ensts.get(entry.ensembl_gene_id, []):
@@ -382,12 +383,7 @@ def main(argv=None):
         default="^(chr)?[1-9XYM][0-9T]?$",
         help="Regular expression to filter contig by",
     )
-    parser.add_argument(
-        "hgnc_jsonl",
-        type=str,
-        nargs=1,
-        help="Path to HGNC JSONL file"
-    )
+    parser.add_argument("hgnc_jsonl", type=str, nargs=1, help="Path to HGNC JSONL file")
     parser.add_argument(
         "enst_ensg",
         type=str,

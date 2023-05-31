@@ -11,6 +11,7 @@ REFERENCE_URLS = {
     ),
 }
 
+
 rule reference_download:
     output:
         download="reference/{genome_build}/reference/download/reference.fa.gz",

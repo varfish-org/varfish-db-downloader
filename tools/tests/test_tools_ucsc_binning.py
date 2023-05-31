@@ -1,8 +1,8 @@
-from ..ucsc_binning import main
+import io
 import unittest
 from unittest import mock as mock
-import io
 
+from ..ucsc_binning import main
 
 expected = """\
 release	chromosome	start	end	bin	reference	alternative	value

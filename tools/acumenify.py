@@ -125,24 +125,21 @@ DNA strings etc.
 """
 
 import argparse
-import collections
 import enum
 import functools
 import json
 import multiprocessing
-from pathlib import Path
 import re
 import sys
 import time
 import typing
+from pathlib import Path
 
 import attr
-import pandas as pd
 import cattr
-from tqdm import tqdm
-
+import pandas as pd
 from logzero import logger
-
+from tqdm import tqdm
 
 #: Disable tqdm if no terminal is attached.
 DISABLE_TQDM = not sys.stdout.isatty()
@@ -916,7 +913,6 @@ def report(args: ReportArgs) -> None:
         return s.replace("-", "_")
 
     logger.info("Running extraction with args\n\n%s", json.dumps(vars(args), indent=2))
-    path_report = Path(args.path_report)
     paths_stats = list(map(Path, args.paths_stats))
 
     logger.info("Loading Reports")
@@ -933,7 +929,7 @@ def report(args: ReportArgs) -> None:
     per_contig_dicts = []
     for key, report in reports.items():
         if report["$schema_version"] != "0.1.0":
-            raise RuntimError("Cannot handle schema version %s" % report["$schema_version"])
+            raise RuntimeError("Cannot handle schema version %s" % report["$schema_version"])
         for contig, count in report["by_chrom"].items():
             if len(report["by_chrom"]) == 1 or contig != ".":
                 per_contig_dicts.append(
