@@ -100,7 +100,6 @@ Generally, follow [Semantic Commits v1](https://www.conventionalcommits.org/en/v
 
 Here is a list of the commit message prefixes that we use:
 
-```
 | prefix | description |
 | ------ | ----------- |
 | feat | Features |
@@ -115,4 +114,3 @@ Here is a list of the commit message prefixes that we use:
 | test | Tests |
 | build | Build System |
 | ci | Continuous Integration |
-```
