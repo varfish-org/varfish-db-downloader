@@ -168,3 +168,42 @@ Import the files into VarFish:
 ```
 $ python manage.py import_tables --tables-path /path/to/varfish-db-downloader
 ```
+
+## Managing GitHub Project with Terraform
+
+```
+# export GITHUB_OWNER=bihealth
+# export GITHUB_TOKEN=ghp_<thetoken>
+
+# cd utils/terraform
+# terraform init
+# terraform import github_repository.varfish-db-downloader varfish-db-downloader
+
+# terraform validate
+# terraform fmt
+# terraform plan
+# terraform apply
+```
+
+## Semantic Commits
+
+Generally, follow [Semantic Commits v1](https://www.conventionalcommits.org/en/v1.0.0/#specification), also see [examples](https://www.conventionalcommits.org/en/v1.0.0/#examples).
+
+Here is a list of the commit message prefixes that we use:
+
+```
+| prefix | description |
+| ------ | ----------- |
+| feat | Features |
+| fix | Bug Fixes |
+| perf | Performance Improvements |
+| deps | Dependencies |
+| revert | Reverts |
+| docs | Documentation |
+| style | Styles |
+| chore | Miscellaneous Chores |
+| refactor | Code Refactoring |
+| test | Tests |
+| build | Build System |
+| ci | Continuous Integration |
+```
