@@ -12,10 +12,10 @@ rule features_grch37_tad_domains:
 
         wget --no-check-certificate \
             -O {output.download_imr90} \
-            http://compbio.med.harvard.edu/modencode/webpage/hic/IMR90_domains_hg19.bed
+            https://compbio.med.harvard.edu/modencode/webpage/hic/IMR90_domains_hg19.bed
         wget --no-check-certificate \
             -O {output.download_hesc} \
-            http://compbio.med.harvard.edu/modencode/webpage/hic/hESC_domains_hg19.bed
+            https://compbio.med.harvard.edu/modencode/webpage/hic/hESC_domains_hg19.bed
 
         echo -e "#chrom\tbegin\tend" >{output.bed_imr90}
         sed -e 's/^chr//' {output.download_imr90} >>{output.bed_imr90}
@@ -45,7 +45,7 @@ rule features_grch37_refseq_gene_regions:
 
         wget --no-check-certificate \
             -O {output.download_acc} \
-            'http://ftp.ncbi.nlm.nih.gov/genomes/archive/old_refseq/H_sapiens/ARCHIVE/ANNOTATION_RELEASE.105/Assembled_chromosomes/chr_accessions_GRCh37.p13'
+            'https://ftp.ncbi.nlm.nih.gov/genomes/archive/old_refseq/H_sapiens/ARCHIVE/ANNOTATION_RELEASE.105/Assembled_chromosomes/chr_accessions_GRCh37.p13'
 
         wget --no-check-certificate \
             -O {output.download_gtf} \
@@ -82,7 +82,7 @@ rule features_grch37_ensembl_gene_regions:
 
         wget --no-check-certificate \
             -O {output.download_gtf} \
-            'http://ftp.ensembl.org/pub/grch37/current/gtf/homo_sapiens/Homo_sapiens.GRCh37.87.gtf.gz'
+            'https://ftp.ensembl.org/pub/grch37/current/gtf/homo_sapiens/Homo_sapiens.GRCh37.87.gtf.gz'
 
         awk \
             -F $'\t' \

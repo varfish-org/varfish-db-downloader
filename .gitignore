@@ -29,6 +29,8 @@ tracks/**/*.bed*
 core.*
 /report.NEW
 
+*.egg-info
+
 *~
 .*.sw?
 .idea

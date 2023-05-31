@@ -2,11 +2,11 @@
 
 REFERENCE_URLS = {
     "grch37": (
-        "http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/reference/"
+        "https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/reference/"
         "phase2_reference_assembly_sequence/hs37d5.fa.gz"
     ),
     "GRCh38": (
-        "http://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/GCA_000001405.15_GRCh38/"
+        "https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/GCA_000001405.15_GRCh38/"
         "seqs_for_alignment_pipelines.ucsc_ids/GCA_000001405.15_GRCh38_full_analysis_set.fna.gz"
     ),
 }
@@ -22,6 +22,7 @@ rule reference_download:
         shell(
             r"""
             aria2c \
+                --check-certificate=false \
                 --out={output.download} \
                 --split=8 \
                 --max-concurrent-downloads=8 \

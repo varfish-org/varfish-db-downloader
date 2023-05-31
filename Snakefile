@@ -1,4 +1,12 @@
+import os
+
 from tools.sv_db_to_tsv import to_tsv
+
+# Activate test mode by prepending the path to the "test-mode-bin" directory to the PATH.
+if os.environ.get("CI", "false").lower() == "true":
+    cwd = os.getcwd()
+    old_path = os.environ["PATH"]
+    os.environ["PATH"] = f"{cwd}/test-mode-bin:{old_path}"
 
 
 rule default:
@@ -19,7 +27,7 @@ rule default:
         "annos/grch38/gnomad_exomes/.done",
         "annos/grch38/gnomad_genomes/.done",
         "annos/grch38/gnomad_mtdna/gnomad_mtdna.vcf.gz",
-        "annos/grch38/helixmtdb/helixmtdb.vcf",
+        # "annos/grch38/helixmtdb/helixmtdb.vcf",
         "features/grch37/tads/imr90.bed",
         "features/grch37/tads/hesc.bed",
         "features/grch37/gene_regions/refseq.bed.gz",

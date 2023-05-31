@@ -8,7 +8,7 @@ rule genes_xlink_ensembl:
 
         wget --no-check-certificate \
             -O- \
-            'http://ensembl.org/biomart/martservice?query=<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE Query><Query  virtualSchemaName = "default" formatter = "TSV" header = "0" uniqueRows = "0" count = "" datasetConfigVersion = "0.6" ><Dataset name = "hsapiens_gene_ensembl" interface = "default" ><Attribute name = "ensembl_gene_id" /><Attribute name = "ensembl_transcript_id" /><Attribute name = "entrezgene_id" /><Attribute name = "external_gene_name" /></Dataset></Query>' \
+            'https://ensembl.org/biomart/martservice?query=<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE Query><Query  virtualSchemaName = "default" formatter = "TSV" header = "0" uniqueRows = "0" count = "" datasetConfigVersion = "0.6" ><Dataset name = "hsapiens_gene_ensembl" interface = "default" ><Attribute name = "ensembl_gene_id" /><Attribute name = "ensembl_transcript_id" /><Attribute name = "entrezgene_id" /><Attribute name = "external_gene_name" /></Dataset></Query>' \
         | sort -u \
         >> {output.tsv}
 
@@ -27,7 +27,7 @@ rule genes_xlink_hgnc:
 
         wget --no-check-certificate \
             -O {output.download_json} \
-            http://ftp.ebi.ac.uk/pub/databases/genenames/hgnc/json/hgnc_complete_set.json
+            https://ftp.ebi.ac.uk/pub/databases/genenames/hgnc/json/hgnc_complete_set.json
 
         jq \
             --raw-output \
@@ -178,14 +178,14 @@ rule genes_gene_download:
         if [[ ! -e Homo_sapiens.ags.gz.md5 ]]; then
             wget --no-check-certificate \
                 -O Homo_sapiens.ags.gz \
-                http://ftp.ncbi.nih.gov/gene/DATA/ASN_BINARY/Mammalia/Homo_sapiens.ags.gz
+                https://ftp.ncbi.nih.gov/gene/DATA/ASN_BINARY/Mammalia/Homo_sapiens.ags.gz
             md5sum Homo_sapiens.ags.gz >Homo_sapiens.ags.gz.md5
         fi
 
         if [[ ! -e linux64.gene2xml.md5 ]]; then
             wget --no-check-certificate \
                 -O linux64.gene2xml.gz \
-                http://ftp.ncbi.nlm.nih.gov/asn1-converters/by_program/gene2xml/linux64.gene2xml.gz
+                https://ftp.ncbi.nlm.nih.gov/asn1-converters/by_program/gene2xml/linux64.gene2xml.gz
             gzip -d -c linux64.gene2xml.gz > linux64.gene2xml
             chmod +x linux64.gene2xml
             md5sum linux64.gene2xml > linux64.gene2xml.md5
@@ -230,7 +230,7 @@ rule genes_enst_ensg_grch37:
 
         wget --no-check-certificate \
             -O {output.download_gtf} \
-            'http://ftp.ensembl.org/pub/grch37/current/gtf/homo_sapiens/Homo_sapiens.GRCh37.87.gtf.gz'
+            'https://ftp.ensembl.org/pub/grch37/current/gtf/homo_sapiens/Homo_sapiens.GRCh37.87.gtf.gz'
         wget --no-check-certificate \
             -O {output.download_txt} \
             'https://hgdownload.soe.ucsc.edu/goldenPath/hg19/database/knownToEnsembl.txt.gz'
