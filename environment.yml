@@ -13,7 +13,6 @@ dependencies:
   - bedtools =2.30
   - var-agg ==0.1.1
   - lftp
-  - snakefmt
   - interval-binning =1
   - vcfpy
   - tqdm
@@ -23,6 +22,11 @@ dependencies:
   - jq
   - aria2
   - pigz
+  # Python and Snakemake formatting and linting.
+  - black ==23
+  - snakefmt ==0.8
+  - isort ==5
+  - flake8 ==6
   # Shell formatting and linting.
-  - beautysh
-  - shellcheck
+  - beautysh ==6
+  - shellcheck ==0.9

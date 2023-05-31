@@ -1,6 +1,7 @@
 #: Maximal distance (in bp) from exon to be considered "near coding".
 NEAR_CODING_DIST = 1000
 
+
 # Create BED file with "near coding regions", based on RefSeq.
 rule annos_near_coding_regions:
     input:
@@ -65,6 +66,7 @@ rule annos_helixmtdb_convert:
         rm -f {output.vcf}.tmp
         """
 
+
 rule annos_gnomad_mtdna:
     output:
         dl="annos/{genome_build}/gnomad_mtdna/gnomad.genomes.v3.1.sites.chrM.vcf.bgz",
@@ -96,7 +98,7 @@ rule annos_gnomad_mtdna:
         """
 
 
-#GNOMAD_PREFIX = "https://datasetgnomad.blob.core.windows.net/dataset/release"
+# GNOMAD_PREFIX = "https://datasetgnomad.blob.core.windows.net/dataset/release"
 GNOMAD_PREFIX = "https://gnomad-public-us-east-1.s3.amazonaws.com/release"
 GNOMAD_V3 = "3.1.2"
 GNOMAD_V2 = "2.1.1"
@@ -177,36 +179,33 @@ def input_annos_gnomad_grch37(wildcards):
     if wildcards.kind == "exomes":
         chroms.append("Y")
     tpl = "annos/grch37/gnomad_{kind}/download/gnomad.{kind}.r{version}.sites.{chrom}.vcf.bgz"
-    return [
-        tpl.format(kind=wildcards.kind, version=GNOMAD_V2, chrom=chrom)
-        for chrom in chroms
-    ]
+    return [tpl.format(kind=wildcards.kind, version=GNOMAD_V2, chrom=chrom) for chrom in chroms]
 
 
 rule annos_gnomad_grch37:
-    input: input_annos_gnomad_grch37,
-    output: touch("annos/grch37/gnomad_{kind}/.done")
+    input:
+        input_annos_gnomad_grch37,
+    output:
+        touch("annos/grch37/gnomad_{kind}/.done"),
 
 
 def input_annos_gnomad_grch38(wildcards):
     chroms = list(range(1, 23)) + ["X", "Y"]
     if wildcards.kind == "exomes":
         tpl = "annos/grch38/gnomad_{kind}/download/gnomad.{kind}.r{version}.sites.{chrom}.liftover_grch38.vcf.bgz"
-        return [
-            tpl.format(kind=wildcards.kind, version=GNOMAD_V2, chrom=chrom)
-            for chrom in chroms
-        ]
+        return [tpl.format(kind=wildcards.kind, version=GNOMAD_V2, chrom=chrom) for chrom in chroms]
     else:
-        tpl = "annos/grch38/gnomad_{kind}/download/gnomad.{kind}.v{version}.sites.chr{chrom}.vcf.bgz"
-        return [
-            tpl.format(kind=wildcards.kind, version=GNOMAD_V3, chrom=chrom)
-            for chrom in chroms
-        ]
+        tpl = (
+            "annos/grch38/gnomad_{kind}/download/gnomad.{kind}.v{version}.sites.chr{chrom}.vcf.bgz"
+        )
+        return [tpl.format(kind=wildcards.kind, version=GNOMAD_V3, chrom=chrom) for chrom in chroms]
 
 
 rule annos_gnomad_grch38:
-    input: input_annos_gnomad_grch38,
-    output: touch("annos/grch38/gnomad_{kind}/.done")
+    input:
+        input_annos_gnomad_grch38,
+    output:
+        touch("annos/grch38/gnomad_{kind}/.done"),
 
 
 rule annos_ucsc_conservation_download:
@@ -228,6 +227,7 @@ rule annos_ucsc_conservation_download:
             --max-connection-per-server=8 \
             "http://hgdownload.cse.ucsc.edu/goldenpath/${{ucsc_name}}/multiz100way/alignments/knownGene.exonAA.fa.gz"
         """
+
 
 rule annos_ucsc_conservation_to_vcf:
     input:
@@ -288,8 +288,10 @@ rule annos_dbsnp_download:
         tabix -f {output.vcf}
         """
 
+
 CADD_VERSION = "1.6"
 CADD_PREFIX = f"https://kircherlab.bihealth.org/download/CADD/v{CADD_VERSION}"
+
 
 rule annos_cadd_download:
     output:
@@ -308,7 +310,6 @@ rule annos_cadd_download:
                 {CADD_PREFIX}/$(echo {wildcards.genome_release} | sed -e 's/grch/GRCh/')/$(basename $path)
         done
         """
-
 
 
 rule annos_cadd_process_37:
@@ -334,6 +335,7 @@ rule annos_cadd_process_38:
 DBNSFP_VERSION = "4.4"
 DBNSFP_ACADEMIC_URL = "https://usf.box.com/shared/static/bvfzmkpgtphvbmmrvb2iyl2jl21o49kc"
 DBNSFP_COMMMERCIAL_URL = "https://usf.box.com/shared/static/a84zcdlkx2asq2nxh6xr2gdb4csmyvhk"
+
 
 def files_dbnsfp():
     lst = [
@@ -398,6 +400,7 @@ rule annos_dbnsfp_download:
         unzip -d $(dirname {output.zip}) {output.zip}
         """
 
+
 rule annos_dbnsfp_process:
     input:
         zip="annos/grch37/dbnsfp-{version}{variant}/download/dbNSFP{version}{variant}.zip",
@@ -410,10 +413,8 @@ rule annos_dbnsfp_process:
 def files_dbscsnv(version: str = "1.1"):
     """Files contained in the dbscSNV ZIP file."""
     chroms = [str(i) for i in range(1, 23)] + ["X", "Y"]
-    return [
-        f"annos/grch37/dbscsnv/download/dbscSNV{version}.chr{chrom}"
-        for chrom in chroms
-    ]
+    return [f"annos/grch37/dbscsnv/download/dbscSNV{version}.chr{chrom}" for chrom in chroms]
+
 
 rule annos_dbscsnv_download:
     output:
@@ -430,6 +431,7 @@ rule annos_dbscsnv_download:
             ftp://dbnsfp:dbnsfp@dbnsfp.softgenetics.com/dbscSNV1.1.zip
         unzip -d $(dirname {output.zip}) {output.zip}
         """
+
 
 rule annos_dbscsnv_process:
     input:

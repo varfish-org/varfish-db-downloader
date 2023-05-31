@@ -76,6 +76,62 @@ rule genes_gnomad_constraints_v2_1_1_download:
         """
 
 
+def run_genes_gnomad_constraints_v2_1_1_to_tsv(wildcards):
+    """Extra function because of snakefmt issues."""
+    columns_src = [
+        "transcript",
+        "exp_lof",
+        "exp_mis",
+        "exp_syn",
+        "mis_z",
+        "obs_lof",
+        "obs_mis",
+        "obs_syn",
+        "oe_lof",
+        "oe_lof_lower",
+        "oe_lof_upper",
+        "oe_mis",
+        "oe_mis_lower",
+        "oe_mis_upper",
+        "oe_syn",
+        "oe_syn_lower",
+        "oe_syn_upper",
+        "pLI",
+        "syn_z",
+        "exac_pLI",
+        "exac_obs_lof",
+        "exac_exp_lof",
+        "exac_oe_lof",
+    ]
+    columns_src_str = ",".join(columns_src)
+    columns_tmp = ["ensembl_transcript_id"] + columns_src[1:]
+    columns_tmp_str = ",".join(columns_tmp)
+    columns_dst = ["ensembl_gene_id", "entrez_id", "gene_symbol"] + columns_src[1:]
+    columns_dst_str = ",".join(columns_dst)
+    shell(
+        r"""
+                set -x
+
+                zcat {input.bgz} \
+                | tr '\t' ',' \
+                > {output.txt_tmp}
+
+                qsv select {columns_src_str} {output.txt_tmp} \
+                | qsv rename {columns_tmp_str} \
+                | qsv sort -u \
+                | tr ',' '\t' \
+                > {output.tsv_tmp}
+
+                qsv join -d '\t' ensembl_transcript_id {output.tsv_tmp} ensembl_transcript_id {input.xlink_ensembl} \
+                | qsv select {columns_dst_str} \
+                | tr ',' '\t' \
+                > {output.tsv}
+
+                md5sum {output.tsv} >{output.tsv_md5}
+            """
+    )
+
+
 rule genes_gnomad_constraints_v2_1_1_to_tsv:
     input:
         bgz="genes/gnomad_constraints/download/gnomad.v2.1.1.lof_metrics.by_gene.txt.bgz",
@@ -86,58 +142,7 @@ rule genes_gnomad_constraints_v2_1_1_to_tsv:
         tsv="genes/gnomad_constraints/gnomad_constraints.tsv",
         tsv_md5="genes/gnomad_constraints/gnomad_constraints.tsv.md5",
     run:
-        columns_src = [
-            "transcript",
-                "exp_lof",
-                "exp_mis",
-                "exp_syn",
-                "mis_z",
-                "obs_lof",
-                "obs_mis",
-                "obs_syn",
-                "oe_lof",
-                "oe_lof_lower",
-                "oe_lof_upper",
-                "oe_mis",
-                "oe_mis_lower",
-                "oe_mis_upper",
-                "oe_syn",
-                "oe_syn_lower",
-                "oe_syn_upper",
-                "pLI",
-                "syn_z",
-                "exac_pLI",
-                "exac_obs_lof",
-                "exac_exp_lof",
-                "exac_oe_lof",
-            ]
-        columns_src_str = ",".join(columns_src)
-        columns_tmp = ["ensembl_transcript_id"] + columns_src[1:]
-        columns_tmp_str = ",".join(columns_tmp)
-        columns_dst = ["ensembl_gene_id", "entrez_id", "gene_symbol"] + columns_src[1:]
-        columns_dst_str = ",".join(columns_dst)
-        shell(
-        r"""
-                    set -x
-
-                    zcat {input.bgz} \
-                    | tr '\t' ',' \
-                    > {output.txt_tmp}
-
-                    qsv select {columns_src_str} {output.txt_tmp} \
-                    | qsv rename {columns_tmp_str} \
-                    | qsv sort -u \
-                    | tr ',' '\t' \
-                    > {output.tsv_tmp}
-
-                    qsv join -d '\t' ensembl_transcript_id {output.tsv_tmp} ensembl_transcript_id {input.xlink_ensembl} \
-                    | qsv select {columns_dst_str} \
-                    | tr ',' '\t' \
-                    > {output.tsv}
-
-                    md5sum {output.tsv} >{output.tsv_md5}
-                """
-        )
+        run_genes_gnomad_constraints_v2_1_1_to_tsv(wildcards)
 
 
 rule genes_mim2gene:

@@ -46,4 +46,6 @@ jobs:
             Please check for formatting and linting issues.  You can use `make lint` to:
 
             - Check your Bash style with `beautysh` and formatting with `shellcheck`.
+            - Check your Python style with `black`, linting with `flake8`.
+            - Check your Snakemake style with `snakefmt`.
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

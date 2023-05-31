@@ -5,9 +5,9 @@ __author__ = "Manuel Holtgrewe <manuel.holtgrewe@bihealth.de>"
 
 import gzip
 import os
+
 import binning
 import vcfpy
-
 
 #: Headers used in GFF3.
 GFF3_HEADERS = ("seqid", "source", "type", "start", "end", "score", "strand", "phase", "attributes")

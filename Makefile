@@ -7,7 +7,15 @@ SHELL := bash -x -euo pipefail
 ci: \
 	lint-bash \
 	check-format-bash \
-	lint-awk
+	lint-awk \
+	check-isort \
+	check-black \
+	check-snakefmt \
+	flake8 \
+
+# Alias lint to ci.
+.PHONY: lint
+lint: ci
 
 # Run bash linting using spellcheck.
 .PHONY: lint-bash
@@ -28,10 +36,34 @@ lint-awk:
 		gawk -f $$file -Lfatal /dev/null >/dev/null; \
 	done
 
+# Run Python import sort checking with isort.
+.PHONY: check-isort
+check-isort:
+	isort --profile=black --check-only tools scripts
+
+# Run Python format checking with black.
+.PHONY: check-black
+check-black:
+	black --check --line-length 100 tools scripts
+
+# Run Snakemake format checking with snakefmt.
+.PHONY: check-snakefmt
+snakefmt:
+	snakefmt --check --diff --line-length 100 Snakefile
+	snakefmt --check --diff --line-length 100 snakefiles/*.smk
+
+# Run Python linting with flake8.
+.PHONY: flake8
+flake8:
+	flake8 --max-line-length 100 tools scripts
+
 # Run all automatic code formatting.
 .PHONY: format
 format:	\
-	format-bash
+	format-bash \
+	isort-python \
+	black-python \
+	run-snakefmt
 
 # Run bash formatting using beautysh.
 .PHONY: format-bash
@@ -39,3 +71,19 @@ format-bash:
 	for file in scripts/*.sh; do \
 		beautysh --indent-size 4 $$file --force-function-style paronly; \
 	done
+
+# Run Python import sorting with isort.
+.PHONY: isort-python
+isort-python:
+	isort --profile=black tools scripts
+
+# Run Python formatting with black.
+.PHONY: black-python
+black-python:
+	black --line-length 100 tools scripts
+
+# Run Snakemake formatting with snakefmt.
+.PHONY: run-snakefmt
+run-snakefmt:
+	snakefmt --line-length 100 Snakefile
+	snakefmt --line-length 100 snakefiles/*.smk
