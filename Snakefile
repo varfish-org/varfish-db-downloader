@@ -1,12 +1,27 @@
-import os
+# Main Snakefile for the varfish-db-downloader.
+#
+# This Snakemake workflow allows for downlaoding the background data needed by VarFish.  The data
+# is downloaded from public sources and transformed as needed.  Eventually, the data is converted
+# into RocksDB databases or protobuf binary files that can be used directly by
+# ``varfish-server-worker`` and is used in the backend for filtering and/or exposed to the
+# user via a REST API.
 
-from tools.sv_db_to_tsv import to_tsv
+# ===============================================================================================
+# Test Mode
+# ===============================================================================================
+
+import os
 
 # Activate test mode by prepending the path to the "test-mode-bin" directory to the PATH.
 if os.environ.get("CI", "false").lower() == "true":
     cwd = os.getcwd()
     old_path = os.environ["PATH"]
     os.environ["PATH"] = f"{cwd}/test-mode-bin:{old_path}"
+
+
+# ===============================================================================================
+# Default Rule
+# ===============================================================================================
 
 
 rule default:
@@ -51,6 +66,11 @@ rule default:
         "vardbs/grch37/strucvar/g1k.bed.gz",
         "vardbs/grch37/strucvar/gnomad_sv.bed.gz",
         "vardbs/grch37/strucvar/exac.bed.gz",
+
+
+# ===============================================================================================
+# Modular Snakefile Includes
+# ===============================================================================================
 
 
 include: "snakefiles/annos.smk"

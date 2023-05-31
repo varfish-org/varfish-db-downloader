@@ -1,175 +1,68 @@
+[![CI](https://github.com/bihealth/varfish-db-downloader/actions/workflows/main.yml/badge.svg)](https://github.com/bihealth/varfish-db-downloader/actions/workflows/main.yml)
+[![check-urls](https://github.com/bihealth/varfish-db-downloader/actions/workflows/check-urls.yml/badge.svg)](https://github.com/bihealth/varfish-db-downloader/actions/workflows/check-urls.yml)
+
 # VarFish DB Downloader
 
-The purpose of this project is to collect various annotation database files
-required by VarFish Web UI and convert them into the format that is required for
-the import into VarFish Web UI.
+The purpose of this repository is to collect various data form public sources that is eventually used in VarFish for annotation and display to the user.
+This repository contains a Snakemake workflow with supporting code for downloading the data and preparing it for being used with VarFish.
 
-## Requirements
+**Quick Facts**
 
-- [conda](https://conda.io/miniconda.html)
+- License: MIT
+- Programming Language: Python / Snakemake
 
-## Installation
+## Development Setup
 
-### Clone project
+### Prerequisites: Install `mamba` for Conda Package Management
 
-```
-git clone git@cubi-gitlab.bihealth.org:CUBI_Engineering/VarFish/varfish-db-downloader
-cd varfish-db-downloader
-```
-
-### Setup environment
+Install conda, ideally via [miniforge](https://github.com/conda-forge/miniforge).
+A quickstart:
 
 ```
-conda env create -f environment.frozen-2020-10-23.yaml
-conda activate varfish-db-downloader
-pip install -r requirements.txt
-cp config.yaml.example config.yaml
+# wget -O /tmp/Mambaforge-Linux-x86_64.sh \
+    https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-Linux-x86_64.sh
+# bash /tmp/Mambaforge-Linux-x86_64.sh -b -p ~/mambaforge3 -s
+# source ~/mambaforge3/bin/activate
 ```
 
-Adjust the variables in `config.yaml` to your requirements.
-
-## Prepare Data Release
-
-This command will download and process all necessary files as well as link all files in a folder to build the final packages.
+### Clone Project
 
 ```
-snakemake
+# git clone git@github.com:bihealth/varfish-db-downloader.git
+# cd varfish-db-downloader
 ```
 
-The following variables can be adjusted on the commandline (either export them as variables or preceed the command).
+### Setup Environment and Install Tools
 
-| Variable           | Default                 |
-|--------------------|-------------------------|
-| `RELEASE_PATH`     | `releases`              |
-| `DATA_RELEASE`     | current date (YYYYMMDD) |
-| `CLINVAR_RELEASE`  | current date (YYYYMMDD) |
-| `JANNOVAR_RELEASE` | current date (YYYYMMDD) |
+This will setup the conda environment:
 
-The output can be found in the folders `GRCh37`, `GRCh38` and `releases` (default setting).
-
-## Pack Data Release
-
-Use the `Makefile` to pack the output of the snakemake run to finalize the data release.
 
 ```
-make pack_server
-make pack_annotator
-make pack_jannovar
+# mamba env create --file environment.yml
+# conda activate varfish-db-downloader
 ```
 
-The following variables can be adjusted on the commandline (either export them as variables, preceed the command or edit directly in the `Makefile`).
-
-| Variable           | Default                 |
-|--------------------|-------------------------|
-| `RELEASE_PATH`     | `releases`              |
-| `DATA_RELEASE`     | current date (YYYYMMDD) |
-| `JANNOVAR_RELEASE` | current date (YYYYMMDD) |
-
-The output can be found in the folder `releases`:
+This will install the `varfish-db-downloader` tools:
 
 ```
-releases/jannovar-db-YYYYMMDD.tar.gz.sha256
-releases/jannovar-db-YYYYMMDD.tar.gz
-releases/varfish-annotator-db-YYYYMMDD.tar.gz.sha256
-releases/varfish-annotator-db-YYYYMMDD.tar.gz
-releases/varfish-server-background-db-YYYYMMDD.tar.gz.sha256
-releases/varfish-server-background-db-YYYYMMDD.tar.gz
+# pip install -e .
 ```
 
-## VarFish Server Compatibility Table
 
-Information about which VarFish DB Downloader version corresponds to which data
-release version and can be used with which VarFish Server version:
+## Developer Rules
 
-| VarFish DB Downloader | Data Release | VarFish Server |
-|-----------------------|--------------|----------------|
-| v0.2                  | 20201006     | <= v0.22.1     |
+### Download Commands
 
+We use `wget` and `aria2c` only and not `curl`.
+The rationale is that for the **test mode**, we are overriding the two executables with helper commands.
 
-## Developer Info
+### Development Subsets
 
-- Use `wget` only and not `curl`.
-  The rationale is that for the "test mode", we are overriding a single command with a helper command.
-- Output files either go to `GRCh37/...`, or `GRCh38/...` or `noref/...`.
-- All `*.smk` files in `snakefiles/*` are automatically included and the output files are dynamically computed from this.
-  This implies we have to follow some conventions in for rule names and output file list.
-    - When using the genome build as a wildcards, it must be called `{genome_build}`.
-    - Lists generating output files to be included in data release must be called `result_`.
-    - You can use `{chrom}` for the chromosomes `1, 2, ..., 22, X, Y`.
-      Use `{chrom_no_y}` for `1, 1, ..., 22, X` without `Y`.
-    - Any other wildcard in the output file must be an entry in the configuration read from `configfile: "config.yaml"`.
-      The canonical example is `download_date`.
+Besides the full output, we also build a subset of the data suitable for development.
+At the moment of writing, the subset is to the BRCA1 gene only.
+The rationale is that this gene and its variants are heavily annotated as breast cancer predisposition screening is a common task and users/data is plenty.
 
-## Building Specific Tables
-
-Some data is downloaded from sources that have a rolling release, i.e. the
-files are updated without any version number. This release system tends to
-update the data more frequently. This brings two issues with it: Firstly, we
-can't rely on a version number to distinguish releases, and secondly, as
-releases tend to happen more often, VarFish users expect the database to be
-up-to-date.
-
-The first problem is solved by replacing what would resemble a version number
-in a versioned release with the date downloaded (this is why you can provide
-`download_date` in the `config.yaml` file). The second issue is solved by
-building your own data as we will described now on the example of HPO and OMIM.
-
-The instructions assume that you followed the installation and have set up
-the conda environment, installed the requirements and copied the `config.yaml`
-file.
-
-We do build our own tables by specifying the output files expected by Snakemake.
-One can specify rule names in Snakemake, but then it is expected that they do
-not contain any wildcards, which is happens not to be the case in
-VarFish DB Downloader.
-
-The variable in our Snakemake workflow to specify the download date is
-`download_date`. Note that specifying this variable in the `config.yaml` is
-only required when running the full workflow and has no impact when building
-only specific tables.
-
-### Update HPO and OMIM Tables
-
-The target files to build HPO and OMIM tables are:
-
-```
-noref/mim2gene/{download_date}/Mim2geneMedgen.tsv
-noref/mim2gene/{download_date}/Mim2geneMedgen.release_info
-noref/hpo/{download_date}/Hpo.tsv
-noref/hpo/{download_date}/Hpo.release_info
-```
-
-Replace the variable `download_date` with the current date and pass it to the
-Snakemake command:
-
-```
-$ snakemake -p \
-    noref/mim2gene/20220126/Mim2geneMedgen.{tsv,release_info} \
-    noref/hpo/20220126/Hpo.{tsv,release_info} \
-    noref/hpo/20220126/HpoName.{tsv,release_info}
-```
-
-Create a backup copy of the `import_tables.tsv` file:
-
-```
-$ cp import_tables.tsv{,.bak}
-```
-
-Replace the content of the `import_tables.tsv` file (should be tab-separated!):
-
-```
-build   table_group version
-noref   hpo 20220126
-noref   mim2gene  20220126
-```
-
-Import the files into VarFish:
-
-```
-$ python manage.py import_tables --tables-path /path/to/varfish-db-downloader
-```
-
-## Running in Test Mode
+### Running in Test Mode
 
 The download of files can be disabled to enable a test mode.
 Instead, the files in `excerpt-data` are used when `CI=true` is set in the environment.
@@ -185,7 +78,7 @@ The files can be updated by calling
 
 The known URLs are managed in `download_urls.yml`.
 
-## Managing GitHub Project with Terraform
+### Managing GitHub Project with Terraform
 
 ```
 # export GITHUB_OWNER=bihealth
@@ -201,7 +94,7 @@ The known URLs are managed in `download_urls.yml`.
 # terraform apply
 ```
 
-## Semantic Commits
+### Semantic Commits
 
 Generally, follow [Semantic Commits v1](https://www.conventionalcommits.org/en/v1.0.0/#specification), also see [examples](https://www.conventionalcommits.org/en/v1.0.0/#examples).
 
