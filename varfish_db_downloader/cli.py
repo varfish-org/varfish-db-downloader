@@ -75,7 +75,7 @@ def run_stub_aria2c(
             wget.copy_excerpt(entry, data_dir, out)
             break
     else:
-        raise click.ClickException(f"URL {entry.url} not found in {urls_yaml}")
+        raise click.ClickException(f"URL {url} not found in {urls_yaml}")
 
 
 @wget_.command()

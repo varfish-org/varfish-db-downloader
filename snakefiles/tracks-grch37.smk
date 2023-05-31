@@ -4,7 +4,7 @@ rule tracks_grch37_ucsc_genomic_super_dups:
         bed_md5="tracks/grch37/ucsc_genomicSuperDups.bed.gz.md5",
         bed_tbi="tracks/grch37/ucsc_genomicSuperDups.bed.gz.tbi",
         bed_tbi_md5="tracks/grch37/ucsc_genomicSuperDups.bed.gz.tbi.md5",
-        txt=temp("tracks/grch37/download/genomicSuperDups.txt.gz"),
+        txt="tracks/grch37/download/genomicSuperDups.txt.gz",
     shell:
         r"""
         set -x
@@ -34,7 +34,7 @@ rule tracks_grch37_ucsc_rmsk:
         bed_md5="tracks/grch37/ucsc_rmsk.bed.gz.md5",
         bed_tbi="tracks/grch37/ucsc_rmsk.bed.gz.tbi",
         bed_tbi_md5="tracks/grch37/ucsc_rmsk.bed.gz.tbi.md5",
-        txt=temp("tracks/grch37/download/rmsk.txt.gz"),
+        txt="tracks/grch37/download/rmsk.txt.gz",
     shell:
         r"""
         set -x
@@ -64,7 +64,7 @@ rule tracks_grch37_ucsc_x_seq_lift_over_psl:
         bed_md5="tracks/grch37/ucsc_{prefix}SeqLiftOverPsl.bed.gz.md5",
         bed_tbi="tracks/grch37/ucsc_{prefix}SeqLiftOverPsl.bed.gz.tbi",
         bed_tbi_md5="tracks/grch37/ucsc_{prefix}SeqLiftOverPsl.bed.gz.tbi.md5",
-        txt=temp("tracks/grch37/download/{prefix}SeqLiftOverPsl.txt.gz"),
+        txt="tracks/grch37/download/{prefix}SeqLiftOverPsl.txt.gz",
     shell:
         r"""
         set -x

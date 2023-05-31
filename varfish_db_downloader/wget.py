@@ -1,6 +1,8 @@
 """Implementation of the stub ``wget`` and supporting tool."""
 
+import gzip
 import hashlib
+import itertools
 import os
 import pathlib
 import shutil
@@ -8,10 +10,13 @@ import subprocess
 import tempfile
 import typing
 import urllib.parse
+import zlib
 
 import attrs
 import cattrs
+import click
 import requests
+import requests_ftp
 import yaml
 from loguru import logger
 
@@ -20,26 +25,68 @@ def excerpt_manual(url: str, path_out: str, count: int):
     """Do not download, assume output is already there."""
     _ = url
     _ = count
+    logger.info("    (strategy MANUAL from {} to {})", url, path_out)
     if not os.path.exists(path_out):
-        raise RuntimeError(f"File {path_out} does not exist")
+        raise RuntimeError(f"File {path_out} does not exist (strategy MANUAL)")
 
 
 def no_excerpt(url: str, path_out: str, count: int):
     """Do not excerpt, use all."""
+    logger.info("    (strategy no-excerpt from {} to {})", url, path_out)
     _ = count
     with open(path_out, "wb") as outputf:
-        r = requests.get(url, allow_redirects=True)
+        requests_ftp.monkeypatch_session()
+        s = requests.Session()
+        r = s.get(url, allow_redirects=True)
         outputf.write(r.content)
+
+
+def decompress_stream(stream):
+    """Helper for decompressing data from a stream."""
+    o = zlib.decompressobj(16 + zlib.MAX_WBITS)
+    for chunk in stream:
+        yield o.decompress(chunk)
+    yield o.flush()
 
 
 def excerpt_head(url: str, path_out: str, count: int):
     """Excerpt a plaint-text file by copying lines."""
-    with open(path_out, "wb") as f_out:
-        r = requests.get(url, stream=True)
+    logger.info("    (strategy head from {} to {})", url, path_out)
+    try_gzip = url.endswith(".gz") or url.endswith(".bgz")
+    if try_gzip:
+        opener = gzip.open
+    else:
+        opener = open
+    with opener(path_out, "wb") as f_out:
+        requests_ftp.monkeypatch_session()
+        s = requests.Session()
+        r = s.get(url, stream=True)
+        # First, attempt to read line by line which should work if requests is
+        # correctly identifying gzip compression.
+        is_raw_gzip = False
         for i, line in enumerate(r.iter_lines()):
+            if i == 0 and line.startswith(b"\x1f\x8b"):
+                is_raw_gzip = True
+                break
             if i >= count:
                 break
             f_out.write(line)
+            f_out.write(b"\n")
+        if is_raw_gzip:
+            logger.info("    falling back to raw gzip decompression")
+            # If requests failed to detect gzip compression, we need to decompress
+            # manually.
+            r = s.get(url, stream=True)
+            parseable_data = decompress_stream(r.iter_content(1024))
+            hacky_n_chunks = 10  # we will read only 10 chunks for now
+            chunks_byte = list(itertools.islice(parseable_data, hacky_n_chunks))
+            collapsed_byte = b"".join(chunks_byte)
+            collapsed = collapsed_byte.decode("utf-8")
+            for i, line in enumerate(collapsed.split("\n")):
+                if i >= count:
+                    break
+                f_out.write(line.encode("utf-8"))
+                f_out.write(b"\n")
 
 
 def excerpt_vcf_head(url: str, path_out: str, count: int):
@@ -58,7 +105,7 @@ def excerpt_vcf_head(url: str, path_out: str, count: int):
     with tempfile.TemporaryDirectory() as tmpdir:
         # Obtain the list of chromosomes.
         lst_cmd = f"tabix --list-chroms {url}"
-        logger.debug("    + {}", lst_cmd)
+        logger.info("    + {}", lst_cmd)
         chroms_out = subprocess.check_output(lst_cmd, shell=True, cwd=tmpdir)
         chroms_lst = [
             line.strip() for line in chroms_out.decode("utf-8").split("\n") if line.strip()
@@ -73,7 +120,7 @@ def excerpt_vcf_head(url: str, path_out: str, count: int):
             f"tabix --preset vcf {cwd}/{path_out}",
         ]
         for cmd in cmds:
-            logger.debug("    + {}", cmd)
+            logger.info("    + {}", cmd)
             subprocess.check_call(cmd, shell=True, cwd=tmpdir)
 
 
@@ -106,6 +153,8 @@ class ExcerptStrategy:
             return ExcerptStrategy(strategy="vcf-head", count=100)
         elif url.endswith(".gz") or url.endswith(".bgz"):
             return ExcerptStrategy(strategy="gz-head", count=100)
+        elif url.endswith(".tbi") or "." not in url.split("/")[-1]:
+            return ExcerptStrategy(strategy="no-excerpt", count=100)
         else:
             return ExcerptStrategy(strategy="head", count=100)
 
@@ -151,6 +200,7 @@ def download_excerpt(url: UrlEntry, data_dir: str, force: bool):
         return
 
     out_path.mkdir(parents=True, exist_ok=True)
+    logger.info("    + mkdir -p {}", out_path)
     out_path_url = out_path / "url.txt"
     logger.info("    writing URL to {}", out_path_url)
     with out_path_url.open("wt") as f:
@@ -173,4 +223,5 @@ def copy_excerpt(url: UrlEntry, data_dir: str, output_document: str):
     parsed = urllib.parse.urlparse(url.url)
     basename = parsed.path.split("/")[-1]
     excerpt_path = in_path / basename
+    click.echo(err=True, message="copying {} => {}".format(excerpt_path, output_document))
     shutil.copy(excerpt_path, output_document)

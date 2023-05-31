@@ -55,7 +55,7 @@ rule annos_helixmtdb_convert:
 
         if [[ {wildcards.genome_build} == GRCh37 ]]; then
             sed -e 's/chrM/MT/g' {output.vcf}.tmp \
-            | bgzip -c >
+            | bgzip -c \
             > {output.vcf}
         else
             bgzip -c {output.vcf}.tmp >{output.vcf}

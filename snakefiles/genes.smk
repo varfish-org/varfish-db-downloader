@@ -18,7 +18,7 @@ rule genes_xlink_ensembl:
 
 rule genes_xlink_hgnc:
     output:
-        download_json=temp("genes/xlink/download/hgnc/hgnc_complete_set.json"),
+        download_json="genes/xlink/download/hgnc/hgnc_complete_set.json",
         tsv="genes/xlink/hgnc.tsv",
         tsv_md5="genes/xlink/hgnc.tsv.md5",
     shell:
@@ -137,8 +137,8 @@ rule genes_gnomad_constraints_v2_1_1_to_tsv:
         bgz="genes/gnomad_constraints/download/gnomad.v2.1.1.lof_metrics.by_gene.txt.bgz",
         xlink_ensembl="genes/xlink/ensembl.tsv",
     output:
-        txt_tmp=temp("genes/gnomad_constraints/download/gnomad.v2.1.1.lof_metrics.by_gene.txt"),
-        tsv_tmp=temp("genes/gnomad_constraints/download/gnomad_constraints-subset.tsv"),
+        txt_tmp="genes/gnomad_constraints/download/gnomad.v2.1.1.lof_metrics.by_gene.txt",
+        tsv_tmp="genes/gnomad_constraints/download/gnomad_constraints-subset.tsv",
         tsv="genes/gnomad_constraints/gnomad_constraints.tsv",
         tsv_md5="genes/gnomad_constraints/gnomad_constraints.tsv.md5",
     run:
@@ -147,7 +147,7 @@ rule genes_gnomad_constraints_v2_1_1_to_tsv:
 
 rule genes_mim2gene:
     output:
-        download=temp("genes/mim2gene/download/mim2gene_medgen"),
+        download="genes/mim2gene/download/mim2gene_medgen",
         tsv="genes/mim2gene/mim2gene.tsv",
         tsv_md5="genes/mim2gene/mim2gene.tsv.md5",
     shell:
@@ -213,12 +213,8 @@ rule result_noref_ncbi_gene_process:
 # file from UCSC uses these IDs.
 rule genes_enst_ensg_grch37:
     output:
-        download_txt=temp(
-            "genes/enst_ensg/grch37/download/knowntoEnsembl.txt.gz",
-        ),
-        download_gtf=temp(
-            "genes/enst_ensg/grch37/download/GCF_000001405.25_GRCh37.p13_genomic.gtf.gz"
-        ),
+        download_txt="genes/enst_ensg/grch37/download/knowntoEnsembl.txt.gz",
+        download_gtf="genes/enst_ensg/grch37/download/GCF_000001405.25_GRCh37.p13_genomic.gtf.gz",
         tmp1="genes/enst_ensg/grch37/download/tmp1.txt",
         tmp2="genes/enst_ensg/grch37/download/tmp2.txt",
         tsv="genes/enst_ensg/grch37/enst_ensg.tsv",
@@ -255,7 +251,7 @@ rule genes_enst_ensg_grch37:
 
 
 # We use the full dbNSFP genes information file.
-rule genes_:
+rule genes_dbnsfp_genes_copy:
     input:
         tsv=f"annos/grch37/dbnsfp-{DBNSFP_VERSION}a/download/dbNSFP{DBNSFP_VERSION}_gene.complete.gz",
     output:
@@ -268,7 +264,7 @@ rule genes_:
 
         zcat {input.tsv} \
         | pigz -c \
-        > {output.tsv
+        > {output.tsv}
 
         md5sum {output.tsv} >{output.tsv_md5}
         """
