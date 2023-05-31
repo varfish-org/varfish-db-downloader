@@ -169,6 +169,8 @@ class UrlEntry:
     hash: typing.Optional[str] = None
     #: The excerpt strategy to use.
     excerpt_strategy: typing.Optional[ExcerptStrategy] = None
+    #: Whether or not to skip the upstream check.
+    skip_upstream_check: bool = False
 
     def __attrs_post_init__(self):
         object.__setattr__(

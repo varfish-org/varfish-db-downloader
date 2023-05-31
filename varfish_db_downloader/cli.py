@@ -3,6 +3,8 @@
 import sys
 
 import click
+import requests
+import requests_ftp
 from loguru import logger
 
 from varfish_db_downloader import wget
@@ -120,6 +122,37 @@ def urls_download(urls, data_dir, urls_yaml, force):
             ok = False
         if not ok:
             raise click.ClickException("URL discrepancy (see logs above)")
+
+
+@wget_.command()
+@click.option("--urls-yaml", default="download_urls.yml")
+@click.argument("urls", nargs=-1)
+def urls_check_upstream(urls, urls_yaml):
+    """Check whether the URLs refer to downloadable files.
+
+    Leave ``urls`` empty to check for all URLs."""
+
+    requests_ftp.monkeypatch_session()
+    s = requests.Session()
+    if hasattr(s, "config"):
+        s.config["keep_alive"] = False
+
+    error_count = 0
+    for entry in wget.load_urls_yaml(urls_yaml):
+        if not entry.skip_upstream_check and (not urls or entry.url in urls):
+            logger.info(" checking {}...", entry.url)
+            r = s.get(entry.url, allow_redirects=True, stream=True)
+            if r.ok:
+                logger.info("   => OK")
+                r.close()
+            else:
+                error_count += 1
+                logger.warning("  NOT OK: {}", r)
+        else:
+            logger.info("  Skipping {}...", entry.url)
+
+    if error_count:
+        raise click.ClickException("Problem accessing some URLs (see above)")
 
 
 @wget_.command()
