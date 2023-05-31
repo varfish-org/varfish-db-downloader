@@ -28,7 +28,6 @@ jobs:
       - name: Setup formatting environment
         uses: mamba-org/setup-micromamba@v1
         with:
-          environment-name: base
           environment-file: environment.yml
           init-shell: bash
           cache-environment: true
@@ -36,6 +35,7 @@ jobs:
 
       - name: Check formating
         run: |
+          conda activate varfish-db-downloader
           make ci
         shell: bash -el {0}
 
