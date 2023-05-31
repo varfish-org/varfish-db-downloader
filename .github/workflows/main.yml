@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  Cancel-Previous:
+    runs-on: ubuntu-latest
+    if: github.ref != 'refs/heads/main'
+    steps:
+      - uses: khan/pull-request-workflow-cancel@1.0.0
+        with:
+          workflows: "main.yml"
+        env:
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+
+  Formatting-Linting:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup formatting environment
+        uses: mamba-org/setup-micromamba@v1
+        with:
+          environment-name: base
+          environment-file: environment.yml
+          init-shell: bash
+          cache-environment: true
+          post-cleanup: 'all'
+
+      - name: Check formating
+        run: |
+          make ci
+        shell: bash -el {0}
+
+      - name: Comment PR
+        if: github.event_name == 'pull_request' && failure()
+        uses: marocchino/sticky-pull-request-comment@v1.1.0
+        with:
+          message: |
+            Please check for formatting and linting issues.  You can use `make lint` to:
+
+            - Check your Bash style with `beautysh`` and formatting with `shellcheck``.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
