@@ -27,7 +27,7 @@ def excerpt_manual(url: str, path_out: str, count: int):
 def no_excerpt(url: str, path_out: str, count: int):
     """Do not excerpt, use all."""
     _ = count
-    with open(path_out, 'wb') as outputf:
+    with open(path_out, "wb") as outputf:
         r = requests.get(url, allow_redirects=True)
         outputf.write(r.content)
 
@@ -60,7 +60,9 @@ def excerpt_vcf_head(url: str, path_out: str, count: int):
         lst_cmd = f"tabix --list-chroms {url}"
         logger.debug("    + {}", lst_cmd)
         chroms_out = subprocess.check_output(lst_cmd, shell=True, cwd=tmpdir)
-        chroms_lst = [l.strip() for l in chroms_out.decode("utf-8").split("\n") if l.strip()]
+        chroms_lst = [
+            line.strip() for line in chroms_out.decode("utf-8").split("\n") if line.strip()
+        ]
         chroms_arg = " ".join(chroms_lst)
         # Perform the extraction steps.
         tmpfile = tmpdir + "/tmp.vcf"
