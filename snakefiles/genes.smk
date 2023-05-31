@@ -173,22 +173,26 @@ rule genes_gene_download:
         gene2xml_md5="genes/ncbi/download/linux64.gene2xml.md5",
     shell:
         r"""
-        cd $(dirname {output.ags})
+        set -x
 
-        if [[ ! -e Homo_sapiens.ags.gz.md5 ]]; then
+        if [[ ! -e $(dirname {output.ags})/Homo_sapiens.ags.gz.md5 ]]; then
             wget --no-check-certificate \
-                -O Homo_sapiens.ags.gz \
+                -O $(dirname {output.ags})/Homo_sapiens.ags.gz \
                 https://ftp.ncbi.nih.gov/gene/DATA/ASN_BINARY/Mammalia/Homo_sapiens.ags.gz
-            md5sum Homo_sapiens.ags.gz >Homo_sapiens.ags.gz.md5
+            pushd $(dirname {output.ags})
+            md5sum Homo_sapiens.ags.gz > Homo_sapiens.ags.gz.md5
+            popd
         fi
 
-        if [[ ! -e linux64.gene2xml.md5 ]]; then
+        if [[ ! -e $(dirname {output.ags})/linux64.gene2xml.md5 ]]; then
             wget --no-check-certificate \
-                -O linux64.gene2xml.gz \
+                -O $(dirname {output.ags})/linux64.gene2xml.gz \
                 https://ftp.ncbi.nlm.nih.gov/asn1-converters/by_program/gene2xml/linux64.gene2xml.gz
+            pushd $(dirname {output.ags})
             gzip -d -c linux64.gene2xml.gz > linux64.gene2xml
             chmod +x linux64.gene2xml
             md5sum linux64.gene2xml > linux64.gene2xml.md5
+            popd
         fi
         """
 

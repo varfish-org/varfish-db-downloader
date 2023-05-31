@@ -1,4 +1,7 @@
 - url: https://hgdownload.cse.ucsc.edu/goldenpath/hg19/multiz100way/alignments/knownGene.exonAA.fa.gz
+  excerpt_strategy:
+    strategy: head
+    count: 10000
 - url: https://hgdownload.cse.ucsc.edu/goldenpath/hg38/multiz100way/alignments/knownGene.exonAA.fa.gz
 
 - url: https://compbio.med.harvard.edu/modencode/webpage/hic/IMR90_domains_hg19.bed
@@ -31,9 +34,18 @@
     count: null
 
 - url: https://ftp.ncbi.nlm.nih.gov/genomes/archive/old_refseq/H_sapiens/ARCHIVE/ANNOTATION_RELEASE.105/Assembled_chromosomes/chr_accessions_GRCh37.p13
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
 - url: https://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/annotation_releases/105.20220307/GCF_000001405.25_GRCh37.p13/GCF_000001405.25_GRCh37.p13_genomic.gtf.gz
+  excerpt_strategy:
+    strategy: head
+    count: 10000
 
 - url: https://ftp.ensembl.org/pub/grch37/current/gtf/homo_sapiens/Homo_sapiens.GRCh37.87.gtf.gz
+  excerpt_strategy:
+    strategy: head
+    count: 10000
 
 - url: 'https://ensembl.org/biomart/martservice?query=<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE Query><Query  virtualSchemaName = "default" formatter = "TSV" header = "0" uniqueRows = "0" count = "" datasetConfigVersion = "0.6" ><Dataset name = "hsapiens_gene_ensembl" interface = "default" ><Attribute name = "ensembl_gene_id" /><Attribute name = "ensembl_transcript_id" /><Attribute name = "entrezgene_id" /><Attribute name = "external_gene_name" /></Dataset></Query>'
 - url: 'https://ftp.ebi.ac.uk/pub/databases/genenames/hgnc/json/hgnc_complete_set.json'
@@ -47,7 +59,7 @@
 - comment: We replace the linux64.gene2.xml binary with a wrapper to zcat...
   url: https://ftp.ncbi.nlm.nih.gov/asn1-converters/by_program/gene2xml/linux64.gene2xml.gz
   excerpt_strategy:
-    strategy: no-excerpt
+    strategy: manual
     count: null
 - comment: ... and place an XML fragment into the `.ags.gz` file.
   url: https://ftp.ncbi.nih.gov/gene/DATA/ASN_BINARY/Mammalia/Homo_sapiens.ags.gz
@@ -62,8 +74,8 @@
 
 - url: https://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/genomicSuperDups.txt.gz
 - url: https://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/rmsk.txt.gz
-- url: https://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/ucsc_altSeqLiftOverPsl.txt.gz
-- url: https://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/ucsc_fixSeqLiftOverPsl.txt.gz
+- url: https://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/altSeqLiftOverPsl.txt.gz
+- url: https://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/fixSeqLiftOverPsl.txt.gz
 
 - url: https://ftp.ncbi.nlm.nih.gov/pub/dbVar/sandbox/sv_datasets/nonredundant/deletions/GRCh37.nr_deletions.tsv.gz
 - url: https://ftp.ncbi.nlm.nih.gov/pub/dbVar/sandbox/sv_datasets/nonredundant/duplications/GRCh37.nr_duplications.tsv.gz

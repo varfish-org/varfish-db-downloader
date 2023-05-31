@@ -39,7 +39,7 @@ def run_stub_wget(url, check_certificate, data_dir, urls_yaml, output_document):
             wget.copy_excerpt(entry, data_dir, output_document)
             break
     else:
-        raise click.ClickException(f"URL {entry.url} not found in {urls_yaml}")
+        raise click.ClickException(f"URL {url} not found in {urls_yaml}")
 
 
 @wget_.command()
