@@ -65,7 +65,12 @@ jobs:
           cache-environment: true
           post-cleanup: 'all'
 
-      - name: Check formating
+      - name: Install python package
+        run: |
+          pip install -e .
+        shell: bash -el {0}
+
+      - name: Run in test mode
         run: |
           CI=true snakemake --cores=1 -p
         shell: bash -el {0}
