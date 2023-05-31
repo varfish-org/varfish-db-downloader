@@ -44,7 +44,7 @@ rule default:
         "tracks/grch37/ucsc_rmsk.bed.gz",
         "tracks/grch37/ucsc_fixSeqLiftOverPsl.bed.gz",
         "tracks/grch37/ucsc_altSeqLiftOverPsl.bed.gz",
-        "vardbs/grch37/strucvar/clinvar.bed.gz",
+        # "vardbs/grch37/strucvar/clinvar.bed.gz",
         "vardbs/grch37/strucvar/dbvar.bed.gz",
         "vardbs/grch37/strucvar/dgv.bed.gz",
         "vardbs/grch37/strucvar/dgv_gs.bed.gz",
