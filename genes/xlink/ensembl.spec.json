@@ -1,0 +1,20 @@
+{
+    "dc:format": "text/tsv",
+    "dc:identifier": "gene-centric/xlink/ensembl.tsv:r108",
+    "dc:title": "ENSEMBL gene cross-link table (r108)",
+    "dc:description": "This is a gene identifier cross-link table as exported from ENSEMBL BioMart r108. It is used to give map each ENSEMBL gene id to a Entrez/NCBI gene ID and the symbol stored in ENSEMBL r108. Note that HGNC and ENSEMBL are are inconsistent and incomplete for some genes.",
+    "dc:created": "2022-02-06",
+    "dc:creator": "EMBL-EBI ENSEMBL",
+    "dc:contributor": [
+        "VarFish Developer Team"
+    ],
+    "dc:source": [
+        "PMID:31691826",
+        "https://www.ensembl.org/biomart/martview/"
+    ],
+    "tsv:columns": {
+      "ensembl_gene_id": "ENSEMBL gene ID",
+      "entrez_id": "Entrez/NCBI gene ID",
+      "gene_symbol": "Gene symbol"
+    }
+}

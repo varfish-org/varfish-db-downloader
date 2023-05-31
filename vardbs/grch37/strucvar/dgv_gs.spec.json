@@ -1,0 +1,22 @@
+{
+  "dc:format": "text/tsv",
+  "dc:identifier": "vardbs/GRCh37/strucvars/dgv-gs.bed.gz:2016-05-15",
+  "dc:title": "DGV \"Gold Standard\" Variants (2016-05-15)",
+  "dc:description": "This TSV file contains the structural variants from DGV in the \"DGV Gold Standard Variants\" set from 2016-05-15.",
+  "dc:created": "2023-02-06",
+  "dc:creator": "",
+  "dc:contributor": [
+      "VarFish Developer Team"
+  ],
+  "dc:source": [
+      "PMID:24174537",
+      "http://dgv.tcag.ca/dgv/app/downloads"
+  ],
+  "tsv:columns": {
+    "chromosome": "Chromosome name without chr prefix",
+    "start_outer": "1-based start position of the outer region",
+    "end_outer": "1-based end position of the outer region",
+    "sv_sub_type": "The sub type of structural variant",
+    "num_carriers": "The number of carriers"
+  }
+}

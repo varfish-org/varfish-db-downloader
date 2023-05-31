@@ -1,0 +1,23 @@
+{
+  "dc:format": "text/x-bed",
+  "dc:identifier": "vardbs/GRCh37/strucvars/gnomad.bed.gz:r2.1",
+  "dc:title": "gnomAD-SV structural variants (r2.1.1)",
+  "dc:description": "This BED file contains the structural variants from gnomAD SV (r2.1.1)",
+  "dc:created": "2023-02-06",
+  "dc:creator": "gnomAD Team",
+  "dc:contributor": [
+      "VarFish Developer Team"
+  ],
+  "dc:source": [
+      "PMID:32461652",
+      "https://gnomad.broadinstitute.org/downloads#v2-structural-variants"
+  ],
+  "tsv:columns": {
+    "chromosome": "Chromosome name without chr prefix",
+    "begin": "0-based start position",
+    "end": "1-based end position",
+    "sv_type": "Structural variant type",
+    "n_homalt": "Number of homozygoust carriers",
+    "n_het": "Number of heterozygous carriers"
+  }
+}

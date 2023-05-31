@@ -1,76 +1,53 @@
-import glob
-from itertools import product
-import os
-import re
-import sys
-import textwrap
-import json
-
-from snakemake import shell
 from tools.sv_db_to_tsv import to_tsv
 
 
-# Ensure that the configuration file exists and then load it.
-if not os.path.exists("config.yaml"):
-    print("No config.yaml exists yet. Try `cp config.yaml.example config.yaml`.", file=sys.stderr)
-    sys.exit(1)
-
-
-configfile: "config.yaml"
-
-
-# Print configuration.
-print("Configuration:", file=sys.stderr)
-print("\n---\n%s\n---\n" % json.dumps(config, indent="  "), file=sys.stderr)
-
-#: Use strict mode and also print each command.
-shell.prefix("set -x; set -euo pipefail; ")
-
-#: The canonical chromosome names (without "Y").
-CHROMS_NO_Y = list(map(str, range(1, 23))) + ["X"]
-
-#: The canonical chromosome names.
-CHROMS = CHROMS_NO_Y + ["Y"]
-
-#: List for collecting all result files below.
-ALL_RESULT = []
-
-
-def input_all(wildcards):
-    return ALL_RESULT
-
-
-rule all:
+rule default:
     input:
-        input_all,
+        "annos/grch37/cadd/.done",
+        "annos/grch37/dbnsfp-4.4a/.done",
+        "annos/grch37/dbnsfp-4.4c/.done",
+        "annos/grch37/dbscsnv/.done",
+        "annos/grch37/helixmtdb/helixmtdb.vcf",
+        "annos/grch37/gnomad_mtdna/gnomad_mtdna.vcf.gz",
+        "annos/grch37/ucsc_conservation/ucsc_conservation.tsv",
+        "annos/grch37/dbsnp/dbsnp.vcf.gz",
+        "annos/grch37/gnomad_exomes/.done",
+        "annos/grch37/gnomad_genomes/.done",
+        "annos/grch38/cadd/.done",
+        "annos/grch38/dbnsfp-4.4a/.done",
+        "annos/grch38/dbnsfp-4.4c/.done",
+        "annos/grch38/gnomad_exomes/.done",
+        "annos/grch38/gnomad_genomes/.done",
+        "annos/grch38/gnomad_mtdna/gnomad_mtdna.vcf.gz",
+        "annos/grch38/helixmtdb/helixmtdb.vcf",
+        "features/grch37/tads/imr90.bed",
+        "features/grch37/tads/hesc.bed",
+        "features/grch37/gene_regions/refseq.bed.gz",
+        "features/grch37/gene_regions/ensembl.bed.gz",
+        "features/grch37/masked/repeat.bed.gz",
+        "features/grch37/masked/segdup.bed.gz",
+        "genes/hgnc/hgnc_info.jsonl",
+        "genes/ncbi/gene_info.jsonl",
+        "genes/dbnsfp/genes.tsv.gz",
+        "genes/xlink/ensembl.tsv",
+        "genes/xlink/hgnc.tsv",
+        "genes/mim2gene/mim2gene.tsv",
+        "tracks/grch37/ucsc_genomicSuperDups.bed.gz",
+        "tracks/grch37/ucsc_rmsk.bed.gz",
+        "tracks/grch37/ucsc_fixSeqLiftOverPsl.bed.gz",
+        "tracks/grch37/ucsc_altSeqLiftOverPsl.bed.gz",
+        "vardbs/grch37/strucvar/clinvar.bed.gz",
+        "vardbs/grch37/strucvar/dbvar.bed.gz",
+        "vardbs/grch37/strucvar/dgv.bed.gz",
+        "vardbs/grch37/strucvar/dgv_gs.bed.gz",
+        "vardbs/grch37/strucvar/g1k.bed.gz",
+        "vardbs/grch37/strucvar/gnomad_sv.bed.gz",
+        "vardbs/grch37/strucvar/exac.bed.gz",
 
 
-# Load all snakemake files `snakefiles/*/*.smk`.
-snakefiles = list(sorted(glob.glob("snakefiles/*/*.smk")))
-print("Loading Snakefiles...", file=sys.stderr)
-
-for path in snakefiles:
-
-    include: path
-
-
-# Derive output overall output files from rules starting with prefix "output_".
-print("Constructing list of output files from all `result_*` rules...\n", file=sys.stderr)
-
-ALL_RESULT = []
-for rule in workflow.rules:
-    if rule.name.startswith("result_"):
-        for genome_build in ("GRCh37", "GRCh38"):
-            vals = {**config, "genome_build": genome_build}
-            for path in rule.output:
-                if "{chrom}" in path:
-                    chroms = CHROMS
-                else:
-                    chroms = ["-"]
-                if "{chrom_no_y}" in path:
-                    chroms_no_y = CHROMS_NO_Y
-                else:
-                    chroms_no_y = ["-"]
-                for chrom, chrom_no_y in product(chroms, chroms_no_y):
-                    path = re.sub(r"{([^,]+)(,.*)?}", r"{\1}", path)
-                    ALL_RESULT.append(path.format(chrom=chrom, chrom_no_y=chrom_no_y, **vals))
+include: "snakefiles/annos.smk"
+include: "snakefiles/genes.smk"
+include: "snakefiles/features.smk"
+include: "snakefiles/vardbs-grch37-strucvars.smk"
+include: "snakefiles/tracks-grch37.smk"
+include: "snakefiles/reference.smk"

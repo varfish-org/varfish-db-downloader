@@ -1,0 +1,21 @@
+{
+  "dc:format": "text/tsv",
+  "dc:identifier": "vardbs/GRCh37/strucvars/exac.bed.gz:r1",
+  "dc:title": "ExAC Copy Number Variants (r1)",
+  "dc:description": "This TSV file contains the copy number variants from ExAC (r1)",
+  "dc:created": "2023-02-06",
+  "dc:creator": "ExAC Team",
+  "dc:contributor": [
+      "VarFish Developer Team"
+  ],
+  "dc:source": [
+      "PMID:27533299",
+      "https://gnomad.broadinstitute.org/downloads#exac-other"
+  ],
+  "tsv:columns": {
+    "chromosome": "Chromosome name without chr prefix",
+    "start": "1-based start position",
+    "end": "1-based end position",
+    "sv_type": "CNV types type"
+  }
+}

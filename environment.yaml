@@ -4,16 +4,23 @@ channels:
 - conda-forge
 - defaults
 dependencies:
-- python =3.9
-- snakemake =7.8
-- bedops ==2.4.35
+- python =3.10
+- snakemake-minimal =7
+- bedops =2
 - bcftools =1.15
-- htslib =1.15
-- samtools =1.15
-- drmaa ==0.7.9
-- bedtools ==2.27.1
+- htslib =1.16
+- samtools =1.16
+- bedtools =2.30
 - var-agg ==0.1.1
 - lftp
-- varfish-annotator-cli ==0.16
-- jannovar-cli
 - snakefmt
+- interval-binning =1
+- vcfpy
+- tqdm
+- prov =2
+- attrs
+- cattrs
+- jq
+- aria2
+- pigz
+- qsv

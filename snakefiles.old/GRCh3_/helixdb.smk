@@ -25,9 +25,9 @@ rule grchXX_helixmtdb_vcf:
         else:
             chrom = "chrM"
 
-        # As stated in HelixMTdb paper by Bolze et al, 2019,
-        # "Selective constraints and pathogenicity of mitochondrial DNA variants
-        #  inferred from a novel database of 196,554 unrelated individuals."
+            # As stated in HelixMTdb paper by Bolze et al, 2019,
+            # "Selective constraints and pathogenicity of mitochondrial DNA variants
+            #  inferred from a novel database of 196,554 unrelated individuals."
         AN = 196_554
 
         #: Mitochondrial length

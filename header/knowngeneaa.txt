@@ -1,8 +1,8 @@
-release
 chromosome
 start
-end
-bin
-transcript_id
-transcript_id_novers
+stop
+hgnc_id
+enst_id
+exon_num
+exon_count
 alignment

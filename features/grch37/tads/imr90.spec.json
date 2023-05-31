@@ -1,0 +1,20 @@
+{
+    "dc:format": "text/x-bed",
+    "dc:identifier": "features/GRCh37/tads/imr90.bed:dixon2015",
+    "dc:title": "Topological Associated Domains (TADs) in IMR90 cell line for GRCh37",
+    "dc:description": "This BED file contains the IMR90 fibroblast TAD domains as published by Dixon et al. (2015).",
+    "dc:created": "2023-02-06",
+    "dc:creator": "Dixon et al. (2015)",
+    "dc:contributor": [
+        "VarFish Developer Team"
+    ],
+    "dc:source": [
+        "PMID:25693564",
+        "http://compbio.med.harvard.edu/modencode/webpage/hic/"
+    ],
+    "tsv:columns": {
+      "chrom": "Chromosome name without chr prefix",
+      "begin": "0-based begin position",
+      "end": "0-based end position"
+    }
+}

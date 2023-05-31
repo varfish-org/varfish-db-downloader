@@ -1,19 +1,28 @@
 #!/usr/bin/env python3
 
 import argparse
+import csv
 import gzip
+import json
 import logging
 import re
 import sys
 import typing
 
-import attr
+import attrs
+import cattrs
 import vcfpy
 
+@attrs.frozen()
+class HgncEntry:
+    hgnc_id: str
+    ensembl_gene_id: str
 
-@attr.s(auto_attribs=True)
+
+@attrs.frozen()
 class AlignmentMeta:
-    ucsc_gene_id: str
+    hgnc_id: str
+    enst_id: str
     species: str
     exon_idx: int
     exon_count: int
@@ -23,7 +32,7 @@ class AlignmentMeta:
     location: typing.Tuple[str, int, int, str]
 
 
-@attr.s(auto_attribs=True)
+@attrs.frozen()
 class AlignmentBlock:
     meta: AlignmentMeta
     species: typing.List[str]
@@ -51,11 +60,18 @@ def read_contigs(fai_path):
 
 
 def build_header(contigs, species):
+    contig_map = {contig[0]: contig[1] for contig in contigs}
+
     header = vcfpy.Header()
     header.samples = vcfpy.SamplesInfos([])
     header.add_line(vcfpy.HeaderLine("fileformat", "VCFv4.2"))
+    seen = set()
     for name, length in contigs:
         header.add_contig_line({"ID": name, "length": length})
+        seen.add(name)
+    for a, b in (("M", "MT"), ("MT", "M"), ("chrM", "chrMT"), ("chrMT", "chrM")):
+        if a in seen and not b in seen:
+            header.add_contig_line({"ID": b, "length": contig_map[a]})
     header.add_line(vcfpy.HeaderLine("species", ",".join(species)))
     header.add_info_line(
         {
@@ -66,7 +82,10 @@ def build_header(contigs, species):
         }
     )
     header.add_info_line(
-        {"ID": "UCSC_GENE", "Description": "UCSC gene ID", "Type": "String", "Number": 1}
+        {"ID": "HGNC_ID", "Description": "HGNC ID of gene", "Type": "String", "Number": 1}
+    )
+    header.add_info_line(
+        {"ID": "ENST_ID", "Description": "ENSEMBL transcript ID", "Type": "String", "Number": 1}
     )
     header.add_info_line(
         {"ID": "EXON", "Description": "Index of exon in transcript", "Type": "Integer", "Number": 1}
@@ -90,13 +109,19 @@ def build_header(contigs, species):
     return header
 
 
-def fasta_header_to_meta(line, have_chr):
+def fasta_header_to_meta(line, have_chr, enst_to_hgnc_id, enst_to_real):
     arr = line[1:].split(" ")
     if len(arr) == 5:
         exon, exon_len, in_frame, out_frame, location = arr
     else:
         (exon, exon_len, in_frame, out_frame), location = arr, ""
-    gene, species, exon_no, exon_count = exon.split("_")
+    enst_id, species, exon_no, exon_count = exon.split("_")
+    enst_nover = enst_id.split(".")[0]
+    if enst_nover not in enst_to_hgnc_id:
+        logging.debug("ENST %s not found in HGNC ID map", enst_nover)
+        return None
+
+    hgnc_id = enst_to_hgnc_id.get(enst_nover, "")
     if location:
         location = location.split(";")[0]
         location, strand = location[:-1], location[-1]
@@ -110,7 +135,8 @@ def fasta_header_to_meta(line, have_chr):
     else:
         location = None
     return AlignmentMeta(
-        ucsc_gene_id=gene,
+        hgnc_id=hgnc_id,
+        enst_id=enst_to_real[enst_id.split('.')[0]],
         species=species,
         exon_idx=int(exon_no),
         exon_count=int(exon_count),
@@ -121,33 +147,39 @@ def fasta_header_to_meta(line, have_chr):
     )
 
 
-def build_block(lines, have_chr):
+def build_block(lines, have_chr, enst_to_hgnc_id, enst_to_real):
     """Build ``AlignmentBlock`` from FASTA lines."""
-    hg_meta = fasta_header_to_meta(lines[0], have_chr)
+    hg_meta = fasta_header_to_meta(lines[0], have_chr, enst_to_hgnc_id, enst_to_real)
+    if not hg_meta:
+        return None
     species = []
     aa_seqs = []
     assert len(lines) % 2 == 0
     for i in range(0, len(lines), 2):
         header, aas = lines[i : i + 2]
-        meta = fasta_header_to_meta(header, have_chr)
+        meta = fasta_header_to_meta(header, have_chr, enst_to_hgnc_id, enst_to_real)
         species.append(meta.species)
         aa_seqs.append(aas)
     return AlignmentBlock(meta=hg_meta, species=species, aa_seqs=aa_seqs)
 
 
-def read_blocks(fa_gz, have_chr):
+def read_blocks(fa_gz, have_chr, enst_to_hgnc_id, enst_to_real):
     """Read and yield ``AlignmentBlock`` elements from ``fa_gz``."""
     buf = []
     for line in fa_gz:
         line = line.strip()
         if not line:
             if buf:
-                yield build_block(buf, have_chr)
+                val = build_block(buf, have_chr, enst_to_hgnc_id, enst_to_real)
+                if val:
+                    yield val
                 buf = []
         else:
             buf.append(line)
     if buf:
-        yield build_block(buf)
+        val = build_block(buf, have_chr, enst_to_hgnc_id)
+        if val:
+            yield val
 
 
 def pos_magic(exon_location, rel_start, rel_end):
@@ -197,7 +229,8 @@ def block_to_records(block, prev_block):
             QUAL=None,
             INFO={
                 "END": end,
-                "UCSC_GENE": prev_block.meta.ucsc_gene_id,
+                "HGNC_ID": prev_block.meta.hgnc_id,
+                "ENST_ID": prev_block.meta.enst_id,
                 "EXON": prev_block.meta.exon_idx,
                 "EXON_COUNT": prev_block.meta.exon_count,
                 "ALIGNMENT": "".join(seq[0] for seq in block.aa_seqs),
@@ -222,7 +255,8 @@ def block_to_records(block, prev_block):
             QUAL=None,
             INFO={
                 "END": end,
-                "UCSC_GENE": meta.ucsc_gene_id,
+                "HGNC_ID": meta.hgnc_id,
+                "ENST_ID": prev_block.meta.enst_id,
                 "EXON": meta.exon_idx,
                 "EXON_COUNT": meta.exon_count,
                 "ALIGNMENT": "".join(seq[-1] for seq in prev_block.aa_seqs),
@@ -256,7 +290,7 @@ def block_to_records(block, prev_block):
         ends += [ends[-1] + 2]
     for i, (start, end) in enumerate(zip(starts, ends)):
         if i >= meta.exon_len:
-            logging.debug("Too short AA seq found for %s, this happens...", meta.ucsc_gene_id)
+            logging.debug("Too short AA seq found for %s, this happens...", meta.hgnc_id)
             continue
         start, end = pos_magic(location, start, end)
         yield vcfpy.Record(
@@ -269,7 +303,8 @@ def block_to_records(block, prev_block):
             QUAL=None,
             INFO={
                 "END": end,
-                "UCSC_GENE": meta.ucsc_gene_id,
+                "HGNC_ID": meta.hgnc_id,
+                "ENST_ID": meta.enst_id,
                 "EXON": meta.exon_idx,
                 "EXON_COUNT": meta.exon_count,
                 "ALIGNMENT": "".join(seq[i] for seq in block.aa_seqs),
@@ -284,13 +319,33 @@ def run(args):
     logging.info("Starting processing")
     logging.info("Arguments are %s", args)
 
+    logging.info("Loading ENST to ENSG map")
+    enst_to_real = {}  # GRCh37 has ucsc ids for ENST, so we hack it
+    ensg_to_ensts = {}
+    with open(args.enst_ensg[0], "rt") as inputf:
+        reader = csv.DictReader(inputf, delimiter="\t")
+        for row in reader:
+            ensg_to_ensts.setdefault(row["ensg"], []).append(row["enst"])
+            enst_to_real[row["enst"]] = row.get("real_enst", row["enst"])
+
+    logging.info("Loading HGNC info")
+    enst_to_hgnc_id = {}
+    with open(args.hgnc_jsonl[0], "rt") as inputf:
+        for line in inputf:
+            record = json.loads(line)
+            if not "ensembl_gene_id" in record:
+                continue
+            entry: HgncEntry = cattrs.structure(record, HgncEntry)
+            for enst in ensg_to_ensts.get(entry.ensembl_gene_id, []):
+                enst_to_hgnc_id[enst] = entry.hgnc_id
+
     logging.info("Reading contigs")
     contigs = list(read_contigs(args.reference[0] + ".fai"))
     have_chr = contigs[0][0].startswith("chr")
 
     logging.info("Create VCF header and open output file")
     with gzip.open(args.input[0], "rt") as fa_gz:
-        for first_block in read_blocks(fa_gz, have_chr):
+        for first_block in read_blocks(fa_gz, have_chr, enst_to_hgnc_id, enst_to_real):
             break
     header = build_header(contigs, first_block.species)
     prev_contig = None
@@ -301,7 +356,7 @@ def run(args):
     with output as writer:
         with gzip.open(args.input[0], "rt") as fa_gz:
             prev_block = None
-            for block in read_blocks(fa_gz, have_chr):
+            for block in read_blocks(fa_gz, have_chr, enst_to_hgnc_id, enst_to_real):
                 records = list(block_to_records(block, prev_block))
                 if re.match(args.contig_regexp, records[0].CHROM):
                     if records[0].CHROM != prev_contig:
@@ -326,6 +381,18 @@ def main(argv=None):
         type=str,
         default="^(chr)?[1-9XYM][0-9T]?$",
         help="Regular expression to filter contig by",
+    )
+    parser.add_argument(
+        "hgnc_jsonl",
+        type=str,
+        nargs=1,
+        help="Path to HGNC JSONL file"
+    )
+    parser.add_argument(
+        "enst_ensg",
+        type=str,
+        nargs=1,
+        help="Mapping from ENST to ENSG.",
     )
     parser.add_argument(
         "reference",

@@ -153,7 +153,7 @@ rule result_grch37_exac_v1_0_0_tsv:
                     af_sas = ($(populations["SAS"] + an) > 0) ? $(populations["SAS"] + ac) / $(populations["SAS"] + an) : "."
                     $4=$4"\t"
                     print $0,ac_popmax,an_popmax,af_popmax,hemi_popmax,hom_popmax,af,af_afr,af_amr,af_eas,af_fin,af_nfe,af_oth,af_sas
-                }}' 
+                }}'
         ) \
         | python tools/ucsc_binning.py \
         > {output.tsv}
