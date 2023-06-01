@@ -1,8 +1,0 @@
-release
-chromosome
-start
-end
-bin
-sv_type
-population
-phred_score

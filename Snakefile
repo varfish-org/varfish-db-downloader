@@ -58,6 +58,7 @@ rule help:
 ## all -- run all rules
 rule all:
     input:
+        # genes
         "work/genes/dbnsfp/4.4/genes.tsv.gz",
         "work/genes/dbnsfp/4.4/genes.tsv.gz.md5",
         "work/genes/ensembl/ensembl_xlink.tsv",
@@ -76,6 +77,45 @@ rule all:
         "work/genes/hgnc/hgnc_xlink.tsv.md5",
         "work/genes/mim2gene/mim2gene.tsv",
         "work/genes/mim2gene/mim2gene.tsv.md5",
+        # reference-specific annotations
+        # -- background/population sequence variants and annotations thereof
+        # ---- GRCh37
+        "work/download/annos/grch37/seqvars/cadd/whole_genome_SNVs_inclAnno.tsv.gz",
+        "work/download/annos/grch37/seqvars/cadd/InDels_inclAnno.tsv.gz",
+        f"work/download/annos/grch37/seqvars/dbnsfp/{DV.dbnsfp}a/LICENSE.txt",
+        f"work/download/annos/grch37/seqvars/dbnsfp/{DV.dbnsfp}c/LICENSE.txt",
+        f"work/download/annos/grch37/seqvars/dbscsnv/{DV.dbscsnv}/dbscSNV{DV.dbscsnv}.chr1",
+        "work/download/annos/grch37/seqvars/dbsnp/dbsnp.vcf.gz",
+        "work/annos/grch37/seqvars/helixmtdb/helixmtdb.vcf.gz"
+        "work/annos/grch37/seqvars/gnomad_mtdna/gnomad_mtdna.vcf.gz",
+        "work/annos/grch37/seqvars/gnomad_exomes/.done",
+        "work/annos/grch37/seqvars/gnomad_genomes/.done",
+        # ---- GRCh38
+        "work/download/annos/grch38/seqvars/cadd/whole_genome_SNVs_inclAnno.tsv.gz",
+        "work/download/annos/grch38/seqvars/cadd/gnomad.genomes.r3.0.indel_inclAnno.tsv.gz",
+        # NB: dbNSFP is dual reference (for download)
+        # NB: dbscSNV is dual reference (for download)
+        # TODO: "work/download/annos/grch38/seqvars/dbsnp/dbsnp.vcf.gz",
+        "work/annos/grch38/seqvars/helixmtdb/helixmtdb.vcf.gz"
+        "work/annos/grch38/seqvars/gnomad_mtdna/gnomad_mtdna.vcf.gz",
+        "work/annos/grch38/seqvars/gnomad_exomes/.done",
+        "work/annos/grch38/seqvars/gnomad_genomes/.done",
+        ###### "work/annos/grch37/seqvars",
+        # -- background/population structural variants and annoations thereof
+        # ---- GRCh37
+        "work/annos/grch37/strucvars/dbvar/dbvar.bed.gz",
+        "work/annos/grch37/strucvars/dgv/dgv.bed.gz",
+        "work/annos/grch37/strucvars/dgv_gs/dgv_gs.bed.gz",
+        "work/annos/grch37/strucvars/exac/exac.bed.gz",
+        "work/annos/grch37/strucvars/g1k/g1k.bed.gz"
+        "work/annos/grch37/strucvars/gnomad/gnomad_sv.bed.gz",
+        # ---- GRCh38
+        # TODO: "work/annos/grch37/strucvars/dbvar/dbvar.bed.gz",
+        # TODO: "work/annos/grch37/strucvars/gnomad/gnomad_sv.bed.gz",
+        # -- genome browser "features" (position-specific)
+        # ---- GRCh37
+        # ---- GRCh38
+        # TODO
 
 
 # ===============================================================================================
@@ -83,17 +123,31 @@ rule all:
 # ===============================================================================================
 
 
-# Gene-related information.
+# Gene-related rules.
 include: "rules/genes/dbnsfp.smk"
 include: "rules/genes/ensembl.smk"
 include: "rules/genes/gnomad.smk"
 include: "rules/genes/hgnc.smk"
 include: "rules/genes/ncbi.smk"
-# Reference sequence--related information.
+# Reference sequence--related rules.
 include: "rules/reference/human.smk"
-
-
-# include: "rules/annos.smk"
-# include: "rules/features.smk"
-# include: "rules/vardbs-grch37-strucvars.smk"
-# include: "rules/tracks-grch37.smk"
+# Features (position and not variant specific).
+include: "rules/annos/features/cons.smk"
+include: "rules/annos/features/ensembl.smk"
+include: "rules/annos/features/refseq.smk"
+include: "rules/annos/features/tads.smk"
+include: "rules/annos/features/ucsc.smk"
+# Sequence variants and annotations.
+include: "rules/annos/seqvars/cadd.smk"
+include: "rules/annos/seqvars/dbnsfp.smk"
+include: "rules/annos/seqvars/dbscsnv.smk"
+include: "rules/annos/seqvars/dbsnp.smk"
+include: "rules/annos/seqvars/gnomad_mtdna.smk"
+include: "rules/annos/seqvars/gnomad_nuclear.smk"
+include: "rules/annos/seqvars/helix.smk"
+# Structural variant related.
+include: "rules/annos/strucvars/dbvar.smk"
+include: "rules/annos/strucvars/dgv.smk"
+include: "rules/annos/strucvars/exac.smk"
+include: "rules/annos/strucvars/g1k.smk"
+include: "rules/annos/strucvars/gnomad.smk"

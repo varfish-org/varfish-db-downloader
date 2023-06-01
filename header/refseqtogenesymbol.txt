@@ -1,2 +1,0 @@
-entrez_id
-gene_symbol

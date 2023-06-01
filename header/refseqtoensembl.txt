@@ -1,3 +1,0 @@
-entrez_id
-ensembl_gene_id
-ensembl_transcript_id

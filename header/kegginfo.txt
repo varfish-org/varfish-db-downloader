@@ -1,2 +1,0 @@
-kegg_id
-name

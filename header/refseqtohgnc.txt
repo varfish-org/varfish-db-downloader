@@ -1,2 +1,0 @@
-entrez_id
-hgnc_id

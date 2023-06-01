@@ -48,9 +48,9 @@ check-black:
 
 # Run Snakemake format checking with snakefmt.
 .PHONY: check-snakefmt
-snakefmt:
+check-snakefmt:
 	snakefmt --check --diff --line-length 100 Snakefile
-	snakefmt --check --diff --line-length 100 rules/*/*.smk
+	snakefmt --check --diff --line-length 100 rules/*/*.smk rules/*/*/*.smk
 
 # Run Python linting with flake8.
 .PHONY: flake8
@@ -86,4 +86,4 @@ black:
 .PHONY: run-snakefmt
 run-snakefmt:
 	snakefmt --line-length 100 Snakefile
-	snakefmt --line-length 100 rules/*/*.smk
+	snakefmt --line-length 100 rules/*/*.smk rules/*/*/*.smk

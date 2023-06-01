@@ -1,6 +1,0 @@
-omim_id
-entrez_id
-omim_type
-source
-medgen_cui
-comment
