@@ -100,7 +100,6 @@ rule all:
         "work/annos/grch38/seqvars/gnomad_mtdna/gnomad_mtdna.vcf.gz",
         "work/annos/grch38/seqvars/gnomad_exomes/.done",
         "work/annos/grch38/seqvars/gnomad_genomes/.done",
-        ###### "work/annos/grch37/seqvars",
         # -- background/population structural variants and annoations thereof
         # ---- GRCh37
         "work/annos/grch37/strucvars/dbvar/dbvar.bed.gz",
