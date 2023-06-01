@@ -22,8 +22,8 @@ rule genes_ensembl_create_xlink:  # -- create ENSEMBL gene information xlink tab
 
 rule genes_ensembl_download_maps:  # -- download files for ENST-ENSG mapping
     output:
-        download_txt="genes/enst_ensg/grch37/download/knowntoEnsembl.txt.gz",
-        download_gtf="genes/enst_ensg/grch37/download/GCF_000001405.25_GRCh37.p13_genomic.gtf.gz",
+        download_txt="work/genes/enst_ensg/grch37/download/knowntoEnsembl.txt.gz",
+        download_gtf="work/genes/enst_ensg/grch37/download/GCF_000001405.25_GRCh37.p13_genomic.gtf.gz",
     shell:
         r"""
         wget --no-check-certificate \
@@ -37,11 +37,11 @@ rule genes_ensembl_download_maps:  # -- download files for ENST-ENSG mapping
 
 rule genes_ensembl_process_maps:  # -- process ENST-ENSG mapping
     input:
-        download_txt="genes/enst_ensg/grch37/download/knowntoEnsembl.txt.gz",
-        download_gtf="genes/enst_ensg/grch37/download/GCF_000001405.25_GRCh37.p13_genomic.gtf.gz",
+        download_txt="work/genes/enst_ensg/grch37/download/knowntoEnsembl.txt.gz",
+        download_gtf="work/genes/enst_ensg/grch37/download/GCF_000001405.25_GRCh37.p13_genomic.gtf.gz",
     output:
-        tsv="genes/enst_ensg/grch37/enst_ensg.tsv",
-        tsv_md5="genes/enst_ensg/grch37/enst_ensg.tsv.md5",
+        tsv="work/genes/enst_ensg/grch37/enst_ensg.tsv",
+        tsv_md5="work/genes/enst_ensg/grch37/enst_ensg.tsv.md5",
     shell:
         r"""
         export TMPDIR=$(mktemp -d)
@@ -50,11 +50,11 @@ rule genes_ensembl_process_maps:  # -- process ENST-ENSG mapping
         awk \
             -F $'\t' \
             -f scripts/genes-enst-ensg.awk \
-            <(zcat {output.input_gtf}) \
+            <(zcat {input.download_gtf}) \
         | sort \
         > $TMPDIR/tmp1.txt
 
-        zcat {output.input_txt} \
+        zcat {input.download_txt} \
         | sed -e 's/\..//g' \
         | sort -k2,2 \
         >> $TMPDIR/tmp2.txt

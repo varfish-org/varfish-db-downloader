@@ -81,10 +81,10 @@ rule genes_dbnsfp_extract:  # -- extract dbNSFP ZIP file
 
 rule genes_dbnsfp_genes_copy:  # -- copy over dbNSFP genes file
     input:
-        tsv=f"work/download/grch37/seqvars/dbnsfp-{DV.dbnsfp}a/dbNSFP{DV.dbnsfp}_gene.complete.gz",
+        tsv="work/download/grch37/seqvars/dbnsfp-{version}a/dbNSFP{version}_gene.complete.gz",
     output:
-        tsv="work/genes/dbnsfp/genes.tsv.gz",
-        tsv_md5="work/genes/dbnsfp/genes.tsv.gz.md5",
+        tsv="work/genes/dbnsfp/{version}/genes.tsv.gz",
+        tsv_md5="work/genes/dbnsfp/{version}/genes.tsv.gz.md5",
     shell:
         r"""
         zcat {input.tsv} \
