@@ -39,12 +39,12 @@ lint-awk:
 # Run Python import sort checking with isort.
 .PHONY: check-isort
 check-isort:
-	isort --profile=black --check-only tools scripts varfish_db_downloader
+	isort --profile=black --check-only scripts varfish_db_downloader
 
 # Run Python format checking with black.
 .PHONY: check-black
 check-black:
-	black --check --line-length 100 tools scripts varfish_db_downloader
+	black --check --line-length 100 scripts varfish_db_downloader
 
 # Run Snakemake format checking with snakefmt.
 .PHONY: check-snakefmt
@@ -55,7 +55,7 @@ check-snakefmt:
 # Run Python linting with flake8.
 .PHONY: flake8
 flake8:
-	flake8 --max-line-length 100 tools scripts varfish_db_downloader
+	flake8 --max-line-length 100 scripts varfish_db_downloader
 
 # Run all automatic code formatting.
 .PHONY: format
@@ -75,12 +75,12 @@ format-bash:
 # Run Python import sorting with isort.
 .PHONY: isort
 isort:
-	isort --profile=black tools scripts varfish_db_downloader
+	isort --profile=black scripts varfish_db_downloader
 
 # Run Python formatting with black.
 .PHONY: black
 black:
-	black --line-length 100 tools scripts varfish_db_downloader
+	black --line-length 100 scripts varfish_db_downloader
 
 # Run Snakemake formatting with snakefmt.
 .PHONY: run-snakefmt
