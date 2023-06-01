@@ -50,7 +50,7 @@ check-black:
 .PHONY: check-snakefmt
 snakefmt:
 	snakefmt --check --diff --line-length 100 Snakefile
-	snakefmt --check --diff --line-length 100 snakefiles/*.smk
+	snakefmt --check --diff --line-length 100 rules/*/*.smk
 
 # Run Python linting with flake8.
 .PHONY: flake8
@@ -86,4 +86,4 @@ black:
 .PHONY: run-snakefmt
 run-snakefmt:
 	snakefmt --line-length 100 Snakefile
-	snakefmt --line-length 100 snakefiles/*.smk
+	snakefmt --line-length 100 rules/*/*.smk

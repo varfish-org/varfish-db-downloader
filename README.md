@@ -11,6 +11,22 @@ This repository contains a Snakemake workflow with supporting code for downloadi
 - License: MIT
 - Programming Language: Python / Snakemake
 
+## Running
+
+Use the utility rule `help` to get a list of all available rules:
+
+```
+# snakemake --cores=1 help
+```
+
+Run them all with `all`:
+
+```
+# snakemake --cores=1 all
+```
+
+Note that this will take a long time, use a lot of disk space, and download a lot of data.
+
 ## Development Setup
 
 ### Prerequisites: Install `mamba` for Conda Package Management
@@ -47,7 +63,6 @@ This will install the `varfish-db-downloader` tools:
 ```
 # pip install -e .
 ```
-
 
 ## Developer Rules
 
