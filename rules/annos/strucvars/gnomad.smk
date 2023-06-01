@@ -31,7 +31,7 @@ rule annos_strucvars_gnomad_grch37_process:  # -- process gnomAD-SV files
         bcftools query \
             -e 'SVTYPE="MCNV"' \
             -f "%CHROM\t%POS0\t%INFO/END\t%INFO/SVTYPE\t%INFO/N_HOMALT\t%INFO/N_HET\n" \
-            {output.vcf} \
+            {input.vcf} \
         >> $TMPDIR/tmp.bed
 
         bgzip -c $TMPDIR/tmp.bed >{output.bed}

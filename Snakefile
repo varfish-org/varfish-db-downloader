@@ -107,15 +107,32 @@ rule all:
         "work/annos/grch37/strucvars/dgv/dgv.bed.gz",
         "work/annos/grch37/strucvars/dgv_gs/dgv_gs.bed.gz",
         "work/annos/grch37/strucvars/exac/exac.bed.gz",
-        "work/annos/grch37/strucvars/g1k/g1k.bed.gz"
+        "work/annos/grch37/strucvars/g1k/g1k.bed.gz",
         "work/annos/grch37/strucvars/gnomad/gnomad_sv.bed.gz",
         # ---- GRCh38
         # TODO: "work/annos/grch37/strucvars/dbvar/dbvar.bed.gz",
         # TODO: "work/annos/grch37/strucvars/gnomad/gnomad_sv.bed.gz",
         # -- genome browser "features" (position-specific)
         # ---- GRCh37
+        "work/annos/grch37/features/cons/ucsc_conservation.tsv",
+        "work/annos/grch37/features/ensembl/ensembl_genes.bed.gz",
+        "work/annos/grch37/features/refseq/refseq_genes.bed.gz",
+        "work/annos/grch37/features/tads/imr90.bed",
+        "work/annos/grch37/features/tads/hesc.bed",
+        "work/annos/grch37/features/ucsc/genomicSuperDups.bed.gz",
+        "work/annos/grch37/features/ucsc/rmsk.bed.gz",
+        "work/annos/grch37/features/ucsc/altSeqLiftOverPsl.bed.gz",
+        "work/annos/grch37/features/ucsc/fixSeqLiftOverPsl.bed.gz",
         # ---- GRCh38
-        # TODO
+        # TODO: "work/annos/grch38/features/cons/ucsc_conservation.tsv",
+        # TODO: "work/annos/grch38/features/ensembl/ensembl_genes.bed.gz",
+        # TODO: "work/annos/grch38/features/refseq/refseq_genes.bed.gz",
+        # TODO: "work/annos/grch38/features/tads/imr90.bed",
+        # TODO: "work/annos/grch38/features/tads/hesc.bed",
+        # TODO: "work/annos/grch38/features/ucsc/genomicSuperDups.bed.gz",
+        # TODO: "work/annos/grch38/features/ucsc/rmsk.bed.gz",
+        # TODO: "work/annos/grch38/features/ucsc/altSeqLiftOverPsl.bed.gz",
+        # TODO: "work/annos/grch38/features/ucsc/fixSeqLiftOverPsl.bed.gz",
 
 
 # ===============================================================================================

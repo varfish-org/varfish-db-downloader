@@ -58,16 +58,7 @@ rule annos_features_cons_to_tsv:
         export TMPDIR=$(mktemp -d)
         trap "rm -rf $TMPDIR" EXIT
 
-        cat >$TMPDIR/header.txt <<EOF
-        chromosome
-        start
-        stop
-        hgnc_id
-        enst_id
-        exon_num
-        exon_count
-        alignment
-        EOF
+        echo -e "chromosome\tstart\tstop\thgnc_id\tenst_id\texon_num\texon_count\talignment" >$TMPDIR/header.txt
 
         cat $TMPDIR/header.txt \
         | grep -v '^$' \
@@ -81,5 +72,5 @@ rule annos_features_cons_to_tsv:
         | uniq
         >> {output.tsv}
 
-        md5sum {output.sv} > {output.tsv_md5}
+        md5sum {output.tsv} > {output.tsv_md5}
         """

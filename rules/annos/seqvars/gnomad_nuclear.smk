@@ -93,7 +93,7 @@ def input_annos_gnomad_nuclear_grch37(wildcards):
     return [tpl.format(kind=wildcards.kind, version=DV.gnomad_v2, chrom=chrom) for chrom in chroms]
 
 
-def input_annos_gnomad_nucler_grch38(wildcards):
+def input_annos_gnomad_nuclear_grch38(wildcards):
     """Input files for gnomAD exomes/genomes GRCh38."""
     chroms = list(range(1, 23)) + ["X", "Y"]
     if wildcards.kind == "exomes":
@@ -102,21 +102,21 @@ def input_annos_gnomad_nucler_grch38(wildcards):
             tpl.format(kind=wildcards.kind, version=DV.gnomad_v2, chrom=chrom) for chrom in chroms
         ]
     else:
-        tpl = "work/download/annos/grch38/seqvas/gnomad_{kind}/gnomad.{kind}.v{version}.sites.chr{chrom}.vcf.bgz"
+        tpl = "work/download/annos/grch38/seqvars/gnomad_{kind}/gnomad.{kind}.v{version}.sites.chr{chrom}.vcf.bgz"
         return [
             tpl.format(kind=wildcards.kind, version=DV.gnomad_v3, chrom=chrom) for chrom in chroms
         ]
 
 
-rule annos_seqvars_gnomad_nucler_grch37:  # -- collect gnomAD exomes/genomes for GRCh37
+rule annos_seqvars_gnomad_nuclear_grch37:  # -- collect gnomAD exomes/genomes for GRCh37
     input:
-        input_annos_gnomad_grch37,
+        input_annos_gnomad_nuclear_grch37,
     output:
-        touch("work/annos/grch37/seqvars/gnomad_{kind}/.done")
+        touch("work/annos/grch37/seqvars/gnomad_{kind}/.done"),
 
 
-rule annos_seqvars_gnomad_nucler_grch38:  # -- collect gnomAD exomes/genomes for GRCh38
+rule annos_seqvars_gnomad_nuclear_grch38:  # -- collect gnomAD exomes/genomes for GRCh38
     input:
-        input_annos_gnomad_grch38,
+        input_annos_gnomad_nuclear_grch38,
     output:
-        touch("work/annos/grch38/seqvars/gnomad_{kind}/.done")
+        touch("work/annos/grch38/seqvars/gnomad_{kind}/.done"),

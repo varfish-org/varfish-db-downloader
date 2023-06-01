@@ -4,12 +4,15 @@
 def files_dbscsnv(version: str = "1.1"):
     """Files contained in the dbscSNV ZIP file."""
     chroms = [str(i) for i in range(1, 23)] + ["X", "Y"]
-    return [f"annos/grch37/dbscsnv/download/dbscSNV{version}.chr{chrom}" for chrom in chroms]
+    return [
+        f"work/download/annos/grch37/seqvars/dbscsnv/{version}/dbscSNV{version}.chr{chrom}"
+        for chrom in chroms
+    ]
 
 
 rule annos_seqvars_dbscsnv_download:  # -- download dbscSNV ZIP file
     output:
-        zip="work/download/annos/grch37/dbscsnv/1.1/dbscSNV1.1.zip",
+        zip="work/download/annos/grch37/seqvars/dbscsnv/1.1/dbscSNV1.1.zip",
     shell:
         r"""
         aria2c \
@@ -25,10 +28,10 @@ rule annos_seqvars_dbscsnv_download:  # -- download dbscSNV ZIP file
 
 rule annos_seqvars_dbscsnv_extract:  # -- extract dbscSNV ZIP file
     input:
-        zip="work/download/annos/grch37/dbscsnv/1.1/dbscSNV1.1.zip",
+        zip="work/download/annos/grch37/seqvars/dbscsnv/1.1/dbscSNV1.1.zip",
     output:
         files_dbscsnv(),
     shell:
         r"""
-        unzip -d $(dirname {output.zip}) {output.zip}
+        unzip -d $(dirname {input.zip}) {input.zip}
         """

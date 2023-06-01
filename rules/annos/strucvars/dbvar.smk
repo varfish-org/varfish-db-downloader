@@ -7,8 +7,8 @@ rule annos_strucvars_dbvar_grch37_download:  # -- download dbVar files
     shell:
         r"""
         wget --no-check-certificate \
-            -O $dst \
-            https://ftp.ncbi.nlm.nih.gov/pub/dbVar/sandbox/sv_datasets/nonredundant/{sv_type}/GRCh37.nr_{sv_type}.tsv.gz
+            -O {output} \
+            https://ftp.ncbi.nlm.nih.gov/pub/dbVar/sandbox/sv_datasets/nonredundant/{wildcards.sv_type}/GRCh37.nr_{wildcards.sv_type}.tsv.gz
         """
 
 
@@ -28,8 +28,8 @@ rule annos_strucvars_dbvar_grch37_process:  # -- process dbVar files
         awk \
             -F $'\t' \
             -f scripts/vardbs-grch37-strucvar-dbvar.awk \
-            <(zcat {output.download}) \
-        | sort-bed \
+            <(zcat {input.download}) \
+        | sort-bed - \
         | bgzip -c \
         > {output.bed}
 

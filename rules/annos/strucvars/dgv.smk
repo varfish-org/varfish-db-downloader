@@ -27,7 +27,7 @@ rule annos_strucvars_dgv_grch37_process:  # -- download DGV files
             -f scripts/vardbs-grch37-strucvar-dgv.awk \
             {input.txt} \
         | grep -v _gl \
-        | sort-bed \
+        | sort-bed - \
         | bgzip -c \
         > {output.bed}
 
@@ -64,7 +64,7 @@ rule annos_strucvars_dgv_gs_grch37_process:  # -- download DGV GS files
             -f scripts/vardbs-grch37-strucvar-dgv_gs.awk \
             {input.gff3} \
         | grep -v _gl \
-        | sort-bed \
+        | sort-bed - \
         | bgzip -c \
         > {output.bed}
 

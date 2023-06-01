@@ -1,7 +1,7 @@
 ## Rules related to ExAC-CNV.
 
 
-rule annos_strucvars_gnomad_grch37_download:  # -- process ExAC-CNV files
+rule annos_strucvars_exac_grch37_download:  # -- process ExAC-CNV files
     output:
         bed="work/download/annos/grch37/strucvars/exac/exac-final.autosome-1pct-sq60-qc-prot-coding.cnv.bed",
     shell:
@@ -12,7 +12,7 @@ rule annos_strucvars_gnomad_grch37_download:  # -- process ExAC-CNV files
         """
 
 
-rule annos_strucvars_gnomad_grch37_process:  # -- process ExAC-CNV files
+rule annos_strucvars_exac_grch37_process:  # -- process ExAC-CNV files
     input:
         bed="work/download/annos/grch37/strucvars/exac/exac-final.autosome-1pct-sq60-qc-prot-coding.cnv.bed",
     output:
@@ -25,7 +25,7 @@ rule annos_strucvars_gnomad_grch37_process:  # -- process ExAC-CNV files
         awk \
             -f scripts/vardbs-grch37-strucvar-exac.awk \
             {input.bed} \
-        | sort-bed \
+        | sort-bed - \
         | bgzip -c \
         > {output.bed}
 

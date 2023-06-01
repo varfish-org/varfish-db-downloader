@@ -1,7 +1,7 @@
 ## Rules related to Thousand Genomes SVs.
 
 
-rule annos_strucvars_g1k_grch37_process:  # -- download Thousand Genomes SVs
+rule annos_strucvars_g1k_grch37_download:  # -- download Thousand Genomes SVs
     output:
         vcf="work/download/annos/grch37/strucvars/gnomad/ALL.wgs.mergedSV.v8.20130502.svs.genotypes.vcf.gz",
     shell:
@@ -10,6 +10,7 @@ rule annos_strucvars_g1k_grch37_process:  # -- download Thousand Genomes SVs
             -O {output.vcf} \
             https://ftp-trace.ncbi.nih.gov/1000genomes/ftp/phase3/integrated_sv_map/ALL.wgs.integrated_sv_map_v2.20130502.svs.genotypes.vcf.gz
         """
+
 
 rule annos_strucvars_g1k_grch37_process:  # -- process Thousand Genomes SVs
     input:
@@ -21,11 +22,11 @@ rule annos_strucvars_g1k_grch37_process:  # -- process Thousand Genomes SVs
         bed_tbi_md5="work/annos/grch37/strucvars/g1k/g1k.bed.gz.tbi.md5",
     shell:
         r"""
-        zcat {output.vcf} \
+        zcat {input.vcf} \
         | awk \
             -F $'\t' \
             -f scripts/vardbs-grch37-strucvar-g1k.awk \
-        | sort-bed \
+        | sort-bed - \
         | bgzip -c \
         > {output.bed}
 

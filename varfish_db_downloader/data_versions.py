@@ -22,6 +22,6 @@ DATA_VERSIONS = DataVersions(
     dbnsfp="4.4",
     dbscsnv="1.1",
     cadd="1.6",
-    gnomad_v2="2.1.2",
-    gnomad_v3="3.1.1",
+    gnomad_v2="2.1.1",
+    gnomad_v3="3.1.2",
 )
