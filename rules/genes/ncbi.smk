@@ -3,9 +3,14 @@
 
 rule genes_ncbi_download_mim2gene:  # -- download NCBI MedGen mim2gene
     output:
-        download="work/download/genes/ncbi/mim2gene_medgen",
+        download="work/download/genes/ncbi/{date}/mim2gene_medgen",
     shell:
         r"""
+        if [[ "$(date +%Y-%m-%d)" != "{wildcards.date}" ]]; then
+            >&2 echo "{wildcards.date} is not today"
+            exit 1
+        fi
+
         wget --no-check-certificate \
             -O {output.download} \
             https://ftp.ncbi.nih.gov/gene/DATA/mim2gene_medgen
@@ -14,12 +19,17 @@ rule genes_ncbi_download_mim2gene:  # -- download NCBI MedGen mim2gene
 
 rule genes_ncbi_process_mim2gene:  # -- process NCBI MedGen mim2gene
     input:
-        download="work/download/genes/ncbi/mim2gene_medgen",
+        download="work/download/genes/ncbi/{date}/mim2gene_medgen",
     output:
-        tsv="work/genes/mim2gene/mim2gene.tsv",
-        tsv_md5="work/genes/mim2gene/mim2gene.tsv.md5",
+        tsv="work/genes/mim2gene/{date}/mim2gene.tsv",
+        tsv_md5="work/genes/mim2gene/{date}/mim2gene.tsv.md5",
     shell:
         r"""
+        if [[ "$(date +%Y-%m-%d)" != "{wildcards.date}" ]]; then
+            >&2 echo "{wildcards.date} is not today"
+            exit 1
+        fi
+
         awk -f scripts/genes-mim2gene.awk \
             -F $'\t' \
             {input.download} \
@@ -31,14 +41,19 @@ rule genes_ncbi_process_mim2gene:  # -- process NCBI MedGen mim2gene
 
 rule genes_ncbi_entrez_download:  # -- download NCBI Entrez files
     output:
-        ags="work/download/genes/ncbi/Homo_sapiens.ags.gz",
-        ags_md5="work/download/genes/ncbi/Homo_sapiens.ags.gz.md5",
-        gene2xml="work/download/genes/ncbi/linux64.gene2xml",
-        gene2xml_md5="work/download/genes/ncbi/linux64.gene2xml.md5",
+        ags="work/download/genes/ncbi/{date}/Homo_sapiens.ags.gz",
+        ags_md5="work/download/genes/ncbi/{date}/Homo_sapiens.ags.gz.md5",
+        gene2xml="work/download/genes/ncbi/{date}/linux64.gene2xml",
+        gene2xml_md5="work/download/genes/ncbi/{date}/linux64.gene2xml.md5",
     shell:
         r"""
         export TMPDIR=$(mktemp -d)
         trap "rm -rf $TMPDIR" EXIT
+
+        if [[ "$(date +%Y-%m-%d)" != "{wildcards.date}" ]]; then
+            >&2 echo "{wildcards.date} is not today"
+            exit 1
+        fi
 
         wget --no-check-certificate \
             -O $(dirname {output.ags})/Homo_sapiens.ags.gz \
@@ -59,13 +74,18 @@ rule genes_ncbi_entrez_download:  # -- download NCBI Entrez files
 
 rule genes_ncbi_entrez_process:  # -- process NCBI Entrez files
     input:
-        ags="work/download/genes/ncbi/Homo_sapiens.ags.gz",
-        gene2xml="work/download/genes/ncbi/linux64.gene2xml",
+        ags="work/download/genes/ncbi/{date}/Homo_sapiens.ags.gz",
+        gene2xml="work/download/genes/ncbi/{date}/linux64.gene2xml",
     output:
-        jsonl="work/genes/entrez/gene_info.jsonl",
-        jsonl_md5="work/genes/entrez/gene_info.jsonl.md5",
+        jsonl="work/genes/entrez/{date}/gene_info.jsonl",
+        jsonl_md5="work/genes/entrez/{date}/gene_info.jsonl.md5",
     shell:
         r"""
+        if [[ "$(date +%Y-%m-%d)" != "{wildcards.date}" ]]; then
+            >&2 echo "{wildcards.date} is not today"
+            exit 1
+        fi
+
         ./{input.gene2xml} -b T -c T -i {input.ags} \
         | python3 scripts/refseq_xml_to_json.py \
         > {output.jsonl}

@@ -59,47 +59,37 @@ rule help:
 rule all:
     input:
         # genes
-        "work/genes/dbnsfp/4.4/genes.tsv.gz",
-        "work/genes/dbnsfp/4.4/genes.tsv.gz.md5",
-        "work/genes/ensembl/ensembl_xlink.tsv",
-        "work/genes/ensembl/ensembl_xlink.tsv.md5",
-        "work/genes/enst_ensg/grch37/download/GCF_000001405.25_GRCh37.p13_genomic.gtf.gz",
-        "work/genes/enst_ensg/grch37/download/knowntoEnsembl.txt.gz",
-        "work/genes/enst_ensg/grch37/enst_ensg.tsv",
-        "work/genes/enst_ensg/grch37/enst_ensg.tsv.md5",
-        "work/genes/entrez/gene_info.jsonl",
-        "work/genes/entrez/gene_info.jsonl.md5",
-        "work/genes/gnomad/gnomad_constraints.tsv",
-        "work/genes/gnomad/gnomad_constraints.tsv.md5",
-        "work/genes/hgnc/hgnc_info.jsonl",
-        "work/genes/hgnc/hgnc_info.jsonl.md5",
-        "work/genes/hgnc/hgnc_xlink.tsv",
-        "work/genes/hgnc/hgnc_xlink.tsv.md5",
-        "work/genes/mim2gene/mim2gene.tsv",
-        "work/genes/mim2gene/mim2gene.tsv.md5",
+        f"work/genes/dbnsfp/{DV.dbnsfp}/genes.tsv.gz",
+        f"work/genes/ensembl/{DV.ensembl}/ensembl_xlink.tsv",
+        f"work/genes/enst_ensg/grch37/{DV.ensembl_37}/enst_ensg.tsv",
+        f"work/genes/entrez/{DV.today}/gene_info.jsonl",
+        f"work/genes/gnomad/{DV.gnomad_constraints}/gnomad_constraints.tsv",
+        f"work/genes/hgnc/{DV.today}/hgnc_info.jsonl",
+        f"work/genes/hgnc/{DV.today}/hgnc_xlink.tsv",
+        f"work/genes/mim2gene/{DV.today}/mim2gene.tsv",
         # reference-specific annotations
         # -- background/population sequence variants and annotations thereof
         # ---- GRCh37
-        "work/download/annos/grch37/seqvars/cadd/whole_genome_SNVs_inclAnno.tsv.gz",
-        "work/download/annos/grch37/seqvars/cadd/InDels_inclAnno.tsv.gz",
+        f"work/download/annos/grch37/seqvars/cadd/{DV.cadd}/whole_genome_SNVs_inclAnno.tsv.gz",
+        f"work/download/annos/grch37/seqvars/cadd/{DV.cadd}/InDels_inclAnno.tsv.gz",
         f"work/download/annos/grch37/seqvars/dbnsfp/{DV.dbnsfp}a/LICENSE.txt",
         f"work/download/annos/grch37/seqvars/dbnsfp/{DV.dbnsfp}c/LICENSE.txt",
         f"work/download/annos/grch37/seqvars/dbscsnv/{DV.dbscsnv}/dbscSNV{DV.dbscsnv}.chr1",
         "work/download/annos/grch37/seqvars/dbsnp/dbsnp.vcf.gz",
         "work/annos/grch37/seqvars/helixmtdb/helixmtdb.vcf.gz"
-        "work/annos/grch37/seqvars/gnomad_mtdna/gnomad_mtdna.vcf.gz",
-        "work/annos/grch37/seqvars/gnomad_exomes/.done",
-        "work/annos/grch37/seqvars/gnomad_genomes/.done",
+        f"work/annos/grch37/seqvars/gnomad_mtdna/{DV.gnomad_mtdna}/gnomad_mtdna.vcf.gz",
+        f"work/annos/grch37/seqvars/gnomad_exomes/{DV.gnomad_v2}/.done",
+        f"work/annos/grch37/seqvars/gnomad_genomes/{DV.gnomad_v2}/.done",
         # ---- GRCh38
-        "work/download/annos/grch38/seqvars/cadd/whole_genome_SNVs_inclAnno.tsv.gz",
-        "work/download/annos/grch38/seqvars/cadd/gnomad.genomes.r3.0.indel_inclAnno.tsv.gz",
+        f"work/download/annos/grch38/seqvars/cadd/{DV.cadd}/whole_genome_SNVs_inclAnno.tsv.gz",
+        f"work/download/annos/grch38/seqvars/cadd/{DV.cadd}/gnomad.genomes.r3.0.indel_inclAnno.tsv.gz",
         # NB: dbNSFP is dual reference (for download)
         # NB: dbscSNV is dual reference (for download)
         # TODO: "work/download/annos/grch38/seqvars/dbsnp/dbsnp.vcf.gz",
         "work/annos/grch38/seqvars/helixmtdb/helixmtdb.vcf.gz"
-        "work/annos/grch38/seqvars/gnomad_mtdna/gnomad_mtdna.vcf.gz",
-        "work/annos/grch38/seqvars/gnomad_exomes/.done",
-        "work/annos/grch38/seqvars/gnomad_genomes/.done",
+        f"work/annos/grch38/seqvars/gnomad_mtdna/{DV.gnomad_mtdna}/gnomad_mtdna.vcf.gz",
+        f"work/annos/grch38/seqvars/gnomad_exomes/{DV.gnomad_v2}/.done",
+        f"work/annos/grch38/seqvars/gnomad_genomes/{DV.gnomad_v3}/.done",
         # -- background/population structural variants and annoations thereof
         # ---- GRCh37
         "work/annos/grch37/strucvars/dbvar/dbvar.bed.gz",

@@ -3,17 +3,27 @@
 
 rule genes_ensembl_create_xlink:  # -- create ENSEMBL gene information xlink table
     output:
-        tsv="work/genes/ensembl/ensembl_xlink.tsv",
-        tsv_md5="work/genes/ensembl/ensembl_xlink.tsv.md5",
+        tsv=f"work/genes/ensembl/{DV.ensembl}/ensembl_xlink.tsv",
+        tsv_md5=f"work/genes/ensembl/{DV.ensembl}/ensembl_xlink.tsv.md5",
     shell:
         r"""
+        # Check wehther ensembl version is correct.
+        export TMPDIR=$(mktemp -d)
+        trap "rm -rf $TMPDIR" EXIT
+        wget --no-check-certificate \
+            -O $TMPDIR/current_README \
+            https://ftp.ensembl.org/pub/current_README
+        grep "Ensembl Release {DV.ensembl} Databases" $TMPDIR/current_README \
+        || (echo "Ensembl version is not {DV.ensembl}." && exit 1)
+
         echo -e "ensembl_gene_id\tensembl_transcript_id\tentrez_id\tgene_symbol" \
         >{output.tsv}
 
         wget --no-check-certificate \
-            -O- \
+            -O $TMPDIR/tmp \
             'https://ensembl.org/biomart/martservice?query=<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE Query><Query  virtualSchemaName = "default" formatter = "TSV" header = "0" uniqueRows = "0" count = "" datasetConfigVersion = "0.6" ><Dataset name = "hsapiens_gene_ensembl" interface = "default" ><Attribute name = "ensembl_gene_id" /><Attribute name = "ensembl_transcript_id" /><Attribute name = "entrezgene_id" /><Attribute name = "external_gene_name" /></Dataset></Query>' \
-        | sort -u \
+
+        sort -u $TMPDIR/tmp \
         >> {output.tsv}
 
         md5sum {output.tsv} >{output.tsv_md5}
@@ -22,8 +32,8 @@ rule genes_ensembl_create_xlink:  # -- create ENSEMBL gene information xlink tab
 
 rule genes_ensembl_download_maps:  # -- download files for ENST-ENSG mapping
     output:
-        download_txt="work/genes/enst_ensg/grch37/download/knowntoEnsembl.txt.gz",
-        download_gtf="work/genes/enst_ensg/grch37/download/GCF_000001405.25_GRCh37.p13_genomic.gtf.gz",
+        download_txt="work/genes/ensembl/grch37/87/download/knowntoEnsembl.txt.gz",
+        download_gtf="work/genes/ensembl/grch37/87/download/GCF_000001405.25_GRCh37.p13_genomic.gtf.gz",
     shell:
         r"""
         wget --no-check-certificate \
@@ -37,11 +47,11 @@ rule genes_ensembl_download_maps:  # -- download files for ENST-ENSG mapping
 
 rule genes_ensembl_process_maps:  # -- process ENST-ENSG mapping
     input:
-        download_txt="work/genes/enst_ensg/grch37/download/knowntoEnsembl.txt.gz",
-        download_gtf="work/genes/enst_ensg/grch37/download/GCF_000001405.25_GRCh37.p13_genomic.gtf.gz",
+        download_txt="work/genes/ensembl/grch37/87/download/knowntoEnsembl.txt.gz",
+        download_gtf="work/genes/ensembl/grch37/87/download/GCF_000001405.25_GRCh37.p13_genomic.gtf.gz",
     output:
-        tsv="work/genes/enst_ensg/grch37/enst_ensg.tsv",
-        tsv_md5="work/genes/enst_ensg/grch37/enst_ensg.tsv.md5",
+        tsv="work/genes/enst_ensg/grch37/87/enst_ensg.tsv",
+        tsv_md5="work/genes/enst_ensg/grch37/87/enst_ensg.tsv.md5",
     shell:
         r"""
         export TMPDIR=$(mktemp -d)

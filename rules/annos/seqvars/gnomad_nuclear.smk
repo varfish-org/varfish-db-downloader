@@ -7,8 +7,10 @@ GNOMAD_PREFIX = "https://gnomad-public-us-east-1.s3.amazonaws.com/release"
 
 rule annos_gnomad_nuclear_download_grch37:  # -- download gnomAD v2 exomes/genomes for GRCh37
     output:
-        vcf="work/download/annos/grch37/seqvars/gnomad_{kind}/gnomad.{kind}.r{version}.sites.{chrom}.vcf.bgz",
-        vcf_tbi="work/download/annos/grch37/seqvars/gnomad_{kind}/gnomad.{kind}.r{version}.sites.{chrom}.vcf.bgz.tbi",
+        vcf="work/download/annos/grch37/seqvars/gnomad_{kind}/{version}/gnomad.{kind}.r{version}.sites.{chrom}.vcf.bgz",
+        vcf_tbi="work/download/annos/grch37/seqvars/gnomad_{kind}/{version}/gnomad.{kind}.r{version}.sites.{chrom}.vcf.bgz.tbi",
+    wildcard_constraints:
+        kind=r"[a-z]+",
     shell:
         r"""
         aria2c \
@@ -33,8 +35,10 @@ rule annos_gnomad_nuclear_download_grch37:  # -- download gnomAD v2 exomes/genom
 
 rule annos_gnomad_nuclear_download_grch38_liftover_v2:  # -- download gnomAD v2 exomes lift-over for GRCh38
     output:
-        vcf="work/download/annos/grch38/seqvars/gnomad_{kind}/gnomad.{kind}.r{version}.sites.{chrom}.liftover_grch38.vcf.bgz",
-        vcf_tbi="work/download/annos/grch38/seqvars/gnomad_{kind}/gnomad.{kind}.r{version}.sites.{chrom}.liftover_grch38.vcf.bgz.tbi",
+        vcf="work/download/annos/grch38/seqvars/gnomad_{kind}/{version}/gnomad.{kind}.r{version}.sites.{chrom}.liftover_grch38.vcf.bgz",
+        vcf_tbi="work/download/annos/grch38/seqvars/gnomad_{kind}/{version}/gnomad.{kind}.r{version}.sites.{chrom}.liftover_grch38.vcf.bgz.tbi",
+    wildcard_constraints:
+        kind=r"[a-z]+",
     shell:
         r"""
         aria2c \
@@ -59,8 +63,10 @@ rule annos_gnomad_nuclear_download_grch38_liftover_v2:  # -- download gnomAD v2 
 
 rule annos_gnomad_nuclear_download_grch38_v3:  # -- download gnomAD genomes v3
     output:
-        vcf="work/download/annos/grch38/seqvars/gnomad_{kind}/gnomad.{kind}.v{version}.sites.chr{chrom}.vcf.bgz",
-        vcf_tbi="work/download/annos/grch38/seqvars/gnomad_{kind}/gnomad.{kind}.v{version}.sites.chr{chrom}.vcf.bgz.tbi",
+        vcf="work/download/annos/grch38/seqvars/gnomad_{kind}/{version}/gnomad.{kind}.v{version}.sites.chr{chrom}.vcf.bgz",
+        vcf_tbi="work/download/annos/grch38/seqvars/gnomad_{kind}/{version}/gnomad.{kind}.v{version}.sites.chr{chrom}.vcf.bgz.tbi",
+    wildcard_constraints:
+        kind=r"[a-z]+",
     shell:
         r"""
         aria2c \
@@ -89,7 +95,7 @@ def input_annos_gnomad_nuclear_grch37(wildcards):
     # chrY is only available for GRCh37 genomes
     if wildcards.kind == "exomes":
         chroms.append("Y")
-    tpl = "work/download/annos/grch37/seqvars/gnomad_{kind}/gnomad.{kind}.r{version}.sites.{chrom}.vcf.bgz"
+    tpl = "work/download/annos/grch37/seqvars/gnomad_{kind}/{version}/gnomad.{kind}.r{version}.sites.{chrom}.vcf.bgz"
     return [tpl.format(kind=wildcards.kind, version=DV.gnomad_v2, chrom=chrom) for chrom in chroms]
 
 
@@ -97,12 +103,12 @@ def input_annos_gnomad_nuclear_grch38(wildcards):
     """Input files for gnomAD exomes/genomes GRCh38."""
     chroms = list(range(1, 23)) + ["X", "Y"]
     if wildcards.kind == "exomes":
-        tpl = "work/download/annos/grch38/seqvars/gnomad_{kind}/gnomad.{kind}.r{version}.sites.{chrom}.liftover_grch38.vcf.bgz"
+        tpl = "work/download/annos/grch38/seqvars/gnomad_{kind}/{version}/gnomad.{kind}.r{version}.sites.{chrom}.liftover_grch38.vcf.bgz"
         return [
             tpl.format(kind=wildcards.kind, version=DV.gnomad_v2, chrom=chrom) for chrom in chroms
         ]
     else:
-        tpl = "work/download/annos/grch38/seqvars/gnomad_{kind}/gnomad.{kind}.v{version}.sites.chr{chrom}.vcf.bgz"
+        tpl = "work/download/annos/grch38/seqvars/gnomad_{kind}/{version}/gnomad.{kind}.v{version}.sites.chr{chrom}.vcf.bgz"
         return [
             tpl.format(kind=wildcards.kind, version=DV.gnomad_v3, chrom=chrom) for chrom in chroms
         ]
@@ -112,11 +118,15 @@ rule annos_seqvars_gnomad_nuclear_grch37:  # -- collect gnomAD exomes/genomes fo
     input:
         input_annos_gnomad_nuclear_grch37,
     output:
-        touch("work/annos/grch37/seqvars/gnomad_{kind}/.done"),
+        touch("work/annos/grch37/seqvars/gnomad_{kind}/{version}/.done"),
+    wildcard_constraints:
+        kind=r"[a-z]+",
 
 
 rule annos_seqvars_gnomad_nuclear_grch38:  # -- collect gnomAD exomes/genomes for GRCh38
     input:
         input_annos_gnomad_nuclear_grch38,
     output:
-        touch("work/annos/grch38/seqvars/gnomad_{kind}/.done"),
+        touch("work/annos/grch38/seqvars/gnomad_{kind}/{version}/.done"),
+    wildcard_constraints:
+        kind=r"[a-z]+",

@@ -3,23 +3,23 @@
 
 rule annos_gnomad_mtdna_download:  # -- download gnomAD mtDNA
     output:
-        dl="work/download/annos/{genome_build}/seqvars/gnomad_mtdna/gnomad.genomes.v3.1.sites.chrM.vcf.bgz",
+        dl="work/download/annos/{genome_build}/seqvars/gnomad_mtdna/{version}/gnomad.genomes.v{version}.sites.chrM.vcf.bgz",
     shell:
         r"""
         wget --no-check-certificate \
             -O {output.dl} \
-            https://datasetgnomad.blob.core.windows.net/dataset/release/3.1/vcf/genomes/gnomad.genomes.v3.1.sites.chrM.vcf.bgz
+            https://datasetgnomad.blob.core.windows.net/dataset/release/{wildcards.version}/vcf/genomes/gnomad.genomes.v{wildcards.version}.sites.chrM.vcf.bgz
         """
 
 
 rule annos_gnomad_mtdna_process:  # -- process gnomAD mtDNA
     input:
-        dl="work/download/annos/{genome_build}/seqvars/gnomad_mtdna/gnomad.genomes.v3.1.sites.chrM.vcf.bgz",
+        dl="work/download/annos/{genome_build}/seqvars/gnomad_mtdna/{version}/gnomad.genomes.v{version}.sites.chrM.vcf.bgz",
     output:
-        vcf="work/annos/{genome_build}/seqvars/gnomad_mtdna/gnomad_mtdna.vcf.gz",
-        vcf_md5="work/annos/{genome_build}/seqvars/gnomad_mtdna/gnomad_mtdna.vcf.gz.md5",
-        vcf_tbi="work/annos/{genome_build}/seqvars/gnomad_mtdna/gnomad_mtdna.vcf.gz.tbi",
-        vcf_tbi_md5="work/annos/{genome_build}/seqvars/gnomad_mtdna/gnomad_mtdna.vcf.gz.tbi.md5",
+        vcf="work/annos/{genome_build}/seqvars/gnomad_mtdna/{version}/gnomad_mtdna.vcf.gz",
+        vcf_md5="work/annos/{genome_build}/seqvars/gnomad_mtdna/{version}/gnomad_mtdna.vcf.gz.md5",
+        vcf_tbi="work/annos/{genome_build}/seqvars/gnomad_mtdna/{version}/gnomad_mtdna.vcf.gz.tbi",
+        vcf_tbi_md5="work/annos/{genome_build}/seqvars/gnomad_mtdna/{version}/gnomad_mtdna.vcf.gz.tbi.md5",
     shell:
         r"""
         if [[ {wildcards.genome_build} == grch37 ]]; then
