@@ -3,6 +3,7 @@ work/
 output/
 
 # Python
+__pycache__
 *.egg-info
 src/
 *.pyc
