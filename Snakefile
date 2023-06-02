@@ -75,7 +75,7 @@ rule all:
         f"work/download/annos/grch37/seqvars/dbnsfp/{DV.dbnsfp}a/LICENSE.txt",
         f"work/download/annos/grch37/seqvars/dbnsfp/{DV.dbnsfp}c/LICENSE.txt",
         f"work/download/annos/grch37/seqvars/dbscsnv/{DV.dbscsnv}/dbscSNV{DV.dbscsnv}.chr1",
-        "work/download/annos/grch37/seqvars/dbsnp/dbsnp.vcf.gz",
+        f"work/download/annos/grch37/seqvars/dbsnp/{DV.dbsnp_37}/dbsnp.vcf.gz",
         "work/annos/grch37/seqvars/helixmtdb/20200327/helixmtdb.vcf.gz"
         f"work/annos/grch37/seqvars/gnomad_mtdna/{DV.gnomad_mtdna}/gnomad_mtdna.vcf.gz",
         f"work/annos/grch37/seqvars/gnomad_exomes/{DV.gnomad_v2}/.done",

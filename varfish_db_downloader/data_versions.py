@@ -49,6 +49,8 @@ class DataVersions:
     ucsc_fix_seq_liftover: str
     #: RefSeq version (GRCh37)
     refseq_37: str
+    #: dbSNP version (GRCh37)
+    dbsnp_37: str
 
 
 #: The data versions to use.
@@ -75,4 +77,5 @@ DATA_VERSIONS = DataVersions(
     ucsc_alt_seq_liftover="2020-03-22",
     ucsc_fix_seq_liftover="2020-05-24",
     refseq_37="105",
+    dbsnp_37="2018-04-23",
 )

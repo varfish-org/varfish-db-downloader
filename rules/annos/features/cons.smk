@@ -24,7 +24,6 @@ rule annos_features_cons_download:
             exit 1
         fi
 
-
         # Actually download the file.
         aria2c \
             --check-certificate=false \
