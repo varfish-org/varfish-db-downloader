@@ -8,7 +8,7 @@ rule annos_features_ensembl_gene_regions_grch37_download:  # -- download ENSEMBL
         r"""
         wget --no-check-certificate \
             -O {output.gtf} \
-            'https://ftp.ensembl.org/pub/grch37/current/gtf/homo_sapiens/Homo_sapiens.GRCh37.{version}.gtf.gz'
+            'https://ftp.ensembl.org/pub/grch37/current/gtf/homo_sapiens/Homo_sapiens.GRCh37.{wildcards.version}.gtf.gz'
         """
 
 

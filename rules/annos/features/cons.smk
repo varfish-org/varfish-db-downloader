@@ -16,11 +16,11 @@ rule annos_features_cons_download:
         export TMPDIR=$(mktemp -d)
         trap "rm -rf $TMPDIR" EXIT
 
-        wget -O $TMPDIR/alignment.html \
+        wget -O $TMPDIR/alignments.html \
             https://hgdownload.cse.ucsc.edu/goldenpath/${{ucsc_name}}/multiz100way/alignments
-        version=$(grep knownGene.exonAA.fa.gz $TMPDIR/listing.html | awk '{{ print $$2 }}')
+        version=$(grep knownGene.exonAA.fa.gz $TMPDIR/alignments.html | awk '{{ print $3 }}')
         if [[ "$version" != "{wildcards.version}" ]]; then
-            >&2 echo "Version mismatch for knownGene.exonAA.fa.gz: expected {version}, got $version"
+            >&2 echo "Version mismatch for knownGene.exonAA.fa.gz: expected {wildcards.version}, got $version"
             exit 1
         fi
 
@@ -39,13 +39,13 @@ rule annos_features_cons_download:
 
 rule annos_features_cons_to_vcf:
     input:
-        hgnc="work/genes/hgnc/hgnc_info.jsonl",
-        enst_ensg="work/genes/enst_ensg/{genome_release}/enst_ensg.tsv",
+        hgnc=f"work/genes/hgnc/{DV.today}/hgnc_info.jsonl",
+        enst_ensg=f"work/genes/enst_ensg/{{genome_release}}/{DV.ensembl_37}/enst_ensg.tsv",
         reference="work/reference/{genome_release}/reference.fa",
-        fa="work/download/annos/{genome_release}/features/cons/knownGene.exonAA.fa.gz",
+        fa="work/download/annos/{genome_release}/features/cons/{version}/knownGene.exonAA.fa.gz",
     output:
-        vcf="work/download/annos/{genome_release}/features/cons/ucsc_conservation.vcf.gz",
-        tbi="work/download/annos/{genome_release}/features/cons/ucsc_conservation.vcf.gz.tbi",
+        vcf="work/download/annos/{genome_release}/features/cons/{version}/ucsc_conservation.vcf.gz",
+        tbi="work/download/annos/{genome_release}/features/cons/{version}/ucsc_conservation.vcf.gz.tbi",
     shell:
         r"""
         python scripts/knowngeneaa.py \

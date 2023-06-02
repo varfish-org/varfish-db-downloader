@@ -76,7 +76,7 @@ def run_genes_gnomad_constraints_v2_1_1_to_tsv(input, output, wildcards):
 
 rule genes_gnomad_convert:  # -- create gnomAD gene constraints TSV
     input:
-        bgz="work/download/genes/gnomad/gnomad.v2.1.1.lof_metrics.by_gene.txt.bgz",
+        bgz="work/download/genes/gnomad/2.1.1/gnomad.v2.1.1.lof_metrics.by_gene.txt.bgz",
         xlink_ensembl=f"work/genes/ensembl/{DV.ensembl}/ensembl_xlink.tsv",
     output:
         tsv="work/genes/gnomad/2.1.1/gnomad_constraints.tsv",

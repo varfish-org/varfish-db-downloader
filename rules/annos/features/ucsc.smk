@@ -11,7 +11,7 @@ rule features_ucsc_grch37_download:  # -- download of UCSC hg19 tracks
         trap "rm -rf $TMPDIR" EXIT
 
         wget -O $TMPDIR/listing.html https://hgdownload.cse.ucsc.edu/goldenpath/hg19/database
-        version=$(grep {wildcards.filename} $TMPDIR/listing.html | awk '{{ print $$2 }}')
+        version=$(grep {wildcards.filename} $TMPDIR/listing.html | awk '{{ print $3 }}')
         if [[ "$version" != "{wildcards.version}" ]]; then
             >&2 echo "Version mismatch for {wildcards.filename}: expected {version}, got $version"
             exit 1
@@ -80,7 +80,7 @@ rule features_ucsc_rmsk_grch37_process:  # -- processing of UCSC hg19 rmsk
 
 rule features_ucsc_liftover_grch37_process:  # -- process of UCSC hg19 *SeqLiftOverPsl
     input:
-        txt="work/download/annos/grch37/features/ucsc/{version}/{prefix}SeqLiftOverPsl.bed.gz",
+        txt="work/download/annos/grch37/features/ucsc/{version}/{prefix}SeqLiftOverPsl.txt.gz",
     output:
         bed="work/annos/grch37/features/ucsc/{version}/{prefix}SeqLiftOverPsl.bed.gz",
         bed_md5="work/annos/grch37/features/ucsc/{version}/{prefix}SeqLiftOverPsl.bed.gz.md5",

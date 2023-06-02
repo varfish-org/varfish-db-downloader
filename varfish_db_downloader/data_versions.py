@@ -49,15 +49,13 @@ class DataVersions:
     ucsc_fix_seq_liftover: str
     #: RefSeq version (GRCh37)
     refseq_37: str
-    #: ENSEMBL version (GRCh37)
-    ensembl_37: str
 
 
 #: The data versions to use.
 DATA_VERSIONS = DataVersions(
     ensembl_37="87",
     ensembl="109",
-    today="2023-06-01",
+    today="2023-06-02",
     dbnsfp="4.4",
     dbscsnv="1.1",
     cadd="1.6",
@@ -77,5 +75,4 @@ DATA_VERSIONS = DataVersions(
     ucsc_alt_seq_liftover="2020-03-22",
     ucsc_fix_seq_liftover="2020-05-24",
     refseq_37="105",
-    ensembl_37="87",
 )
