@@ -92,7 +92,7 @@ rule all:
         f"work/annos/grch38/seqvars/gnomad_genomes/{DV.gnomad_v3}/.done",
         # -- background/population structural variants and annoations thereof
         # ---- GRCh37
-        "work/annos/grch37/strucvars/dbvar/dbvar.bed.gz",
+        f"work/annos/grch37/strucvars/dbvar/{DV.dbvar}/dbvar.bed.gz",
         "work/annos/grch37/strucvars/dgv/dgv.bed.gz",
         "work/annos/grch37/strucvars/dgv_gs/dgv_gs.bed.gz",
         "work/annos/grch37/strucvars/exac/exac.bed.gz",

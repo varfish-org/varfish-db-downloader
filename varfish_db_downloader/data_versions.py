@@ -25,6 +25,8 @@ class DataVersions:
     gnomad_v2: str
     #: Version of gnomAD v3.
     gnomad_v3: str
+    #: Version of dbVar.
+    dbvar: str
 
 
 #: The data versions to use.
@@ -39,4 +41,5 @@ DATA_VERSIONS = DataVersions(
     gnomad_mtdna="3.1",
     gnomad_v2="2.1.1",
     gnomad_v3="3.1.2",
+    dbvar="2023-05-16",
 )

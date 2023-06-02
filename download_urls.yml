@@ -80,6 +80,11 @@
 - url: https://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/altSeqLiftOverPsl.txt.gz
 - url: https://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/fixSeqLiftOverPsl.txt.gz
 
+- comment: The dbVar release notes index is pulled for checking for latest release.
+  url: https://ftp.ncbi.nlm.nih.gov/pub/dbVar/sandbox/sv_datasets/nonredundant/release_notes
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
 - url: https://ftp.ncbi.nlm.nih.gov/pub/dbVar/sandbox/sv_datasets/nonredundant/deletions/GRCh37.nr_deletions.tsv.gz
 - url: https://ftp.ncbi.nlm.nih.gov/pub/dbVar/sandbox/sv_datasets/nonredundant/duplications/GRCh37.nr_duplications.tsv.gz
 - url: https://ftp.ncbi.nlm.nih.gov/pub/dbVar/sandbox/sv_datasets/nonredundant/insertions/GRCh37.nr_insertions.tsv.gz
