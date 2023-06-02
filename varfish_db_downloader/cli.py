@@ -134,8 +134,6 @@ def urls_check_upstream(urls, urls_yaml):
 
     requests_ftp.monkeypatch_session()
     s = requests.Session()
-    if hasattr(s, "config"):
-        s.config["keep_alive"] = False
 
     error_count = 0
     for entry in wget.load_urls_yaml(urls_yaml):
