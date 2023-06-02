@@ -1,7 +1,0 @@
-release
-chromosome
-start
-end
-bin
-database
-gene_id

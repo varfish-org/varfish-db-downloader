@@ -1,8 +1,0 @@
-chromosome
-start
-stop
-hgnc_id
-enst_id
-exon_num
-exon_count
-alignment

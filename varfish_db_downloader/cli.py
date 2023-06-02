@@ -133,21 +133,19 @@ def urls_check_upstream(urls, urls_yaml):
     Leave ``urls`` empty to check for all URLs."""
 
     requests_ftp.monkeypatch_session()
-    s = requests.Session()
-    if hasattr(s, "config"):
-        s.config["keep_alive"] = False
 
     error_count = 0
     for entry in wget.load_urls_yaml(urls_yaml):
+        s = requests.Session()
         if not entry.skip_upstream_check and (not urls or entry.url in urls):
             logger.info(" checking {}...", entry.url)
-            r = s.get(entry.url, allow_redirects=True, stream=True)
-            if r.ok:
-                logger.info("   => OK")
-                r.close()
-            else:
-                error_count += 1
-                logger.warning("  NOT OK: {}", r)
+            with s.get(entry.url, allow_redirects=True, stream=True) as r:
+                if r.ok:
+                    logger.info("   => OK")
+                    r.close()
+                else:
+                    error_count += 1
+                    logger.warning("  NOT OK: {}", r)
         else:
             logger.info("  Skipping {}...", entry.url)
 

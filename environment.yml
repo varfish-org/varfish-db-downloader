@@ -4,22 +4,7 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - snakemake-minimal =7
-  - bedops =2
-  - bcftools =1.15
-  - htslib =1.16
-  - samtools =1.16
-  - bedtools =2.30
-  - var-agg ==0.1.1
-  - lftp
-  - interval-binning =1
-  - vcfpy
-  - tqdm
-  - prov =2
-  - jq
-  - aria2
-  - pigz
-  # Elementary Python dependencies
+  # Python and Python packages.
   - python =3.10
   - setuptools-scm
   - attrs
@@ -29,6 +14,10 @@ dependencies:
   - pyyaml
   - requests
   - requests-ftp
+  - snakemake-minimal =7
+  - interval-binning >=1.0,<2.0
+  - tqdm
+  - vcfpy
   # Python and Snakemake formatting and linting.
   - black >=23.0,<24.0
   - snakefmt >=0.8,<0.9
@@ -37,3 +26,16 @@ dependencies:
   # Shell formatting and linting.
   - beautysh >=6.0,<7.0
   - shellcheck >=0.9,<0.10
+  # JSON transformation tool used in many rules.
+  - jq
+  # Tools for file downloads.
+  - aria2
+  - wget
+  # Tool for processing BED files.
+  - bedops =2
+  # VCF/BCF/HTSlib/Samtools.
+  - bcftools =1.15
+  - htslib =1.16
+  - samtools =1.16
+  # Parallel (de)compression.
+  - pigz

@@ -1,5 +1,0 @@
-release
-chromosome
-start
-end
-bin
