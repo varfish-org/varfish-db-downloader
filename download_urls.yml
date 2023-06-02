@@ -1,5 +1,19 @@
 - url: https://ftp.ensembl.org/pub/current_README
 
+- comment: The UCSC listing is used for checking the versions.
+  url: https://hgdownload.cse.ucsc.edu/goldenpath/hg19/database
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+
+- url: https://hgdownload.cse.ucsc.edu/goldenpath/hg19/multiz100way/alignments
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+- url: https://hgdownload.cse.ucsc.edu/goldenpath/hg38/multiz100way/alignments
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
 - url: https://hgdownload.cse.ucsc.edu/goldenpath/hg19/multiz100way/alignments/knownGene.exonAA.fa.gz
   excerpt_strategy:
     strategy: head

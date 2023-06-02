@@ -3,8 +3,8 @@
 
 rule annos_features_tads_grch37_download:  # -- download GRCh37 TAD files
     output:
-        imr90="work/download/annos/grch37/tads/IMR90_domains_hg19.bed",
-        hesc="work/download/annos/grch37/tads/hESC_domains_hg19.bed",
+        imr90="work/download/annos/grch37/tads/dixon2015/IMR90_domains_hg19.bed",
+        hesc="work/download/annos/grch37/tads/dixon2015/hESC_domains_hg19.bed",
     shell:
         r"""
         wget --no-check-certificate \
@@ -19,13 +19,13 @@ rule annos_features_tads_grch37_download:  # -- download GRCh37 TAD files
 
 rule annos_features_tads_grch37_process:  # -- process GRCh37 TAD files
     input:
-        imr90="work/download/annos/grch37/tads/IMR90_domains_hg19.bed",
-        hesc="work/download/annos/grch37/tads/hESC_domains_hg19.bed",
+        imr90="work/download/annos/grch37/tads/dixon2015/IMR90_domains_hg19.bed",
+        hesc="work/download/annos/grch37/tads/dixon2015/hESC_domains_hg19.bed",
     output:
-        bed_imr90="work/annos/grch37/features/tads/imr90.bed",
-        bed_imr90_md5="work/annos/grch37/features/tads/imr90.bed.md5",
-        bed_hesc="work/annos/grch37/features/tads/hesc.bed",
-        bed_hesc_md5="work/annos/grch37/features/tads/hesc.bed.md5",
+        bed_imr90="work/annos/grch37/features/tads/dixon2015/imr90.bed",
+        bed_imr90_md5="work/annos/grch37/features/tads/dixon2015/imr90.bed.md5",
+        bed_hesc="work/annos/grch37/features/tads/dixon2015/hesc.bed",
+        bed_hesc_md5="work/annos/grch37/features/tads/dixon2015/hesc.bed.md5",
     shell:
         r"""
         echo -e "#chrom\tbegin\tend" >{output.bed_imr90}

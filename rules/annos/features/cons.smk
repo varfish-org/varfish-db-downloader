@@ -3,7 +3,7 @@
 
 rule annos_features_cons_download:
     output:
-        fa="work/download/annos/{genome_release}/features/cons/knownGene.exonAA.fa.gz",
+        fa="work/download/annos/{genome_release}/features/cons/{version}/knownGene.exonAA.fa.gz",
     shell:
         r"""
         if [[ {wildcards.genome_release} == grch37 ]]; then
@@ -12,6 +12,20 @@ rule annos_features_cons_download:
             ucsc_name=hg38
         fi
 
+        # Check version.
+        export TMPDIR=$(mktemp -d)
+        trap "rm -rf $TMPDIR" EXIT
+
+        wget -O $TMPDIR/alignment.html \
+            https://hgdownload.cse.ucsc.edu/goldenpath/${{ucsc_name}}/multiz100way/alignments
+        version=$(grep knownGene.exonAA.fa.gz $TMPDIR/listing.html | awk '{{ print $$2 }}')
+        if [[ "$version" != "{wildcards.version}" ]]; then
+            >&2 echo "Version mismatch for knownGene.exonAA.fa.gz: expected {version}, got $version"
+            exit 1
+        fi
+
+
+        # Actually download the file.
         aria2c \
             --check-certificate=false \
             --file-allocation=trunc \
@@ -49,10 +63,10 @@ rule annos_features_cons_to_vcf:
 
 rule annos_features_cons_to_tsv:
     input:
-        vcf="work/download/annos/{genome_release}/features/cons/ucsc_conservation.vcf.gz",
+        vcf="work/download/annos/{genome_release}/features/cons/{version}/ucsc_conservation.vcf.gz",
     output:
-        tsv="work/annos/{genome_release}/features/cons/ucsc_conservation.tsv",
-        tsv_md5="work/annos/{genome_release}/features/cons/ucsc_conservation.tsv.md5",
+        tsv="work/annos/{genome_release}/features/cons/{version}/ucsc_conservation.tsv",
+        tsv_md5="work/annos/{genome_release}/features/cons/{version}/ucsc_conservation.tsv.md5",
     shell:
         r"""
         export TMPDIR=$(mktemp -d)

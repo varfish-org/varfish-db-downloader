@@ -3,7 +3,7 @@
 
 rule annos_strucvars_dgv_grch37_download:  # -- download DGV files
     output:
-        txt="work/download/annos/grch37/strucvars/dgv/GRCh37_hg19_variants_2020-02-25.txt",
+        txt="work/download/annos/grch37/strucvars/dgv/2020-02-25/GRCh37_hg19_variants_2020-02-25.txt",
     shell:
         r"""
         wget --no-check-certificate \
@@ -14,12 +14,12 @@ rule annos_strucvars_dgv_grch37_download:  # -- download DGV files
 
 rule annos_strucvars_dgv_grch37_process:  # -- download DGV files
     input:
-        txt="work/download/annos/grch37/strucvars/dgv/GRCh37_hg19_variants_2020-02-25.txt",
+        txt="work/download/annos/grch37/strucvars/dgv/2020-02-25/GRCh37_hg19_variants_2020-02-25.txt",
     output:
-        bed="work/annos/grch37/strucvars/dgv/dgv.bed.gz",
-        bed_md5="work/annos/grch37/strucvars/dgv/dgv.bed.gz.md5",
-        bed_tbi="work/annos/grch37/strucvars/dgv/dgv.bed.gz.tbi",
-        bed_tbi_md5="work/annos/grch37/strucvars/dgv/dgv.bed.gz.tbi.md5",
+        bed="work/annos/grch37/strucvars/dgv/2020-02-25/dgv.bed.gz",
+        bed_md5="work/annos/grch37/strucvars/dgv/2020-02-25/dgv.bed.gz.md5",
+        bed_tbi="work/annos/grch37/strucvars/dgv/2020-02-25/dgv.bed.gz.tbi",
+        bed_tbi_md5="work/annos/grch37/strucvars/dgv/2020-02-25/dgv.bed.gz.tbi.md5",
     shell:
         r"""
         awk \
@@ -40,7 +40,7 @@ rule annos_strucvars_dgv_grch37_process:  # -- download DGV files
 
 rule annos_strucvars_dgv_gs_grch37_download:  # -- download DGV GS files
     output:
-        gff3="work/download/annos/grch37/strucvars/dgv_gs/DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3",
+        gff3="work/download/annos/grch37/strucvars/dgv_gs/2016-05-15/DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3",
     shell:
         r"""
         wget --no-check-certificate \
@@ -51,12 +51,12 @@ rule annos_strucvars_dgv_gs_grch37_download:  # -- download DGV GS files
 
 rule annos_strucvars_dgv_gs_grch37_process:  # -- download DGV GS files
     input:
-        gff3="work/download/annos/grch37/strucvars/dgv_gs/DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3",
+        gff3="work/download/annos/grch37/strucvars/dgv_gs/2016-05-15/DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3",
     output:
-        bed="work/annos/grch37/strucvars/dgv_gs/dgv_gs.bed.gz",
-        bed_md5="work/annos/grch37/strucvars/dgv_gs/dgv_gs.bed.gz.md5",
-        bed_tbi="work/annos/grch37/strucvars/dgv_gs/dgv_gs.bed.gz.tbi",
-        bed_tbi_md5="work/annos/grch37/strucvars/dgv_gs/dgv_gs.bed.gz.tbi.md5",
+        bed="work/annos/grch37/strucvars/dgv_gs/2016-05-15/dgv_gs.bed.gz",
+        bed_md5="work/annos/grch37/strucvars/dgv_gs/2016-05-15/dgv_gs.bed.gz.md5",
+        bed_tbi="work/annos/grch37/strucvars/dgv_gs/2016-05-15/dgv_gs.bed.gz.tbi",
+        bed_tbi_md5="work/annos/grch37/strucvars/dgv_gs/2016-05-15/dgv_gs.bed.gz.tbi.md5",
     shell:
         r"""
         awk \

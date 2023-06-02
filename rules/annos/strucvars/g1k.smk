@@ -3,7 +3,7 @@
 
 rule annos_strucvars_g1k_grch37_download:  # -- download Thousand Genomes SVs
     output:
-        vcf="work/download/annos/grch37/strucvars/gnomad/ALL.wgs.mergedSV.v8.20130502.svs.genotypes.vcf.gz",
+        vcf="work/download/annos/grch37/strucvars/g1k/phase3-v2/ALL.wgs.mergedSV.v8.20130502.svs.genotypes.vcf.gz",
     shell:
         r"""
         wget --no-check-certificate \
@@ -14,12 +14,12 @@ rule annos_strucvars_g1k_grch37_download:  # -- download Thousand Genomes SVs
 
 rule annos_strucvars_g1k_grch37_process:  # -- process Thousand Genomes SVs
     input:
-        vcf="work/download/annos/grch37/strucvars/gnomad/ALL.wgs.mergedSV.v8.20130502.svs.genotypes.vcf.gz",
+        vcf="work/download/annos/grch37/strucvars/gnomad/phase3-v2/ALL.wgs.mergedSV.v8.20130502.svs.genotypes.vcf.gz",
     output:
-        bed="work/annos/grch37/strucvars/g1k/g1k.bed.gz",
-        bed_md5="work/annos/grch37/strucvars/g1k/g1k.bed.gz.md5",
-        bed_tbi="work/annos/grch37/strucvars/g1k/g1k.bed.gz.tbi",
-        bed_tbi_md5="work/annos/grch37/strucvars/g1k/g1k.bed.gz.tbi.md5",
+        bed="work/annos/grch37/strucvars/g1k/phase3-v2/g1k.bed.gz",
+        bed_md5="work/annos/grch37/strucvars/g1k/phase3-v2/g1k.bed.gz.md5",
+        bed_tbi="work/annos/grch37/strucvars/g1k/phase3-v2/g1k.bed.gz.tbi",
+        bed_tbi_md5="work/annos/grch37/strucvars/g1k/phase3-v2/g1k.bed.gz.tbi.md5",
     shell:
         r"""
         zcat {input.vcf} \

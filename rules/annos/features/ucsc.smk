@@ -3,21 +3,33 @@
 
 rule features_ucsc_grch37_download:  # -- download of UCSC hg19 tracks
     output:
-        txt="work/download/annos/grch37/features/ucsc/{filename}",
+        txt="work/download/annos/grch37/features/ucsc/{version}/{filename}",
     shell:
         r"""
-        wget -O {output.txt} https://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/genomicSuperDups.txt.gz
+        # Check version.
+        export TMPDIR=$(mktemp -d)
+        trap "rm -rf $TMPDIR" EXIT
+
+        wget -O $TMPDIR/listing.html https://hgdownload.cse.ucsc.edu/goldenpath/hg19/database
+        version=$(grep {wildcards.filename} $TMPDIR/listing.html | awk '{{ print $$2 }}')
+        if [[ "$version" != "{wildcards.version}" ]]; then
+            >&2 echo "Version mismatch for {wildcards.filename}: expected {version}, got $version"
+            exit 1
+        fi
+
+        # Actually perform the download.
+        wget -O {output.txt} https://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/{wildcards.filename}
         """
 
 
 rule features_ucsc_genomic_super_dups_grch37_process:  # -- processing of UCSC hg19 genomicSuperDups
     input:
-        txt="work/download/annos/grch37/features/ucsc/genomicSuperDups.txt.gz",
+        txt="work/download/annos/grch37/features/ucsc/{version}/genomicSuperDups.txt.gz",
     output:
-        bed="work/annos/grch37/features/ucsc/genomicSuperDups.bed.gz",
-        bed_md5="work/annos/grch37/features/ucsc/genomicSuperDups.bed.gz.md5",
-        bed_tbi="work/annos/grch37/features/ucsc/genomicSuperDups.bed.gz.tbi",
-        bed_tbi_md5="work/annos/grch37/features/ucsc/genomicSuperDups.bed.gz.tbi.md5",
+        bed="work/annos/grch37/features/ucsc/{version}/genomicSuperDups.bed.gz",
+        bed_md5="work/annos/grch37/features/ucsc/{version}/genomicSuperDups.bed.gz.md5",
+        bed_tbi="work/annos/grch37/features/ucsc/{version}/genomicSuperDups.bed.gz.tbi",
+        bed_tbi_md5="work/annos/grch37/features/ucsc/{version}/genomicSuperDups.bed.gz.tbi.md5",
     shell:
         r"""
         (
@@ -40,12 +52,12 @@ rule features_ucsc_genomic_super_dups_grch37_process:  # -- processing of UCSC h
 
 rule features_ucsc_rmsk_grch37_process:  # -- processing of UCSC hg19 rmsk
     input:
-        txt="work/download/annos/grch37/features/ucsc/rmsk.txt.gz",
+        txt="work/download/annos/grch37/features/ucsc/{version}/rmsk.txt.gz",
     output:
-        bed="work/annos/grch37/features/ucsc/rmsk.bed.gz",
-        bed_md5="work/annos/grch37/features/ucsc/rmsk.bed.gz.md5",
-        bed_tbi="work/annos/grch37/features/ucsc/rmsk.bed.gz.tbi",
-        bed_tbi_md5="work/annos/grch37/features/ucsc/rmsk.bed.gz.tbi.md5",
+        bed="work/annos/grch37/features/ucsc/{version}/rmsk.bed.gz",
+        bed_md5="work/annos/grch37/features/ucsc/{version}/rmsk.bed.gz.md5",
+        bed_tbi="work/annos/grch37/features/ucsc/{version}/rmsk.bed.gz.tbi",
+        bed_tbi_md5="work/annos/grch37/features/ucsc/{version}/rmsk.bed.gz.tbi.md5",
     shell:
         r"""
         (
@@ -68,12 +80,12 @@ rule features_ucsc_rmsk_grch37_process:  # -- processing of UCSC hg19 rmsk
 
 rule features_ucsc_liftover_grch37_process:  # -- process of UCSC hg19 *SeqLiftOverPsl
     input:
-        txt="work/download/annos/grch37/features/ucsc/{prefix}SeqLiftOverPsl.bed.gz",
+        txt="work/download/annos/grch37/features/ucsc/{version}/{prefix}SeqLiftOverPsl.bed.gz",
     output:
-        bed="work/annos/grch37/features/ucsc/{prefix}SeqLiftOverPsl.bed.gz",
-        bed_md5="work/annos/grch37/features/ucsc/{prefix}SeqLiftOverPsl.bed.gz.md5",
-        bed_tbi="work/annos/grch37/features/ucsc/{prefix}SeqLiftOverPsl.bed.gz.tbi",
-        bed_tbi_md5="work/annos/grch37/features/ucsc/{prefix}SeqLiftOverPsl.bed.gz.tbi.md5",
+        bed="work/annos/grch37/features/ucsc/{version}/{prefix}SeqLiftOverPsl.bed.gz",
+        bed_md5="work/annos/grch37/features/ucsc/{version}/{prefix}SeqLiftOverPsl.bed.gz.md5",
+        bed_tbi="work/annos/grch37/features/ucsc/{version}/{prefix}SeqLiftOverPsl.bed.gz.tbi",
+        bed_tbi_md5="work/annos/grch37/features/ucsc/{version}/{prefix}SeqLiftOverPsl.bed.gz.tbi.md5",
     shell:
         r"""
         (

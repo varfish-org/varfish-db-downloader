@@ -3,7 +3,7 @@
 
 rule annos_strucvars_gnomad_grch37_download:  # -- download gnomAD-SV files
     output:
-        vcf="work/download/annos/grch37/strucvars/gnomad/gnomad_v2.1_sv.sites.vcf.gz",
+        vcf="work/download/annos/grch37/strucvars/gnomad/2.1.1/gnomad_v2.1_sv.sites.vcf.gz",
     shell:
         r"""
         wget --no-check-certificate \
@@ -14,12 +14,12 @@ rule annos_strucvars_gnomad_grch37_download:  # -- download gnomAD-SV files
 
 rule annos_strucvars_gnomad_grch37_process:  # -- process gnomAD-SV files
     input:
-        vcf="work/download/annos/grch37/strucvars/gnomad/gnomad_v2.1_sv.sites.vcf.gz",
+        vcf="work/download/annos/grch37/strucvars/gnomad/2.1.1/gnomad_v2.1_sv.sites.vcf.gz",
     output:
-        bed="work/annos/grch37/strucvars/gnomad/gnomad_sv.bed.gz",
-        bed_md5="work/annos/grch37/strucvars/gnomad/gnomad_sv.bed.gz.md5",
-        bed_tbi="work/annos/grch37/strucvars/gnomad/gnomad_sv.bed.gz.tbi",
-        bed_tbi_md5="work/annos/grch37/strucvars/gnomad/gnomad_sv.bed.gz.tbi.md5",
+        bed="work/annos/grch37/strucvars/gnomad/2.1.1/gnomad_sv.bed.gz",
+        bed_md5="work/annos/grch37/strucvars/gnomad/2.1.1/gnomad_sv.bed.gz.md5",
+        bed_tbi="work/annos/grch37/strucvars/gnomad/2.1.1/gnomad_sv.bed.gz.tbi",
+        bed_tbi_md5="work/annos/grch37/strucvars/gnomad/2.1.1/gnomad_sv.bed.gz.tbi.md5",
     shell:
         r"""
         export TMPDIR=$(mktemp -d)
