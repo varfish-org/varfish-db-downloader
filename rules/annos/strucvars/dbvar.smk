@@ -1,9 +1,9 @@
 ## Rules related to structural variants in dbVar.
 
 
-rule annos_strucvars_dbvar_grch37_download:  # -- download dbVar files
+rule annos_strucvars_dbvar_download:  # -- download dbVar files
     output:
-        "work/download/annos/grch37/strucvars/dbvar/{version}/GRCh37.nr_{sv_type}.tsv.gz",
+        "work/download/annos/{genome_release}/strucvars/dbvar/{version}/{genome_release_nolower}.nr_{sv_type}.tsv.gz",
     shell:
         r"""
         # Ensure that the version is the latest in the release notes.
@@ -22,26 +22,46 @@ rule annos_strucvars_dbvar_grch37_download:  # -- download dbVar files
         # Actual download.
         wget --no-check-certificate \
             -O {output} \
-            https://ftp.ncbi.nlm.nih.gov/pub/dbVar/sandbox/sv_datasets/nonredundant/{wildcards.sv_type}/GRCh37.nr_{wildcards.sv_type}.tsv.gz
+            https://ftp.ncbi.nlm.nih.gov/pub/dbVar/sandbox/sv_datasets/nonredundant/{wildcards.sv_type}/{wildcards.genome_release_nolower}.nr_{wildcards.sv_type}.tsv.gz
         """
 
 
-rule annos_strucvars_dbvar_grch37_process:  # -- process dbVar files
+def input_annos_strucvars_dbvar_process(wildcards):
+    """Input functions for rule ``rule annos_strucvars_dbvar_process``."""
+    mapping = {
+        "grch37": "GRCh37",
+        "grch38": "GRCh38",
+    }
+    tpl = (
+        "work/download/annos/{genome_release}/strucvars/dbvar/{version}/"
+        "{genome_release_nolower}.nr_{typ}.tsv.gz"
+    )
+    return {
+        "download": [
+            tpl.format(
+                genome_release=wildcards.genome_release,
+                version=wildcards.version,
+                genome_release_nolower=mapping[wildcards.genome_release],
+                typ=typ,
+            )
+            for typ in ("deletions", "duplications", "insertions")
+        ]
+    }
+
+
+rule annos_strucvars_dbvar_process:  # -- process dbVar files
     input:
-        download=expand(
-            "work/download/annos/grch37/strucvars/dbvar/{{version}}/GRCh37.nr_{type}.tsv.gz",
-            type=["deletions", "duplications", "insertions"],
-        ),
+        unpack(input_annos_strucvars_dbvar_process),
     output:
-        bed="work/annos/grch37/strucvars/dbvar/{version}/dbvar.bed.gz",
-        bed_md5="work/annos/grch37/strucvars/dbvar/{version}/dbvar.bed.gz.md5",
-        bed_tbi="work/annos/grch37/strucvars/dbvar/{version}/dbvar.bed.gz.tbi",
-        bed_tbi_md5="vardbs/grch37/strucvars/dbvar/{version}/dbvar.bed.gz.tbi.md5",
+        bed="work/annos/{genome_release}/strucvars/dbvar/{version}/dbvar.bed.gz",
+        bed_md5="work/annos/{genome_release}/strucvars/dbvar/{version}/dbvar.bed.gz.md5",
+        bed_tbi="work/annos/{genome_release}/strucvars/dbvar/{version}/dbvar.bed.gz.tbi",
+        bed_tbi_md5="vardbs/{genome_release}/strucvars/dbvar/{version}/dbvar.bed.gz.tbi.md5",
     shell:
         r"""
         awk \
             -F $'\t' \
-            -f scripts/vardbs-grch37-strucvar-dbvar.awk \
+            -f scripts/vardbs-strucvar-dbvar.awk \
             <(zcat {input.download}) \
         | sort-bed - \
         | bgzip -c \
