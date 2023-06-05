@@ -20,10 +20,8 @@ snakemake \
     --jobs 100 \
     --slurm \
     --default-resources \
-        slurm_partition=$PART \
-        slurm_nodes=1 \
-        slurm_ntasks=1 \
-        slurm_time=04:00 \
-        slurm_mem_mb=2000 \
+        slurm_partition="$PART" \
+        'runtime="4h"' \
+        mem_mb=2000 \
     -- \
-    all
+    "${@-all}"
