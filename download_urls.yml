@@ -65,6 +65,15 @@
     strategy: head
     count: 10000
 
+- url: https://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/all_assembly_versions/GCF_000001405.40_GRCh38.p14/GCF_000001405.40_GRCh38.p14_assembly_report.txt
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+- url: https://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/all_assembly_versions/GCF_000001405.40_GRCh38.p14/GCF_000001405.40_GRCh38.p14_genomic.gtf.gz
+  excerpt_strategy:
+    strategy: head
+    count: 10000
+
 - url: https://ftp.ensembl.org/pub/grch37/current/gtf/homo_sapiens/Homo_sapiens.GRCh37.87.gtf.gz
   excerpt_strategy:
     strategy: head
