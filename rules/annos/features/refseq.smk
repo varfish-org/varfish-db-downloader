@@ -41,10 +41,23 @@ rule annos_features_refseq_gene_regions_download_grch38:  # -- download ENSEMBL 
         """
 
 
-rule annos_features_refseq_gene_regions_process:  # -- process ENSEMBL gene regions files
+def input_annos_features_refseq_gene_regions_process_grch38(wildcards):
+    """Input function for ``rule annos_features_refseq_gene_regions_process_grch38``."""
+    if wildcards.genome_build == "grch37":
+        return {
+            "acc": f"work/download/annos/grch37/refseq/{wildcards.version}/chr_accessions_GRCh37.p13",
+            "gtf": f"work/download/annos/grch37/refseq/{wildcards.version}/GCF_000001405.25_GRCh37.p13_genomic.gtf.gz",
+        }
+    else:
+        return {
+            "acc": f"work/download/annos/grch38/refseq/{wildcards.version}/chr_accessions_GRCh38.p14",
+            "gtf": f"work/download/annos/grch38/refseq/{wildcards.version}/GCF_000001405.40_GRCh38.p14_genomic.gtf.gz",
+        }
+
+
+rule annos_features_refseq_gene_regions_process_grch38:  # -- process ENSEMBL gene regions files
     input:
-        acc="work/download/annos/{genome_build}/refseq/{version}/chr_accessions_GRCh38.p14",
-        gtf="work/download/annos/{genome_build}/refseq/{version}/GCF_000001405.40_GRCh38.p14_genomic.gtf.gz",
+        unpack(input_annos_features_refseq_gene_regions_process_grch38),
     output:
         tsv="work/annos/{genome_build}/features/refseq/{version}/refseq_genes.bed.gz",
         tsv_md5="work/annos/{genome_build}/features/refseq/{version}/refseq_genes.bed.gz.md5",

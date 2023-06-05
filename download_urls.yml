@@ -25,8 +25,14 @@
     count: 10000
 - url: https://hgdownload.cse.ucsc.edu/goldenpath/hg38/multiz100way/alignments/knownGene.exonAA.fa.gz
 
-- url: https://compbio.med.harvard.edu/modencode/webpage/hic/IMR90_domains_hg19.bed
-- url: https://compbio.med.harvard.edu/modencode/webpage/hic/hESC_domains_hg19.bed
+- url: http://3dgenome.fsm.northwestern.edu/downloads/hg19.TADs.zip
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+- url: http://3dgenome.fsm.northwestern.edu/downloads/hg38.TADs.zip
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
 
 - url: https://helix-research-public.s3.amazonaws.com/mito/HelixMTdb_20200327.tsv
 
