@@ -108,7 +108,9 @@
 - url: https://ftp.ncbi.nlm.nih.gov/pub/dbVar/sandbox/sv_datasets/nonredundant/duplications/GRCh38.nr_duplications.tsv.gz
 - url: https://ftp.ncbi.nlm.nih.gov/pub/dbVar/sandbox/sv_datasets/nonredundant/insertions/GRCh38.nr_insertions.tsv.gz
 - url: http://dgv.tcag.ca/dgv/docs/GRCh37_hg19_variants_2020-02-25.txt
+- url: http://dgv.tcag.ca/dgv/docs/GRCh38_hg38_variants_2020-02-25.txt
 - url: http://dgv.tcag.ca/dgv/docs/DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3
+- url: http://dgv.tcag.ca/dgv/docs/DGV.GS.hg38.gff3
 - url: ftp://ftp.broadinstitute.org/pub/ExAC_release/release0.3.1/cnv/exac-final.autosome-1pct-sq60-qc-prot-coding.cnv.bed
 - url: https://ftp-trace.ncbi.nih.gov/1000genomes/ftp/phase3/integrated_sv_map/ALL.wgs.integrated_sv_map_v2.20130502.svs.genotypes.vcf.gz
 - url: https://storage.googleapis.com/gcp-public-data--gnomad/papers/2019-sv/gnomad_v2.1_sv.sites.vcf.gz

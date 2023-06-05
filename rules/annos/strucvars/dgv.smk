@@ -1,30 +1,54 @@
 ## Rules related to structural variants in DGV and DGV-GS.
 
 
-rule annos_strucvars_dgv_grch37_download:  # -- download DGV files
+rule annos_strucvars_dgv_download:  # -- download DGV files
     output:
-        txt="work/download/annos/grch37/strucvars/dgv/2020-02-25/GRCh37_hg19_variants_2020-02-25.txt",
+        txt="work/download/annos/{genome_release}/strucvars/dgv/{version}/{filename}",
     shell:
         r"""
         wget --no-check-certificate \
             -O {output.txt} \
-            http://dgv.tcag.ca/dgv/docs/GRCh37_hg19_variants_2020-02-25.txt
+            http://dgv.tcag.ca/dgv/docs/{wildcards.filename}
         """
 
 
-rule annos_strucvars_dgv_grch37_process:  # -- download DGV files
+def input_annos_strucvars_dgv_process(wildcards):
+    """Input function for ``rule annos_strucvars_dgv_process``."""
+    mapping = {
+        "grch37": {
+            "genome_release_nolower": "GRCh37",
+            "genome_release_ucsc": "hg19",
+        },
+        "grch38": {
+            "genome_release_nolower": "GRCh38",
+            "genome_release_ucsc": "hg38",
+        },
+    }
+    tpl = (
+        "work/download/annos/{genome_release}/strucvars/dgv/{version}/"
+        "{genome_release_nolower}_{genome_release_ucsc}_variants_{version}.txt"
+    )
+    return {
+        "txt": tpl.format(
+            **mapping[wildcards.genome_release],
+            **wildcards,
+        )
+    }
+
+
+rule annos_strucvars_dgv_process:  # -- download DGV files
     input:
-        txt="work/download/annos/grch37/strucvars/dgv/2020-02-25/GRCh37_hg19_variants_2020-02-25.txt",
+        unpack(input_annos_strucvars_dgv_process),
     output:
-        bed="work/annos/grch37/strucvars/dgv/2020-02-25/dgv.bed.gz",
-        bed_md5="work/annos/grch37/strucvars/dgv/2020-02-25/dgv.bed.gz.md5",
-        bed_tbi="work/annos/grch37/strucvars/dgv/2020-02-25/dgv.bed.gz.tbi",
-        bed_tbi_md5="work/annos/grch37/strucvars/dgv/2020-02-25/dgv.bed.gz.tbi.md5",
+        bed="work/annos/{genome_release}/strucvars/dgv/{version}/dgv.bed.gz",
+        bed_md5="work/annos/{genome_release}/strucvars/dgv/{version}/dgv.bed.gz.md5",
+        bed_tbi="work/annos/{genome_release}/strucvars/dgv/{version}/dgv.bed.gz.tbi",
+        bed_tbi_md5="work/annos/{genome_release}/strucvars/dgv/{version}/dgv.bed.gz.tbi.md5",
     shell:
         r"""
         awk \
             -F $'\t' \
-            -f scripts/vardbs-grch37-strucvar-dgv.awk \
+            -f scripts/vardbs-strucvar-dgv.awk \
             {input.txt} \
         | grep -v _gl \
         | sort-bed - \
@@ -38,30 +62,43 @@ rule annos_strucvars_dgv_grch37_process:  # -- download DGV files
         """
 
 
-rule annos_strucvars_dgv_gs_grch37_download:  # -- download DGV GS files
+rule annos_strucvars_dgv_gs_download:  # -- download DGV GS files
     output:
-        gff3="work/download/annos/grch37/strucvars/dgv_gs/2016-05-15/DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3",
+        gff3="work/download/annos/{genome_release}/strucvars/dgv_gs/{version}/{filename}",
     shell:
         r"""
         wget --no-check-certificate \
             -O {output.gff3} \
-            http://dgv.tcag.ca/dgv/docs/DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3
+            http://dgv.tcag.ca/dgv/docs/{wildcards.filename}
         """
 
 
-rule annos_strucvars_dgv_gs_grch37_process:  # -- download DGV GS files
+def input_annos_strucvars_dgv_gs_process(wildcards):
+    """Input function for ``rule annos_strucvars_dgv_gs_process``."""
+    mapping = {
+        "grch37": "DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3",
+        "grch38": "DGV.GS.hg38.gff3",
+    }
+    return {
+        "gff3": (
+            "work/download/annos/{genome_release}/strucvars/dgv_gs/{version}/{filename}"
+        ).format(filename=mapping[wildcards.genome_release], **wildcards)
+    }
+
+
+rule annos_strucvars_dgv_gs_process:  # -- download DGV GS files
     input:
-        gff3="work/download/annos/grch37/strucvars/dgv_gs/2016-05-15/DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3",
+        unpack(input_annos_strucvars_dgv_gs_process),
     output:
-        bed="work/annos/grch37/strucvars/dgv_gs/2016-05-15/dgv_gs.bed.gz",
-        bed_md5="work/annos/grch37/strucvars/dgv_gs/2016-05-15/dgv_gs.bed.gz.md5",
-        bed_tbi="work/annos/grch37/strucvars/dgv_gs/2016-05-15/dgv_gs.bed.gz.tbi",
-        bed_tbi_md5="work/annos/grch37/strucvars/dgv_gs/2016-05-15/dgv_gs.bed.gz.tbi.md5",
+        bed="work/annos/{genome_release}/strucvars/dgv_gs/{version}/dgv_gs.bed.gz",
+        bed_md5="work/annos/{genome_release}/strucvars/dgv_gs/{version}/dgv_gs.bed.gz.md5",
+        bed_tbi="work/annos/{genome_release}/strucvars/dgv_gs/{version}/dgv_gs.bed.gz.tbi",
+        bed_tbi_md5="work/annos/{genome_release}/strucvars/dgv_gs/{version}/dgv_gs.bed.gz.tbi.md5",
     shell:
         r"""
         awk \
             -F $'\t' \
-            -f scripts/vardbs-grch37-strucvar-dgv_gs.awk \
+            -f scripts/vardbs-strucvar-dgv_gs.awk \
             {input.gff3} \
         | grep -v _gl \
         | sort-bed - \

@@ -100,9 +100,9 @@ rule all:
         f"work/annos/grch37/strucvars/gnomad/{DV.gnomad_sv}/gnomad_sv.bed.gz",
         # ---- GRCh38
         f"work/annos/grch38/strucvars/dbvar/{DV.dbvar}/dbvar.bed.gz",
-        # TODO: f"work/annos/grch38/strucvars/dgv/{DV.dgv}/dgv.bed.gz",
-        # TODO: f"work/annos/grch38/strucvars/dgv_gs/{DV.dgv_gs}/dgv_gs.bed.gz",
-        # TODO: "work/annos/grch38/strucvars/gnomad/gnomad_sv.bed.gz",
+        f"work/annos/grch38/strucvars/dgv/{DV.dgv}/dgv.bed.gz",
+        f"work/annos/grch38/strucvars/dgv_gs/{DV.dgv_gs}/dgv_gs.bed.gz",
+        # NB: gnomAD-SV GRCh38 was announced end of 2020 but not released yet
         # -- genome browser "features" (position-specific)
         # ---- GRCh37
         f"work/annos/grch37/features/cons/{DV.ucsc_cons}/ucsc_conservation.tsv",
