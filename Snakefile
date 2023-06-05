@@ -116,7 +116,7 @@ rule all:
         f"work/annos/grch37/features/ucsc/{DV.ucsc_fix_seq_liftover_37}/fixSeqLiftOverPsl.bed.gz",
         # ---- GRCh38
         f"work/annos/grch38/features/cons/{DV.ucsc_cons_38}/ucsc_conservation.tsv",
-        # TODO: "work/annos/grch38/features/ensembl/ensembl_genes.bed.gz",
+        f"work/annos/grch38/features/ensembl/{DV.ensembl_38}/ensembl_genes.bed.gz",
         # TODO: "work/annos/grch38/features/refseq/refseq_genes.bed.gz",
         # TODO: "work/annos/grch38/features/tads/imr90.bed",
         # TODO: "work/annos/grch38/features/tads/hesc.bed",
