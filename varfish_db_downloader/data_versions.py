@@ -7,6 +7,8 @@ import attrs
 class DataVersions:
     #: String to use for GRCh37 ENSEMBL version.
     ensembl_37: str
+    #: String to use for GRCh38 ENSEMBL version.
+    ensembl_38: str
     #: String to use for ENSEMBL version.
     ensembl: str
     #: String to use for current date.
@@ -37,8 +39,10 @@ class DataVersions:
     exac_cnv: str
     #: Thousand Genomes SVs.
     g1k_svs: str
-    #: UCSC conservation.
-    ucsc_cons: str
+    #: UCSC conservation (GRCh37).
+    ucsc_cons_37: str
+    #: UCSC conservation (GRCh38).
+    ucsc_cons_38: str
     #: UCSC repeat masker (GRCh37).
     ucsc_rmsk_37: str
     #: UCSC repeat masker (GRCh38).
@@ -64,6 +68,7 @@ class DataVersions:
 #: The data versions to use.
 DATA_VERSIONS = DataVersions(
     ensembl_37="87",
+    ensembl_38="109",
     ensembl="109",
     today="2023-06-02",
     dbnsfp="4.4",
@@ -79,7 +84,8 @@ DATA_VERSIONS = DataVersions(
     dgv_gs="2016-05-15",
     exac_cnv="0.3.1",
     g1k_svs="phase3-v2",
-    ucsc_cons="2016-10-07",
+    ucsc_cons_37="2016-10-07",
+    ucsc_cons_38="2019-09-06",
     ucsc_rmsk_37="2020-03-22",
     ucsc_rmsk_38="2022-10-18",
     ucsc_genomic_super_dups_37="2011-10-25",

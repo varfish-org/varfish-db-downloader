@@ -30,7 +30,7 @@ rule genes_ensembl_create_xlink:  # -- create ENSEMBL gene information xlink tab
         """
 
 
-rule genes_ensembl_download_maps:  # -- download files for ENST-ENSG mapping
+rule genes_ensembl_download_maps_grch37:  # -- download files for ENST-ENSG mapping (GRCh37)
     output:
         download_txt="work/genes/ensembl/grch37/87/download/knowntoEnsembl.txt.gz",
         download_gtf="work/genes/ensembl/grch37/87/download/GCF_000001405.25_GRCh37.p13_genomic.gtf.gz",
@@ -45,7 +45,7 @@ rule genes_ensembl_download_maps:  # -- download files for ENST-ENSG mapping
         """
 
 
-rule genes_ensembl_process_maps:  # -- process ENST-ENSG mapping
+rule genes_ensembl_process_maps_grch37:  # -- process ENST-ENSG mapping (GRCh37)
     input:
         download_txt="work/genes/ensembl/grch37/87/download/knowntoEnsembl.txt.gz",
         download_gtf="work/genes/ensembl/grch37/87/download/GCF_000001405.25_GRCh37.p13_genomic.gtf.gz",
@@ -71,6 +71,41 @@ rule genes_ensembl_process_maps:  # -- process ENST-ENSG mapping
 
         echo -e "real_enst\tenst\tensg" > {output.tsv}
         join -t $'\t' -1 2 -2 1 $TMPDIR/tmp2.txt $TMPDIR/tmp1.txt \
+        >> {output.tsv}
+
+        md5sum {output.tsv} >{output.tsv_md5}
+        """
+
+
+rule genes_ensembl_download_maps_grch38:  # -- download files for ENST-ENSG mapping (GRCh38)
+    output:
+        download_gtf="work/genes/ensembl/grch38/{ensembl_version}/download/Homo_sapiens.GRCh38.{ensembl_version}.gtf.gz",
+    shell:
+        r"""
+        wget --no-check-certificate \
+            -O {output.download_gtf} \
+            https://ftp.ensembl.org/pub/release-{wildcards.ensembl_version}/gtf/homo_sapiens/Homo_sapiens.GRCh38.{wildcards.ensembl_version}.gtf.gz
+        """
+
+
+rule genes_ensembl_process_maps_grch38:  # -- process ENST-ENSG mapping (GRCh38)
+    input:
+        download_gtf="work/genes/ensembl/grch38/{ensembl_version}/download/Homo_sapiens.GRCh38.{ensembl_version}.gtf.gz",
+    output:
+        tsv="work/genes/enst_ensg/grch38/{ensembl_version}/enst_ensg.tsv",
+        tsv_md5="work/genes/enst_ensg/grch38/{ensembl_version}/enst_ensg.tsv.md5",
+    shell:
+        r"""
+        export TMPDIR=$(mktemp -d)
+        trap "rm -rf $TMPDIR" EXIT
+
+        echo -e "enst\tensg" > {output.tsv}
+        awk \
+            -F $'\t' \
+            -f scripts/genes-enst-ensg.awk \
+            <(zcat {input.download_gtf}) \
+        | sort \
+        | sed -e 's/^/chr/' \
         >> {output.tsv}
 
         md5sum {output.tsv} >{output.tsv_md5}

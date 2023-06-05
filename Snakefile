@@ -105,7 +105,7 @@ rule all:
         # NB: gnomAD-SV GRCh38 was announced end of 2020 but not released yet
         # -- genome browser "features" (position-specific)
         # ---- GRCh37
-        f"work/annos/grch37/features/cons/{DV.ucsc_cons}/ucsc_conservation.tsv",
+        f"work/annos/grch37/features/cons/{DV.ucsc_cons_37}/ucsc_conservation.tsv",
         f"work/annos/grch37/features/ensembl/{DV.ensembl_37}/ensembl_genes.bed.gz",
         f"work/annos/grch37/features/refseq/{DV.refseq_37}/refseq_genes.bed.gz",
         "work/annos/grch37/features/tads/dixon2015/imr90.bed",
@@ -115,7 +115,7 @@ rule all:
         f"work/annos/grch37/features/ucsc/{DV.ucsc_alt_seq_liftover_37}/altSeqLiftOverPsl.bed.gz",
         f"work/annos/grch37/features/ucsc/{DV.ucsc_fix_seq_liftover_37}/fixSeqLiftOverPsl.bed.gz",
         # ---- GRCh38
-        # TODO: "work/annos/grch38/features/cons/ucsc_conservation.tsv",
+        f"work/annos/grch38/features/cons/{DV.ucsc_cons_38}/ucsc_conservation.tsv",
         # TODO: "work/annos/grch38/features/ensembl/ensembl_genes.bed.gz",
         # TODO: "work/annos/grch38/features/refseq/refseq_genes.bed.gz",
         # TODO: "work/annos/grch38/features/tads/imr90.bed",

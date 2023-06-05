@@ -1,7 +1,7 @@
 ## Rules related to UCSC conservation track.
 
 
-rule annos_features_cons_download:
+rule annos_features_cons_download:  # -- download UCSC conservation track
     output:
         fa="work/download/annos/{genome_release}/features/cons/{version}/knownGene.exonAA.fa.gz",
     shell:
@@ -17,7 +17,7 @@ rule annos_features_cons_download:
         trap "rm -rf $TMPDIR" EXIT
 
         wget -O $TMPDIR/alignments.html \
-            https://hgdownload.cse.ucsc.edu/goldenpath/${{ucsc_name}}/multiz100way/alignments
+            https://hgdownload.cse.ucsc.edu/goldenpath/$ucsc_name/multiz100way/alignments
         version=$(grep knownGene.exonAA.fa.gz $TMPDIR/alignments.html | awk '{{ print $3 }}')
         if [[ "$version" != "{wildcards.version}" ]]; then
             >&2 echo "Version mismatch for knownGene.exonAA.fa.gz: expected {wildcards.version}, got $version"
@@ -32,16 +32,32 @@ rule annos_features_cons_download:
             --split=8 \
             --max-concurrent-downloads=8 \
             --max-connection-per-server=8 \
-            "https://hgdownload.cse.ucsc.edu/goldenpath/${{ucsc_name}}/multiz100way/alignments/knownGene.exonAA.fa.gz"
+            "https://hgdownload.cse.ucsc.edu/goldenpath/$ucsc_name/multiz100way/alignments/knownGene.exonAA.fa.gz"
         """
 
 
-rule annos_features_cons_to_vcf:
+def input_annos_features_cons_to_vcf(wildcards):
+    """Input function for ``rule annos_features_cons_to_vcf``."""
+    ensembl_version = {
+        "grch37": DV.ensembl_37,
+        "grch38": DV.ensembl_38,
+    }[wildcards.genome_release]
+    return {
+        "hgnc": f"work/genes/hgnc/{DV.today}/hgnc_info.jsonl",
+        "enst_ensg": (
+            f"work/genes/enst_ensg/{wildcards.genome_release}/{ensembl_version}/enst_ensg.tsv"
+        ),
+        "reference": f"work/reference/{wildcards.genome_release}/reference.fa",
+        "fa": (
+            f"work/download/annos/{wildcards.genome_release}/features/cons/"
+            f"{wildcards.version}/knownGene.exonAA.fa.gz"
+        ),
+    }
+
+
+rule annos_features_cons_to_vcf:  # -- build conservation VCF file
     input:
-        hgnc=f"work/genes/hgnc/{DV.today}/hgnc_info.jsonl",
-        enst_ensg=f"work/genes/enst_ensg/{{genome_release}}/{DV.ensembl_37}/enst_ensg.tsv",
-        reference="work/reference/{genome_release}/reference.fa",
-        fa="work/download/annos/{genome_release}/features/cons/{version}/knownGene.exonAA.fa.gz",
+        unpack(input_annos_features_cons_to_vcf),
     output:
         vcf="work/download/annos/{genome_release}/features/cons/{version}/ucsc_conservation.vcf.gz",
         tbi="work/download/annos/{genome_release}/features/cons/{version}/ucsc_conservation.vcf.gz.tbi",
@@ -60,7 +76,7 @@ rule annos_features_cons_to_vcf:
         """
 
 
-rule annos_features_cons_to_tsv:
+rule annos_features_cons_to_tsv:  # -- convert conservation VCF to BED
     input:
         vcf="work/download/annos/{genome_release}/features/cons/{version}/ucsc_conservation.vcf.gz",
     output:
