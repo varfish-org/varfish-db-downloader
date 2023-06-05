@@ -1,7 +1,12 @@
 - url: https://ftp.ensembl.org/pub/current_README
 
-- comment: The UCSC listing is used for checking the versions.
+- comment: The UCSC listing is used for checking the versions for GRCh37.
   url: https://hgdownload.cse.ucsc.edu/goldenpath/hg19/database
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+- comment: The UCSC listing is used for checking the versions for GRCh38.
+  url: https://hgdownload.cse.ucsc.edu/goldenpath/hg38/database
   excerpt_strategy:
     strategy: no-excerpt
     count: null
@@ -95,6 +100,10 @@
 - url: https://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/rmsk.txt.gz
 - url: https://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/altSeqLiftOverPsl.txt.gz
 - url: https://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/fixSeqLiftOverPsl.txt.gz
+- url: https://hgdownload.cse.ucsc.edu/goldenpath/hg38/database/genomicSuperDups.txt.gz
+- url: https://hgdownload.cse.ucsc.edu/goldenpath/hg38/database/rmsk.txt.gz
+- url: https://hgdownload.cse.ucsc.edu/goldenpath/hg38/database/altSeqLiftOverPsl.txt.gz
+- url: https://hgdownload.cse.ucsc.edu/goldenpath/hg38/database/fixSeqLiftOverPsl.txt.gz
 
 - comment: The dbVar release notes index is pulled for checking for latest release.
   url: https://ftp.ncbi.nlm.nih.gov/pub/dbVar/sandbox/sv_datasets/nonredundant/release_notes

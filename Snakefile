@@ -110,20 +110,20 @@ rule all:
         f"work/annos/grch37/features/refseq/{DV.refseq_37}/refseq_genes.bed.gz",
         "work/annos/grch37/features/tads/dixon2015/imr90.bed",
         "work/annos/grch37/features/tads/dixon2015/hesc.bed",
-        f"work/annos/grch37/features/ucsc/{DV.ucsc_genomic_super_dups}/genomicSuperDups.bed.gz",
-        f"work/annos/grch37/features/ucsc/{DV.ucsc_rmsk}/rmsk.bed.gz",
-        f"work/annos/grch37/features/ucsc/{DV.ucsc_alt_seq_liftover}/altSeqLiftOverPsl.bed.gz",
-        f"work/annos/grch37/features/ucsc/{DV.ucsc_fix_seq_liftover}/fixSeqLiftOverPsl.bed.gz",
+        f"work/annos/grch37/features/ucsc/{DV.ucsc_genomic_super_dups_37}/genomicSuperDups.bed.gz",
+        f"work/annos/grch37/features/ucsc/{DV.ucsc_rmsk_37}/rmsk.bed.gz",
+        f"work/annos/grch37/features/ucsc/{DV.ucsc_alt_seq_liftover_37}/altSeqLiftOverPsl.bed.gz",
+        f"work/annos/grch37/features/ucsc/{DV.ucsc_fix_seq_liftover_37}/fixSeqLiftOverPsl.bed.gz",
         # ---- GRCh38
         # TODO: "work/annos/grch38/features/cons/ucsc_conservation.tsv",
         # TODO: "work/annos/grch38/features/ensembl/ensembl_genes.bed.gz",
         # TODO: "work/annos/grch38/features/refseq/refseq_genes.bed.gz",
         # TODO: "work/annos/grch38/features/tads/imr90.bed",
         # TODO: "work/annos/grch38/features/tads/hesc.bed",
-        # TODO: "work/annos/grch38/features/ucsc/genomicSuperDups.bed.gz",
-        # TODO: "work/annos/grch38/features/ucsc/rmsk.bed.gz",
-        # TODO: "work/annos/grch38/features/ucsc/altSeqLiftOverPsl.bed.gz",
-        # TODO: "work/annos/grch38/features/ucsc/fixSeqLiftOverPsl.bed.gz",
+        f"work/annos/grch38/features/ucsc/{DV.ucsc_genomic_super_dups_38}/genomicSuperDups.bed.gz",
+        f"work/annos/grch38/features/ucsc/{DV.ucsc_rmsk_38}/rmsk.bed.gz",
+        f"work/annos/grch38/features/ucsc/{DV.ucsc_alt_seq_liftover_38}/altSeqLiftOverPsl.bed.gz",
+        f"work/annos/grch38/features/ucsc/{DV.ucsc_fix_seq_liftover_38}/fixSeqLiftOverPsl.bed.gz",
 
 
 # ===============================================================================================

@@ -39,17 +39,25 @@ class DataVersions:
     g1k_svs: str
     #: UCSC conservation.
     ucsc_cons: str
-    #: UCSC repeat masker.
-    ucsc_rmsk: str
-    #: UCSC genomicSuperDups
-    ucsc_genomic_super_dups: str
-    #: UCSC genome browser altSeqLiftOverPsl.
-    ucsc_alt_seq_liftover: str
-    #: UCSC genome browser fixSeqLiftOverPsl.
-    ucsc_fix_seq_liftover: str
-    #: RefSeq version (GRCh37)
+    #: UCSC repeat masker (GRCh37).
+    ucsc_rmsk_37: str
+    #: UCSC repeat masker (GRCh38).
+    ucsc_rmsk_38: str
+    #: UCSC genomicSuperDups (GRCh37).
+    ucsc_genomic_super_dups_37: str
+    #: UCSC genomicSuperDups (GRCh38).
+    ucsc_genomic_super_dups_38: str
+    #: UCSC genome browser altSeqLiftOverPsl (GRCh37).
+    ucsc_alt_seq_liftover_37: str
+    #: UCSC genome browser altSeqLiftOverPsl (GRCh38).
+    ucsc_alt_seq_liftover_38: str
+    #: UCSC genome browser fixSeqLiftOverPsl (GRCh37).
+    ucsc_fix_seq_liftover_37: str
+    #: UCSC genome browser fixSeqLiftOverPsl (GRCh38).
+    ucsc_fix_seq_liftover_38: str
+    #: RefSeq version (GRCh37).
     refseq_37: str
-    #: dbSNP version
+    #: dbSNP version.
     dbsnp: str
 
 
@@ -72,10 +80,14 @@ DATA_VERSIONS = DataVersions(
     exac_cnv="0.3.1",
     g1k_svs="phase3-v2",
     ucsc_cons="2016-10-07",
-    ucsc_rmsk="2020-03-22",
-    ucsc_genomic_super_dups="2011-10-25",
-    ucsc_alt_seq_liftover="2020-03-22",
-    ucsc_fix_seq_liftover="2020-05-24",
+    ucsc_rmsk_37="2020-03-22",
+    ucsc_rmsk_38="2022-10-18",
+    ucsc_genomic_super_dups_37="2011-10-25",
+    ucsc_genomic_super_dups_38="2014-10-19",
+    ucsc_alt_seq_liftover_37="2020-03-22",
+    ucsc_alt_seq_liftover_38="2022-11-03",
+    ucsc_fix_seq_liftover_37="2020-05-24",
+    ucsc_fix_seq_liftover_38="2022-11-03",
     refseq_37="105",
     dbsnp="b151",
 )
