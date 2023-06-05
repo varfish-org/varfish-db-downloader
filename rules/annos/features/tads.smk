@@ -1,41 +1,54 @@
 ## Rules related to TAD.
 
 
-rule annos_features_tads_grch37_download:  # -- download GRCh37 TAD files
+rule annos_features_tads_download:  # -- download TAD ZIP files from 3dgenome.org
     output:
-        imr90="work/download/annos/grch37/tads/dixon2015/IMR90_domains_hg19.bed",
-        hesc="work/download/annos/grch37/tads/dixon2015/hESC_domains_hg19.bed",
+        zip="work/download/annos/{genome_release}/tads/{genome_release}.TADs.zip",
     shell:
         r"""
-        wget --no-check-certificate \
-            -O {output.imr90} \
-            https://compbio.med.harvard.edu/modencode/webpage/hic/IMR90_domains_hg19.bed
+        if [[ "{wildcards.genome_release}" == grch37 ]]; then
+            name=hg19
+        else
+            name=hg38
+        fi
 
         wget --no-check-certificate \
-            -O {output.hesc} \
-            https://compbio.med.harvard.edu/modencode/webpage/hic/hESC_domains_hg19.bed
+            -O {output.zip} \
+            http://3dgenome.fsm.northwestern.edu/downloads/$name.TADs.zip
         """
 
 
-rule annos_features_tads_grch37_process:  # -- process GRCh37 TAD files
+rule annos_features_tads_unzip:  # -- unzip TAD ZIP files
     input:
-        imr90="work/download/annos/grch37/tads/dixon2015/IMR90_domains_hg19.bed",
-        hesc="work/download/annos/grch37/tads/dixon2015/hESC_domains_hg19.bed",
+        zip="work/download/annos/{genome_release}/tads/{genome_release}.TADs.zip",
     output:
-        bed_imr90="work/annos/grch37/features/tads/dixon2015/imr90.bed",
-        bed_imr90_md5="work/annos/grch37/features/tads/dixon2015/imr90.bed.md5",
-        bed_hesc="work/annos/grch37/features/tads/dixon2015/hesc.bed",
-        bed_hesc_md5="work/annos/grch37/features/tads/dixon2015/hesc.bed.md5",
+        hesc="work/download/annos/{genome_release}/tads/H1-ESC_Dixon2015-raw_TADs.txt",
     shell:
         r"""
-        echo -e "#chrom\tbegin\tend" >{output.bed_imr90}
-        sed -e 's/^chr//' {input.imr90} \
-        >>{output.bed_imr90}
+        unzip -o -d $(dirname {input.zip}) -j {input.zip}
 
+        cd $(dirname {input.zip})
+
+        if $(set +e; ls | grep Dixon_2015 >/dev/null); then
+            for f in *Dixon_2015*; do
+                mv $f ${{f/Dixon_/Dixon}}
+            done
+        fi
+        """
+
+
+rule annos_features_tads_process:  # -- process TAD files
+    input:
+        hesc="work/download/annos/{genome_release}/tads/H1-ESC_Dixon2015-raw_TADs.txt",
+    output:
+        bed_hesc="work/annos/{genome_release}/features/tads/dixon2015/hesc.bed",
+        bed_hesc_md5="work/annos/{genome_release}/features/tads/dixon2015/hesc.bed.md5",
+    shell:
+        r"""
         echo -e "#chrom\tbegin\tend" >{output.bed_hesc}
-        sed -e 's/^chr//' {input.hesc} \
+        cat {input.hesc} \
+        | {{ if [[ "{wildcards.genome_release}" == "grch37" ]]; then sed -e 's/^chr//g'; else cat; fi }} \
         >>{output.bed_hesc}
 
-        md5sum {output.bed_imr90} >{output.bed_imr90_md5}
         md5sum {output.bed_hesc} >{output.bed_hesc_md5}
         """

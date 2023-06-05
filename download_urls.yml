@@ -1,13 +1,12 @@
 - url: https://ftp.ensembl.org/pub/current_README
 
-- comment: dbSNP listing for checking the version.
-  url: https://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh37p13/VCF
+- comment: The UCSC listing is used for checking the versions for GRCh37.
+  url: https://hgdownload.cse.ucsc.edu/goldenpath/hg19/database
   excerpt_strategy:
     strategy: no-excerpt
     count: null
-
-- comment: The UCSC listing is used for checking the versions.
-  url: https://hgdownload.cse.ucsc.edu/goldenpath/hg19/database
+- comment: The UCSC listing is used for checking the versions for GRCh38.
+  url: https://hgdownload.cse.ucsc.edu/goldenpath/hg38/database
   excerpt_strategy:
     strategy: no-excerpt
     count: null
@@ -26,12 +25,19 @@
     count: 10000
 - url: https://hgdownload.cse.ucsc.edu/goldenpath/hg38/multiz100way/alignments/knownGene.exonAA.fa.gz
 
-- url: https://compbio.med.harvard.edu/modencode/webpage/hic/IMR90_domains_hg19.bed
-- url: https://compbio.med.harvard.edu/modencode/webpage/hic/hESC_domains_hg19.bed
+- url: http://3dgenome.fsm.northwestern.edu/downloads/hg19.TADs.zip
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+- url: http://3dgenome.fsm.northwestern.edu/downloads/hg38.TADs.zip
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
 
 - url: https://helix-research-public.s3.amazonaws.com/mito/HelixMTdb_20200327.tsv
 
 - url: https://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh37p13/VCF/00-All.vcf.gz
+- url: https://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/VCF/00-All.vcf.gz
 
 - url: https://kircherlab.bihealth.org/download/CADD/v1.6/GRCh37/whole_genome_SNVs_inclAnno.tsv.gz
 - url: https://kircherlab.bihealth.org/download/CADD/v1.6/GRCh37/whole_genome_SNVs_inclAnno.tsv.gz.tbi
@@ -65,7 +71,21 @@
     strategy: head
     count: 10000
 
+- url: https://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/all_assembly_versions/GCF_000001405.40_GRCh38.p14/GCF_000001405.40_GRCh38.p14_assembly_report.txt
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+- url: https://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/all_assembly_versions/GCF_000001405.40_GRCh38.p14/GCF_000001405.40_GRCh38.p14_genomic.gtf.gz
+  excerpt_strategy:
+    strategy: head
+    count: 10000
+
 - url: https://ftp.ensembl.org/pub/grch37/current/gtf/homo_sapiens/Homo_sapiens.GRCh37.87.gtf.gz
+  excerpt_strategy:
+    strategy: head
+    count: 10000
+
+- url: https://ftp.ensembl.org/pub/release-109/gtf/homo_sapiens/Homo_sapiens.GRCh38.109.gtf.gz
   excerpt_strategy:
     strategy: head
     count: 10000
@@ -100,6 +120,10 @@
 - url: https://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/rmsk.txt.gz
 - url: https://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/altSeqLiftOverPsl.txt.gz
 - url: https://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/fixSeqLiftOverPsl.txt.gz
+- url: https://hgdownload.cse.ucsc.edu/goldenpath/hg38/database/genomicSuperDups.txt.gz
+- url: https://hgdownload.cse.ucsc.edu/goldenpath/hg38/database/rmsk.txt.gz
+- url: https://hgdownload.cse.ucsc.edu/goldenpath/hg38/database/altSeqLiftOverPsl.txt.gz
+- url: https://hgdownload.cse.ucsc.edu/goldenpath/hg38/database/fixSeqLiftOverPsl.txt.gz
 
 - comment: The dbVar release notes index is pulled for checking for latest release.
   url: https://ftp.ncbi.nlm.nih.gov/pub/dbVar/sandbox/sv_datasets/nonredundant/release_notes
@@ -109,8 +133,13 @@
 - url: https://ftp.ncbi.nlm.nih.gov/pub/dbVar/sandbox/sv_datasets/nonredundant/deletions/GRCh37.nr_deletions.tsv.gz
 - url: https://ftp.ncbi.nlm.nih.gov/pub/dbVar/sandbox/sv_datasets/nonredundant/duplications/GRCh37.nr_duplications.tsv.gz
 - url: https://ftp.ncbi.nlm.nih.gov/pub/dbVar/sandbox/sv_datasets/nonredundant/insertions/GRCh37.nr_insertions.tsv.gz
+- url: https://ftp.ncbi.nlm.nih.gov/pub/dbVar/sandbox/sv_datasets/nonredundant/deletions/GRCh38.nr_deletions.tsv.gz
+- url: https://ftp.ncbi.nlm.nih.gov/pub/dbVar/sandbox/sv_datasets/nonredundant/duplications/GRCh38.nr_duplications.tsv.gz
+- url: https://ftp.ncbi.nlm.nih.gov/pub/dbVar/sandbox/sv_datasets/nonredundant/insertions/GRCh38.nr_insertions.tsv.gz
 - url: http://dgv.tcag.ca/dgv/docs/GRCh37_hg19_variants_2020-02-25.txt
+- url: http://dgv.tcag.ca/dgv/docs/GRCh38_hg38_variants_2020-02-25.txt
 - url: http://dgv.tcag.ca/dgv/docs/DGV.GS.March2016.50percent.GainLossSep.Final.hg19.gff3
+- url: http://dgv.tcag.ca/dgv/docs/DGV.GS.hg38.gff3
 - url: ftp://ftp.broadinstitute.org/pub/ExAC_release/release0.3.1/cnv/exac-final.autosome-1pct-sq60-qc-prot-coding.cnv.bed
 - url: https://ftp-trace.ncbi.nih.gov/1000genomes/ftp/phase3/integrated_sv_map/ALL.wgs.integrated_sv_map_v2.20130502.svs.genotypes.vcf.gz
 - url: https://storage.googleapis.com/gcp-public-data--gnomad/papers/2019-sv/gnomad_v2.1_sv.sites.vcf.gz
