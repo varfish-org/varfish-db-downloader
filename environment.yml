@@ -41,3 +41,4 @@ dependencies:
   - pigz
   # Varfish/Mehari/Annonars related
   - annonars =0.7.0
+  - varfish-server-worker
