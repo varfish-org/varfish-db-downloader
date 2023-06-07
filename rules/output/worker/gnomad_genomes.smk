@@ -18,7 +18,6 @@ rule output_worker_gnomad_genomes:  # -- build gnomAD-genomes RocksDB with annon
     shell:
         r"""
         annonars gnomad-nuclear import \
-            --tbi-window-size 100000000 \
             $(for path in $(dirname {input.vcf})/*.bgz; do \
                 echo --path-in-vcf $path; \
             done) \

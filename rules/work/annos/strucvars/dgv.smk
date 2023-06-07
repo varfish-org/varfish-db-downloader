@@ -26,10 +26,11 @@ def input_annos_strucvars_dgv_process(wildcards):
     }
     tpl = (
         "work/download/annos/{genome_release}/strucvars/dgv/{version}/"
-        "{genome_release_nolower}_{genome_release_ucsc}_variants_{version}.txt"
+        "{genome_release_nolower}_{genome_release_ucsc}_variants_{version_dashes}.txt"
     )
     return {
         "txt": tpl.format(
+            version_dashes="-".join([wildcards.version[0:4], wildcards.version[4:6], wildcards.version[6:8]]),
             **mapping[wildcards.genome_release],
             **wildcards,
         )
