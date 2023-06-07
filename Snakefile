@@ -150,15 +150,15 @@ rule all:
         # ---- dbscSNV
         f"output/worker/annos/seqvars/dbscsnv-grch37-{DV.dbscsnv}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/worker/annos/seqvars/dbscsnv-grch38-{DV.dbscsnv}+{PV.annonars}/rocksdb/IDENTITY",
-        # # ---- gnomAD mtDNA
-        # f"output/worker/annos/seqvars/gnomad-mtdna-grch37-{DV.gnomad_mtdna}+{PV.annonars}/rocksdb/IDENTITY",
-        # f"output/worker/annos/seqvars/gnomad-mtdna-grch38-{DV.gnomad_mtdna}+{PV.annonars}/rocksdb/IDENTITY",
-        # # ---- gnomAD exomes
-        # f"output/worker/annos/seqvars/gnomad-exomes-grch37-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
-        # f"output/worker/annos/seqvars/gnomad-exomes-grch38-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
-        # # ---- gnomAD genomes
-        # f"output/worker/annos/seqvars/gnomad-genomes-grch37-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
-        # f"output/worker/annos/seqvars/gnomad-genomes-grch38-{DV.gnomad_v3}+{PV.annonars}/rocksdb/IDENTITY",
+        # ---- gnomAD mtDNA
+        f"output/worker/annos/seqvars/gnomad-mtdna-grch37-{DV.gnomad_mtdna}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/worker/annos/seqvars/gnomad-mtdna-grch38-{DV.gnomad_mtdna}+{PV.annonars}/rocksdb/IDENTITY",
+        # ---- gnomAD exomes
+        f"output/worker/annos/seqvars/gnomad-exomes-grch37-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/worker/annos/seqvars/gnomad-exomes-grch38-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
+        # ---- gnomAD genomes
+        f"output/worker/annos/seqvars/gnomad-genomes-grch37-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/worker/annos/seqvars/gnomad-genomes-grch38-{DV.gnomad_v3}+{PV.annonars}/rocksdb/IDENTITY",
         # # ---- HelixMtDb
         # f"output/worker/annos/seqvars/helixmtdb-grch37-{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
         # f"output/worker/annos/seqvars/helixmtdb-grch38-{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
@@ -207,3 +207,6 @@ include: "rules/output/worker/cadd.smk"
 include: "rules/output/worker/dbsnp.smk"
 include: "rules/output/worker/dbnsfp.smk"
 include: "rules/output/worker/dbscsnv.smk"
+include: "rules/output/worker/gnomad_mtdna.smk"
+include: "rules/output/worker/gnomad_exomes.smk"
+include: "rules/output/worker/gnomad_genomes.smk"
