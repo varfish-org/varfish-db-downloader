@@ -19,6 +19,8 @@ JOBS=${JOBS-500}
 PART=${PART-critical}
 # Be relaxed with reruns.
 RELAXED_RERUNS=${RELAXED_RERUNS-true}
+# Whether to add --keep-going
+KEEP_GOING=${KEEP_GOING-false}
 
 snakemake \
     --rerun-incomplete \
@@ -26,6 +28,9 @@ snakemake \
         echo --rerun-triggers mtime; \
         echo --rerun-triggers params; \
         echo --rerun-triggers input; \
+    fi) \
+    $(if [[ "$KEEP_GOING" == true ]]; then \
+        echo --keep-going; \
     fi) \
     --jobs $JOBS \
     --slurm \
