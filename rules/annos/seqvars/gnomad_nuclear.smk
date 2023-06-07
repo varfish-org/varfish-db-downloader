@@ -2,8 +2,8 @@
 
 
 # URL prefix of gnomAD downloads.
-#GNOMAD_PREFIX = "https://gnomad-public-us-east-1.s3.amazonaws.com/release"
-#GNOMAD_PREFIX = "https://datasetgnomad.blob.core.windows.net/dataset/release"
+# GNOMAD_PREFIX = "https://gnomad-public-us-east-1.s3.amazonaws.com/release"
+# GNOMAD_PREFIX = "https://datasetgnomad.blob.core.windows.net/dataset/release"
 GNOMAD_PREFIX = "https://storage.googleapis.com/gcp-public-data--gnomad/release"
 
 
@@ -20,19 +20,19 @@ rule annos_gnomad_nuclear_download_grch37:  # -- download gnomAD v2 exomes/genom
         r"""
         aria2c \
             --check-certificate=false \
+            --file-allocation=trunc \
             --split=8 \
             --max-concurrent-downloads=8 \
             --max-connection-per-server=8 \
-            --file-allocation=trunc \
             --out={output.vcf} \
             {GNOMAD_PREFIX}/{wildcards.version}/vcf/{wildcards.kind}/gnomad.{wildcards.kind}.r{wildcards.version}.sites.{wildcards.chrom}.vcf.bgz
-        
+
         aria2c \
             --check-certificate=false \
+            --file-allocation=trunc \
             --split=8 \
             --max-concurrent-downloads=8 \
             --max-connection-per-server=8 \
-            --file-allocation=trunc \
             --out={output.vcf_tbi} \
             {GNOMAD_PREFIX}/{wildcards.version}/vcf/{wildcards.kind}/gnomad.{wildcards.kind}.r{wildcards.version}.sites.{wildcards.chrom}.vcf.bgz.tbi
         """
@@ -51,19 +51,19 @@ rule annos_gnomad_nuclear_download_grch38_liftover_v2:  # -- download gnomAD v2 
         r"""
         aria2c \
             --check-certificate=false \
+            --file-allocation=trunc \
             --split=8 \
             --max-concurrent-downloads=8 \
             --max-connection-per-server=8 \
-            --file-allocation=trunc \
             --out={output.vcf} \
             {GNOMAD_PREFIX}/{wildcards.version}/liftover_grch38/vcf/{wildcards.kind}/gnomad.{wildcards.kind}.r{wildcards.version}.sites.{wildcards.chrom}.liftover_grch38.vcf.bgz
 
         aria2c \
             --check-certificate=false \
+            --file-allocation=trunc \
             --split=8 \
             --max-concurrent-downloads=8 \
             --max-connection-per-server=8 \
-            --file-allocation=trunc \
             --out={output.vcf_tbi} \
             {GNOMAD_PREFIX}/{wildcards.version}/liftover_grch38/vcf/{wildcards.kind}/gnomad.{wildcards.kind}.r{wildcards.version}.sites.{wildcards.chrom}.liftover_grch38.vcf.bgz.tbi
         """
@@ -82,19 +82,19 @@ rule annos_gnomad_nuclear_download_grch38_v3:  # -- download gnomAD genomes v3
         r"""
         aria2c \
             --check-certificate=false \
+            --file-allocation=trunc \
             --split=8 \
             --max-concurrent-downloads=8 \
             --max-connection-per-server=8 \
-            --file-allocation=trunc \
             --out={output.vcf} \
             {GNOMAD_PREFIX}/{wildcards.version}/vcf/{wildcards.kind}/gnomad.{wildcards.kind}.v{wildcards.version}.sites.chr{wildcards.chrom}.vcf.bgz
 
         aria2c \
             --check-certificate=false \
+            --file-allocation=trunc \
             --split=8 \
             --max-concurrent-downloads=8 \
             --max-connection-per-server=8 \
-            --file-allocation=trunc \
             --out={output.vcf_tbi} \
             {GNOMAD_PREFIX}/{wildcards.version}/vcf/{wildcards.kind}/gnomad.{wildcards.kind}.v{wildcards.version}.sites.chr{wildcards.chrom}.vcf.bgz.tbi
         """
