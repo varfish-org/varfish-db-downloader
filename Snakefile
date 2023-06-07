@@ -139,9 +139,9 @@ rule all:
         # ---- CADD
         f"output/worker/annos/seqvars/cadd-grch37-{DV.cadd}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/worker/annos/seqvars/cadd-grch38-{DV.cadd}+{PV.annonars}/rocksdb/IDENTITY",
-        # # ---- dbSNP
-        # f"output/worker/annos/seqvars/dbsnp-grch37-{DV.dbsnp}+{PV.annonars}/rocksdb/IDENTITY",
-        # f"output/worker/annos/seqvars/dbsnp-grch38-{DV.dbsnp}+{PV.annonars}/rocksdb/IDENTITY",
+        # ---- dbSNP
+        f"output/worker/annos/seqvars/dbsnp-grch37-{DV.dbsnp}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/worker/annos/seqvars/dbsnp-grch38-{DV.dbsnp}+{PV.annonars}/rocksdb/IDENTITY",
         # # ---- dbNSFP
         # f"output/worker/annos/seqvars/dbnsfp-grch37-{DV.dbnsfp}+{PV.annonars}/rocksdb/IDENTITY",
         # f"output/worker/annos/seqvars/dbnsfp-grch38-{DV.dbnsfp}+{PV.annonars}/rocksdb/IDENTITY",
@@ -202,3 +202,4 @@ include: "rules/work/annos/strucvars/gnomad.smk"
 # -- output directory ---------------------------------------------------------------------------
 include: "rules/output/mehari/freqs.smk"
 include: "rules/output/worker/cadd.smk"
+include: "rules/output/worker/dbsnp.smk"
