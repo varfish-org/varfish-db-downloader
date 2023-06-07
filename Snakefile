@@ -162,9 +162,9 @@ rule all:
         # ---- HelixMtDb
         f"output/worker/annos/seqvars/helixmtdb-grch37-{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/worker/annos/seqvars/helixmtdb-grch38-{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
-        # # ---- UCSC conservation
-        # f"output/worker/annos/seqvars/cons-grch37-{DV.ucsc_cons_37}+{PV.annonars}/rocksdb/IDENTITY",
-        # f"output/worker/annos/seqvars/cons-grch38-{DV.ucsc_cons_38}+{PV.annonars}/rocksdb/IDENTITY",
+        # ---- UCSC conservation
+        f"output/worker/annos/seqvars/cons-grch37-{DV.ucsc_cons_37}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/worker/annos/seqvars/cons-grch38-{DV.ucsc_cons_38}+{PV.annonars}/rocksdb/IDENTITY",
 
 
 # ===============================================================================================
@@ -211,3 +211,4 @@ include: "rules/output/worker/gnomad_mtdna.smk"
 include: "rules/output/worker/gnomad_exomes.smk"
 include: "rules/output/worker/gnomad_genomes.smk"
 include: "rules/output/worker/helix.smk"
+include: "rules/output/worker/cons.smk"

@@ -7,7 +7,7 @@ from datetime import datetime
 import attrs
 
 #: Value to use for "today".
-TODAY = os.environ.get("TODAY", datetime.today().strftime("%Y-%m-%d"))
+TODAY = os.environ.get("TODAY", datetime.today().strftime("%Y%m%d"))
 
 
 @attrs.frozen()
@@ -98,18 +98,18 @@ DATA_VERSIONS = DataVersions(
     exac_cnv="0.3.1",
     g1k_svs="phase3-v2",
     helixmtdb="20200327",
-    ucsc_cons_37="2016-10-07",
-    ucsc_cons_38="2019-09-06",
-    ucsc_rmsk_37="2020-03-22",
-    ucsc_rmsk_38="2022-10-18",
-    ucsc_genomic_super_dups_37="2011-10-25",
-    ucsc_genomic_super_dups_38="2014-10-19",
-    ucsc_alt_seq_liftover_37="2020-03-22",
-    ucsc_alt_seq_liftover_38="2022-11-03",
-    ucsc_fix_seq_liftover_37="2020-05-24",
-    ucsc_fix_seq_liftover_38="2022-11-03",
+    ucsc_cons_37="20161007",
+    ucsc_cons_38="20190906",
+    ucsc_rmsk_37="20200322",
+    ucsc_rmsk_38="20221018",
+    ucsc_genomic_super_dups_37="20111025",
+    ucsc_genomic_super_dups_38="20141019",
+    ucsc_alt_seq_liftover_37="20200322",
+    ucsc_alt_seq_liftover_38="20221103",
+    ucsc_fix_seq_liftover_37="20200524",
+    ucsc_fix_seq_liftover_38="20221103",
     refseq_37="105",
-    refseq_38="GCF_000001405.40-RS_2023_03",
+    refseq_38="GCF_000001405.40+RS_2023_03",
     dbsnp="b151",
 )
 

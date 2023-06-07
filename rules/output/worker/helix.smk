@@ -1,4 +1,4 @@
-## Rules to create annonars RocksDB for gnomAD-mtDNA.
+## Rules to create annonars RocksDB for HelixMtDb.
 
 import os
 
