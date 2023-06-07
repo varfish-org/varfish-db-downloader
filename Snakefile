@@ -147,9 +147,9 @@ rule all:
         f"output/worker/annos/seqvars/dbnsfp-grch38-{DV.dbnsfp}a+{PV.annonars}/rocksdb/IDENTITY",
         f"output/worker/annos/seqvars/dbnsfp-grch37-{DV.dbnsfp}c+{PV.annonars}/rocksdb/IDENTITY",
         f"output/worker/annos/seqvars/dbnsfp-grch38-{DV.dbnsfp}c+{PV.annonars}/rocksdb/IDENTITY",
-        # # ---- dbscSNV
-        # f"output/worker/annos/seqvars/dbscsnv-grch37-{DV.dbscsnv}+{PV.annonars}/rocksdb/IDENTITY",
-        # f"output/worker/annos/seqvars/dbscsnv-grch38-{DV.dbscsnv}+{PV.annonars}/rocksdb/IDENTITY",
+        # ---- dbscSNV
+        f"output/worker/annos/seqvars/dbscsnv-grch37-{DV.dbscsnv}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/worker/annos/seqvars/dbscsnv-grch38-{DV.dbscsnv}+{PV.annonars}/rocksdb/IDENTITY",
         # # ---- gnomAD mtDNA
         # f"output/worker/annos/seqvars/gnomad-mtdna-grch37-{DV.gnomad_mtdna}+{PV.annonars}/rocksdb/IDENTITY",
         # f"output/worker/annos/seqvars/gnomad-mtdna-grch38-{DV.gnomad_mtdna}+{PV.annonars}/rocksdb/IDENTITY",
@@ -206,3 +206,4 @@ include: "rules/output/mehari/freqs.smk"
 include: "rules/output/worker/cadd.smk"
 include: "rules/output/worker/dbsnp.smk"
 include: "rules/output/worker/dbnsfp.smk"
+include: "rules/output/worker/dbscsnv.smk"
