@@ -14,6 +14,7 @@ rule output_mehari_freqs_build:  # -- build frequency tables for mehari
     threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
+        mem_mb_per_cpu=2000,
     wildcard_constraints:
         genome_release=RE_GENOME,
         v_gnomad_genomes=RE_VERSION,
