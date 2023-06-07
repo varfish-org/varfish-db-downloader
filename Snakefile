@@ -159,9 +159,9 @@ rule all:
         # ---- gnomAD genomes
         f"output/worker/annos/seqvars/gnomad-genomes-grch37-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/worker/annos/seqvars/gnomad-genomes-grch38-{DV.gnomad_v3}+{PV.annonars}/rocksdb/IDENTITY",
-        # # ---- HelixMtDb
-        # f"output/worker/annos/seqvars/helixmtdb-grch37-{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
-        # f"output/worker/annos/seqvars/helixmtdb-grch38-{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
+        # ---- HelixMtDb
+        f"output/worker/annos/seqvars/helixmtdb-grch37-{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/worker/annos/seqvars/helixmtdb-grch38-{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
         # # ---- UCSC conservation
         # f"output/worker/annos/seqvars/cons-grch37-{DV.ucsc_cons_37}+{PV.annonars}/rocksdb/IDENTITY",
         # f"output/worker/annos/seqvars/cons-grch38-{DV.ucsc_cons_38}+{PV.annonars}/rocksdb/IDENTITY",
@@ -210,3 +210,4 @@ include: "rules/output/worker/dbscsnv.smk"
 include: "rules/output/worker/gnomad_mtdna.smk"
 include: "rules/output/worker/gnomad_exomes.smk"
 include: "rules/output/worker/gnomad_genomes.smk"
+include: "rules/output/worker/helix.smk"
