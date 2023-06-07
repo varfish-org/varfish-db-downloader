@@ -1,6 +1,12 @@
 """Declaration of data versions."""
 
+import os
+from datetime import datetime
+
 import attrs
+
+#: Value to use for "today".
+TODAY = os.environ.get("TODAY", datetime.today().strftime("%Y-%m-%d"))
 
 
 @attrs.frozen()
@@ -72,7 +78,7 @@ DATA_VERSIONS = DataVersions(
     ensembl_37="87",
     ensembl_38="109",
     ensembl="109",
-    today="2023-06-06",
+    today=TODAY,
     dbnsfp="4.4",
     dbscsnv="1.1",
     cadd="1.6",
