@@ -103,7 +103,6 @@ def excerpt_copy_tbi(url: str, path_out: str, count: int):
     shutil.copy(vcf_tbi_path, path_out)
 
 
-
 def excerpt_vcf_head(url: str, path_out: str, count: int):
     """Excerpt a VCF file by applying the following steps:
 
@@ -196,9 +195,7 @@ class UrlEntry:
     skip_upstream_check: bool = False
 
     def __attrs_post_init__(self):
-        object.__setattr__(
-            self, "hash", hash_url(self.url)
-        )
+        object.__setattr__(self, "hash", hash_url(self.url))
 
 
 def load_urls_yaml(yaml_path: str) -> typing.List[UrlEntry]:
