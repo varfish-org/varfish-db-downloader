@@ -39,3 +39,5 @@ dependencies:
   - samtools =1.16
   # Parallel (de)compression.
   - pigz
+  # Varfish/Mehari/Annonars related
+  - annonars =0.7.0
