@@ -13,11 +13,21 @@
 set -x
 set -euo pipefail
 
+# Number of jobs to run at the same time.
+JOBS=${JOBS-500}
 # Default partition.
 PART=${PART-critical}
+# Be relaxed with reruns.
+RELAXED_RERUNS=${RELAXED_RERUNS-true}
 
 snakemake \
-    --jobs 100 \
+    --rerun-incomplete \
+    $(if [[ "$RELAXED_RERUNS" == true ]]; then \
+        echo --rerun-triggers mtime; \
+        echo --rerun-triggers params; \
+        echo --rerun-triggers input; \
+    fi) \
+    --jobs $JOBS \
     --slurm \
     --default-resources \
         slurm_partition="$PART" \

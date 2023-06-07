@@ -52,6 +52,7 @@ rule annos_seqvars_dbnsfp_download:  # -- download dbNSFP ZIP file
         zip="work/download/annos/grch37/seqvars/dbnsfp/{version}{variant}/dbNSFP{version}{variant}.zip",
     wildcard_constraints:
         version=r"\d\.\d",
+    threads: 8,
     shell:
         r"""
         if [[ "{wildcards.variant}" == a ]]; then
