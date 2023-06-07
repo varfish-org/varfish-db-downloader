@@ -76,7 +76,7 @@ rule all:
         f"work/download/annos/grch37/seqvars/dbnsfp/{DV.dbnsfp}c/LICENSE.txt",
         f"work/download/annos/grch37/seqvars/dbscsnv/{DV.dbscsnv}/dbscSNV{DV.dbscsnv}.chr1",
         f"work/download/annos/grch37/seqvars/dbsnp/{DV.dbsnp}/dbsnp.vcf.gz",
-        "work/annos/grch37/seqvars/helixmtdb/20200327/helixmtdb.vcf.gz"
+        "work/annos/grch37/seqvars/helixmtdb/20200327/helixmtdb.vcf.gz",
         f"work/annos/grch37/seqvars/gnomad_mtdna/{DV.gnomad_mtdna}/gnomad_mtdna.vcf.gz",
         f"work/annos/grch37/seqvars/gnomad_exomes/{DV.gnomad_v2}/.done",
         f"work/annos/grch37/seqvars/gnomad_genomes/{DV.gnomad_v2}/.done",
@@ -86,7 +86,7 @@ rule all:
         # NB: dbNSFP is dual reference (for download)
         # NB: dbscSNV is dual reference (for download)
         f"work/download/annos/grch37/seqvars/dbsnp/{DV.dbsnp}/dbsnp.vcf.gz",
-        "work/annos/grch38/seqvars/helixmtdb/20200327/helixmtdb.vcf.gz"
+        "work/annos/grch38/seqvars/helixmtdb/20200327/helixmtdb.vcf.gz",
         f"work/annos/grch38/seqvars/gnomad_mtdna/{DV.gnomad_mtdna}/gnomad_mtdna.vcf.gz",
         f"work/annos/grch38/seqvars/gnomad_exomes/{DV.gnomad_v2}/.done",
         f"work/annos/grch38/seqvars/gnomad_genomes/{DV.gnomad_v3}/.done",

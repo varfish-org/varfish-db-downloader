@@ -27,6 +27,9 @@ Run them all with `all`:
 
 Note that this will take a long time, use a lot of disk space, and download a lot of data.
 
+To run on a Slurm cluster, you can use the Snakemake `--slurm` option.
+See `run-slurm.sh` for an example.
+
 ## Development Setup
 
 ### Prerequisites: Install `mamba` for Conda Package Management

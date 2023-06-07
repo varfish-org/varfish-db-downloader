@@ -29,7 +29,7 @@ dependencies:
   # JSON transformation tool used in many rules.
   - jq
   # Tools for file downloads.
-  - aria2
+  - aria2 >=1.36.0
   - wget
   # Tool for processing BED files.
   - bedops =2

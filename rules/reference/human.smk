@@ -22,6 +22,7 @@ rule reference_download:  # -- download reference genome sequence
             r"""
             aria2c \
                 --check-certificate=false \
+                --file-allocation=trunc \
                 --out={output.download} \
                 --split=8 \
                 --max-concurrent-downloads=8 \
