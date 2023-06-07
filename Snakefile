@@ -84,16 +84,16 @@ rule all:
         f"work/download/annos/grch37/seqvars/dbsnp/{DV.dbsnp}/dbsnp.vcf.gz",
         f"work/annos/grch37/seqvars/helixmtdb/{DV.helixmtdb}/helixmtdb.vcf.gz",
         f"work/annos/grch37/seqvars/gnomad_mtdna/{DV.gnomad_mtdna}/gnomad_mtdna.vcf.gz",
-        f"work/annos/grch37/seqvars/gnomad_exomes/{DV.gnomad_v2}/.done",
-        f"work/annos/grch37/seqvars/gnomad_genomes/{DV.gnomad_v2}/.done",
+        f"work/download/annos/grch37/seqvars/gnomad_exomes/{DV.gnomad_v2}/.done",
+        f"work/download/annos/grch37/seqvars/gnomad_genomes/{DV.gnomad_v2}/.done",
         # ---- GRCh38
         f"work/download/annos/grch38/seqvars/cadd/{DV.cadd}/whole_genome_SNVs_inclAnno.tsv.gz",
         f"work/download/annos/grch38/seqvars/cadd/{DV.cadd}/gnomad.genomes.r3.0.indel_inclAnno.tsv.gz",
         # NB: dbNSFP is dual reference (for download)
         # NB: dbscSNV is dual reference (for download)
         f"work/download/annos/grch37/seqvars/dbsnp/{DV.dbsnp}/dbsnp.vcf.gz",
-        f"work/download/annos/grch38/seqvars/helixmtdb/{DV.helixmtdb}/helixmtdb.vcf.gz",
-        f"work/download/annos/grch38/seqvars/gnomad_mtdna/{DV.gnomad_mtdna}/gnomad_mtdna.vcf.gz",
+        f"work/annos/grch38/seqvars/helixmtdb/{DV.helixmtdb}/helixmtdb.vcf.gz",
+        f"work/annos/grch38/seqvars/gnomad_mtdna/{DV.gnomad_mtdna}/gnomad_mtdna.vcf.gz",
         f"work/download/annos/grch38/seqvars/gnomad_exomes/{DV.gnomad_v2}/.done",
         f"work/download/annos/grch38/seqvars/gnomad_genomes/{DV.gnomad_v3}/.done",
         # -- background/population structural variants and annoations thereof
@@ -135,10 +135,10 @@ rule all:
         # ---- frequencies (via annonars)
         f"output/mehari/freqs-grch37-{DV.gnomad_v2}+{DV.gnomad_v2}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/mehari/freqs-grch38-{DV.gnomad_v3}+{DV.gnomad_v2}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
-        # # -- varfish-server-worker data
-        # # ---- CADD
-        # f"output/worker/annos/seqvars/cadd-grch37-{DV.cadd}+{PV.annonars}/rocksdb/IDENTITY",
-        # f"output/worker/annos/seqvars/cadd-grch38-{DV.cadd}+{PV.annonars}/rocksdb/IDENTITY",
+        # -- varfish-server-worker data
+        # ---- CADD
+        f"output/worker/annos/seqvars/cadd-grch37-{DV.cadd}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/worker/annos/seqvars/cadd-grch38-{DV.cadd}+{PV.annonars}/rocksdb/IDENTITY",
         # # ---- dbSNP
         # f"output/worker/annos/seqvars/dbsnp-grch37-{DV.dbsnp}+{PV.annonars}/rocksdb/IDENTITY",
         # f"output/worker/annos/seqvars/dbsnp-grch38-{DV.dbsnp}+{PV.annonars}/rocksdb/IDENTITY",
@@ -201,3 +201,4 @@ include: "rules/work/annos/strucvars/g1k.smk"
 include: "rules/work/annos/strucvars/gnomad.smk"
 # -- output directory ---------------------------------------------------------------------------
 include: "rules/output/mehari/freqs.smk"
+include: "rules/output/worker/cadd.smk"
