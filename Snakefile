@@ -16,7 +16,7 @@ shell.prefix(SHELL_PREFIX)
 # Regular expression for genome release.
 RE_GENOME = r"grch(37|38)"
 # Regular expression for versions.
-RE_VERSION = r"\d+(\.\d+)*"
+RE_VERSION = r"\w+(\.\w+)*"
 
 # ===============================================================================================
 # Test Mode
@@ -142,9 +142,11 @@ rule all:
         # ---- dbSNP
         f"output/worker/annos/seqvars/dbsnp-grch37-{DV.dbsnp}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/worker/annos/seqvars/dbsnp-grch38-{DV.dbsnp}+{PV.annonars}/rocksdb/IDENTITY",
-        # # ---- dbNSFP
-        # f"output/worker/annos/seqvars/dbnsfp-grch37-{DV.dbnsfp}+{PV.annonars}/rocksdb/IDENTITY",
-        # f"output/worker/annos/seqvars/dbnsfp-grch38-{DV.dbnsfp}+{PV.annonars}/rocksdb/IDENTITY",
+        # ---- dbNSFP
+        f"output/worker/annos/seqvars/dbnsfp-grch37-{DV.dbnsfp}a+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/worker/annos/seqvars/dbnsfp-grch38-{DV.dbnsfp}a+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/worker/annos/seqvars/dbnsfp-grch37-{DV.dbnsfp}c+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/worker/annos/seqvars/dbnsfp-grch38-{DV.dbnsfp}c+{PV.annonars}/rocksdb/IDENTITY",
         # # ---- dbscSNV
         # f"output/worker/annos/seqvars/dbscsnv-grch37-{DV.dbscsnv}+{PV.annonars}/rocksdb/IDENTITY",
         # f"output/worker/annos/seqvars/dbscsnv-grch38-{DV.dbscsnv}+{PV.annonars}/rocksdb/IDENTITY",
@@ -203,3 +205,4 @@ include: "rules/work/annos/strucvars/gnomad.smk"
 include: "rules/output/mehari/freqs.smk"
 include: "rules/output/worker/cadd.smk"
 include: "rules/output/worker/dbsnp.smk"
+include: "rules/output/worker/dbnsfp.smk"
