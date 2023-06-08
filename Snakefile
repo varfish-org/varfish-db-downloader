@@ -165,6 +165,8 @@ rule all:
         # ---- UCSC conservation
         f"output/worker/annos/seqvars/cons-grch37-{DV.ucsc_cons_37}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/worker/annos/seqvars/cons-grch38-{DV.ucsc_cons_38}+{PV.annonars}/rocksdb/IDENTITY",
+        # ----- Genes
+        f"output/worker/genes-{DV.acmg_sf}+{DV.gnomad_constraints}+{DV.dbnsfp}+{DV.today}+{PV.worker}/rocksdb/IDENTITY",
 
 
 # ===============================================================================================
@@ -202,7 +204,10 @@ include: "rules/work/annos/strucvars/exac.smk"
 include: "rules/work/annos/strucvars/g1k.smk"
 include: "rules/work/annos/strucvars/gnomad.smk"
 # -- output directory ---------------------------------------------------------------------------
+# ---- mehari
 include: "rules/output/mehari/freqs.smk"
+# ---- worker
+# ------ annos
 include: "rules/output/worker/cadd.smk"
 include: "rules/output/worker/dbsnp.smk"
 include: "rules/output/worker/dbnsfp.smk"
@@ -212,3 +217,5 @@ include: "rules/output/worker/gnomad_exomes.smk"
 include: "rules/output/worker/gnomad_genomes.smk"
 include: "rules/output/worker/helix.smk"
 include: "rules/output/worker/cons.smk"
+# ------ global
+include: "rules/output/worker/genes.smk"

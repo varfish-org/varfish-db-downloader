@@ -1,0 +1,21 @@
+{
+    "dc:format": "text/tsv",
+    "dc:identifier": "gene-centric/acmg/acmg-sf-genes.tsv:3.1",
+    "dc:title": "ACMG Secondary Findings Gene List (v3.1)",
+    "dc:description": "This is version 3.1 of the ACMG gene list for reporting incidental findings. The file was curated from PMID:35802134 as gene symbols and then translated to ENSEMBL and Entrez/NCBI gene ID with the HGNC BioMart",
+    "dc:created": "2022-02-03",
+    "dc:creator": "American College of Medical Genetics",
+    "dc:contributor": [
+        "VarFish Developer Team"
+    ],
+    "dc:source": [
+        "PMID:35802134",
+        "https://www.ncbi.nlm.nih.gov/clinvar/docs/acmg/",
+        "https://biomart.genenames.org/"
+    ],
+    "tsv:columns": {
+        "gene_symbol": "HGNC approve gene symbol",
+        "ensembl_gene_id": "ENSEMBL gene ID",
+        "entrez_gene_id": "Entrez/NCBI gene ID"
+    }
+}
