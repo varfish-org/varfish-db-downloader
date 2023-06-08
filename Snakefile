@@ -167,6 +167,10 @@ rule all:
         f"output/worker/annos/seqvars/cons-grch38-{DV.ucsc_cons_38}+{PV.annonars}/rocksdb/IDENTITY",
         # ----- Genes
         f"output/worker/genes-{DV.acmg_sf}+{DV.gnomad_constraints}+{DV.dbnsfp}+{DV.today}+{PV.worker}/rocksdb/IDENTITY",
+        # ----- HPO
+        f"output/worker/pheno-{DV.hpo}+{PV.worker}/hp.obo",
+        f"output/worker/pheno-{DV.hpo}+{PV.worker}/phenotype.hpoa",
+        f"output/worker/pheno-{DV.hpo}+{PV.worker}/phenotype_to_genes.txt",
 
 
 # ===============================================================================================
@@ -175,6 +179,8 @@ rule all:
 
 
 # -- work directory -----------------------------------------------------------------------------
+# Misc rules.
+include: "rules/work/misc/hpo.smk"
 # Gene-related rules.
 include: "rules/work/genes/dbnsfp.smk"
 include: "rules/work/genes/ensembl.smk"
@@ -219,3 +225,4 @@ include: "rules/output/worker/helix.smk"
 include: "rules/output/worker/cons.smk"
 # ------ global
 include: "rules/output/worker/genes.smk"
+include: "rules/output/worker/pheno.smk"

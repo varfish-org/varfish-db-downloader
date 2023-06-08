@@ -78,6 +78,8 @@ class DataVersions:
     dbsnp: str
     #: ACMG secondary findings version.
     acmg_sf: str
+    #: HPO
+    hpo: str
 
 
 #: The data versions to use.
@@ -114,6 +116,7 @@ DATA_VERSIONS = DataVersions(
     refseq_38="GCF_000001405.40+RS_2023_03",
     dbsnp="b151",
     acmg_sf="3.1",
+    hpo="20230606",
 )
 
 

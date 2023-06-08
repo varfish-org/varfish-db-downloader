@@ -1,7 +1,5 @@
 ## Rules to create build worker genes database..
 
-import os
-
 
 rule output_worker_genes:  # -- build genes protobuf file
     input:

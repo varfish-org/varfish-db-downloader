@@ -1,3 +1,16 @@
+- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2023-06-06/hp.obo
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2023-06-06/phenotype.hpoa
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2023-06-06/phenotype_to_genes.txt
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+
 - url: https://ftp.ensembl.org/pub/current_README
 
 - comment: The UCSC listing is used for checking the versions for GRCh37.
