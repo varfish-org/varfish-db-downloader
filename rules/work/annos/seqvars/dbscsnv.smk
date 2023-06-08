@@ -10,6 +10,11 @@ def files_dbscsnv(version: str = "1.1"):
     ]
 
 
+def var_tsv_files_dbscsnv(version: str = "1.1"):
+    """Variant TSV files contained in the dbscSNV ZIP file."""
+    return [entry for entry in files_dbscsnv(version) if ".chr" in entry]
+
+
 rule annos_seqvars_dbscsnv_download:  # -- download dbscSNV ZIP file
     output:
         zip="work/download/annos/grch37/seqvars/dbscsnv/1.1/dbscSNV1.1.zip",

@@ -2,9 +2,7 @@
 
 
 # URL prefix of gnomAD downloads.
-# GNOMAD_PREFIX = "https://gnomad-public-us-east-1.s3.amazonaws.com/release"
-# GNOMAD_PREFIX = "https://datasetgnomad.blob.core.windows.net/dataset/release"
-GNOMAD_PREFIX = "https://storage.googleapis.com/gcp-public-data--gnomad/release"
+GNOMAD_PREFIX = "https://gnomad-public-us-east-1.s3.amazonaws.com/release"
 
 
 rule annos_gnomad_nuclear_download_grch37:  # -- download gnomAD v2 exomes/genomes for GRCh37
@@ -129,7 +127,7 @@ rule annos_seqvars_gnomad_nuclear_grch37:  # -- collect gnomAD exomes/genomes fo
     input:
         input_annos_gnomad_nuclear_grch37,
     output:
-        touch("work/annos/grch37/seqvars/gnomad_{kind}/{version}/.done"),
+        touch("work/download/annos/grch37/seqvars/gnomad_{kind}/{version}/.done"),
     wildcard_constraints:
         kind=r"[a-z]+",
 
@@ -138,6 +136,6 @@ rule annos_seqvars_gnomad_nuclear_grch38:  # -- collect gnomAD exomes/genomes fo
     input:
         input_annos_gnomad_nuclear_grch38,
     output:
-        touch("work/annos/grch38/seqvars/gnomad_{kind}/{version}/.done"),
+        touch("work/download/annos/grch38/seqvars/gnomad_{kind}/{version}/.done"),
     wildcard_constraints:
         kind=r"[a-z]+",

@@ -1,6 +1,6 @@
 # Ignore the workflow directories.
-work/
-output/
+/work/
+/output/
 
 # Python
 __pycache__

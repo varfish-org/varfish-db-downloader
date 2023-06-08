@@ -1,16 +1,19 @@
 """Declaration of data versions."""
 
 import os
+import subprocess
 from datetime import datetime
 
 import attrs
 
 #: Value to use for "today".
-TODAY = os.environ.get("TODAY", datetime.today().strftime("%Y-%m-%d"))
+TODAY = os.environ.get("TODAY", datetime.today().strftime("%Y%m%d"))
 
 
 @attrs.frozen()
 class DataVersions:
+    """Container with data versions."""
+
     #: String to use for GRCh37 ENSEMBL version.
     ensembl_37: str
     #: String to use for GRCh38 ENSEMBL version.
@@ -45,6 +48,8 @@ class DataVersions:
     exac_cnv: str
     #: Thousand Genomes SVs.
     g1k_svs: str
+    #: HelixMtDb
+    helixmtdb: str
     #: UCSC conservation (GRCh37).
     ucsc_cons_37: str
     #: UCSC conservation (GRCh38).
@@ -87,22 +92,47 @@ DATA_VERSIONS = DataVersions(
     gnomad_v2="2.1.1",
     gnomad_v3="3.1.2",
     gnomad_sv="2.1.1",
-    dbvar="2023-05-16",
-    dgv="2020-02-25",
-    dgv_gs="2016-05-15",
+    dbvar="20230516",
+    dgv="20200225",
+    dgv_gs="20160515",
     exac_cnv="0.3.1",
     g1k_svs="phase3-v2",
-    ucsc_cons_37="2016-10-07",
-    ucsc_cons_38="2019-09-06",
-    ucsc_rmsk_37="2020-03-22",
-    ucsc_rmsk_38="2022-10-18",
-    ucsc_genomic_super_dups_37="2011-10-25",
-    ucsc_genomic_super_dups_38="2014-10-19",
-    ucsc_alt_seq_liftover_37="2020-03-22",
-    ucsc_alt_seq_liftover_38="2022-11-03",
-    ucsc_fix_seq_liftover_37="2020-05-24",
-    ucsc_fix_seq_liftover_38="2022-11-03",
+    helixmtdb="20200327",
+    ucsc_cons_37="20161007",
+    ucsc_cons_38="20190906",
+    ucsc_rmsk_37="20200322",
+    ucsc_rmsk_38="20221018",
+    ucsc_genomic_super_dups_37="20111025",
+    ucsc_genomic_super_dups_38="20141019",
+    ucsc_alt_seq_liftover_37="20200322",
+    ucsc_alt_seq_liftover_38="20221103",
+    ucsc_fix_seq_liftover_37="20200524",
+    ucsc_fix_seq_liftover_38="20221103",
     refseq_37="105",
-    refseq_38="GCF_000001405.40-RS_2023_03",
+    refseq_38="GCF_000001405.40+RS_2023_03",
     dbsnp="b151",
+)
+
+
+@attrs.frozen()
+class PackageVersions:
+    """Container with package versions."""
+
+    #: Version of ``annona-rs`` executable.
+    annonars: str
+    #: Version of ``varfish-server-worker`` executable.
+    worker: str
+
+
+def get_version(executable: str) -> str:
+    """Return version of ``executable``."""
+    tmp: str = subprocess.check_output([executable, "--version"], text=True)
+    _, version = tmp.strip().split(" ", 1)
+    return version
+
+
+#: The package versions from environment.
+PACKAGE_VERSIONS = PackageVersions(
+    annonars=get_version("annonars"),
+    worker=get_version("varfish-server-worker"),
 )

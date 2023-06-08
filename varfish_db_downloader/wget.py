@@ -89,6 +89,20 @@ def excerpt_head(url: str, path_out: str, count: int):
                 f_out.write(b"\n")
 
 
+def excerpt_copy_tbi(url: str, path_out: str, count: int):
+    """Copy ``.tbi`` file from the (previously downloaded) ``.vcf.gz`` file.)"""
+    _ = count
+    vcf_url = url[:-4]
+    vcf_file = vcf_url.split("/")[-1]
+    vcf_url_hash = hash_url(vcf_url)
+    base_path = os.path.dirname(os.path.dirname(path_out))
+    vcf_tbi_path = f"{base_path}/{vcf_url_hash}/{vcf_file}.tbi"
+    logger.info("    (strategy COPY_TBI from {} to {})", vcf_tbi_path, path_out)
+    if not os.path.exists(vcf_tbi_path):
+        raise RuntimeError(f"File {vcf_tbi_path} does not exist (strategy COPY-TBI)")
+    shutil.copy(vcf_tbi_path, path_out)
+
+
 def excerpt_vcf_head(url: str, path_out: str, count: int):
     """Excerpt a VCF file by applying the following steps:
 
@@ -132,6 +146,7 @@ STRATEGY_MAP = {
     "head": excerpt_head,
     "gz-head": excerpt_head,
     "vcf-head": excerpt_vcf_head,
+    "copy-tbi": excerpt_copy_tbi,
     "manual": excerpt_manual,
     "no-excerpt": no_excerpt,
 }
@@ -153,10 +168,17 @@ class ExcerptStrategy:
             return ExcerptStrategy(strategy="vcf-head", count=100)
         elif url.endswith(".gz") or url.endswith(".bgz"):
             return ExcerptStrategy(strategy="gz-head", count=100)
-        elif url.endswith(".tbi") or "." not in url.split("/")[-1]:
-            return ExcerptStrategy(strategy="no-excerpt", count=100)
+        elif url.endswith(".tbi"):
+            return ExcerptStrategy(strategy="copy-tbi", count=None)
+        elif "." not in url.split("/")[-1]:
+            return ExcerptStrategy(strategy="no-excerpt", count=None)
         else:
             return ExcerptStrategy(strategy="head", count=100)
+
+
+def hash_url(url: str) -> str:
+    """Return hashed URL string."""
+    return hashlib.sha256(url.encode("utf-8")).hexdigest()[:HASH_LENGTH]
 
 
 @attrs.frozen()
@@ -173,9 +195,7 @@ class UrlEntry:
     skip_upstream_check: bool = False
 
     def __attrs_post_init__(self):
-        object.__setattr__(
-            self, "hash", hashlib.sha256(self.url.encode("utf-8")).hexdigest()[:HASH_LENGTH]
-        )
+        object.__setattr__(self, "hash", hash_url(self.url))
 
 
 def load_urls_yaml(yaml_path: str) -> typing.List[UrlEntry]:

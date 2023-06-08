@@ -37,6 +37,6 @@ snakemake \
     --default-resources \
         slurm_partition="$PART" \
         'runtime="4h"' \
-        mem_mb=2000 \
+        mem_mb=4000 \
     -- \
     "${@-all}"

@@ -3,7 +3,7 @@
 
 rule annos_seqvars_helixmtdb_download:  # -- download HelixMtDb data
     output:
-        tsv="work/download/annos/{genome_build}/seqvars/helixmtdb/20200327/helixmtdb.tsv",
+        tsv="work/download/annos/{genome_release}/seqvars/helixmtdb/20200327/helixmtdb.tsv",
     shell:
         r"""
         wget \
@@ -15,17 +15,17 @@ rule annos_seqvars_helixmtdb_download:  # -- download HelixMtDb data
 
 rule annos_seqvars_helixmtdb_convert:  # -- process HelixMtDb data
     input:
-        tsv="work/download/annos/{genome_build}/seqvars/helixmtdb/20200327/helixmtdb.tsv",
+        tsv="work/download/annos/{genome_release}/seqvars/helixmtdb/20200327/helixmtdb.tsv",
     output:
-        vcf="work/annos/{genome_build}/seqvars/helixmtdb/20200327/helixmtdb.vcf.gz",
-        vcf_tbi="work/annos/{genome_build}/seqvars/helixmtdb/20200327/helixmtdb.vcf.gz.tbi",
+        vcf="work/annos/{genome_release}/seqvars/helixmtdb/20200327/helixmtdb.vcf.gz",
+        vcf_tbi="work/annos/{genome_release}/seqvars/helixmtdb/20200327/helixmtdb.vcf.gz.tbi",
     shell:
         r"""
         cat {input.tsv} \
         | python3  scripts/helix-to-vcf.py \
         > {output.vcf}.tmp
 
-        if [[ {wildcards.genome_build} == GRCh37 ]]; then
+        if [[ {wildcards.genome_release} == GRCh37 ]]; then
             sed -e 's/chrM/MT/g' {output.vcf}.tmp \
             | bgzip -c \
             > {output.vcf}

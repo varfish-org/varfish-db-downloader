@@ -35,7 +35,15 @@ rule annos_gnomad_mtdna_process:  # -- process gnomAD mtDNA
             | bgzip -c \
             > {output.vcf}
         else
-            cp {input.dl} {output.vcf}
+            zcat {input.dl} \
+            | sed \
+                -e 's/,GERP_DIST/\&GERP_DIST/g' \
+                -e 's/,BP_DIST/\&BP_DIST/g' \
+                -e 's/,DIST_FROM_LAST_EXON/\&DIST_FROM_LAST_EXON/g' \
+                -e 's/,50_BP_RULE/\&50_BP_RULE/g' \
+                -e 's/,PHYLOCSF_TOO_SHORT/\&PHYLOCSF_TOO_SHORT/g' \
+            | bgzip -c \
+            > {output.vcf}
         fi
 
         tabix -f {output.vcf}

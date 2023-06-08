@@ -1,0 +1,79 @@
+{
+  "columns": [
+    {
+      "name": "chr",
+      "typ": "String"
+    },
+    {
+      "name": "pos",
+      "typ": "Integer"
+    },
+    {
+      "name": "ref",
+      "typ": "String"
+    },
+    {
+      "name": "alt",
+      "typ": "String"
+    },
+    {
+      "name": "hg38_chr",
+      "typ": "String"
+    },
+    {
+      "name": "hg38_pos",
+      "typ": "Integer"
+    },
+    {
+      "name": "RefSeq?",
+      "typ": "String"
+    },
+    {
+      "name": "Ensembl?",
+      "typ": "String"
+    },
+    {
+      "name": "RefSeq_region",
+      "typ": "String"
+    },
+    {
+      "name": "RefSeq_gene",
+      "typ": "String"
+    },
+    {
+      "name": "RefSeq_functional_consequence",
+      "typ": "String"
+    },
+    {
+      "name": "RefSeq_id_c.change_p.change",
+      "typ": "String"
+    },
+    {
+      "name": "Ensembl_region",
+      "typ": "String"
+    },
+    {
+      "name": "Ensembl_gene",
+      "typ": "String"
+    },
+    {
+      "name": "Ensembl_functional_consequence",
+      "typ": "String"
+    },
+    {
+      "name": "Ensembl_id_c.change_p.change",
+      "typ": "String"
+    },
+    {
+      "name": "ada_score",
+      "typ": "Float"
+    },
+    {
+      "name": "rf_score",
+      "typ": "Float"
+    }
+  ],
+  "null_values": [
+    "."
+  ]
+}

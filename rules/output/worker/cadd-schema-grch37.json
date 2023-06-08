@@ -1,0 +1,473 @@
+{
+  "columns": [
+    {
+      "name": "Chrom",
+      "typ": "String"
+    },
+    {
+      "name": "Pos",
+      "typ": "Integer"
+    },
+    {
+      "name": "Ref",
+      "typ": "String"
+    },
+    {
+      "name": "Alt",
+      "typ": "String"
+    },
+    {
+      "name": "Type",
+      "typ": "String"
+    },
+    {
+      "name": "Length",
+      "typ": "Integer"
+    },
+    {
+      "name": "AnnoType",
+      "typ": "String"
+    },
+    {
+      "name": "Consequence",
+      "typ": "String"
+    },
+    {
+      "name": "ConsScore",
+      "typ": "Integer"
+    },
+    {
+      "name": "ConsDetail",
+      "typ": "String"
+    },
+    {
+      "name": "GC",
+      "typ": "Float"
+    },
+    {
+      "name": "CpG",
+      "typ": "Float"
+    },
+    {
+      "name": "motifECount",
+      "typ": "Integer"
+    },
+    {
+      "name": "motifEName",
+      "typ": "String"
+    },
+    {
+      "name": "motifEHIPos",
+      "typ": "Integer"
+    },
+    {
+      "name": "motifEScoreChng",
+      "typ": "Float"
+    },
+    {
+      "name": "oAA",
+      "typ": "String"
+    },
+    {
+      "name": "nAA",
+      "typ": "String"
+    },
+    {
+      "name": "GeneID",
+      "typ": "String"
+    },
+    {
+      "name": "FeatureID",
+      "typ": "String"
+    },
+    {
+      "name": "GeneName",
+      "typ": "String"
+    },
+    {
+      "name": "CCDS",
+      "typ": "String"
+    },
+    {
+      "name": "Intron",
+      "typ": "String"
+    },
+    {
+      "name": "Exon",
+      "typ": "String"
+    },
+    {
+      "name": "cDNApos",
+      "typ": "Integer"
+    },
+    {
+      "name": "relcDNApos",
+      "typ": "Float"
+    },
+    {
+      "name": "CDSpos",
+      "typ": "Integer"
+    },
+    {
+      "name": "relCDSpos",
+      "typ": "Float"
+    },
+    {
+      "name": "protPos",
+      "typ": "Integer"
+    },
+    {
+      "name": "relProtPos",
+      "typ": "Float"
+    },
+    {
+      "name": "Domain",
+      "typ": "String"
+    },
+    {
+      "name": "Dst2Splice",
+      "typ": "Integer"
+    },
+    {
+      "name": "Dst2SplType",
+      "typ": "String"
+    },
+    {
+      "name": "minDistTSS",
+      "typ": "Integer"
+    },
+    {
+      "name": "minDistTSE",
+      "typ": "Integer"
+    },
+    {
+      "name": "SIFTcat",
+      "typ": "String"
+    },
+    {
+      "name": "SIFTval",
+      "typ": "Float"
+    },
+    {
+      "name": "PolyPhenCat",
+      "typ": "String"
+    },
+    {
+      "name": "PolyPhenVal",
+      "typ": "Float"
+    },
+    {
+      "name": "priPhCons",
+      "typ": "Float"
+    },
+    {
+      "name": "mamPhCons",
+      "typ": "Float"
+    },
+    {
+      "name": "verPhCons",
+      "typ": "Float"
+    },
+    {
+      "name": "priPhyloP",
+      "typ": "Float"
+    },
+    {
+      "name": "mamPhyloP",
+      "typ": "Float"
+    },
+    {
+      "name": "verPhyloP",
+      "typ": "Float"
+    },
+    {
+      "name": "bStatistic",
+      "typ": "Integer"
+    },
+    {
+      "name": "targetScan",
+      "typ": "Integer"
+    },
+    {
+      "name": "mirSVR-Score",
+      "typ": "Float"
+    },
+    {
+      "name": "mirSVR-E",
+      "typ": "Float"
+    },
+    {
+      "name": "mirSVR-Aln",
+      "typ": "Integer"
+    },
+    {
+      "name": "cHmmTssA",
+      "typ": "Float"
+    },
+    {
+      "name": "cHmmTssAFlnk",
+      "typ": "Float"
+    },
+    {
+      "name": "cHmmTxFlnk",
+      "typ": "Float"
+    },
+    {
+      "name": "cHmmTx",
+      "typ": "Float"
+    },
+    {
+      "name": "cHmmTxWk",
+      "typ": "Float"
+    },
+    {
+      "name": "cHmmEnhG",
+      "typ": "Float"
+    },
+    {
+      "name": "cHmmEnh",
+      "typ": "Float"
+    },
+    {
+      "name": "cHmmZnfRpts",
+      "typ": "Float"
+    },
+    {
+      "name": "cHmmHet",
+      "typ": "Float"
+    },
+    {
+      "name": "cHmmTssBiv",
+      "typ": "Float"
+    },
+    {
+      "name": "cHmmBivFlnk",
+      "typ": "Float"
+    },
+    {
+      "name": "cHmmEnhBiv",
+      "typ": "Float"
+    },
+    {
+      "name": "cHmmReprPC",
+      "typ": "Float"
+    },
+    {
+      "name": "cHmmReprPCWk",
+      "typ": "Float"
+    },
+    {
+      "name": "cHmmQuies",
+      "typ": "Float"
+    },
+    {
+      "name": "GerpRS",
+      "typ": "Float"
+    },
+    {
+      "name": "GerpRSpval",
+      "typ": "Float"
+    },
+    {
+      "name": "GerpN",
+      "typ": "Float"
+    },
+    {
+      "name": "GerpS",
+      "typ": "Float"
+    },
+    {
+      "name": "TFBS",
+      "typ": "Integer"
+    },
+    {
+      "name": "TFBSPeaks",
+      "typ": "Integer"
+    },
+    {
+      "name": "TFBSPeaksMax",
+      "typ": "Float"
+    },
+    {
+      "name": "tOverlapMotifs",
+      "typ": "Integer"
+    },
+    {
+      "name": "motifDist",
+      "typ": "Float"
+    },
+    {
+      "name": "Segway",
+      "typ": "String"
+    },
+    {
+      "name": "EncH3K27Ac",
+      "typ": "Float"
+    },
+    {
+      "name": "EncH3K4Me1",
+      "typ": "Float"
+    },
+    {
+      "name": "EncH3K4Me3",
+      "typ": "Float"
+    },
+    {
+      "name": "EncExp",
+      "typ": "Float"
+    },
+    {
+      "name": "EncNucleo",
+      "typ": "Float"
+    },
+    {
+      "name": "EncOCC",
+      "typ": "Integer"
+    },
+    {
+      "name": "EncOCCombPVal",
+      "typ": "Float"
+    },
+    {
+      "name": "EncOCDNasePVal",
+      "typ": "Float"
+    },
+    {
+      "name": "EncOCFairePVal",
+      "typ": "Float"
+    },
+    {
+      "name": "EncOCpolIIPVal",
+      "typ": "Float"
+    },
+    {
+      "name": "EncOCctcfPVal",
+      "typ": "Float"
+    },
+    {
+      "name": "EncOCmycPVal",
+      "typ": "Float"
+    },
+    {
+      "name": "EncOCDNaseSig",
+      "typ": "Float"
+    },
+    {
+      "name": "EncOCFaireSig",
+      "typ": "Float"
+    },
+    {
+      "name": "EncOCpolIISig",
+      "typ": "Float"
+    },
+    {
+      "name": "EncOCctcfSig",
+      "typ": "Float"
+    },
+    {
+      "name": "EncOCmycSig",
+      "typ": "Float"
+    },
+    {
+      "name": "Grantham",
+      "typ": "Integer"
+    },
+    {
+      "name": "SpliceAI-acc-gain",
+      "typ": "Float"
+    },
+    {
+      "name": "SpliceAI-acc-loss",
+      "typ": "Float"
+    },
+    {
+      "name": "SpliceAI-don-gain",
+      "typ": "Float"
+    },
+    {
+      "name": "SpliceAI-don-loss",
+      "typ": "Float"
+    },
+    {
+      "name": "MMSp_acceptorIntron",
+      "typ": "Float"
+    },
+    {
+      "name": "MMSp_acceptor",
+      "typ": "Float"
+    },
+    {
+      "name": "MMSp_exon",
+      "typ": "Float"
+    },
+    {
+      "name": "MMSp_donor",
+      "typ": "Float"
+    },
+    {
+      "name": "MMSp_donorIntron",
+      "typ": "Float"
+    },
+    {
+      "name": "Dist2Mutation",
+      "typ": "Integer"
+    },
+    {
+      "name": "Freq100bp",
+      "typ": "Integer"
+    },
+    {
+      "name": "Rare100bp",
+      "typ": "Integer"
+    },
+    {
+      "name": "Sngl100bp",
+      "typ": "Integer"
+    },
+    {
+      "name": "Freq1000bp",
+      "typ": "Integer"
+    },
+    {
+      "name": "Rare1000bp",
+      "typ": "Integer"
+    },
+    {
+      "name": "Sngl1000bp",
+      "typ": "Integer"
+    },
+    {
+      "name": "Freq10000bp",
+      "typ": "Integer"
+    },
+    {
+      "name": "Rare10000bp",
+      "typ": "Integer"
+    },
+    {
+      "name": "Sngl10000bp",
+      "typ": "Integer"
+    },
+    {
+      "name": "dbscSNV-ada_score",
+      "typ": "Float"
+    },
+    {
+      "name": "dbscSNV-rf_score",
+      "typ": "Float"
+    },
+    {
+      "name": "RawScore",
+      "typ": "Float"
+    },
+    {
+      "name": "PHRED",
+      "typ": "Float"
+    }
+  ],
+  "null_values": [
+    "NA",
+    ".",
+    "-"
+  ]
+}

@@ -47,6 +47,13 @@ def files_dbnsfp():
     return ["work/download/annos/grch37/seqvars/dbnsfp/{version}{variant}/%s" % e for e in lst]
 
 
+def var_tsv_dbnsfp():
+    """Return paths to variant TSV files."""
+    return [
+        path for path in files_dbnsfp() if "_variant" in path and path.endswith(".gz")
+    ]
+
+
 rule annos_seqvars_dbnsfp_download:  # -- download dbNSFP ZIP file
     output:
         zip="work/download/annos/grch37/seqvars/dbnsfp/{version}{variant}/dbNSFP{version}{variant}.zip",

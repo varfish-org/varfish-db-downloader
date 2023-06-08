@@ -18,7 +18,7 @@ rule annos_features_cons_download:  # -- download UCSC conservation track
 
         wget -O $TMPDIR/alignments.html \
             https://hgdownload.cse.ucsc.edu/goldenpath/$ucsc_name/multiz100way/alignments
-        version=$(grep knownGene.exonAA.fa.gz $TMPDIR/alignments.html | awk '{{ print $3 }}')
+        version=$(grep knownGene.exonAA.fa.gz $TMPDIR/alignments.html | awk '{{ gsub(/-/, "", $3); print $3 }}')
         if [[ "$version" != "{wildcards.version}" ]]; then
             >&2 echo "Version mismatch for knownGene.exonAA.fa.gz: expected {wildcards.version}, got $version"
             exit 1
