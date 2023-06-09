@@ -5,7 +5,7 @@ rule output_worker_pheno:  # -- build genes protobuf file
     input:
         obo="work/download/hpo/{v_hpo}/hp.obo",
         hpoa="work/download/hpo/{v_hpo}/phenotype.hpoa",
-        phenotype_to_genes="work/download/hpo/{v_hpo}/phenotype_to_genes.txt",
+        genes_to_phenotype="work/download/hpo/{v_hpo}/phenotype_to_genes.txt",
     output:
         obo="output/worker/pheno-{v_hpo}+{v_worker}/hp.obo",
         hpoa="output/worker/pheno-{v_hpo}+{v_worker}/phenotype.hpoa",
@@ -18,13 +18,15 @@ rule output_worker_pheno:  # -- build genes protobuf file
         r"""
         cp -a {input.obo} {output.obo}
         cp -a {input.hpoa} {output.hpoa}
-        cp -a {input.phenotype_to_genes} {output.phenotype_to_genes}
+
+        awk -F $'\t' 'BEGIN {{ OFS=FS }} {{ print $3, $4, $1, $2, $6 }}' \
+            {input.genes_to_phenotype} \
+        > {output.phenotype_to_genes}
 
         varfish-server-worker pheno prepare \
             --path-hpo-dir $(dirname {input.obo}) \
             --path-out-rocksdb $(dirname {output.rocksdb_identity}) \
-            --min-terms 10 \
+            --min-terms 1 \
             --max-terms 10 \
-            --seed 42 \
-            --num-simulations 10
+            --seed 42
         """
