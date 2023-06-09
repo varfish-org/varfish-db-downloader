@@ -1,3 +1,12 @@
+- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.2.0/mehari-data-txs-grch37-0.2.0.bin.zst
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.2.0/mehari-data-txs-grch38-0.2.0.bin.zst
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+
 - url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2023-06-06/hp.obo
   excerpt_strategy:
     strategy: no-excerpt

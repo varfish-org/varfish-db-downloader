@@ -82,6 +82,8 @@ class DataVersions:
     hpo: str
     #: Pathogenic MMS
     patho_mms: str
+    #: Mehari transcript data.
+    mehari_tx: str
 
 
 #: The data versions to use.
@@ -120,6 +122,7 @@ DATA_VERSIONS = DataVersions(
     acmg_sf="3.1",
     hpo="20230606",
     patho_mms="20220730",
+    mehari_tx="0.2.0",
 )
 
 

@@ -74,7 +74,6 @@ rule all:
         f"work/genes/entrez/{DV.today}/gene_info.jsonl",
         f"work/genes/gnomad/{DV.gnomad_constraints}/gnomad_constraints.tsv",
         f"work/genes/hgnc/{DV.today}/hgnc_info.jsonl",
-        f"work/genes/hgnc/{DV.today}/hgnc_xlink.tsv",
         f"work/genes/mim2gene/{DV.today}/mim2gene.tsv",
         # reference-specific annotations
         # -- background/population sequence variants and annotations thereof
@@ -148,6 +147,9 @@ rule all:
         f"output/worker/annos/seqvars/cons-grch38-{DV.ucsc_cons_38}+{PV.annonars}/rocksdb/IDENTITY",
         # ----- Genes
         f"output/worker/genes-{DV.acmg_sf}+{DV.gnomad_constraints}+{DV.dbnsfp}+{DV.today}+{PV.worker}/rocksdb/IDENTITY",
+        f"output/worker/genes-xlink-{DV.today}/genes-xlink.tsv",
+        f"output/worker/genes-txs-grch37-{DV.mehari_tx}/mehari-data-txs-grch37-{DV.mehari_tx}.bin.zst",
+        f"output/worker/genes-txs-grch38-{DV.mehari_tx}/mehari-data-txs-grch38-{DV.mehari_tx}.bin.zst",
         # ----- HPO
         f"output/worker/pheno-{DV.hpo}+{PV.worker}/hp.obo",
         f"output/worker/pheno-{DV.hpo}+{PV.worker}/phenotype.hpoa",
@@ -179,7 +181,6 @@ rule all:
         "output/worker/annos/strucvars/tads-grch38-dixon2015/hesc.bed",
 
 
-
 # ===============================================================================================
 # Modular Snakefile Includes
 # ===============================================================================================
@@ -193,6 +194,7 @@ include: "rules/work/genes/dbnsfp.smk"
 include: "rules/work/genes/ensembl.smk"
 include: "rules/work/genes/gnomad.smk"
 include: "rules/work/genes/hgnc.smk"
+include: "rules/work/genes/mehari_data_tx.smk"
 include: "rules/work/genes/ncbi.smk"
 # Reference sequence--related rules.
 include: "rules/work/reference/human.smk"
