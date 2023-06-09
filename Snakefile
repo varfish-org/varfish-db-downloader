@@ -162,7 +162,7 @@ rule all:
         f"output/worker/pheno-{DV.hpo}+{PV.worker}/hp.obo",
         f"output/worker/pheno-{DV.hpo}+{PV.worker}/phenotype.hpoa",
         f"output/worker/pheno-{DV.hpo}+{PV.worker}/phenotype_to_genes.txt",
-        # ----- background/population structural variants and annoations thereof
+        # ----- background/population structural variants and annotations thereof
         f"output/worker/annos/strucvars/dbvar-grch37-{DV.dbvar}/dbvar.bed.gz",
         f"output/worker/annos/strucvars/dbvar-grch38-{DV.dbvar}/dbvar.bed.gz",
         f"output/worker/annos/strucvars/dgv-grch37-{DV.dgv}/dgv.bed.gz",
@@ -172,6 +172,9 @@ rule all:
         f"output/worker/annos/strucvars/exac-grch37-{DV.exac_cnv}/exac.bed.gz",
         f"output/worker/annos/strucvars/g1k-grch37-{DV.g1k_svs}/g1k.bed.gz",
         f"output/worker/annos/strucvars/gnomad-grch37-{DV.gnomad_sv}/gnomad.bed.gz",
+        # ----- known pathogenic MMS
+        f"output/worker/patho-mms-grch37-{DV.patho_mms}/patho-mms.bed",
+        f"output/worker/patho-mms-grch38-{DV.patho_mms}/patho-mms.bed",
 
 
 # ===============================================================================================
@@ -227,3 +230,4 @@ include: "rules/output/worker/cons.smk"
 # ------ global
 include: "rules/output/worker/genes.smk"
 include: "rules/output/worker/pheno.smk"
+include: "rules/output/worker/patho_mms.smk"

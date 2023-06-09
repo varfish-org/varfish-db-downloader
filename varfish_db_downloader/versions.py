@@ -80,6 +80,8 @@ class DataVersions:
     acmg_sf: str
     #: HPO
     hpo: str
+    #: Pathogenic MMS
+    patho_mms: str
 
 
 #: The data versions to use.
@@ -117,6 +119,7 @@ DATA_VERSIONS = DataVersions(
     dbsnp="b151",
     acmg_sf="3.1",
     hpo="20230606",
+    patho_mms="20220730",
 )
 
 
