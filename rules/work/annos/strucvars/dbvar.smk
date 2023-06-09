@@ -53,10 +53,10 @@ rule annos_strucvars_dbvar_process:  # -- process dbVar files
     input:
         unpack(input_annos_strucvars_dbvar_process),
     output:
-        bed="work/annos/{genome_release}/strucvars/dbvar/{version}/dbvar.bed.gz",
-        bed_md5="work/annos/{genome_release}/strucvars/dbvar/{version}/dbvar.bed.gz.md5",
-        bed_tbi="work/annos/{genome_release}/strucvars/dbvar/{version}/dbvar.bed.gz.tbi",
-        bed_tbi_md5="vardbs/{genome_release}/strucvars/dbvar/{version}/dbvar.bed.gz.tbi.md5",
+        bed="output/worker/annos/strucvars/dbvar-{genome_release}-{version}/dbvar.bed.gz",
+        bed_md5="output/worker/annos/strucvars/dbvar-{genome_release}-{version}/dbvar.bed.gz.md5",
+        bed_tbi="output/worker/annos/strucvars/dbvar-{genome_release}-{version}/dbvar.bed.gz.tbi",
+        bed_tbi_md5="output/worker/annos/strucvars/dbvar-{genome_release}-{version}/dbvar.bed.gz.tbi.md5",
     shell:
         r"""
         awk \

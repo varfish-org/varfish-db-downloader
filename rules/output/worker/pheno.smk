@@ -27,6 +27,12 @@ rule output_worker_pheno:  # -- build genes protobuf file
             --path-hpo-dir $(dirname {input.obo}) \
             --path-out-rocksdb $(dirname {output.rocksdb_identity}) \
             --min-terms 1 \
-            --max-terms 10 \
+            $(if [[ "{RUNS_IN_CI}" == "True" ]]; then \
+                echo --max-terms 1; \
+                echo --num-simulations 10; \
+                echo --only-gene ARID1B; \
+            else \
+                echo --max-terms 10; \
+            fi) \
             --seed 42
         """

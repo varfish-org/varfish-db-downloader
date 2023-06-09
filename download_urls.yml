@@ -10,6 +10,10 @@
   excerpt_strategy:
     strategy: no-excerpt
     count: null
+- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2023-06-06/genes_to_phenotype.txt
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
 
 - url: https://ftp.ensembl.org/pub/current_README
 

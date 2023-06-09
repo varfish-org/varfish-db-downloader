@@ -29,6 +29,9 @@ if os.environ.get("CI", "false").lower() == "true":
     cwd = os.getcwd()
     old_path = os.environ["PATH"]
     os.environ["PATH"] = f"{cwd}/test-mode-bin:{old_path}"
+    RUNS_IN_CI = True
+else:
+    RUNS_IN_CI = False
 
 
 # ===============================================================================================
@@ -96,18 +99,6 @@ rule all:
         f"work/annos/grch38/seqvars/gnomad_mtdna/{DV.gnomad_mtdna}/gnomad_mtdna.vcf.gz",
         f"work/download/annos/grch38/seqvars/gnomad_exomes/{DV.gnomad_v2}/.done",
         f"work/download/annos/grch38/seqvars/gnomad_genomes/{DV.gnomad_v3}/.done",
-        # -- background/population structural variants and annoations thereof
-        # ---- GRCh37
-        f"work/annos/grch37/strucvars/dbvar/{DV.dbvar}/dbvar.bed.gz",
-        f"work/annos/grch37/strucvars/dgv/{DV.dgv}/dgv.bed.gz",
-        f"work/annos/grch37/strucvars/dgv_gs/{DV.dgv_gs}/dgv_gs.bed.gz",
-        f"work/annos/grch37/strucvars/exac/{DV.exac_cnv}/exac.bed.gz",
-        f"work/annos/grch37/strucvars/g1k/{DV.g1k_svs}/g1k.bed.gz",
-        f"work/annos/grch37/strucvars/gnomad/{DV.gnomad_sv}/gnomad_sv.bed.gz",
-        # ---- GRCh38
-        f"work/annos/grch38/strucvars/dbvar/{DV.dbvar}/dbvar.bed.gz",
-        f"work/annos/grch38/strucvars/dgv/{DV.dgv}/dgv.bed.gz",
-        f"work/annos/grch38/strucvars/dgv_gs/{DV.dgv_gs}/dgv_gs.bed.gz",
         # NB: gnomAD-SV GRCh38 was announced end of 2020 but not released yet
         # -- genome browser "features" (position-specific)
         # ---- GRCh37
@@ -171,6 +162,16 @@ rule all:
         f"output/worker/pheno-{DV.hpo}+{PV.worker}/hp.obo",
         f"output/worker/pheno-{DV.hpo}+{PV.worker}/phenotype.hpoa",
         f"output/worker/pheno-{DV.hpo}+{PV.worker}/phenotype_to_genes.txt",
+        # ----- background/population structural variants and annoations thereof
+        f"output/worker/annos/strucvars/dbvar-grch37-{DV.dbvar}/dbvar.bed.gz",
+        f"output/worker/annos/strucvars/dbvar-grch38-{DV.dbvar}/dbvar.bed.gz",
+        f"output/worker/annos/strucvars/dgv-grch37-{DV.dgv}/dgv.bed.gz",
+        f"output/worker/annos/strucvars/dgv-grch38-{DV.dgv}/dgv.bed.gz",
+        f"output/worker/annos/strucvars/dgv-gs-grch37-{DV.dgv_gs}/dgv-gs.bed.gz",
+        f"output/worker/annos/strucvars/dgv-gs-grch38-{DV.dgv_gs}/dgv-gs.bed.gz",
+        f"output/worker/annos/strucvars/exac-grch37-{DV.exac_cnv}/exac.bed.gz",
+        f"output/worker/annos/strucvars/g1k-grch37-{DV.g1k_svs}/g1k.bed.gz",
+        f"output/worker/annos/strucvars/gnomad-grch37-{DV.gnomad_sv}/gnomad.bed.gz",
 
 
 # ===============================================================================================
