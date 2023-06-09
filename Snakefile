@@ -105,20 +105,10 @@ rule all:
         f"work/annos/grch37/features/cons/{DV.ucsc_cons_37}/ucsc_conservation.tsv",
         f"work/annos/grch37/features/ensembl/{DV.ensembl_37}/ensembl_genes.bed.gz",
         f"work/annos/grch37/features/refseq/{DV.refseq_37}/refseq_genes.bed.gz",
-        "work/annos/grch37/features/tads/dixon2015/hesc.bed",
-        f"work/annos/grch37/features/ucsc/{DV.ucsc_genomic_super_dups_37}/genomicSuperDups.bed.gz",
-        f"work/annos/grch37/features/ucsc/{DV.ucsc_rmsk_37}/rmsk.bed.gz",
-        f"work/annos/grch37/features/ucsc/{DV.ucsc_alt_seq_liftover_37}/altSeqLiftOverPsl.bed.gz",
-        f"work/annos/grch37/features/ucsc/{DV.ucsc_fix_seq_liftover_37}/fixSeqLiftOverPsl.bed.gz",
         # ---- GRCh38
         f"work/annos/grch38/features/cons/{DV.ucsc_cons_38}/ucsc_conservation.tsv",
         f"work/annos/grch38/features/ensembl/{DV.ensembl_38}/ensembl_genes.bed.gz",
         f"work/annos/grch38/features/refseq/{DV.refseq_38}/refseq_genes.bed.gz",
-        "work/annos/grch38/features/tads/dixon2015/hesc.bed",
-        f"work/annos/grch38/features/ucsc/{DV.ucsc_genomic_super_dups_38}/genomicSuperDups.bed.gz",
-        f"work/annos/grch38/features/ucsc/{DV.ucsc_rmsk_38}/rmsk.bed.gz",
-        f"work/annos/grch38/features/ucsc/{DV.ucsc_alt_seq_liftover_38}/altSeqLiftOverPsl.bed.gz",
-        f"work/annos/grch38/features/ucsc/{DV.ucsc_fix_seq_liftover_38}/fixSeqLiftOverPsl.bed.gz",
         #
         # == output directory ===================================================================
         #
@@ -173,8 +163,21 @@ rule all:
         f"output/worker/annos/strucvars/g1k-grch37-{DV.g1k_svs}/g1k.bed.gz",
         f"output/worker/annos/strucvars/gnomad-grch37-{DV.gnomad_sv}/gnomad.bed.gz",
         # ----- known pathogenic MMS
-        f"output/worker/patho-mms-grch37-{DV.patho_mms}/patho-mms.bed",
-        f"output/worker/patho-mms-grch38-{DV.patho_mms}/patho-mms.bed",
+        f"output/worker/annos/strucvars/patho-mms-grch37-{DV.patho_mms}/patho-mms.bed",
+        f"output/worker/annos/strucvars/patho-mms-grch38-{DV.patho_mms}/patho-mms.bed",
+        # ----- problematic regions (rmsk, genomicSuperDups, altSeqLiftOverPsl, fixSeqLiftOverPsl)
+        f"output/worker/annos/features/ucsc-genomicsuperdups-grch37-{DV.ucsc_genomic_super_dups_37}/genomicSuperDups.bed.gz",
+        f"output/worker/annos/features/ucsc-genomicsuperdups-grch38-{DV.ucsc_genomic_super_dups_38}/genomicSuperDups.bed.gz",
+        f"output/worker/annos/features/ucsc-rmsk-grch37-{DV.ucsc_rmsk_37}/rmsk.bed.gz",
+        f"output/worker/annos/features/ucsc-rmsk-grch38-{DV.ucsc_rmsk_38}/rmsk.bed.gz",
+        f"output/worker/annos/features/ucsc-altseqliftoverpsl-grch37-{DV.ucsc_alt_seq_liftover_37}/altSeqLiftOverPsl.bed.gz",
+        f"output/worker/annos/features/ucsc-altseqliftoverpsl-grch38-{DV.ucsc_alt_seq_liftover_38}/altSeqLiftOverPsl.bed.gz",
+        f"output/worker/annos/features/ucsc-fixseqliftoverpsl-grch37-{DV.ucsc_fix_seq_liftover_37}/fixSeqLiftOverPsl.bed.gz",
+        f"output/worker/annos/features/ucsc-fixseqliftoverpsl-grch38-{DV.ucsc_fix_seq_liftover_38}/fixSeqLiftOverPsl.bed.gz",
+        # ----- tads
+        "output/worker/annos/strucvars/tads-grch37-dixon2015/hesc.bed",
+        "output/worker/annos/strucvars/tads-grch38-dixon2015/hesc.bed",
+
 
 
 # ===============================================================================================

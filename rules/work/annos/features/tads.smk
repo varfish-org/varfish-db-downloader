@@ -41,8 +41,8 @@ rule annos_features_tads_process:  # -- process TAD files
     input:
         hesc="work/download/annos/{genome_release}/tads/H1-ESC_Dixon2015-raw_TADs.txt",
     output:
-        bed_hesc="work/annos/{genome_release}/features/tads/dixon2015/hesc.bed",
-        bed_hesc_md5="work/annos/{genome_release}/features/tads/dixon2015/hesc.bed.md5",
+        bed_hesc="output/worker/annos/strucvars/tads-{genome_release}-dixon2015/hesc.bed",
+        bed_hesc_md5="output/worker/annos/strucvars/tads-{genome_release}-dixon2015/hesc.bed.md5",
     shell:
         r"""
         echo -e "#chrom\tbegin\tend" >{output.bed_hesc}
