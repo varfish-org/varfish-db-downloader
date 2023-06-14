@@ -3,16 +3,16 @@
 import os
 
 
-def input_output_worker_dbnsfp(wildcards):
-    """Input function for ``rule output_worker_dbnsfp``."""
+def input_output_annonars_dbnsfp(wildcards):
+    """Input function for ``rule output_annonars_dbnsfp``."""
     return [entry.format(version=wildcards.v_dbnsfp, variant="") for entry in var_tsv_dbnsfp()]
 
 
-rule output_worker_dbnsfp:  # -- build dbNSFP RocksDB with annonars
+rule output_annonars_dbnsfp:  # -- build dbNSFP RocksDB with annonars
     input:
-        input_output_worker_dbnsfp,
+        input_output_annonars_dbnsfp,
     output:
-        "output/worker/annos/seqvars/dbnsfp-{genome_release}-{v_dbnsfp}+{v_annonars}/rocksdb/IDENTITY",
+        "output/annonars/annos/seqvars/dbnsfp-{genome_release}-{v_dbnsfp}+{v_annonars}/rocksdb/IDENTITY",
     threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
@@ -29,7 +29,7 @@ rule output_worker_dbnsfp:  # -- build dbNSFP RocksDB with annonars
             --genome-release {wildcards.genome_release} \
             --null-values=. \
             --inference-row-count 100000 \
-            --path-schema-json rules/output/worker/dbnsfp-schema-{wildcards.v_dbnsfp}.json \
+            --path-schema-json rules/output/annonars/dbnsfp-schema-{wildcards.v_dbnsfp}.json \
             \
             --path-out-rocksdb $(dirname {output}) \
             \

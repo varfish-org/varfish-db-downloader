@@ -34,11 +34,13 @@ dependencies:
   # Tool for processing BED files.
   - bedops =2
   # VCF/BCF/HTSlib/Samtools.
-  - bcftools =1.15
-  - htslib =1.16
-  - samtools =1.16
+  - bcftools =1.17
+  - htslib =1.17
+  - samtools =1.17
   # Parallel (de)compression.
   - pigz
-  # Varfish/Mehari/Annonars related
-  - annonars =0.7.0
+  # Varfish related
+  - annonars =0.10.0
+  - viguno =0.1.1
+  - mehari =0.5.0
   - varfish-server-worker

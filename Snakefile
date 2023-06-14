@@ -29,6 +29,9 @@ if os.environ.get("CI", "false").lower() == "true":
     cwd = os.getcwd()
     old_path = os.environ["PATH"]
     os.environ["PATH"] = f"{cwd}/test-mode-bin:{old_path}"
+    RUNS_IN_CI = True
+else:
+    RUNS_IN_CI = False
 
 
 # ===============================================================================================
@@ -71,7 +74,6 @@ rule all:
         f"work/genes/entrez/{DV.today}/gene_info.jsonl",
         f"work/genes/gnomad/{DV.gnomad_constraints}/gnomad_constraints.tsv",
         f"work/genes/hgnc/{DV.today}/hgnc_info.jsonl",
-        f"work/genes/hgnc/{DV.today}/hgnc_xlink.tsv",
         f"work/genes/mim2gene/{DV.today}/mim2gene.tsv",
         # reference-specific annotations
         # -- background/population sequence variants and annotations thereof
@@ -96,38 +98,16 @@ rule all:
         f"work/annos/grch38/seqvars/gnomad_mtdna/{DV.gnomad_mtdna}/gnomad_mtdna.vcf.gz",
         f"work/download/annos/grch38/seqvars/gnomad_exomes/{DV.gnomad_v2}/.done",
         f"work/download/annos/grch38/seqvars/gnomad_genomes/{DV.gnomad_v3}/.done",
-        # -- background/population structural variants and annoations thereof
-        # ---- GRCh37
-        f"work/annos/grch37/strucvars/dbvar/{DV.dbvar}/dbvar.bed.gz",
-        f"work/annos/grch37/strucvars/dgv/{DV.dgv}/dgv.bed.gz",
-        f"work/annos/grch37/strucvars/dgv_gs/{DV.dgv_gs}/dgv_gs.bed.gz",
-        f"work/annos/grch37/strucvars/exac/{DV.exac_cnv}/exac.bed.gz",
-        f"work/annos/grch37/strucvars/g1k/{DV.g1k_svs}/g1k.bed.gz",
-        f"work/annos/grch37/strucvars/gnomad/{DV.gnomad_sv}/gnomad_sv.bed.gz",
-        # ---- GRCh38
-        f"work/annos/grch38/strucvars/dbvar/{DV.dbvar}/dbvar.bed.gz",
-        f"work/annos/grch38/strucvars/dgv/{DV.dgv}/dgv.bed.gz",
-        f"work/annos/grch38/strucvars/dgv_gs/{DV.dgv_gs}/dgv_gs.bed.gz",
         # NB: gnomAD-SV GRCh38 was announced end of 2020 but not released yet
         # -- genome browser "features" (position-specific)
         # ---- GRCh37
         f"work/annos/grch37/features/cons/{DV.ucsc_cons_37}/ucsc_conservation.tsv",
         f"work/annos/grch37/features/ensembl/{DV.ensembl_37}/ensembl_genes.bed.gz",
         f"work/annos/grch37/features/refseq/{DV.refseq_37}/refseq_genes.bed.gz",
-        "work/annos/grch37/features/tads/dixon2015/hesc.bed",
-        f"work/annos/grch37/features/ucsc/{DV.ucsc_genomic_super_dups_37}/genomicSuperDups.bed.gz",
-        f"work/annos/grch37/features/ucsc/{DV.ucsc_rmsk_37}/rmsk.bed.gz",
-        f"work/annos/grch37/features/ucsc/{DV.ucsc_alt_seq_liftover_37}/altSeqLiftOverPsl.bed.gz",
-        f"work/annos/grch37/features/ucsc/{DV.ucsc_fix_seq_liftover_37}/fixSeqLiftOverPsl.bed.gz",
         # ---- GRCh38
         f"work/annos/grch38/features/cons/{DV.ucsc_cons_38}/ucsc_conservation.tsv",
         f"work/annos/grch38/features/ensembl/{DV.ensembl_38}/ensembl_genes.bed.gz",
         f"work/annos/grch38/features/refseq/{DV.refseq_38}/refseq_genes.bed.gz",
-        "work/annos/grch38/features/tads/dixon2015/hesc.bed",
-        f"work/annos/grch38/features/ucsc/{DV.ucsc_genomic_super_dups_38}/genomicSuperDups.bed.gz",
-        f"work/annos/grch38/features/ucsc/{DV.ucsc_rmsk_38}/rmsk.bed.gz",
-        f"work/annos/grch38/features/ucsc/{DV.ucsc_alt_seq_liftover_38}/altSeqLiftOverPsl.bed.gz",
-        f"work/annos/grch38/features/ucsc/{DV.ucsc_fix_seq_liftover_38}/fixSeqLiftOverPsl.bed.gz",
         #
         # == output directory ===================================================================
         #
@@ -165,6 +145,41 @@ rule all:
         # ---- UCSC conservation
         f"output/worker/annos/seqvars/cons-grch37-{DV.ucsc_cons_37}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/worker/annos/seqvars/cons-grch38-{DV.ucsc_cons_38}+{PV.annonars}/rocksdb/IDENTITY",
+        # ----- Genes
+        f"output/worker/genes-{DV.acmg_sf}+{DV.gnomad_constraints}+{DV.dbnsfp}+{DV.today}+{PV.worker}/rocksdb/IDENTITY",
+        f"output/worker/genes-xlink-{DV.today}/genes-xlink.tsv",
+        f"output/worker/genes-txs-grch37-{DV.mehari_tx}/mehari-data-txs-grch37-{DV.mehari_tx}.bin.zst",
+        f"output/worker/genes-txs-grch38-{DV.mehari_tx}/mehari-data-txs-grch38-{DV.mehari_tx}.bin.zst",
+        # ----- HPO
+        f"output/viguno/hpo-{DV.hpo}+{PV.viguno}/hp.obo",
+        f"output/viguno/hpo-{DV.hpo}+{PV.viguno}/phenotype.hpoa",
+        f"output/viguno/hpo-{DV.hpo}+{PV.viguno}/phenotype_to_genes.txt",
+        f"output/viguno/hpo-{DV.hpo}+{PV.viguno}/hpo.bin",
+        # ----- background/population structural variants and annotations thereof
+        f"output/worker/annos/strucvars/dbvar-grch37-{DV.dbvar}/dbvar.bed.gz",
+        f"output/worker/annos/strucvars/dbvar-grch38-{DV.dbvar}/dbvar.bed.gz",
+        f"output/worker/annos/strucvars/dgv-grch37-{DV.dgv}/dgv.bed.gz",
+        f"output/worker/annos/strucvars/dgv-grch38-{DV.dgv}/dgv.bed.gz",
+        f"output/worker/annos/strucvars/dgv-gs-grch37-{DV.dgv_gs}/dgv-gs.bed.gz",
+        f"output/worker/annos/strucvars/dgv-gs-grch38-{DV.dgv_gs}/dgv-gs.bed.gz",
+        f"output/worker/annos/strucvars/exac-grch37-{DV.exac_cnv}/exac.bed.gz",
+        f"output/worker/annos/strucvars/g1k-grch37-{DV.g1k_svs}/g1k.bed.gz",
+        f"output/worker/annos/strucvars/gnomad-grch37-{DV.gnomad_sv}/gnomad.bed.gz",
+        # ----- known pathogenic MMS
+        f"output/worker/annos/strucvars/patho-mms-grch37-{DV.patho_mms}/patho-mms.bed",
+        f"output/worker/annos/strucvars/patho-mms-grch38-{DV.patho_mms}/patho-mms.bed",
+        # ----- problematic regions (rmsk, genomicSuperDups, altSeqLiftOverPsl, fixSeqLiftOverPsl)
+        f"output/worker/annos/features/ucsc-genomicsuperdups-grch37-{DV.ucsc_genomic_super_dups_37}/genomicSuperDups.bed.gz",
+        f"output/worker/annos/features/ucsc-genomicsuperdups-grch38-{DV.ucsc_genomic_super_dups_38}/genomicSuperDups.bed.gz",
+        f"output/worker/annos/features/ucsc-rmsk-grch37-{DV.ucsc_rmsk_37}/rmsk.bed.gz",
+        f"output/worker/annos/features/ucsc-rmsk-grch38-{DV.ucsc_rmsk_38}/rmsk.bed.gz",
+        f"output/worker/annos/features/ucsc-altseqliftoverpsl-grch37-{DV.ucsc_alt_seq_liftover_37}/altSeqLiftOverPsl.bed.gz",
+        f"output/worker/annos/features/ucsc-altseqliftoverpsl-grch38-{DV.ucsc_alt_seq_liftover_38}/altSeqLiftOverPsl.bed.gz",
+        f"output/worker/annos/features/ucsc-fixseqliftoverpsl-grch37-{DV.ucsc_fix_seq_liftover_37}/fixSeqLiftOverPsl.bed.gz",
+        f"output/worker/annos/features/ucsc-fixseqliftoverpsl-grch38-{DV.ucsc_fix_seq_liftover_38}/fixSeqLiftOverPsl.bed.gz",
+        # ----- tads
+        "output/worker/annos/strucvars/tads-grch37-dixon2015/hesc.bed",
+        "output/worker/annos/strucvars/tads-grch38-dixon2015/hesc.bed",
 
 
 # ===============================================================================================
@@ -173,11 +188,14 @@ rule all:
 
 
 # -- work directory -----------------------------------------------------------------------------
+# Misc rules.
+include: "rules/work/misc/hpo.smk"
 # Gene-related rules.
 include: "rules/work/genes/dbnsfp.smk"
 include: "rules/work/genes/ensembl.smk"
 include: "rules/work/genes/gnomad.smk"
 include: "rules/work/genes/hgnc.smk"
+include: "rules/work/genes/mehari_data_tx.smk"
 include: "rules/work/genes/ncbi.smk"
 # Reference sequence--related rules.
 include: "rules/work/reference/human.smk"
@@ -202,13 +220,21 @@ include: "rules/work/annos/strucvars/exac.smk"
 include: "rules/work/annos/strucvars/g1k.smk"
 include: "rules/work/annos/strucvars/gnomad.smk"
 # -- output directory ---------------------------------------------------------------------------
+# ---- mehari
 include: "rules/output/mehari/freqs.smk"
-include: "rules/output/worker/cadd.smk"
-include: "rules/output/worker/dbsnp.smk"
-include: "rules/output/worker/dbnsfp.smk"
-include: "rules/output/worker/dbscsnv.smk"
-include: "rules/output/worker/gnomad_mtdna.smk"
-include: "rules/output/worker/gnomad_exomes.smk"
-include: "rules/output/worker/gnomad_genomes.smk"
-include: "rules/output/worker/helix.smk"
-include: "rules/output/worker/cons.smk"
+# ---- viguno
+include: "rules/output/viguno/hpo.smk"
+# ------ annonars
+include: "rules/output/annonars/cadd.smk"
+include: "rules/output/annonars/cons.smk"
+include: "rules/output/annonars/dbnsfp.smk"
+include: "rules/output/annonars/dbscsnv.smk"
+include: "rules/output/annonars/dbsnp.smk"
+include: "rules/output/annonars/gnomad_exomes.smk"
+include: "rules/output/annonars/gnomad_genomes.smk"
+include: "rules/output/annonars/gnomad_mtdna.smk"
+include: "rules/output/annonars/helix.smk"
+# ---- worker
+# ------ global
+include: "rules/output/worker/genes.smk"
+include: "rules/output/worker/patho_mms.smk"

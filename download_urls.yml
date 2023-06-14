@@ -1,3 +1,29 @@
+- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.2.2/mehari-data-txs-grch37-0.2.2.bin.zst
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.2.2/mehari-data-txs-grch38-0.2.2.bin.zst
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+
+- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2023-06-06/hp.obo
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2023-06-06/phenotype.hpoa
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2023-06-06/phenotype_to_genes.txt
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2023-06-06/genes_to_phenotype.txt
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+
 - url: https://ftp.ensembl.org/pub/current_README
 
 - comment: The UCSC listing is used for checking the versions for GRCh37.
