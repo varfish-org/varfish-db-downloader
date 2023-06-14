@@ -16,7 +16,7 @@ rule output_worker_genes:  # -- build genes protobuf file
         spec_yaml=(
             "output/worker/genes-{v_acmg_sf}+{v_gnomad_constraints}+{v_dbnsfp}+{date}+{v_worker}/"
             "spec.yaml"
-        )
+        ),
     wildcard_constraints:
         v_acmg_sf=RE_VERSION,
         v_gnomad_constraints=RE_VERSION,
