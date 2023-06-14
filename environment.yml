@@ -34,9 +34,9 @@ dependencies:
   # Tool for processing BED files.
   - bedops =2
   # VCF/BCF/HTSlib/Samtools.
-  - bcftools =1.16
-  - htslib =1.16
-  - samtools =1.16
+  - bcftools =1.17
+  - htslib =1.17
+  - samtools =1.17
   # Parallel (de)compression.
   - pigz
   # Varfish related
