@@ -7,7 +7,7 @@ rule output_annonars_gnomad_exomes:  # -- build gnomAD-exomes RocksDB with annon
     input:
         vcf="work/download/annos/{genome_release}/seqvars/gnomad_exomes/{v_gnomad}/.done",
     output:
-        "output/annonars/annos/seqvars/gnomad-exomes-{genome_release}-{v_gnomad}+{v_annonars}/rocksdb/IDENTITY",
+        "output/annonars/gnomad-exomes-{genome_release}-{v_gnomad}+{v_annonars}/rocksdb/IDENTITY",
     threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),

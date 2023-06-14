@@ -12,7 +12,7 @@ rule output_annonars_dbscsnv:  # -- build dbscSNV RocksDB with annonars
     input:
         input_output_annonars_dbscsnv,
     output:
-        "output/annonars/annos/seqvars/dbscsnv-{genome_release}-{v_dbscsnv}+{v_annonars}/rocksdb/IDENTITY",
+        "output/annonars/dbscsnv-{genome_release}-{v_dbscsnv}+{v_annonars}/rocksdb/IDENTITY",
     threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),

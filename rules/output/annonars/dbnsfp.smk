@@ -12,7 +12,7 @@ rule output_annonars_dbnsfp:  # -- build dbNSFP RocksDB with annonars
     input:
         input_output_annonars_dbnsfp,
     output:
-        "output/annonars/annos/seqvars/dbnsfp-{genome_release}-{v_dbnsfp}+{v_annonars}/rocksdb/IDENTITY",
+        "output/annonars/dbnsfp-{genome_release}-{v_dbnsfp}+{v_annonars}/rocksdb/IDENTITY",
     threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
