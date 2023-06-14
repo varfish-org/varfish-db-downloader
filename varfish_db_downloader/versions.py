@@ -10,6 +10,10 @@ import attrs
 TODAY = os.environ.get("TODAY", datetime.today().strftime("%Y%m%d"))
 
 
+#: Wether we run in CI/test mode.
+RUNS_IN_CI = os.environ.get("CI", "false").lower() == "true"
+
+
 @attrs.frozen()
 class DataVersions:
     """Container with data versions."""
@@ -149,9 +153,17 @@ def get_version(executable: str) -> str:
     return version
 
 
+def downloader_version() -> str:
+    """Return the downloader version."""
+    if RUNS_IN_CI:
+        return "0.0.0"
+    else:
+        subprocess.check_output(["git", "describe", "--tags"], text=True).strip()[1:]
+
+
 #: The package versions from environment.
 PACKAGE_VERSIONS = PackageVersions(
-    downloader=subprocess.check_output(["git", "describe", "--tags"], text=True).strip()[1:],
+    downloader=downloader_version(),
     annonars=get_version("annonars"),
     viguno=get_version("viguno"),
     worker=get_version("varfish-server-worker"),

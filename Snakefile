@@ -6,7 +6,12 @@
 # ``varfish-server-worker`` and is used in the backend for filtering and/or exposed to the
 # user via a REST API.
 
-from varfish_db_downloader.versions import DATA_VERSIONS as DV, PACKAGE_VERSIONS as PV, TODAY
+from varfish_db_downloader.versions import (
+    DATA_VERSIONS as DV,
+    PACKAGE_VERSIONS as PV,
+    TODAY,
+    RUNS_IN_CI,
+)
 
 # The prefix to use for all shell commands.
 SHELL_PREFIX = "export LC_ALL=C; set -x -euo pipefail;"
@@ -22,16 +27,11 @@ RE_VERSION = r"\w+(\.\w+)*"
 # Test Mode
 # ===============================================================================================
 
-import os
-
 # Activate test mode by prepending the path to the "test-mode-bin" directory to the PATH.
-if os.environ.get("CI", "false").lower() == "true":
+if RUNS_IN_CI:
     cwd = os.getcwd()
     old_path = os.environ["PATH"]
     os.environ["PATH"] = f"{cwd}/test-mode-bin:{old_path}"
-    RUNS_IN_CI = True
-else:
-    RUNS_IN_CI = False
 
 
 # ===============================================================================================
