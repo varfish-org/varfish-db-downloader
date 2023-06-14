@@ -3,11 +3,11 @@
 import os
 
 
-rule output_worker_gnomad_mtdna:  # -- build gnomAD-mtDNA RocksDB with annonars
+rule output_annonars_gnomad_mtdna:  # -- build gnomAD-mtDNA RocksDB with annonars
     input:
         vcf="work/annos/{genome_release}/seqvars/gnomad_mtdna/{v_gnomad}/gnomad_mtdna.vcf.gz",
     output:
-        "output/worker/annos/seqvars/gnomad-mtdna-{genome_release}-{v_gnomad}+{v_annonars}/rocksdb/IDENTITY",
+        "output/annonars/annos/seqvars/gnomad-mtdna-{genome_release}-{v_gnomad}+{v_annonars}/rocksdb/IDENTITY",
     threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),

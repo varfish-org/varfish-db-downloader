@@ -1,25 +1,25 @@
-## Rules to create annonars RocksDB for UCSC conservation track.
+## Rules to create annonars RocksDB for dbSNP.
 
 import os
 
 
-rule output_worker_cons:  # -- build UCSC conservation track RocksDB with annonars
+rule output_annonars_dbsnp:  # -- build dbSNP RocksDB with annonars
     input:
-        tsv="work/annos/{genome_release}/features/cons/{v_cons}/ucsc_conservation.tsv",
+        vcf="work/download/annos/{genome_release}/seqvars/dbsnp/{v_dbsnp}/dbsnp.vcf.gz",
     output:
-        "output/worker/annos/seqvars/cons-{genome_release}-{v_cons}+{v_annonars}/rocksdb/IDENTITY",
+        "output/annonars/annos/seqvars/dbsnp-{genome_release}-{v_dbsnp}+{v_annonars}/rocksdb/IDENTITY",
     threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
         mem_mb_per_cpu=2000,
     wildcard_constraints:
         genome_release=RE_GENOME,
-        v_cons=RE_VERSION,
+        v_dbsnp=RE_VERSION,
         v_annonars=RE_VERSION,
     shell:
         r"""
-        annonars cons import \
-            --path-in-tsv {input.tsv} \
+        annonars dbsnp import \
+            --path-in-vcf {input.vcf} \
             --path-out-rocksdb $(dirname {output}) \
             --genome-release {wildcards.genome_release}
         """

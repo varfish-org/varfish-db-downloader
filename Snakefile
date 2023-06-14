@@ -151,9 +151,10 @@ rule all:
         f"output/worker/genes-txs-grch37-{DV.mehari_tx}/mehari-data-txs-grch37-{DV.mehari_tx}.bin.zst",
         f"output/worker/genes-txs-grch38-{DV.mehari_tx}/mehari-data-txs-grch38-{DV.mehari_tx}.bin.zst",
         # ----- HPO
-        f"output/worker/pheno-{DV.hpo}+{PV.worker}/hp.obo",
-        f"output/worker/pheno-{DV.hpo}+{PV.worker}/phenotype.hpoa",
-        f"output/worker/pheno-{DV.hpo}+{PV.worker}/phenotype_to_genes.txt",
+        f"output/viguno/hpo-{DV.hpo}+{PV.viguno}/hp.obo",
+        f"output/viguno/hpo-{DV.hpo}+{PV.viguno}/phenotype.hpoa",
+        f"output/viguno/hpo-{DV.hpo}+{PV.viguno}/phenotype_to_genes.txt",
+        f"output/viguno/hpo-{DV.hpo}+{PV.viguno}/hpo.bin",
         # ----- background/population structural variants and annotations thereof
         f"output/worker/annos/strucvars/dbvar-grch37-{DV.dbvar}/dbvar.bed.gz",
         f"output/worker/annos/strucvars/dbvar-grch38-{DV.dbvar}/dbvar.bed.gz",
@@ -221,18 +222,19 @@ include: "rules/work/annos/strucvars/gnomad.smk"
 # -- output directory ---------------------------------------------------------------------------
 # ---- mehari
 include: "rules/output/mehari/freqs.smk"
+# ---- viguno
+include: "rules/output/viguno/hpo.smk"
+# ------ annonars
+include: "rules/output/annonars/cadd.smk"
+include: "rules/output/annonars/cons.smk"
+include: "rules/output/annonars/dbnsfp.smk"
+include: "rules/output/annonars/dbscsnv.smk"
+include: "rules/output/annonars/dbsnp.smk"
+include: "rules/output/annonars/gnomad_exomes.smk"
+include: "rules/output/annonars/gnomad_genomes.smk"
+include: "rules/output/annonars/gnomad_mtdna.smk"
+include: "rules/output/annonars/helix.smk"
 # ---- worker
-# ------ annos
-include: "rules/output/worker/cadd.smk"
-include: "rules/output/worker/dbsnp.smk"
-include: "rules/output/worker/dbnsfp.smk"
-include: "rules/output/worker/dbscsnv.smk"
-include: "rules/output/worker/gnomad_mtdna.smk"
-include: "rules/output/worker/gnomad_exomes.smk"
-include: "rules/output/worker/gnomad_genomes.smk"
-include: "rules/output/worker/helix.smk"
-include: "rules/output/worker/cons.smk"
 # ------ global
 include: "rules/output/worker/genes.smk"
-include: "rules/output/worker/pheno.smk"
 include: "rules/output/worker/patho_mms.smk"

@@ -1,13 +1,13 @@
-## Rules to create annonars RocksDB for gnomAD-exomes.
+## Rules to create annonars RocksDB for gnomAD-gnomes.
 
 import os
 
 
-rule output_worker_gnomad_exomes:  # -- build gnomAD-exomes RocksDB with annonars
+rule output_annonars_gnomad_genomes:  # -- build gnomAD-genomes RocksDB with annonars
     input:
-        vcf="work/download/annos/{genome_release}/seqvars/gnomad_exomes/{v_gnomad}/.done",
+        vcf="work/download/annos/{genome_release}/seqvars/gnomad_genomes/{v_gnomad}/.done",
     output:
-        "output/worker/annos/seqvars/gnomad-exomes-{genome_release}-{v_gnomad}+{v_annonars}/rocksdb/IDENTITY",
+        "output/annonars/annos/seqvars/gnomad-genomes-{genome_release}-{v_gnomad}+{v_annonars}/rocksdb/IDENTITY",
     threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
@@ -35,7 +35,7 @@ rule output_worker_gnomad_exomes:  # -- build gnomAD-exomes RocksDB with annonar
                 "liftover": false
             }}' \
             --path-out-rocksdb $(dirname {output}) \
-            --gnomad-kind exomes \
+            --gnomad-kind genomes \
             --genome-release {wildcards.genome_release} \
             --gnomad-version {wildcards.v_gnomad}
         """

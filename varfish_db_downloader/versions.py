@@ -122,7 +122,7 @@ DATA_VERSIONS = DataVersions(
     acmg_sf="3.1",
     hpo="20230606",
     patho_mms="20220730",
-    mehari_tx="0.2.0",
+    mehari_tx="0.2.2",
 )
 
 
@@ -130,8 +130,12 @@ DATA_VERSIONS = DataVersions(
 class PackageVersions:
     """Container with package versions."""
 
+    # NB: we do not need the version of mehari as transcripts are built with GitHub Actions.
+
     #: Version of ``annona-rs`` executable.
     annonars: str
+    #: Version of ``viguno`` executable.
+    viguno: str
     #: Version of ``varfish-server-worker`` executable.
     worker: str
 
@@ -146,5 +150,6 @@ def get_version(executable: str) -> str:
 #: The package versions from environment.
 PACKAGE_VERSIONS = PackageVersions(
     annonars=get_version("annonars"),
+    viguno=get_version("viguno"),
     worker=get_version("varfish-server-worker"),
 )

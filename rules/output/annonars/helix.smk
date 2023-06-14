@@ -3,11 +3,11 @@
 import os
 
 
-rule output_worker_helixmtdb:  # -- build HelixMtDb RocksDB with annonars
+rule output_annonars_helixmtdb:  # -- build HelixMtDb RocksDB with annonars
     input:
         vcf="work/annos/{genome_release}/seqvars/helixmtdb/{v_helixmtdb}/helixmtdb.vcf.gz",
     output:
-        "output/worker/annos/seqvars/helixmtdb-{genome_release}-{v_helixmtdb}+{v_annonars}/rocksdb/IDENTITY",
+        "output/annonars/annos/seqvars/helixmtdb-{genome_release}-{v_helixmtdb}+{v_annonars}/rocksdb/IDENTITY",
     threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),

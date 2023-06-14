@@ -3,8 +3,8 @@
 import os
 
 
-def input_output_worker_cadd(wildcards):
-    """Input function for ``rule output_worker_cadd``."""
+def input_output_annonars_cadd(wildcards):
+    """Input function for ``rule output_annonars_cadd``."""
     if wildcards.genome_release == "grch37":
         return {
             "indels": (
@@ -45,11 +45,11 @@ def input_output_worker_cadd(wildcards):
         }
 
 
-rule output_worker_cadd:  # -- build CADD RocksDB with annonars
+rule output_annonars_cadd:  # -- build CADD RocksDB with annonars
     input:
-        unpack(input_output_worker_cadd),
+        unpack(input_output_annonars_cadd),
     output:
-        "output/worker/annos/seqvars/cadd-{genome_release}-{v_cadd}+{v_annonars}/rocksdb/IDENTITY",
+        "output/annonars/annos/seqvars/cadd-{genome_release}-{v_cadd}+{v_annonars}/rocksdb/IDENTITY",
     threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
@@ -77,5 +77,5 @@ rule output_worker_cadd:  # -- build CADD RocksDB with annonars
             --inference-row-count 100000 \
             --skip-row-count 1 \
             --add-default-null-values \
-            --path-schema-json rules/output/worker/cadd-schema-{wildcards.genome_release}.json
+            --path-schema-json rules/output/annonars/cadd-schema-{wildcards.genome_release}.json
         """
