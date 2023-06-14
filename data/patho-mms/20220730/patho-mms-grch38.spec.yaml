@@ -1,0 +1,25 @@
+dc.format: text/tsv
+dc.identifier: features/patho-mms:wetzel-darbro-2022/grch38
+dc.title: >
+  A comprehensive list of human microdeletion and microduplication syndromes
+  (Wetzel & Darbro, 2022) for GRCh38.
+dc.description: >
+  This TSV file contains regions with microdeletion and microduplication
+  symbols as described by Wetzel & Darbro (2022).
+dc.date: 2022-07-30
+dc.creator: Wetzel & Darbro (2022)
+dc.contributor:
+  - VarFish Developer Team
+dc.source:
+  - PMID:36435749
+  - https://github.com/aswetzel/MMS
+
+tsv.columns:
+  - name: chrom
+    description: Chromosome name chr prefix.
+  - name: begin
+    description: 0-based start position.
+  - name: end
+    description: 0-based end position.
+  - name: name
+    description: Name of the syndrome.

@@ -3,6 +3,7 @@
 import sys
 
 import click
+import jinja2
 import requests
 import requests_ftp
 from loguru import logger
@@ -20,6 +21,18 @@ def main():
         "<level>{message}</level>"
     )
     logger.add(sys.stderr, format=fmt)
+
+
+@main.command(name="tpl")
+@click.option("--template", help="Template file")
+@click.option("--value", multiple=True, help="Values as --value key=value")
+def tpl(template, value):
+    """Template a file."""
+    with open(template, "rt") as inputf:
+        tpl_str = inputf.read()
+    vals = {k: v for k, v in (x.split("=", 1) for x in value)}
+    j2_template = jinja2.Template(tpl_str)
+    print(j2_template.render(vals))
 
 
 @main.group(name="wget")

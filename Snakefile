@@ -6,7 +6,7 @@
 # ``varfish-server-worker`` and is used in the backend for filtering and/or exposed to the
 # user via a REST API.
 
-from varfish_db_downloader.versions import DATA_VERSIONS as DV, PACKAGE_VERSIONS as PV
+from varfish_db_downloader.versions import DATA_VERSIONS as DV, PACKAGE_VERSIONS as PV, TODAY
 
 # The prefix to use for all shell commands.
 SHELL_PREFIX = "export LC_ALL=C; set -x -euo pipefail;"

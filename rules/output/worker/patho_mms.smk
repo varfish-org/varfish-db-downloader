@@ -5,7 +5,7 @@ rule output_worker_patho_mms:
     output:
         bed="output/worker/annos/strucvars/patho-mms-{genome_release}-{v_patho_mms}/patho-mms.bed",
         bed_md5="output/worker/annos/strucvars/patho-mms-{genome_release}-{v_patho_mms}/patho-mms.bed.md5",
-        spec="output/worker/annos/strucvars/patho-mms-{genome_release}-{v_patho_mms}/patho-smms.bed.spec.json",
+        spec="output/worker/annos/strucvars/patho-mms-{genome_release}-{v_patho_mms}/patho-mms.bed.spec.json",
     wildcard_constraints:
         genome_release=RE_GENOME,
         v_patho_mms=RE_VERSION,

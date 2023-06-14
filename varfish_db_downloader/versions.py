@@ -132,6 +132,8 @@ class PackageVersions:
 
     # NB: we do not need the version of mehari as transcripts are built with GitHub Actions.
 
+    #: VarFish DB Downloader.
+    downloader: str
     #: Version of ``annona-rs`` executable.
     annonars: str
     #: Version of ``viguno`` executable.
@@ -149,6 +151,7 @@ def get_version(executable: str) -> str:
 
 #: The package versions from environment.
 PACKAGE_VERSIONS = PackageVersions(
+    downloader=subprocess.check_output(["git", "describe", "--tags"], text=True).strip()[1:],
     annonars=get_version("annonars"),
     viguno=get_version("viguno"),
     worker=get_version("varfish-server-worker"),

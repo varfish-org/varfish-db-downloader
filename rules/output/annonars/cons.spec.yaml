@@ -1,0 +1,19 @@
+dc.identifier: annonars/seqvars/cons:{{ version }}-{{ genome_release }}
+dc.title: annona-rs UCSC Conservation RocksDB Database
+dc.creator: UCSC Genome Browser Team
+dc.contributor:
+  - VarFish Developer Teams
+dc.format: application/x-rocksdb
+dc.date: {{ today }}
+x-version: {{ version }}
+x-genome-release: {{ genome_release }}
+dc.description: |
+  RocksDB with the information from the "Vertebrate Multiz Alignment & Conservation (100 Species)"
+  table converted using the annonars package v{{ v_annonars }} via varfish-downloader
+  v{{ v_downloader }}.
+dc.source:
+  - PMID:33221922
+  - https://genome.ucsc.edu
+x-created-from:
+  - name: multiz100way
+    version: {{ v_cons }}

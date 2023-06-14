@@ -1,6 +1,6 @@
 # Mangement of the GitHub project.
 
-resource "github_repository" "varfish-db-downloader" {
+resource "github_repositoryvarfish-db-downloader" {
   name        = "varfish-db-downloader"
   description = "Download public databases for VarFish"
 
