@@ -34,7 +34,7 @@ dependencies:
   # Tool for processing BED files.
   - bedops =2
   # VCF/BCF/HTSlib/Samtools.
-  - bcftools =1.15
+  - bcftools =1.16
   - htslib =1.16
   - samtools =1.16
   # Parallel (de)compression.
