@@ -7,7 +7,7 @@ rule output_annonars_cons:  # -- build UCSC conservation track RocksDB with anno
     input:
         tsv="work/annos/{genome_release}/features/cons/{v_cons}/ucsc_conservation.tsv",
     output:
-        "output/annonars/annos/seqvars/cons-{genome_release}-{v_cons}+{v_annonars}/rocksdb/IDENTITY",
+        "output/annonars/cons-{genome_release}-{v_cons}+{v_annonars}/rocksdb/IDENTITY",
     threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),

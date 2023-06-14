@@ -49,7 +49,7 @@ rule output_annonars_cadd:  # -- build CADD RocksDB with annonars
     input:
         unpack(input_output_annonars_cadd),
     output:
-        "output/annonars/annos/seqvars/cadd-{genome_release}-{v_cadd}+{v_annonars}/rocksdb/IDENTITY",
+        "output/annonars/cadd-{genome_release}-{v_cadd}+{v_annonars}/rocksdb/IDENTITY",
     threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
