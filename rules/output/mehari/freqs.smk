@@ -10,7 +10,14 @@ rule output_mehari_freqs_build:  # -- build frequency tables for mehari
         gnomad_mtdna="work/annos/{genome_release}/seqvars/gnomad_mtdna/{v_gnomad_mtdna}/gnomad_mtdna.vcf.gz",
         helixmtdb="work/annos/{genome_release}/seqvars/helixmtdb/{v_helixmtdb}/helixmtdb.vcf.gz",
     output:
-        "output/mehari/freqs-{genome_release}-{v_gnomad_genomes}+{v_gnomad_exomes}+{v_gnomad_mtdna}+{v_helixmtdb}+{v_annonars}/rocksdb/IDENTITY",
+        rocksdb_identity=(
+            "output/mehari/freqs-{genome_release}-{v_gnomad_genomes}+{v_gnomad_exomes}+"
+            "{v_gnomad_mtdna}+{v_helixmtdb}+{v_annonars}/rocksdb/IDENTITY"
+        ),
+        spec_yaml=(
+            "output/mehari/freqs-{genome_release}-{v_gnomad_genomes}+{v_gnomad_exomes}+"
+            "{v_gnomad_mtdna}+{v_helixmtdb}+{v_annonars}/spec.yaml"
+        ),
     threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
@@ -24,7 +31,7 @@ rule output_mehari_freqs_build:  # -- build frequency tables for mehari
         v_annonars=RE_VERSION,
     shell:
         r"""
-        output_rocksdb=$(dirname {output})
+        output_rocksdb=$(dirname {output.rocksdb_identity})
 
         build-args()
         {{
@@ -57,4 +64,19 @@ rule output_mehari_freqs_build:  # -- build frequency tables for mehari
             \
             $(build-args $(dirname {input.gnomad_exomes})  --path-gnomad-exomes-auto  "sites\.(chr)?[0-9]+\.") \
             $(build-args $(dirname {input.gnomad_exomes})  --path-gnomad-exomes-xy    "sites\.(chr)?[XY]\.")
+
+        varfish-db-downloader tpl \
+            --template rules/output/mehari/freqs.spec.yaml \
+            --value today={TODAY} \
+            --value genome_release={wildcards.genome_release} \
+            \
+            --value version={wildcards.v_gnomad_genomes}+{wildcards.v_gnomad_exomes}+{wildcards.v_gnomad_mtdna}+{wildcards.v_helixmtdb}+{wildcards.v_annonars} \
+            --value v_gnomad_genomes={wildcards.v_gnomad_genomes} \
+            --value v_gnomad_exomes={wildcards.v_gnomad_exomes} \
+            --value v_gnomad_mtdna={wildcards.v_gnomad_mtdna} \
+            --value v_helixmtdb={wildcards.v_helixmtdb} \
+            \
+            --value v_annovars={wildcards.v_annonars} \
+            --value v_downloader={PV.downloader} \
+        > {output.spec_yaml}
         """

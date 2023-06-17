@@ -1,0 +1,31 @@
+dc.identifier: mehari/seqvars/freqs:{{ version }}-{{ genome_release }}
+dc.title: Mehari Frequency RocksDB Database
+dc.creator: VarFish Developer Teams
+dc.format: application/x-rocksdb
+dc.date: {{ today }}
+x-version: {{ version }}
+x-genome-release: {{ genome_release }}
+dc.description: |
+  RocksDB database with frequency data for Mehari.
+
+  This database is being created based on the following data sources using
+  the annonars package v{{ v_annonars }} in varfish-downloader v{{ v_downloader }}.
+
+  - gnomAD genomes
+  - gnomAD exomes
+  - gnomAD mtDNA
+  - HelixMtDb
+dc.source:
+  - PMID:32461654
+  - https://doi.org/10.1101/2022.03.20.485034
+  - https://gnomad.broadinstitute.org/
+  - https://www.helix.com/pages/mitochondrial-variant-database
+x-created-from:
+  - name: gnomAD-exomes
+    version: {{ v_gnomad_exomes }}
+  - name: gnomAD-genomes
+    version: {{ v_gnomad_genomes }}
+  - name: gnomAD-mtDNA
+    version: {{ v_gnomad_mtdna }}
+  - name: HelixMtDb
+    version: {{ v_helixmtdb }}

@@ -1,0 +1,32 @@
+dc.identifier: worker/genes:{{ version }}
+dc.title: VarFish Worker genes database
+dc.creator: VarFish Development Team
+dc.format: application/x-rocksdb
+dc.date: {{ today }}
+x-version: {{ version }}
+dc.description: |
+  Gene information from the following databases, aggregated using VarFish worker
+  v{{ v_worker }} in varfish-downloader v{{ v_downloader }}:
+
+  - ACMG Supplementary Findings Gene List {{ v_acmg_sf }}
+  - gnomAD constraints v{{ v_gnomad_constraints }}
+  - dbNSFP v{{ v_dbnsfp }}
+  - NCBI gene database downloaded at {{ today }}
+  - HGNC database downloaded at {{ today }}
+dc.source:
+  - PMID:35802134
+  - PMID:32461654
+  - PMID:33261662
+  - https://www.ncbi.nlm.nih.gov/gene/
+  - https://www.genenames.org/
+x-created-from:
+  - name: ACMG SF Gene List
+    version: {{ v_acmg_sf }}
+  - name: gnomAD constraints
+    version: {{ v_gnomad_constraints }}
+  - name: dbNSFP
+    version: {{ v_dbnsfp }}
+  - name: NCBI gene
+    version: {{ today }}
+  - name: HGNC
+    version: {{ today }}

@@ -1,0 +1,20 @@
+dc.identifier: viguno/hpo:{{ version }}
+dc.title: Viguno HPO Files
+dc.creator: HPO Team
+dc.contributor:
+  - VarFish Development Team
+dc.format: application/x-folder
+dc.date: {{ today }}
+x-version: {{ version }}
+dc.description: |
+  Data reququired to run Viguno for retrieving HPO/gene/phenotype/disease
+  information.  Built based on HPO v{{ v_hpo }} using the viguno package
+  v{{ v_viguno }} in varfish-downloader v{{ v_downloader }}.
+dc.source:
+  - PMID:33264411
+  - PMID:24217912
+  - https://hpo.jax.org/
+  - https://github.com/obophenotype/human-phenotype-ontology
+x-created-from:
+  - name: hpo
+    version: {{ v_hpo }}

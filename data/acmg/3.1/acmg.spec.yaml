@@ -1,0 +1,40 @@
+dc.format: text/tsv
+dc.identifier: genes/acmg/sf:3.1
+dc.title: ACMG Secondary Findings (SF) Gene List (v3.1)
+dc.description: >
+  This is version 3.1 of the ACMG gene list for reporting incidental
+  findings.  The file was curated from PMID:35802134 as gene symbols
+  and then translated to ENSEMBL and Entrez/NCBI gene ID with the
+  HGNC BioMart
+dc.date: 2022-02-03
+dc.creator: American Collect of Medical Genetics
+dc.contributor:
+  - VarFish Developer Team
+dc.source:
+  - PMID:35802134
+  - https://www.ncbi.nlm.nih.gov/clinvar/docs/acmg/
+  - https://biomart.genenames.org/
+
+tsv.columns:
+  - name: hgnc_id
+    description: HGNC gene ID.
+  - name: ensembl_gene_id
+    description: ENSEMBL gene ID.
+  - name: ncbi_gene_id
+    description: NCBI Gene ID.
+  - name: gene_symbol
+    description: HGNC approved gene symbol.
+  - name: mim_gene_id
+    description: OMIM gene ID.
+  - name: disease_phenotype
+    description: Name of the relevant disorder(s).
+  - name: disorder_mim
+    description: MIM code of the relevant disorder(s).s
+  - name: phenotype_category
+    description: Phenotype category.
+  - name: inheritance
+    description: Mode(s) of inheritance.
+  - name: sf_list_version
+    description: ACMG SF list version that this gene first appeared in.
+  - name: variants_to_report
+    description: comment on which variants are to be reported.

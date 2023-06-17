@@ -7,7 +7,12 @@ rule output_annonars_helixmtdb:  # -- build HelixMtDb RocksDB with annonars
     input:
         vcf="work/annos/{genome_release}/seqvars/helixmtdb/{v_helixmtdb}/helixmtdb.vcf.gz",
     output:
-        "output/annonars/helixmtdb-{genome_release}-{v_helixmtdb}+{v_annonars}/rocksdb/IDENTITY",
+        rocksdb_identity=(
+            "output/annonars/helixmtdb-{genome_release}-{v_helixmtdb}+{v_annonars}/rocksdb/IDENTITY",
+        ),
+        spec_yaml=(
+            "output/annonars/helixmtdb-{genome_release}-{v_helixmtdb}+{v_annonars}/spec.yaml",
+        ),
     threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
@@ -20,6 +25,18 @@ rule output_annonars_helixmtdb:  # -- build HelixMtDb RocksDB with annonars
         r"""
         annonars helixmtdb import \
             --path-in-vcf {input.vcf} \
-            --path-out-rocksdb $(dirname {output}) \
+            --path-out-rocksdb $(dirname {output.rocksdb_identity}) \
             --genome-release {wildcards.genome_release}
+
+        varfish-db-downloader tpl \
+            --template rules/output/annonars/helix.spec.yaml \
+            --value today={TODAY} \
+            --value genome_release={wildcards.genome_release} \
+            \
+            --value version={wildcards.v_helixmtdb}+{wildcards.v_annonars} \
+            --value v_helixmtdb={wildcards.v_helixmtdb} \
+            \
+            --value v_annonars={wildcards.v_annonars} \
+            --value v_downloader={PV.downloader} \
+        > {output.spec_yaml}
         """

@@ -12,7 +12,10 @@ rule output_annonars_dbnsfp:  # -- build dbNSFP RocksDB with annonars
     input:
         input_output_annonars_dbnsfp,
     output:
-        "output/annonars/dbnsfp-{genome_release}-{v_dbnsfp}+{v_annonars}/rocksdb/IDENTITY",
+        rocksdb_identity=(
+            "output/annonars/dbnsfp-{genome_release}-{v_dbnsfp}+{v_annonars}/rocksdb/IDENTITY"
+        ),
+        spec_yaml=("output/annonars/dbnsfp-{genome_release}-{v_dbnsfp}+{v_annonars}/spec.yaml"),
     threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
@@ -31,7 +34,7 @@ rule output_annonars_dbnsfp:  # -- build dbNSFP RocksDB with annonars
             --inference-row-count 100000 \
             --path-schema-json rules/output/annonars/dbnsfp-schema-{wildcards.v_dbnsfp}.json \
             \
-            --path-out-rocksdb $(dirname {output}) \
+            --path-out-rocksdb $(dirname {output.rocksdb_identity}) \
             \
             $(if [[ "{wildcards.genome_release}" == "grch37" ]]; then \
                 echo --col-chrom 'hg19_chr'; \
@@ -44,4 +47,16 @@ rule output_annonars_dbnsfp:  # -- build dbNSFP RocksDB with annonars
             --col-alt 'alt' \
             \
             $(for path in {input}; do echo --path-in-tsv $path; done)
+
+        varfish-db-downloader tpl \
+            --template rules/output/annonars/dbnsfp.spec.yaml \
+            --value today={TODAY} \
+            --value genome_release={wildcards.genome_release} \
+            \
+            --value version={wildcards.v_dbnsfp}+{wildcards.v_annonars} \
+            --value v_dbnsfp={wildcards.v_dbnsfp} \
+            \
+            --value v_annonars={wildcards.v_annonars} \
+            --value v_downloader={PV.downloader} \
+        > {output.spec_yaml}
         """

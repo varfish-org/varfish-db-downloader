@@ -1,0 +1,18 @@
+dc.identifier: annonars/seqvars/dbsnp:{{ version }}-{{ genome_release }}
+dc.title: annona-rs dbSNP RocksDB Database
+dc.creator: NCBI dbSNP Team
+dc.contributor:
+  - VarFish Developer Teams
+dc.format: application/x-rocksdb
+dc.date: {{ today }}
+x-version: {{ version }}
+x-genome-release: {{ genome_release }}
+dc.description: |
+  RocksDB built from dbSNP {{ v_dbsnp }} VCF file using the annonars package
+  v{{ v_annonars }} in varfish-downloader v{{ v_downloader }}.
+dc.source:
+  - PMID:10592272
+  - https://www.ncbi.nlm.nih.gov/snp/
+x-created-from:
+  - name: dbSNP
+    version: {{ v_dbsnp }}

@@ -1,0 +1,17 @@
+dc.format: THE__FORMAT
+dc.identifier: THE__IDENTIFIER
+dc.title: >
+  THE__TITLE
+dc.description: >
+  THE__DESCRIPTION
+dc.date: THE__DATE
+dc.creator: THE__CREATOR
+dc.contributor:
+  - VarFish Developer Team
+dc.source:
+  - THE__SOURCE
+  - THE__SOURCE
+
+tsv.columns:
+  - name: THE__NAME
+    description: THE__DESCRIPTIOn

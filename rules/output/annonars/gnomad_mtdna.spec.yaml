@@ -1,0 +1,18 @@
+dc.identifier: annonars/seqvars/gnomad-mtdna:{{ version }}-{{ genome_release }}
+dc.title: annona-rs gnomAD-mtDNA RocksDB Database
+dc.creator: gnomAD Team
+dc.contributor:
+  - VarFish Developer Teams
+dc.format: application/x-rocksdb
+dc.date: {{ today }}
+x-version: {{ version }}
+x-genome-release: {{ genome_release }}
+dc.description: |
+  RocksDB with the information from gnomAD mtDNA v{{ v_gnomad }} converted with
+  annoars v{{ v_annonars }} in varfish-downloader v{{ v_downloader }}.
+dc.source:
+  - PMID:32461654
+  - https://gnomad.broadinstitute.org/
+x-created-from:
+  - name: gnomAD-mtDNA
+    version: {{ v_gnomad }}

@@ -6,7 +6,12 @@
 # ``varfish-server-worker`` and is used in the backend for filtering and/or exposed to the
 # user via a REST API.
 
-from varfish_db_downloader.versions import DATA_VERSIONS as DV, PACKAGE_VERSIONS as PV
+from varfish_db_downloader.versions import (
+    DATA_VERSIONS as DV,
+    PACKAGE_VERSIONS as PV,
+    TODAY,
+    RUNS_IN_CI,
+)
 
 # The prefix to use for all shell commands.
 SHELL_PREFIX = "export LC_ALL=C; set -x -euo pipefail;"
@@ -22,16 +27,11 @@ RE_VERSION = r"\w+(\.\w+)*"
 # Test Mode
 # ===============================================================================================
 
-import os
-
 # Activate test mode by prepending the path to the "test-mode-bin" directory to the PATH.
-if os.environ.get("CI", "false").lower() == "true":
+if RUNS_IN_CI:
     cwd = os.getcwd()
     old_path = os.environ["PATH"]
     os.environ["PATH"] = f"{cwd}/test-mode-bin:{old_path}"
-    RUNS_IN_CI = True
-else:
-    RUNS_IN_CI = False
 
 
 # ===============================================================================================
@@ -115,7 +115,8 @@ rule all:
         # ---- frequencies (via annonars)
         f"output/mehari/freqs-grch37-{DV.gnomad_v2}+{DV.gnomad_v2}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/mehari/freqs-grch38-{DV.gnomad_v3}+{DV.gnomad_v2}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
-        # ---- annonars data
+        # -- annonars data
+        # ----- sequence variant annotations
         f"output/annonars/cadd-grch37-{DV.cadd}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/annonars/cadd-grch38-{DV.cadd}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/annonars/dbsnp-grch37-{DV.dbsnp}+{PV.annonars}/rocksdb/IDENTITY",
@@ -134,10 +135,13 @@ rule all:
         f"output/annonars/gnomad-genomes-grch38-{DV.gnomad_v3}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/annonars/helixmtdb-grch37-{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/annonars/helixmtdb-grch38-{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
+        # ----- conservation
         f"output/annonars/cons-grch37-{DV.ucsc_cons_37}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/annonars/cons-grch38-{DV.ucsc_cons_38}+{PV.annonars}/rocksdb/IDENTITY",
-        # ----- Genes
+        # ----- genes
         f"output/worker/genes-{DV.acmg_sf}+{DV.gnomad_constraints}+{DV.dbnsfp}+{DV.today}+{PV.worker}/rocksdb/IDENTITY",
+        # -- worker data
+        # ----- Genes
         f"output/worker/genes-xlink-{DV.today}/genes-xlink.tsv",
         f"output/worker/genes-txs-grch37-{DV.mehari_tx}/mehari-data-txs-grch37-{DV.mehari_tx}.bin.zst",
         f"output/worker/genes-txs-grch38-{DV.mehari_tx}/mehari-data-txs-grch38-{DV.mehari_tx}.bin.zst",

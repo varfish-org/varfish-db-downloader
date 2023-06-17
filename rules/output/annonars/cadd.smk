@@ -49,7 +49,10 @@ rule output_annonars_cadd:  # -- build CADD RocksDB with annonars
     input:
         unpack(input_output_annonars_cadd),
     output:
-        "output/annonars/cadd-{genome_release}-{v_cadd}+{v_annonars}/rocksdb/IDENTITY",
+        rocksdb_identity=(
+            "output/annonars/cadd-{genome_release}-{v_cadd}+{v_annonars}/rocksdb/IDENTITY"
+        ),
+        spec_yaml=("output/annonars/cadd-{genome_release}-{v_cadd}+{v_annonars}/spec.yaml"),
     threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
@@ -63,7 +66,7 @@ rule output_annonars_cadd:  # -- build CADD RocksDB with annonars
         annonars tsv import \
             --path-in-tsv {input.indels} \
             --path-in-tsv {input.snvs} \
-            --path-out-rocksdb $(dirname {output}) \
+            --path-out-rocksdb $(dirname {output.rocksdb_identity}) \
             \
             --col-chrom Chrom \
             --col-start Pos \
@@ -78,4 +81,16 @@ rule output_annonars_cadd:  # -- build CADD RocksDB with annonars
             --skip-row-count 1 \
             --add-default-null-values \
             --path-schema-json rules/output/annonars/cadd-schema-{wildcards.genome_release}.json
+
+        varfish-db-downloader tpl \
+            --template rules/output/annonars/cadd.spec.yaml \
+            --value today={TODAY} \
+            --value genome_release={wildcards.genome_release} \
+            \
+            --value version={wildcards.v_cadd}+{wildcards.v_annonars} \
+            --value v_cadd={wildcards.v_cadd} \
+            \
+            --value v_annonars={wildcards.v_annonars} \
+            --value v_downloader={PV.downloader} \
+        > {output.spec_yaml}
         """

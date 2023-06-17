@@ -1,4 +1,4 @@
-## Rules to create annonars RocksDB for gnomAD-gnomes.
+## Rules to create annonars RocksDB for gnomAD-genomes.
 
 import os
 
@@ -7,7 +7,12 @@ rule output_annonars_gnomad_genomes:  # -- build gnomAD-genomes RocksDB with ann
     input:
         vcf="work/download/annos/{genome_release}/seqvars/gnomad_genomes/{v_gnomad}/.done",
     output:
-        "output/annonars/gnomad-genomes-{genome_release}-{v_gnomad}+{v_annonars}/rocksdb/IDENTITY",
+        rocksdb_identity=(
+            "output/annonars/gnomad-genomes-{genome_release}-{v_gnomad}+{v_annonars}/rocksdb/IDENTITY"
+        ),
+        spec_yaml=(
+            "output/annonars/gnomad-genomes-{genome_release}-{v_gnomad}+{v_annonars}/spec.yaml"
+        ),
     threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
@@ -34,8 +39,20 @@ rule output_annonars_gnomad_genomes:  # -- build gnomAD-genomes RocksDB with ann
                 "depth_details": false,
                 "liftover": false
             }}' \
-            --path-out-rocksdb $(dirname {output}) \
+            --path-out-rocksdb $(dirname {output.rocksdb_identity}) \
             --gnomad-kind genomes \
             --genome-release {wildcards.genome_release} \
             --gnomad-version {wildcards.v_gnomad}
+
+        varfish-db-downloader tpl \
+            --template rules/output/annonars/gnomad_genomes.spec.yaml \
+            --value today={TODAY} \
+            --value genome_release={wildcards.genome_release} \
+            \
+            --value version={wildcards.v_gnomad}+{wildcards.v_annonars} \
+            --value v_gnomad={wildcards.v_gnomad} \
+            \
+            --value v_annonars={wildcards.v_annonars} \
+            --value v_downloader={PV.downloader} \
+        > {output.spec_yaml}
         """

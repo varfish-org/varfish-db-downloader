@@ -1,0 +1,18 @@
+dc.identifier: annonars/seqvars/dbscsnv:{{ version }}-{{ genome_release }}
+dc.title: annona-rs dbscSNV RocksDB Database
+dc.creator: Xiaoming Liu Lab
+dc.contributor:
+  - VarFish Developer Teams
+dc.format: application/x-rocksdb
+dc.date: {{ today }}
+x-version: {{ version }}
+x-genome-release: {{ genome_release }}
+dc.description: |
+  RocksDB with the information from dbscSNV v{{ v_dbscsnv }} using the annonars
+  package v{{ v_annonars }} in varfish-downloader v{{ v_downloader }}.
+dc.source:
+  - PMID:25416802
+  - http://www.liulab.science/dbscsnv.html
+x-created-from:
+  - name: dbscSNV
+    version: {{ v_dbscsnv }}
