@@ -115,7 +115,8 @@ rule all:
         # ---- frequencies (via annonars)
         f"output/mehari/freqs-grch37-{DV.gnomad_v2}+{DV.gnomad_v2}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/mehari/freqs-grch38-{DV.gnomad_v3}+{DV.gnomad_v2}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
-        # ---- annonars data
+        # -- annonars data
+        # ----- sequence variant annotations
         f"output/annonars/cadd-grch37-{DV.cadd}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/annonars/cadd-grch38-{DV.cadd}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/annonars/dbsnp-grch37-{DV.dbsnp}+{PV.annonars}/rocksdb/IDENTITY",
@@ -134,10 +135,13 @@ rule all:
         f"output/annonars/gnomad-genomes-grch38-{DV.gnomad_v3}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/annonars/helixmtdb-grch37-{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/annonars/helixmtdb-grch38-{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
+        # ----- conservation
         f"output/annonars/cons-grch37-{DV.ucsc_cons_37}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/annonars/cons-grch38-{DV.ucsc_cons_38}+{PV.annonars}/rocksdb/IDENTITY",
-        # ----- Genes
+        # ----- genes
         f"output/worker/genes-{DV.acmg_sf}+{DV.gnomad_constraints}+{DV.dbnsfp}+{DV.today}+{PV.worker}/rocksdb/IDENTITY",
+        # -- worker data
+        # ----- Genes
         f"output/worker/genes-xlink-{DV.today}/genes-xlink.tsv",
         f"output/worker/genes-txs-grch37-{DV.mehari_tx}/mehari-data-txs-grch37-{DV.mehari_tx}.bin.zst",
         f"output/worker/genes-txs-grch38-{DV.mehari_tx}/mehari-data-txs-grch38-{DV.mehari_tx}.bin.zst",
