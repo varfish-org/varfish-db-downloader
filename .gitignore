@@ -1,6 +1,7 @@
 # Ignore the workflow directories.
 /work/
 /output/
+/reduced-*/
 
 # Python
 __pycache__

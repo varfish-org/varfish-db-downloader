@@ -23,6 +23,18 @@ RE_GENOME = r"grch(37|38)"
 # Regular expression for versions.
 RE_VERSION = r"\w+(\.\w+)*"
 
+# Gene symbols for the "dev" subset.
+DEV_GENE_SYMBOLS = "|".join(
+    [
+        "BRCA1",  # commonly tested, well-annotated
+        "TTN",  # commonly tested, well-annotated
+        "OMA1",  # commonly tested, well-annotated
+        "SAMD11",  # very small coordinates => found when CI=true
+    ]
+)
+# Padding to add to exons in dev and exons mode.
+EXON_PADDING = 200
+
 # ===============================================================================================
 # Test Mode
 # ===============================================================================================
@@ -150,6 +162,7 @@ rule all:
         f"output/viguno/hpo-{DV.hpo}+{PV.viguno}/phenotype.hpoa",
         f"output/viguno/hpo-{DV.hpo}+{PV.viguno}/phenotype_to_genes.txt",
         f"output/viguno/hpo-{DV.hpo}+{PV.viguno}/hpo.bin",
+        f"output/viguno/hpo-{DV.hpo}+{PV.viguno}/scores-fun-sim-avg-resnik-gene/IDENTITY",
         # ----- background/population structural variants and annotations thereof
         f"output/worker/annos/strucvars/dbvar-grch37-{DV.dbvar}/dbvar.bed.gz",
         f"output/worker/annos/strucvars/dbvar-grch38-{DV.dbvar}/dbvar.bed.gz",
@@ -175,6 +188,37 @@ rule all:
         # ----- tads
         "output/worker/annos/strucvars/tads-grch37-dixon2015/hesc.bed",
         "output/worker/annos/strucvars/tads-grch38-dixon2015/hesc.bed",
+        #
+        # == development (reduced data) directories =============================================
+        #
+        # -- targets
+        f"reduced-dev/targets/grch37/refseq/{DV.refseq_37}/refseq_target_exoms.bed.gz",
+        f"reduced-dev/targets/grch38/refseq/{DV.refseq_38}/refseq_target_exoms.bed.gz",
+        # # -- viguno
+        # f"reduced-dev/viguno/hpo-{DV.hpo}+{PV.viguno}/hp.obo",
+        # f"reduced-dev/viguno/hpo-{DV.hpo}+{PV.viguno}/phenotype.hpoa",
+        # f"reduced-dev/viguno/hpo-{DV.hpo}+{PV.viguno}/phenotype_to_genes.txt",
+        # f"reduced-dev/viguno/hpo-{DV.hpo}+{PV.viguno}/hpo.bin",
+        # f"reduced-dev/viguno/hpo-{DV.hpo}+{PV.viguno}/scores-fun-sim-avg-resnik-gene/IDENTITY",
+        # # -- annonars
+        # f"reduced-dev/annonars/cadd-grch37-{DV.cadd}+{PV.annonars}/rocksdb/IDENTITY",
+        # f"reduced-dev/annonars/cadd-grch38-{DV.cadd}+{PV.annonars}/rocksdb/IDENTITY",
+        # f"reduced-dev/annonars/dbsnp-grch37-{DV.dbsnp}+{PV.annonars}/rocksdb/IDENTITY",
+        # f"reduced-dev/annonars/dbsnp-grch38-{DV.dbsnp}+{PV.annonars}/rocksdb/IDENTITY",
+        # f"reduced-dev/annonars/dbnsfp-grch37-{DV.dbnsfp}a+{PV.annonars}/rocksdb/IDENTITY",
+        # f"reduced-dev/annonars/dbnsfp-grch38-{DV.dbnsfp}a+{PV.annonars}/rocksdb/IDENTITY",
+        # f"reduced-dev/annonars/dbnsfp-grch37-{DV.dbnsfp}c+{PV.annonars}/rocksdb/IDENTITY",
+        # f"reduced-dev/annonars/dbnsfp-grch38-{DV.dbnsfp}c+{PV.annonars}/rocksdb/IDENTITY",
+        # f"reduced-dev/annonars/dbscsnv-grch37-{DV.dbscsnv}+{PV.annonars}/rocksdb/IDENTITY",
+        # f"reduced-dev/annonars/dbscsnv-grch38-{DV.dbscsnv}+{PV.annonars}/rocksdb/IDENTITY",
+        # f"reduced-dev/annonars/gnomad-mtdna-grch37-{DV.gnomad_mtdna}+{PV.annonars}/rocksdb/IDENTITY",
+        # f"reduced-dev/annonars/gnomad-mtdna-grch38-{DV.gnomad_mtdna}+{PV.annonars}/rocksdb/IDENTITY",
+        # f"reduced-dev/annonars/gnomad-exomes-grch37-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
+        # f"reduced-dev/annonars/gnomad-exomes-grch38-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
+        # f"reduced-dev/annonars/gnomad-genomes-grch37-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
+        # f"reduced-dev/annonars/gnomad-genomes-grch38-{DV.gnomad_v3}+{PV.annonars}/rocksdb/IDENTITY",
+        # f"reduced-dev/annonars/helixmtdb-grch37-{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
+        # f"reduced-dev/annonars/helixmtdb-grch38-{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
 
 
 # ===============================================================================================
@@ -233,3 +277,6 @@ include: "rules/output/annonars/helix.smk"
 # ------ global
 include: "rules/output/worker/genes.smk"
 include: "rules/output/worker/patho_mms.smk"
+# -- reduced output directory (dev/exomes) ------------------------------------------------------
+# ---- bed file
+include: "rules/reduced/targets.smk"
