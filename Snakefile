@@ -155,7 +155,7 @@ rule all:
         f"output/annonars/cons-grch37-{DV.ucsc_cons_37}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/annonars/cons-grch38-{DV.ucsc_cons_38}+{PV.annonars}/rocksdb/IDENTITY",
         # ----- genes
-        f"output/worker/genes-{DV.acmg_sf}+{DV.gnomad_constraints}+{DV.dbnsfp}+{DV.today}+{PV.worker}/rocksdb/IDENTITY",
+        f"output/annonars/genes-{DV.acmg_sf}+{DV.gnomad_constraints}+{DV.dbnsfp}+{DV.today}+{PV.worker}/rocksdb/IDENTITY",
         # -- worker data
         # ----- Genes
         f"output/worker/genes-xlink-{DV.today}/genes-xlink.tsv",
@@ -308,9 +308,9 @@ include: "rules/output/annonars/gnomad_exomes.smk"
 include: "rules/output/annonars/gnomad_genomes.smk"
 include: "rules/output/annonars/gnomad_mtdna.smk"
 include: "rules/output/annonars/helix.smk"
+include: "rules/output/annonars/genes.smk"
 # ---- worker
 # ------ global
-include: "rules/output/worker/genes.smk"
 include: "rules/output/worker/patho_mms.smk"
 # -- reduced output directory (dev/exomes) ------------------------------------------------------
 # ---- bed file
