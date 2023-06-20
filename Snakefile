@@ -20,8 +20,12 @@ shell.prefix(SHELL_PREFIX)
 
 # Regular expression for genome release.
 RE_GENOME = r"grch(37|38)"
+# Regular expression for a "word".
+RE_NAME = r"[\w-]+"
 # Regular expression for versions.
 RE_VERSION = r"\w+(\.\w+)*"
+# Regular expression for versions.
+RE_VERSION_MULTI = r"\w+(\.\w+)*(\+\w+(\.\w+)*)*"
 
 # Gene symbols for the "dev" subset.
 DEV_GENE_SYMBOLS = "|".join(
@@ -194,31 +198,62 @@ rule all:
         # -- targets
         f"reduced-dev/targets/grch37/refseq/{DV.refseq_37}/refseq_target_exoms.bed.gz",
         f"reduced-dev/targets/grch38/refseq/{DV.refseq_38}/refseq_target_exoms.bed.gz",
-        # # -- viguno
-        # f"reduced-dev/viguno/hpo-{DV.hpo}+{PV.viguno}/hp.obo",
-        # f"reduced-dev/viguno/hpo-{DV.hpo}+{PV.viguno}/phenotype.hpoa",
-        # f"reduced-dev/viguno/hpo-{DV.hpo}+{PV.viguno}/phenotype_to_genes.txt",
-        # f"reduced-dev/viguno/hpo-{DV.hpo}+{PV.viguno}/hpo.bin",
-        # f"reduced-dev/viguno/hpo-{DV.hpo}+{PV.viguno}/scores-fun-sim-avg-resnik-gene/IDENTITY",
-        # # -- annonars
-        # f"reduced-dev/annonars/cadd-grch37-{DV.cadd}+{PV.annonars}/rocksdb/IDENTITY",
-        # f"reduced-dev/annonars/cadd-grch38-{DV.cadd}+{PV.annonars}/rocksdb/IDENTITY",
-        # f"reduced-dev/annonars/dbsnp-grch37-{DV.dbsnp}+{PV.annonars}/rocksdb/IDENTITY",
-        # f"reduced-dev/annonars/dbsnp-grch38-{DV.dbsnp}+{PV.annonars}/rocksdb/IDENTITY",
-        # f"reduced-dev/annonars/dbnsfp-grch37-{DV.dbnsfp}a+{PV.annonars}/rocksdb/IDENTITY",
-        # f"reduced-dev/annonars/dbnsfp-grch38-{DV.dbnsfp}a+{PV.annonars}/rocksdb/IDENTITY",
-        # f"reduced-dev/annonars/dbnsfp-grch37-{DV.dbnsfp}c+{PV.annonars}/rocksdb/IDENTITY",
-        # f"reduced-dev/annonars/dbnsfp-grch38-{DV.dbnsfp}c+{PV.annonars}/rocksdb/IDENTITY",
-        # f"reduced-dev/annonars/dbscsnv-grch37-{DV.dbscsnv}+{PV.annonars}/rocksdb/IDENTITY",
-        # f"reduced-dev/annonars/dbscsnv-grch38-{DV.dbscsnv}+{PV.annonars}/rocksdb/IDENTITY",
-        # f"reduced-dev/annonars/gnomad-mtdna-grch37-{DV.gnomad_mtdna}+{PV.annonars}/rocksdb/IDENTITY",
-        # f"reduced-dev/annonars/gnomad-mtdna-grch38-{DV.gnomad_mtdna}+{PV.annonars}/rocksdb/IDENTITY",
-        # f"reduced-dev/annonars/gnomad-exomes-grch37-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
-        # f"reduced-dev/annonars/gnomad-exomes-grch38-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
-        # f"reduced-dev/annonars/gnomad-genomes-grch37-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
-        # f"reduced-dev/annonars/gnomad-genomes-grch38-{DV.gnomad_v3}+{PV.annonars}/rocksdb/IDENTITY",
-        # f"reduced-dev/annonars/helixmtdb-grch37-{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
-        # f"reduced-dev/annonars/helixmtdb-grch38-{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
+        # -- viguno
+        f"reduced-dev/viguno/hpo-{DV.hpo}+{PV.viguno}/hp.obo",
+        f"reduced-dev/viguno/hpo-{DV.hpo}+{PV.viguno}/phenotype.hpoa",
+        f"reduced-dev/viguno/hpo-{DV.hpo}+{PV.viguno}/phenotype_to_genes.txt",
+        f"reduced-dev/viguno/hpo-{DV.hpo}+{PV.viguno}/hpo.bin",
+        f"reduced-dev/viguno/hpo-{DV.hpo}+{PV.viguno}/scores-fun-sim-avg-resnik-gene/IDENTITY",
+        # -- annonars
+        f"reduced-dev/annonars/cadd-grch37-{DV.cadd}+{PV.annonars}/rocksdb/IDENTITY",
+        f"reduced-dev/annonars/cadd-grch38-{DV.cadd}+{PV.annonars}/rocksdb/IDENTITY",
+        f"reduced-dev/annonars/dbsnp-grch37-{DV.dbsnp}+{PV.annonars}/rocksdb/IDENTITY",
+        f"reduced-dev/annonars/dbsnp-grch38-{DV.dbsnp}+{PV.annonars}/rocksdb/IDENTITY",
+        f"reduced-dev/annonars/dbnsfp-grch37-{DV.dbnsfp}a+{PV.annonars}/rocksdb/IDENTITY",
+        f"reduced-dev/annonars/dbnsfp-grch38-{DV.dbnsfp}a+{PV.annonars}/rocksdb/IDENTITY",
+        f"reduced-dev/annonars/dbnsfp-grch37-{DV.dbnsfp}c+{PV.annonars}/rocksdb/IDENTITY",
+        f"reduced-dev/annonars/dbnsfp-grch38-{DV.dbnsfp}c+{PV.annonars}/rocksdb/IDENTITY",
+        f"reduced-dev/annonars/dbscsnv-grch37-{DV.dbscsnv}+{PV.annonars}/rocksdb/IDENTITY",
+        f"reduced-dev/annonars/dbscsnv-grch38-{DV.dbscsnv}+{PV.annonars}/rocksdb/IDENTITY",
+        f"reduced-dev/annonars/gnomad-mtdna-grch37-{DV.gnomad_mtdna}+{PV.annonars}/rocksdb/IDENTITY",
+        f"reduced-dev/annonars/gnomad-mtdna-grch38-{DV.gnomad_mtdna}+{PV.annonars}/rocksdb/IDENTITY",
+        f"reduced-dev/annonars/gnomad-exomes-grch37-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
+        f"reduced-dev/annonars/gnomad-exomes-grch38-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
+        f"reduced-dev/annonars/gnomad-genomes-grch37-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
+        f"reduced-dev/annonars/gnomad-genomes-grch38-{DV.gnomad_v3}+{PV.annonars}/rocksdb/IDENTITY",
+        f"reduced-dev/annonars/helixmtdb-grch37-{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
+        f"reduced-dev/annonars/helixmtdb-grch38-{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
+        #
+        # == exomes (reduced data) directories ==================================================
+        #
+        # -- targets
+        f"reduced-exomes/targets/grch37/refseq/{DV.refseq_37}/refseq_target_exoms.bed.gz",
+        f"reduced-exomes/targets/grch38/refseq/{DV.refseq_38}/refseq_target_exoms.bed.gz",
+        # -- viguno
+        f"reduced-exomes/viguno/hpo-{DV.hpo}+{PV.viguno}/hp.obo",
+        f"reduced-exomes/viguno/hpo-{DV.hpo}+{PV.viguno}/phenotype.hpoa",
+        f"reduced-exomes/viguno/hpo-{DV.hpo}+{PV.viguno}/phenotype_to_genes.txt",
+        f"reduced-exomes/viguno/hpo-{DV.hpo}+{PV.viguno}/hpo.bin",
+        f"reduced-exomes/viguno/hpo-{DV.hpo}+{PV.viguno}/scores-fun-sim-avg-resnik-gene/IDENTITY",
+        # -- annonars
+        f"reduced-exomes/annonars/cadd-grch37-{DV.cadd}+{PV.annonars}/rocksdb/IDENTITY",
+        f"reduced-exomes/annonars/cadd-grch38-{DV.cadd}+{PV.annonars}/rocksdb/IDENTITY",
+        f"reduced-exomes/annonars/dbsnp-grch37-{DV.dbsnp}+{PV.annonars}/rocksdb/IDENTITY",
+        f"reduced-exomes/annonars/dbsnp-grch38-{DV.dbsnp}+{PV.annonars}/rocksdb/IDENTITY",
+        f"reduced-exomes/annonars/dbnsfp-grch37-{DV.dbnsfp}a+{PV.annonars}/rocksdb/IDENTITY",
+        f"reduced-exomes/annonars/dbnsfp-grch38-{DV.dbnsfp}a+{PV.annonars}/rocksdb/IDENTITY",
+        f"reduced-exomes/annonars/dbnsfp-grch37-{DV.dbnsfp}c+{PV.annonars}/rocksdb/IDENTITY",
+        f"reduced-exomes/annonars/dbnsfp-grch38-{DV.dbnsfp}c+{PV.annonars}/rocksdb/IDENTITY",
+        f"reduced-exomes/annonars/dbscsnv-grch37-{DV.dbscsnv}+{PV.annonars}/rocksdb/IDENTITY",
+        f"reduced-exomes/annonars/dbscsnv-grch38-{DV.dbscsnv}+{PV.annonars}/rocksdb/IDENTITY",
+        f"reduced-exomes/annonars/gnomad-mtdna-grch37-{DV.gnomad_mtdna}+{PV.annonars}/rocksdb/IDENTITY",
+        f"reduced-exomes/annonars/gnomad-mtdna-grch38-{DV.gnomad_mtdna}+{PV.annonars}/rocksdb/IDENTITY",
+        f"reduced-exomes/annonars/gnomad-exomes-grch37-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
+        f"reduced-exomes/annonars/gnomad-exomes-grch38-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
+        f"reduced-exomes/annonars/gnomad-genomes-grch37-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
+        f"reduced-exomes/annonars/gnomad-genomes-grch38-{DV.gnomad_v3}+{PV.annonars}/rocksdb/IDENTITY",
+        f"reduced-exomes/annonars/helixmtdb-grch37-{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
+        f"reduced-exomes/annonars/helixmtdb-grch38-{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
 
 
 # ===============================================================================================
@@ -279,4 +314,6 @@ include: "rules/output/worker/genes.smk"
 include: "rules/output/worker/patho_mms.smk"
 # -- reduced output directory (dev/exomes) ------------------------------------------------------
 # ---- bed file
+include: "rules/reduced/annonars.smk"
+include: "rules/reduced/hpo.smk"
 include: "rules/reduced/targets.smk"

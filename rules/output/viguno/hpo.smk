@@ -1,4 +1,4 @@
-## Rules to create build worker phenotypes database.
+## Rules to create build viguno phenotypes database.
 
 import os
 
@@ -7,7 +7,7 @@ import os
 VIGUNO_SIMULATE_THREADS = int(os.environ.get("VIGUNO_SIMULATE_THREADS", 96))
 
 
-rule output_worker_pheno:  # -- copy HPO and simulate
+rule output_viguno_pheno:  # -- copy HPO and simulate
     input:
         obo="work/download/hpo/{v_hpo}/hp.obo",
         hpoa="work/download/hpo/{v_hpo}/phenotype.hpoa",

@@ -1,13 +1,16 @@
 ## Rules to create targets BED file for reduced output directory.
 
-rule reduced_reduced_refseq_exons:  # -- create reduced data exons BED file
+
+rule reduced_refseq_exons:  # -- create reduced data exons BED file
     input:
         unpack(input_annos_features_refseq_gene_regions_process),
     output:
-        tsv="reduced-{set_name}/targets/{genome_build}/refseq/{version}/refseq_target_exoms.bed.gz",
-        tsv_md5="reduced-{set_name}/targets/{genome_build}/refseq/{version}/refseq_target_exoms.bed.gz.md5",
-        tsv_tbi="reduced-{set_name}/targets/{genome_build}/refseq/{version}/refseq_target_exoms.bed.gz.tbi",
-        tsv_tbi_md5="reduced-{set_name}/targets/{genome_build}/refseq/{version}/refseq_target_exoms.bed.gz.tbi.md5",
+        bed="reduced-{set_name}/targets/{genome_build}/refseq/{version}/refseq_target_exoms.bed",
+        bed_md5="reduced-{set_name}/targets/{genome_build}/refseq/{version}/refseq_target_exoms.bed.md5",
+        bed_gz="reduced-{set_name}/targets/{genome_build}/refseq/{version}/refseq_target_exoms.bed.gz",
+        bed_gz_md5="reduced-{set_name}/targets/{genome_build}/refseq/{version}/refseq_target_exoms.bed.gz.md5",
+        bed_gz_tbi="reduced-{set_name}/targets/{genome_build}/refseq/{version}/refseq_target_exoms.bed.gz.tbi",
+        bed_gz_tbi_md5="reduced-{set_name}/targets/{genome_build}/refseq/{version}/refseq_target_exoms.bed.gz.tbi.md5",
     shell:
         r"""
         if [ "{wildcards.set_name}" == dev ]; then
@@ -25,11 +28,14 @@ rule reduced_reduced_refseq_exons:  # -- create reduced data exons BED file
         | egrep '^#|^X|^Y|^M|^[1-9]' \
         | sort-bed - \
         | bedops --range {EXON_PADDING} --merge - \
-        | bgzip -c \
-        > {output.tsv}
+        > {output.bed}
 
-        tabix -f {output.tsv}
+        bgzip -c {output.bed} \
+        > {output.bed_gz}
 
-        md5sum {output.tsv} >{output.tsv_md5}
-        md5sum {output.tsv_tbi} >{output.tsv_tbi_md5}
+        tabix -f {output.bed_gz}
+
+        md5sum {output.bed} >{output.bed_md5}
+        md5sum {output.bed_gz} >{output.bed_gz_md5}
+        md5sum {output.bed_gz_tbi} >{output.bed_gz_tbi_md5}
         """
