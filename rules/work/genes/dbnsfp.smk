@@ -1,7 +1,7 @@
 ## Rules related to dbNSFP gene information.
 
 
-rule genes_dbnsfp_genes_copy:  # -- copy over dbNSFP genes file
+rule genes_dbnsfp_genes_copy:  # -- fixup dbNSFP gene file inconsistency (`s/NA/./g`)
     input:
         tsv="work/download/annos/grch37/seqvars/dbnsfp/{version}a/dbNSFP{version}_gene.complete.gz",
     output:
@@ -10,6 +10,10 @@ rule genes_dbnsfp_genes_copy:  # -- copy over dbNSFP genes file
     shell:
         r"""
         zcat {input.tsv} \
+        | tr -d '\r' \
+        | sed \
+            -e ':repeat; s/\t\NA\t/\t.\t/g; t repeat' \
+            -e 's/\tNA$/\t./g' \
         | pigz -c \
         > {output.tsv}
 
