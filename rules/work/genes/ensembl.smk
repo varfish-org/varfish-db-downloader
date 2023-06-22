@@ -105,7 +105,6 @@ rule genes_ensembl_process_maps_grch38:  # -- process ENST-ENSG mapping (GRCh38)
             -f scripts/genes-enst-ensg.awk \
             <(zcat {input.download_gtf}) \
         | sort \
-        | sed -e 's/^/chr/' \
         >> {output.tsv}
 
         md5sum {output.tsv} >{output.tsv_md5}

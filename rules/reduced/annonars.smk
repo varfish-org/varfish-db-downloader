@@ -32,6 +32,10 @@ rule subset_annonars:  # -- create exomes subset
         genome_release=RE_GENOME,
         v_hpo=RE_VERSION,
         versions=RE_VERSION_MULTI,
+    threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
+    resources:
+        runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
+        mem_mb_per_cpu=2000,
     shell:
         r"""
         annonars db-utils copy \
