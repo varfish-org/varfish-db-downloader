@@ -32,7 +32,9 @@ rule annos_features_refseq_gene_regions_download_grch38:  # -- download ENSEMBL 
 
         echo -e "#Chromosome\tRefSeq Accession.version\tRefSeq\tgi\tGenBank Accession.version\tGenBank gi" \
         > {output.acc}
-        awk -F $'\t' 'BEGIN {{ OFS=fS }} {{ print $10, $7, $9, $5, "." }}' {output.report} \
+        cat {output.report} \
+        | tr -d '\r' \
+        | awk -F $'\t' 'BEGIN {{ OFS=FS }} ($1 !~ /^#/) {{ print $10, $7, $9, $5, "." }}' \
         >> {output.acc}
 
         wget --no-check-certificate \

@@ -2,7 +2,6 @@
 BEGIN {
     OFS = FS;  # output separator = input separator (TAB)
     print "#chrom", "start", "end", "entrez_id", "gene_symbol";
-    print gene_symbol_re;
 }
 (NR == FNR && $1 !~ /^#/) {  # first file only
     acc2chrom[$2] = $1

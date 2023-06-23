@@ -12,7 +12,7 @@ def input_subset_annonars(wildcards):
     result = {
             "bed": (
                 f"reduced-{wildcards.set_name}/targets/{wildcards.genome_release}/"
-                f"refseq/{refseq_version}/refseq_target_exoms.bed"
+                f"refseq/{refseq_version}/refseq_target_exons.bed"
             ),
             "rocksdb_identity": (
                 f"output/annonars/{wildcards.name}-{wildcards.genome_release}-"

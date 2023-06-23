@@ -196,8 +196,8 @@ rule all:
         # == development (reduced data) directories =============================================
         #
         # -- targets
-        f"reduced-dev/targets/grch37/refseq/{DV.refseq_37}/refseq_target_exoms.bed.gz",
-        f"reduced-dev/targets/grch38/refseq/{DV.refseq_38}/refseq_target_exoms.bed.gz",
+        f"reduced-dev/targets/grch37/refseq/{DV.refseq_37}/refseq_target_exons.bed.gz",
+        f"reduced-dev/targets/grch38/refseq/{DV.refseq_38}/refseq_target_exons.bed.gz",
         # -- viguno
         f"reduced-dev/viguno/hpo-{DV.hpo}+{PV.viguno}/hp.obo",
         f"reduced-dev/viguno/hpo-{DV.hpo}+{PV.viguno}/phenotype.hpoa",
@@ -225,8 +225,8 @@ rule all:
         # == exomes (reduced data) directories ==================================================
         #
         # -- targets
-        f"reduced-exomes/targets/grch37/refseq/{DV.refseq_37}/refseq_target_exoms.bed.gz",
-        f"reduced-exomes/targets/grch38/refseq/{DV.refseq_38}/refseq_target_exoms.bed.gz",
+        f"reduced-exomes/targets/grch37/refseq/{DV.refseq_37}/refseq_target_exons.bed.gz",
+        f"reduced-exomes/targets/grch38/refseq/{DV.refseq_38}/refseq_target_exons.bed.gz",
         # -- viguno
         f"reduced-exomes/viguno/hpo-{DV.hpo}+{PV.viguno}/hp.obo",
         f"reduced-exomes/viguno/hpo-{DV.hpo}+{PV.viguno}/phenotype.hpoa",
