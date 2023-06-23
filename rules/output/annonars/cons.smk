@@ -8,9 +8,9 @@ rule output_annonars_cons:  # -- build UCSC conservation track RocksDB with anno
         tsv="work/annos/{genome_release}/features/cons/{v_cons}/ucsc_conservation.tsv",
     output:
         rocksdb_identity=(
-            "output/annonars/cons-{genome_release}-{v_cons}+{v_annonars}/rocksdb/IDENTITY"
+            "output/full/annonars/cons-{genome_release}-{v_cons}+{v_annonars}/rocksdb/IDENTITY"
         ),
-        spec_yaml=("output/annonars/cons-{genome_release}-{v_cons}+{v_annonars}/spec.yaml"),
+        spec_yaml=("output/full/annonars/cons-{genome_release}-{v_cons}+{v_annonars}/spec.yaml"),
     threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),

@@ -11,11 +11,11 @@ def input_subset_annonars(wildcards):
         refseq_version = DV.refseq_38
     result = {
             "bed": (
-                f"reduced-{wildcards.set_name}/targets/{wildcards.genome_release}/"
+                f"output/reduced-{wildcards.set_name}/targets/{wildcards.genome_release}/"
                 f"refseq/{refseq_version}/refseq_target_exons.bed"
             ),
             "rocksdb_identity": (
-                f"output/annonars/{wildcards.name}-{wildcards.genome_release}-"
+                f"output/full/annonars/{wildcards.name}-{wildcards.genome_release}-"
                 f"{wildcards.version_multi}/rocksdb/IDENTITY"
             ),
         }
@@ -26,7 +26,7 @@ rule subset_annonars:  # -- create exomes subset
     input:
         unpack(input_subset_annonars),
     output:
-        rocksdb_identity="reduced-{set_name}/annonars/{name}-{genome_release}-{version_multi}/rocksdb/IDENTITY",
+        rocksdb_identity="output/reduced-{set_name}/annonars/{name}-{genome_release}-{version_multi}/rocksdb/IDENTITY",
     wildcard_constraints:
         name=RE_NAME,
         genome_release=RE_GENOME,

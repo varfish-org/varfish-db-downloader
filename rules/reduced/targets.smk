@@ -5,12 +5,12 @@ rule reduced_refseq_exons:  # -- create reduced data exons BED file
     input:
         unpack(input_annos_features_refseq_gene_regions_process),
     output:
-        bed="reduced-{set_name}/targets/{genome_build}/refseq/{version}/refseq_target_exons.bed",
-        bed_md5="reduced-{set_name}/targets/{genome_build}/refseq/{version}/refseq_target_exons.bed.md5",
-        bed_gz="reduced-{set_name}/targets/{genome_build}/refseq/{version}/refseq_target_exons.bed.gz",
-        bed_gz_md5="reduced-{set_name}/targets/{genome_build}/refseq/{version}/refseq_target_exons.bed.gz.md5",
-        bed_gz_tbi="reduced-{set_name}/targets/{genome_build}/refseq/{version}/refseq_target_exons.bed.gz.tbi",
-        bed_gz_tbi_md5="reduced-{set_name}/targets/{genome_build}/refseq/{version}/refseq_target_exons.bed.gz.tbi.md5",
+        bed="output/reduced-{set_name}/targets/{genome_build}/refseq/{version}/refseq_target_exons.bed",
+        bed_md5="output/reduced-{set_name}/targets/{genome_build}/refseq/{version}/refseq_target_exons.bed.md5",
+        bed_gz="output/reduced-{set_name}/targets/{genome_build}/refseq/{version}/refseq_target_exons.bed.gz",
+        bed_gz_md5="output/reduced-{set_name}/targets/{genome_build}/refseq/{version}/refseq_target_exons.bed.gz.md5",
+        bed_gz_tbi="output/reduced-{set_name}/targets/{genome_build}/refseq/{version}/refseq_target_exons.bed.gz.tbi",
+        bed_gz_tbi_md5="output/reduced-{set_name}/targets/{genome_build}/refseq/{version}/refseq_target_exons.bed.gz.tbi.md5",
     shell:
         r"""
         if [ "{wildcards.set_name}" == dev ]; then

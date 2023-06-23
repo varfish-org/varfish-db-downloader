@@ -11,11 +11,11 @@ rule output_mehari_freqs_build:  # -- build frequency tables for mehari
         helixmtdb="work/annos/{genome_release}/seqvars/helixmtdb/{v_helixmtdb}/helixmtdb.vcf.gz",
     output:
         rocksdb_identity=(
-            "output/mehari/freqs-{genome_release}-{v_gnomad_genomes}+{v_gnomad_exomes}+"
+            "output/full/mehari/freqs-{genome_release}-{v_gnomad_genomes}+{v_gnomad_exomes}+"
             "{v_gnomad_mtdna}+{v_helixmtdb}+{v_annonars}/rocksdb/IDENTITY"
         ),
         spec_yaml=(
-            "output/mehari/freqs-{genome_release}-{v_gnomad_genomes}+{v_gnomad_exomes}+"
+            "output/full/mehari/freqs-{genome_release}-{v_gnomad_genomes}+{v_gnomad_exomes}+"
             "{v_gnomad_mtdna}+{v_helixmtdb}+{v_annonars}/spec.yaml"
         ),
     threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))

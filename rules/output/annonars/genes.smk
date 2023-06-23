@@ -10,11 +10,11 @@ rule output_annonars_genes:  # -- build annonars genes RocksDB file
         ncbi="work/genes/entrez/{date}/gene_info.jsonl",
     output:
         rocksdb_identity=(
-            "output/annonars/genes-{v_acmg_sf}+{v_gnomad_constraints}+{v_dbnsfp}+{date}+{v_annonars}/"
+            "output/full/annonars/genes-{v_acmg_sf}+{v_gnomad_constraints}+{v_dbnsfp}+{date}+{v_annonars}/"
             "rocksdb/IDENTITY"
         ),
         spec_yaml=(
-            "output/annonars/genes-{v_acmg_sf}+{v_gnomad_constraints}+{v_dbnsfp}+{date}+{v_annonars}/"
+            "output/full/annonars/genes-{v_acmg_sf}+{v_gnomad_constraints}+{v_dbnsfp}+{date}+{v_annonars}/"
             "spec.yaml"
         ),
     wildcard_constraints:
