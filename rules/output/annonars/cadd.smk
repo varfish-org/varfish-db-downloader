@@ -50,9 +50,9 @@ rule output_annonars_cadd:  # -- build CADD RocksDB with annonars
         unpack(input_output_annonars_cadd),
     output:
         rocksdb_identity=(
-            "output/annonars/cadd-{genome_release}-{v_cadd}+{v_annonars}/rocksdb/IDENTITY"
+            "output/full/annonars/cadd-{genome_release}-{v_cadd}+{v_annonars}/rocksdb/IDENTITY"
         ),
-        spec_yaml=("output/annonars/cadd-{genome_release}-{v_cadd}+{v_annonars}/spec.yaml"),
+        spec_yaml=("output/full/annonars/cadd-{genome_release}-{v_cadd}+{v_annonars}/spec.yaml"),
     threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),

@@ -8,9 +8,9 @@ rule output_annonars_dbsnp:  # -- build dbSNP RocksDB with annonars
         vcf="work/download/annos/{genome_release}/seqvars/dbsnp/{v_dbsnp}/dbsnp.vcf.gz",
     output:
         rocksdb_identity=(
-            "output/annonars/dbsnp-{genome_release}-{v_dbsnp}+{v_annonars}/rocksdb/IDENTITY"
+            "output/full/annonars/dbsnp-{genome_release}-{v_dbsnp}+{v_annonars}/rocksdb/IDENTITY"
         ),
-        spec_yaml=("output/annonars/dbsnp-{genome_release}-{v_dbsnp}+{v_annonars}/spec.yaml"),
+        spec_yaml=("output/full/annonars/dbsnp-{genome_release}-{v_dbsnp}+{v_annonars}/spec.yaml"),
     threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),

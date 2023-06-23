@@ -40,7 +40,7 @@ dependencies:
   # Parallel (de)compression.
   - pigz
   # Varfish related
-  - annonars =0.10.0
-  - viguno =0.1.1
-  - mehari =0.5.0
-  - varfish-server-worker
+  - annonars =0.12.7
+  - viguno =0.1.6
+  - mehari =0.5.7
+  - varfish-server-worker =0.7.0

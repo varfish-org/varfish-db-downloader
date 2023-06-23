@@ -13,9 +13,9 @@ rule output_annonars_dbnsfp:  # -- build dbNSFP RocksDB with annonars
         input_output_annonars_dbnsfp,
     output:
         rocksdb_identity=(
-            "output/annonars/dbnsfp-{genome_release}-{v_dbnsfp}+{v_annonars}/rocksdb/IDENTITY"
+            "output/full/annonars/dbnsfp-{genome_release}-{v_dbnsfp}+{v_annonars}/rocksdb/IDENTITY"
         ),
-        spec_yaml=("output/annonars/dbnsfp-{genome_release}-{v_dbnsfp}+{v_annonars}/spec.yaml"),
+        spec_yaml=("output/full/annonars/dbnsfp-{genome_release}-{v_dbnsfp}+{v_annonars}/spec.yaml"),
     threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),

@@ -8,10 +8,10 @@ rule output_annonars_gnomad_mtdna:  # -- build gnomAD-mtDNA RocksDB with annonar
         vcf="work/annos/{genome_release}/seqvars/gnomad_mtdna/{v_gnomad}/gnomad_mtdna.vcf.gz",
     output:
         rocksdb_identity=(
-            "output/annonars/gnomad-mtdna-{genome_release}-{v_gnomad}+{v_annonars}/rocksdb/IDENTITY"
+            "output/full/annonars/gnomad-mtdna-{genome_release}-{v_gnomad}+{v_annonars}/rocksdb/IDENTITY"
         ),
         spec_yaml=(
-            "output/annonars/gnomad-mtdna-{genome_release}-{v_gnomad}+{v_annonars}/spec.yaml"
+            "output/full/annonars/gnomad-mtdna-{genome_release}-{v_gnomad}+{v_annonars}/spec.yaml"
         ),
     threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
     resources:

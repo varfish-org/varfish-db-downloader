@@ -98,7 +98,7 @@ rule annos_features_cons_to_tsv:  # -- convert conservation VCF to BED
         bcftools query \
             -f "%CHROM\t%POS\t%END\t%HGNC_ID\t%ENST_ID\t%EXON\t%EXON_COUNT\t%ALIGNMENT\n" \
             {input.vcf} \
-        | uniq
+        | uniq \
         >> {output.tsv}
 
         md5sum {output.tsv} > {output.tsv_md5}

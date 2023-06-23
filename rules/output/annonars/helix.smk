@@ -8,10 +8,10 @@ rule output_annonars_helixmtdb:  # -- build HelixMtDb RocksDB with annonars
         vcf="work/annos/{genome_release}/seqvars/helixmtdb/{v_helixmtdb}/helixmtdb.vcf.gz",
     output:
         rocksdb_identity=(
-            "output/annonars/helixmtdb-{genome_release}-{v_helixmtdb}+{v_annonars}/rocksdb/IDENTITY",
+            "output/full/annonars/helixmtdb-{genome_release}-{v_helixmtdb}+{v_annonars}/rocksdb/IDENTITY",
         ),
         spec_yaml=(
-            "output/annonars/helixmtdb-{genome_release}-{v_helixmtdb}+{v_annonars}/spec.yaml",
+            "output/full/annonars/helixmtdb-{genome_release}-{v_helixmtdb}+{v_annonars}/spec.yaml",
         ),
     threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
     resources:

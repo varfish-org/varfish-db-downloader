@@ -1,4 +1,4 @@
-## Rules to create build worker phenotypes database.
+## Rules to create build viguno phenotypes database.
 
 import os
 
@@ -7,16 +7,16 @@ import os
 VIGUNO_SIMULATE_THREADS = int(os.environ.get("VIGUNO_SIMULATE_THREADS", 96))
 
 
-rule output_worker_pheno:  # -- copy HPO and simulate
+rule output_viguno_pheno:  # -- copy HPO and simulate
     input:
         obo="work/download/hpo/{v_hpo}/hp.obo",
         hpoa="work/download/hpo/{v_hpo}/phenotype.hpoa",
         genes_to_phenotype="work/download/hpo/{v_hpo}/phenotype_to_genes.txt",
     output:
-        obo="output/viguno/hpo-{v_hpo}+{v_viguno}/hp.obo",
-        hpoa="output/viguno/hpo-{v_hpo}+{v_viguno}/phenotype.hpoa",
-        phenotype_to_genes="output/viguno/hpo-{v_hpo}+{v_viguno}/phenotype_to_genes.txt",
-        rocksdb_identity="output/viguno/hpo-{v_hpo}+{v_viguno}/scores-fun-sim-avg-resnik-gene/IDENTITY",
+        obo="output/full/viguno/hpo-{v_hpo}+{v_viguno}/hp.obo",
+        hpoa="output/full/viguno/hpo-{v_hpo}+{v_viguno}/phenotype.hpoa",
+        phenotype_to_genes="output/full/viguno/hpo-{v_hpo}+{v_viguno}/phenotype_to_genes.txt",
+        rocksdb_identity="output/full/viguno/hpo-{v_hpo}+{v_viguno}/scores-fun-sim-avg-resnik-gene/IDENTITY",
     wildcard_constraints:
         v_hpo=RE_VERSION,
         v_viguno=RE_VERSION,
@@ -55,10 +55,10 @@ rule global_hpo_to_bin:  # -- convert to .bin
         obo="work/download/hpo/{v_hpo}/hp.obo",
         hpoa="work/download/hpo/{v_hpo}/phenotype.hpoa",
         genes_to_phenotype="work/download/hpo/{v_hpo}/phenotype_to_genes.txt",
-        rocksdb_identity="output/viguno/hpo-{v_hpo}+{v_viguno}/scores-fun-sim-avg-resnik-gene/IDENTITY",
+        rocksdb_identity="output/full/viguno/hpo-{v_hpo}+{v_viguno}/scores-fun-sim-avg-resnik-gene/IDENTITY",
     output:
-        bin="output/viguno/hpo-{v_hpo}+{v_viguno}/hpo.bin",
-        spec_yaml=("output/viguno/hpo-{v_hpo}-{v_viguno}/spec.yaml"),
+        bin="output/full/viguno/hpo-{v_hpo}+{v_viguno}/hpo.bin",
+        spec_yaml=("output/full/viguno/hpo-{v_hpo}+{v_viguno}/spec.yaml"),
     wildcard_constraints:
         v_hpo=RE_VERSION,
         v_viguno=RE_VERSION,

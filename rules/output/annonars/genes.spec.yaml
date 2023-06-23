@@ -1,12 +1,12 @@
-dc.identifier: worker/genes:{{ version }}
-dc.title: VarFish Worker genes database
+dc.identifier: annonars/genes:{{ version }}
+dc.title: annonars genes database
 dc.creator: VarFish Development Team
 dc.format: application/x-rocksdb
 dc.date: {{ today }}
 x-version: {{ version }}
 dc.description: |
-  Gene information from the following databases, aggregated using VarFish worker
-  v{{ v_worker }} in varfish-downloader v{{ v_downloader }}:
+  Gene information from the following databases, aggregated using annonars
+  v{{ v_annonars }} in varfish-downloader v{{ v_downloader }}:
 
   - ACMG Supplementary Findings Gene List {{ v_acmg_sf }}
   - gnomAD constraints v{{ v_gnomad_constraints }}

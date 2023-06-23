@@ -32,7 +32,9 @@ rule annos_features_refseq_gene_regions_download_grch38:  # -- download ENSEMBL 
 
         echo -e "#Chromosome\tRefSeq Accession.version\tRefSeq\tgi\tGenBank Accession.version\tGenBank gi" \
         > {output.acc}
-        awk -F $'\t' 'BEGIN {{ OFS=fS }} {{ print $10, $7, $9, $5, "." }}' {output.report} \
+        cat {output.report} \
+        | tr -d '\r' \
+        | awk -F $'\t' 'BEGIN {{ OFS=FS }} ($1 !~ /^#/) {{ print $10, $7, $9, $5, "." }}' \
         >> {output.acc}
 
         wget --no-check-certificate \
@@ -41,8 +43,8 @@ rule annos_features_refseq_gene_regions_download_grch38:  # -- download ENSEMBL 
         """
 
 
-def input_annos_features_refseq_gene_regions_process_grch38(wildcards):
-    """Input function for ``rule annos_features_refseq_gene_regions_process_grch38``."""
+def input_annos_features_refseq_gene_regions_process(wildcards):
+    """Input function for ``rule annos_features_refseq_gene_regions_process``."""
     if wildcards.genome_build == "grch37":
         return {
             "acc": f"work/download/annos/grch37/refseq/{wildcards.version}/chr_accessions_GRCh37.p13",
@@ -55,9 +57,9 @@ def input_annos_features_refseq_gene_regions_process_grch38(wildcards):
         }
 
 
-rule annos_features_refseq_gene_regions_process_grch38:  # -- process ENSEMBL gene regions files
+rule annos_features_refseq_gene_regions_process:  # -- process RefSeq gene regions files
     input:
-        unpack(input_annos_features_refseq_gene_regions_process_grch38),
+        unpack(input_annos_features_refseq_gene_regions_process),
     output:
         tsv="work/annos/{genome_build}/features/refseq/{version}/refseq_genes.bed.gz",
         tsv_md5="work/annos/{genome_build}/features/refseq/{version}/refseq_genes.bed.gz.md5",

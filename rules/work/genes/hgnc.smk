@@ -24,8 +24,8 @@ rule genes_hgnc_xlink:  # -- Build HGNC xlink table.
     input:
         json="work/download/hgnc/{date}/hgnc_complete_set.json",
     output:
-        tsv="output/worker/genes-xlink-{date}/genes-xlink.tsv",
-        tsv_md5="output/worker/genes-xlink-{date}/genes-xlink.tsv.md5",
+        tsv="output/full/worker/genes-xlink-{date}/genes-xlink.tsv",
+        tsv_md5="output/full/worker/genes-xlink-{date}/genes-xlink.tsv.md5",
     shell:
         r"""
         if [[ "$(date +%Y%m%d)" != "{wildcards.date}" ]]; then

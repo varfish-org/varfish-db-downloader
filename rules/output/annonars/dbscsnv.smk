@@ -13,9 +13,11 @@ rule output_annonars_dbscsnv:  # -- build dbscSNV RocksDB with annonars
         input_output_annonars_dbscsnv,
     output:
         rocksdb_identity=(
-            "output/annonars/dbscsnv-{genome_release}-{v_dbscsnv}+{v_annonars}/rocksdb/IDENTITY"
+            "output/full/annonars/dbscsnv-{genome_release}-{v_dbscsnv}+{v_annonars}/rocksdb/IDENTITY"
         ),
-        spec_yaml=("output/annonars/dbscsnv-{genome_release}-{v_dbscsnv}+{v_annonars}/spec.yaml"),
+        spec_yaml=(
+            "output/full/annonars/dbscsnv-{genome_release}-{v_dbscsnv}+{v_annonars}/spec.yaml"
+        ),
     threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
