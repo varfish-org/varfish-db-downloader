@@ -10,14 +10,14 @@ rule subset_viguno_pheno_exomes:  # -- create exomes subset
         phenotype_to_genes="output/viguno/hpo-{v_hpo}+{v_viguno}/phenotype_to_genes.txt",
         rocksdb_identity="output/viguno/hpo-{v_hpo}+{v_viguno}/scores-fun-sim-avg-resnik-gene/IDENTITY",
         bin="output/viguno/hpo-{v_hpo}+{v_viguno}/hpo.bin",
-        spec_yaml="output/viguno/hpo-{v_hpo}-{v_viguno}/spec.yaml",
+        spec_yaml="output/viguno/hpo-{v_hpo}+{v_viguno}/spec.yaml",
     output:
         obo="reduced-exomes/viguno/hpo-{v_hpo}+{v_viguno}/hp.obo",
         hpoa="reduced-exomes/viguno/hpo-{v_hpo}+{v_viguno}/phenotype.hpoa",
         phenotype_to_genes="reduced-exomes/viguno/hpo-{v_hpo}+{v_viguno}/phenotype_to_genes.txt",
         rocksdb_identity="reduced-exomes/viguno/hpo-{v_hpo}+{v_viguno}/scores-fun-sim-avg-resnik-gene/IDENTITY",
         bin="reduced-exomes/viguno/hpo-{v_hpo}+{v_viguno}/hpo.bin",
-        spec_yaml="reduced-exomes/viguno/hpo-{v_hpo}-{v_viguno}/spec.yaml",
+        spec_yaml="reduced-exomes/viguno/hpo-{v_hpo}+{v_viguno}/spec.yaml",
     wildcard_constraints:
         v_hpo=RE_VERSION,
         v_viguno=RE_VERSION,
@@ -40,14 +40,14 @@ rule subset_worker_pheno_dev:  # -- create development subset
         phenotype_to_genes="output/viguno/hpo-{v_hpo}+{v_viguno}/phenotype_to_genes.txt",
         rocksdb_identity="output/viguno/hpo-{v_hpo}+{v_viguno}/scores-fun-sim-avg-resnik-gene/IDENTITY",
         bin="output/viguno/hpo-{v_hpo}+{v_viguno}/hpo.bin",
-        spec_yaml="output/viguno/hpo-{v_hpo}-{v_viguno}/spec.yaml",
+        spec_yaml="output/viguno/hpo-{v_hpo}+{v_viguno}/spec.yaml",
     output:
         obo="reduced-dev/viguno/hpo-{v_hpo}+{v_viguno}/hp.obo",
         hpoa="reduced-dev/viguno/hpo-{v_hpo}+{v_viguno}/phenotype.hpoa",
         phenotype_to_genes="reduced-dev/viguno/hpo-{v_hpo}+{v_viguno}/phenotype_to_genes.txt",
         rocksdb_identity="reduced-dev/viguno/hpo-{v_hpo}+{v_viguno}/scores-fun-sim-avg-resnik-gene/IDENTITY",
         bin="reduced-dev/viguno/hpo-{v_hpo}+{v_viguno}/hpo.bin",
-        spec_yaml="reduced-dev/viguno/hpo-{v_hpo}-{v_viguno}/spec.yaml",
+        spec_yaml="reduced-dev/viguno/hpo-{v_hpo}+{v_viguno}/spec.yaml",
     wildcard_constraints:
         v_hpo=RE_VERSION,
         v_viguno=RE_VERSION,

@@ -25,7 +25,7 @@ rule reduced_refseq_exons:  # -- create reduced data exons BED file
             -f scripts/reduced-refseq-exons.awk \
             {input.acc} \
             <(zcat {input.gtf}) \
-        | egrep '^#|^X|^Y|^M|^[1-9]' \
+        | egrep '^#|^X|^Y|^M|^[1-9]|^chrX|^chrY|^chrM|^chr[1-9]' \
         | sort-bed - \
         | bedops --range {EXON_PADDING} --merge - \
         > {output.bed}

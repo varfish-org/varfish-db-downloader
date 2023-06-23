@@ -58,7 +58,7 @@ rule global_hpo_to_bin:  # -- convert to .bin
         rocksdb_identity="output/viguno/hpo-{v_hpo}+{v_viguno}/scores-fun-sim-avg-resnik-gene/IDENTITY",
     output:
         bin="output/viguno/hpo-{v_hpo}+{v_viguno}/hpo.bin",
-        spec_yaml=("output/viguno/hpo-{v_hpo}-{v_viguno}/spec.yaml"),
+        spec_yaml=("output/viguno/hpo-{v_hpo}+{v_viguno}/spec.yaml"),
     wildcard_constraints:
         v_hpo=RE_VERSION,
         v_viguno=RE_VERSION,
