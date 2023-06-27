@@ -9,7 +9,7 @@ import attrs
 #: Value to use for "today".
 TODAY = os.environ.get("TODAY", datetime.today().strftime("%Y%m%d"))
 #: The ClinVar release to use (includes annonars version used for building).
-CLINVAR_RELEASE = os.environ.get("CLINVAR_VERSION", "2023-0625+0.6.3")
+CLINVAR_RELEASE = os.environ.get("CLINVAR_RELEASE", "2023-0625+0.6.3")
 #: The ClinVar version to use (part of the tag and release name).
 CLINVAR_VERSION = CLINVAR_RELEASE.replace("-", "").split("+")[0]
 

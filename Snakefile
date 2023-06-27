@@ -157,7 +157,11 @@ rule all:
         # ----- genes
         f"output/full/annonars/genes-{DV.acmg_sf}+{DV.gnomad_constraints}+{DV.dbnsfp}+{DV.today}+{PV.worker}/rocksdb/IDENTITY",
         # -- worker data
-        # ----- Genes
+        f"output/full/worker/genes-regions-grch37-{DV.refseq_37}/refseq_genes.bin",
+        f"output/full/worker/genes-regions-grch37-{DV.ensembl_37}/ensembl_genes.bin",
+        f"output/full/worker/genes-regions-grch38-{DV.refseq_38}/refseq_genes.bin",
+        f"output/full/worker/genes-regions-grch38-{DV.ensembl_38}/ensembl_genes.bin",
+        # -- mehari data
         f"output/full/worker/genes-xlink-{DV.today}/genes-xlink.tsv",
         f"output/full/worker/genes-txs-grch37-{DV.mehari_tx}/mehari-data-txs-grch37-{DV.mehari_tx}.bin.zst",
         f"output/full/worker/genes-txs-grch38-{DV.mehari_tx}/mehari-data-txs-grch38-{DV.mehari_tx}.bin.zst",
@@ -310,8 +314,9 @@ include: "rules/output/annonars/gnomad_mtdna.smk"
 include: "rules/output/annonars/helix.smk"
 include: "rules/output/annonars/genes.smk"
 # ---- worker
-# ------ global
 include: "rules/output/worker/patho_mms.smk"
+include: "rules/output/worker/clinvar.smk"
+include: "rules/output/worker/genes_regions.smk"
 # -- reduced output directory (dev/exomes) ------------------------------------------------------
 # ---- bed file
 include: "rules/reduced/annonars.smk"
