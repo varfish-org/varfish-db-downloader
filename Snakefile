@@ -90,7 +90,6 @@ rule all:
         f"work/genes/entrez/{DV.today}/gene_info.jsonl",
         f"work/genes/gnomad/{DV.gnomad_constraints}/gnomad_constraints.tsv",
         f"work/genes/hgnc/{DV.today}/hgnc_info.jsonl",
-        f"work/genes/mim2gene/{DV.today}/mim2gene.tsv",
         # reference-specific annotations
         # -- background/population sequence variants and annotations thereof
         # ---- GRCh37
@@ -161,6 +160,13 @@ rule all:
         f"output/full/worker/genes-regions-grch37-{DV.ensembl_37}/ensembl_genes.bin",
         f"output/full/worker/genes-regions-grch38-{DV.refseq_38}/refseq_genes.bin",
         f"output/full/worker/genes-regions-grch38-{DV.ensembl_38}/ensembl_genes.bin",
+        f"output/full/worker/genes-xlink-{DV.today}/genes-xlink.bin",
+        f"output/full/worker/acmg-sf-{DV.acmg_sf}/acmg_sf.tsv",
+        f"output/full/worker/mim2gene/{DV.today}/mim2gene.tsv",
+        f"output/full/worker/masked-repeat-grch37-{DV.ucsc_rmsk_37}/masked-repeat.bin",
+        f"output/full/worker/masked-repeat-grch38-{DV.ucsc_rmsk_38}/masked-repeat.bin",
+        f"output/full/worker/masked-segdup-grch37-{DV.ucsc_genomic_super_dups_37}/masked-segdup.bin",
+        f"output/full/worker/masked-segdup-grch38-{DV.ucsc_genomic_super_dups_38}/masked-segdup.bin",
         # -- mehari data
         f"output/full/worker/genes-xlink-{DV.today}/genes-xlink.tsv",
         f"output/full/worker/genes-txs-grch37-{DV.mehari_tx}/mehari-data-txs-grch37-{DV.mehari_tx}.bin.zst",
@@ -317,6 +323,10 @@ include: "rules/output/annonars/genes.smk"
 include: "rules/output/worker/patho_mms.smk"
 include: "rules/output/worker/clinvar.smk"
 include: "rules/output/worker/genes_regions.smk"
+include: "rules/output/worker/hgnc.smk"
+include: "rules/output/worker/acmg.smk"
+include: "rules/output/worker/mim2gene.smk"
+include: "rules/output/worker/masked.smk"
 # -- reduced output directory (dev/exomes) ------------------------------------------------------
 # ---- bed file
 include: "rules/reduced/annonars.smk"

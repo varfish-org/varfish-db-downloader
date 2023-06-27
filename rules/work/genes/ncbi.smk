@@ -17,28 +17,6 @@ rule genes_ncbi_download_mim2gene:  # -- download NCBI MedGen mim2gene
         """
 
 
-rule genes_ncbi_process_mim2gene:  # -- process NCBI MedGen mim2gene
-    input:
-        download="work/download/genes/ncbi/{date}/mim2gene_medgen",
-    output:
-        tsv="work/genes/mim2gene/{date}/mim2gene.tsv",
-        tsv_md5="work/genes/mim2gene/{date}/mim2gene.tsv.md5",
-    shell:
-        r"""
-        if [[ "$(date +%Y%m%d)" != "{wildcards.date}" ]]; then
-            >&2 echo "{wildcards.date} is not today"
-            exit 1
-        fi
-
-        awk -f scripts/genes-mim2gene.awk \
-            -F $'\t' \
-            {input.download} \
-        > {output.tsv}
-
-        md5sum {output.tsv} >{output.tsv_md5}
-        """
-
-
 rule genes_ncbi_entrez_download:  # -- download NCBI Entrez files
     output:
         ags="work/download/genes/ncbi/{date}/Homo_sapiens.ags.gz",
