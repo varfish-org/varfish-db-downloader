@@ -10,15 +10,15 @@ def input_subset_annonars(wildcards):
     else:
         refseq_version = DV.refseq_38
     result = {
-            "bed": (
-                f"output/reduced-{wildcards.set_name}/targets/{wildcards.genome_release}/"
-                f"refseq/{refseq_version}/refseq_target_exons.bed"
-            ),
-            "rocksdb_identity": (
-                f"output/full/annonars/{wildcards.name}-{wildcards.genome_release}-"
-                f"{wildcards.version_multi}/rocksdb/IDENTITY"
-            ),
-        }
+        "bed": (
+            f"output/reduced-{wildcards.set_name}/targets/{wildcards.genome_release}/"
+            f"refseq/{refseq_version}/refseq_target_exons.bed"
+        ),
+        "rocksdb_identity": (
+            f"output/full/annonars/{wildcards.name}-{wildcards.genome_release}-"
+            f"{wildcards.version_multi}/rocksdb/IDENTITY"
+        ),
+    }
     return result
 
 

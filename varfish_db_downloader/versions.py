@@ -8,6 +8,10 @@ import attrs
 
 #: Value to use for "today".
 TODAY = os.environ.get("TODAY", datetime.today().strftime("%Y%m%d"))
+#: The ClinVar release to use (includes annonars version used for building).
+CLINVAR_RELEASE = os.environ.get("CLINVAR_VERSION", "2023-0625+0.6.3")
+#: The ClinVar version to use (part of the tag and release name).
+CLINVAR_VERSION = CLINVAR_RELEASE.replace("-", "").split("+")[0]
 
 
 #: Wether we run in CI/test mode.
@@ -88,6 +92,10 @@ class DataVersions:
     patho_mms: str
     #: Mehari transcript data.
     mehari_tx: str
+    #: ClinVar release.
+    clinvar_release: str
+    #: ClinVar version.
+    clinvar_version: str
 
 
 #: The data versions to use.
@@ -127,6 +135,8 @@ DATA_VERSIONS = DataVersions(
     hpo="20230606",
     patho_mms="20220730",
     mehari_tx="0.2.2",
+    clinvar_release=CLINVAR_RELEASE,
+    clinvar_version=CLINVAR_VERSION,
 )
 
 

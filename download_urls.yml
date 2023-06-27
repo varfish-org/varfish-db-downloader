@@ -1,3 +1,12 @@
+- url: https://github.com/bihealth/annonars-data-clinvar/releases/download/clinvar-weekly-20230625/clinvar-strucvar-grch37-2023-0625+0.6.3.tar.gz
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+- url: https://github.com/bihealth/annonars-data-clinvar/releases/download/clinvar-weekly-20230625/clinvar-strucvar-grch38-2023-0625+0.6.3.tar.gz
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+
 - url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.2.2/mehari-data-txs-grch37-0.2.2.bin.zst
   excerpt_strategy:
     strategy: no-excerpt

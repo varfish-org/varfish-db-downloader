@@ -177,6 +177,9 @@ rule all:
         f"output/full/worker/annos/strucvars/exac-grch37-{DV.exac_cnv}/exac.bed.gz",
         f"output/full/worker/annos/strucvars/g1k-grch37-{DV.g1k_svs}/g1k.bed.gz",
         f"output/full/worker/annos/strucvars/gnomad-grch37-{DV.gnomad_sv}/gnomad.bed.gz",
+        # ----- ClinVar SVs
+        f"output/full/worker/annos/strucvars/clinvar-grch37-{DV.clinvar_version}/clinvar_strucvars.bin",
+        f"output/full/worker/annos/strucvars/clinvar-grch38-{DV.clinvar_version}/clinvar_strucvars.bin",
         # ----- known pathogenic MMS
         f"output/full/worker/annos/strucvars/patho-mms-grch37-{DV.patho_mms}/patho-mms.bed",
         f"output/full/worker/annos/strucvars/patho-mms-grch38-{DV.patho_mms}/patho-mms.bed",
@@ -289,6 +292,7 @@ include: "rules/work/annos/strucvars/dgv.smk"
 include: "rules/work/annos/strucvars/exac.smk"
 include: "rules/work/annos/strucvars/g1k.smk"
 include: "rules/work/annos/strucvars/gnomad.smk"
+include: "rules/work/annos/strucvars/clinvar.smk"
 # -- output directory ---------------------------------------------------------------------------
 # ---- mehari
 include: "rules/output/mehari/freqs.smk"

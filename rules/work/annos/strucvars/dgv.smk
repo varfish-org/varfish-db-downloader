@@ -30,7 +30,9 @@ def input_annos_strucvars_dgv_process(wildcards):
     )
     return {
         "txt": tpl.format(
-            version_dashes="-".join([wildcards.version[0:4], wildcards.version[4:6], wildcards.version[6:8]]),
+            version_dashes="-".join(
+                [wildcards.version[0:4], wildcards.version[4:6], wildcards.version[6:8]]
+            ),
             **mapping[wildcards.genome_release],
             **wildcards,
         )
