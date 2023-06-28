@@ -213,8 +213,8 @@ rule all:
         f"output/full/tracks/track-features-ucsc-fixseqliftoverpsl-grch37-{DV.ucsc_fix_seq_liftover_37}+{DV.tracks}/fixSeqLiftOverPsl.bed.gz",
         f"output/full/tracks/track-features-ucsc-fixseqliftoverpsl-grch38-{DV.ucsc_fix_seq_liftover_38}+{DV.tracks}/fixSeqLiftOverPsl.bed.gz",
         # ----- tads
-        "output/full/tracks/track-tads-grch37-dixon2015+{DV.tracks}/hesc.bed",
-        "output/full/tracks/track-tads-grch38-dixon2015+{DV.tracks}/hesc.bed",
+        f"output/full/tracks/track-tads-grch37-dixon2015+{DV.tracks}/hesc.bed",
+        f"output/full/tracks/track-tads-grch38-dixon2015+{DV.tracks}/hesc.bed",
         #
         # == development (reduced data) directories =============================================
         #
