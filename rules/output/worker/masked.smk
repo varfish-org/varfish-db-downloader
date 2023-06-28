@@ -5,7 +5,10 @@ rule output_masked_repeat:
     input:
         f"output/full/tracks/track-features-ucsc-rmsk-{{genome_release}}-{{version}}+{DV.tracks}/rmsk.bed.gz",
     output:
-        "output/full/worker/masked-repeat-{genome_release}-{version}/masked-repeat.bin",
+        f"output/full/worker/masked-repeat-{{genome_release}}-{{version}}+{PV.worker}/masked-repeat.bin",
+    wildcard_constraints:
+        genome_release=RE_GENOME,
+        version=RE_VERSION,
     shell:
         r"""
         varfish-server-worker db to-bin \
@@ -19,7 +22,10 @@ rule output_masked_segdup:
     input:
         f"output/full/tracks/track-features-ucsc-genomicsuperdups-{{genome_release}}-{{version}}+{DV.tracks}/genomicSuperDups.bed.gz",
     output:
-        "output/full/worker/masked-segdup-{genome_release}-{version}/masked-segdup.bin",
+        f"output/full/worker/masked-segdup-{{genome_release}}-{{version}}+{PV.worker}/masked-segdup.bin",
+    wildcard_constraints:
+        genome_release=RE_GENOME,
+        version=RE_VERSION,
     shell:
         r"""
         varfish-server-worker db to-bin \

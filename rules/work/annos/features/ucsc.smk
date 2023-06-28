@@ -4,6 +4,9 @@
 rule features_ucsc_download:  # -- download of UCSC tracks
     output:
         txt="work/download/annos/{genome_release}/features/ucsc/{version}/{filename}",
+    wildcard_constraints:
+        genome_release=RE_GENOME,
+        version=RE_VERSION,
     shell:
         r"""
         # Check version.
@@ -19,7 +22,7 @@ rule features_ucsc_download:  # -- download of UCSC tracks
         wget -O $TMPDIR/listing.html https://hgdownload.cse.ucsc.edu/goldenpath/$ucsc_name/database
         version=$(grep {wildcards.filename} $TMPDIR/listing.html| awk '{{ gsub(/-/, "", $3); print $3 }}')
         if [[ "$version" != "{wildcards.version}" ]]; then
-            >&2 echo "Version mismatch for {wildcards.filename}: expected {version}, got $version"
+            >&2 echo "Version mismatch for {wildcards.filename}: expected {wildcards.version}, got $version"
             exit 1
         fi
 
@@ -36,6 +39,9 @@ rule features_ucsc_genomic_super_dups_process:  # -- processing of UCSC genomicS
         bed_md5=f"output/full/tracks/track-features-ucsc-genomicsuperdups-{{genome_release}}-{{version}}+{DV.tracks}/genomicSuperDups.bed.gz.md5",
         bed_tbi=f"output/full/tracks/track-features-ucsc-genomicsuperdups-{{genome_release}}-{{version}}+{DV.tracks}/genomicSuperDups.bed.gz.tbi",
         bed_tbi_md5=f"output/full/tracks/track-features-ucsc-genomicsuperdups-{{genome_release}}-{{version}}+{DV.tracks}/genomicSuperDups.bed.gz.tbi.md5",
+    wildcard_constraints:
+        genome_release=RE_GENOME,
+        version=RE_VERSION,
     shell:
         r"""
         (
@@ -64,6 +70,9 @@ rule features_ucsc_rmsk_process:  # -- processing of UCSC rmsk
         bed_md5=f"output/full/tracks/track-features-ucsc-rmsk-{{genome_release}}-{{version}}+{DV.tracks}/rmsk.bed.gz.md5",
         bed_tbi=f"output/full/tracks/track-features-ucsc-rmsk-{{genome_release}}-{{version}}+{DV.tracks}/rmsk.bed.gz.tbi",
         bed_tbi_md5=f"output/full/tracks/track-features-ucsc-rmsk-{{genome_release}}-{{version}}+{DV.tracks}/rmsk.bed.gz.tbi.md5",
+    wildcard_constraints:
+        genome_release=RE_GENOME,
+        version=RE_VERSION,
     shell:
         r"""
         (

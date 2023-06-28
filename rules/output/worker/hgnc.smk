@@ -5,7 +5,7 @@ rule output_hgnc_xlink_binary:
     input:
         tsv="output/full/mehari/genes-xlink-{date}/genes-xlink.tsv",
     output:
-        bin="output/full/worker/genes-xlink-{date}/genes-xlink.bin",
+        bin=f"output/full/worker/genes-xlink-{{date}}+{PV.worker}/genes-xlink.bin",
     shell:
         r"""
         varfish-server-worker db to-bin \

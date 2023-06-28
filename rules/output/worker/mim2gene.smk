@@ -5,8 +5,8 @@ rule genes_ncbi_process_mim2gene:  # -- process NCBI MedGen mim2gene
     input:
         download="work/download/genes/ncbi/{date}/mim2gene_medgen",
     output:
-        tsv="output/full/worker/mim2gene/{date}/mim2gene.tsv",
-        tsv_md5="output/full/worker/mim2gene/{date}/mim2gene.tsv.md5",
+        tsv=f"output/full/worker/mim2gene-{{date}}+{PV.worker}/mim2gene.tsv",
+        tsv_md5=f"output/full/worker/mim2gene-{{date}}+{PV.worker}/mim2gene.tsv.md5",
     shell:
         r"""
         if [[ "$(date +%Y%m%d)" != "{wildcards.date}" ]] && [[ "{FORCE_TODAY}" != "True" ]]; then

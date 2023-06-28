@@ -12,7 +12,7 @@ rule genes_regions_worker_convert:
     input:
         unpack(input_genes_regions_worker_convert),
     output:
-        bin="output/full/worker/genes-regions-{genome_release}-{version}/{source}_genes.bin",
+        bin=f"output/full/worker/genes-regions-{{genome_release}}-{{version}}+{PV.worker}/{{source}}_genes.bin",
     shell:
         r"""
         varfish-server-worker \
