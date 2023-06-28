@@ -1,0 +1,21 @@
+dc.identifier: varfish-server-worker/masked-segdup/{{ genome_release }}:{{ version }}+{{ v_worker }}
+dc.title: "VarFish Server Worker Masked Regions: Segmental Duplications"
+dc.creator: UCSC Genome Browser Team
+dc.contributor:
+  - VarFish Developer Teams
+dc.format: application/x-protobuf
+dc.date: {{ today }}
+x-version: {{ version }}
+x-genome-release: {{ genome_release }}
+dc.description: |
+  Protobuf file with UCSC genome browser goldenPath segmental duplications file.
+dc.source:
+  - https://hgdownload.cse.ucsc.edu/goldenpath
+x-created-from:
+  - name: UCSC Genome Browser goldenPath "genomicSuperDups" file
+    version: {{ version }}
+x-created-with:
+  - name: varfish-db-downloader
+    version: {{ v_downloader }}
+  - name: varfish-server-worker
+    version: {{ v_worker }}

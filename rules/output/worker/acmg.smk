@@ -3,10 +3,13 @@
 
 rule acmg_prepare_worker:
     input:
-        acmg_sf="data/acmg/{v_acmg_sf}/acmg.tsv",
+        tsv="data/acmg_sf/{v_acmg_sf}/acmg_sf.tsv",
+        spec="data/acmg_sf/{v_acmg_sf}/acmg_sf.spec.yaml",
     output:
         tsv=f"output/full/worker/acmg-sf-{{v_acmg_sf}}+{PV.worker}/acmg_sf.tsv",
+        spec=f"output/full/worker/acmg-sf-{{v_acmg_sf}}+{PV.worker}/acmg_sf.spec.yaml",
     shell:
         r"""
-        cp {input.acmg_sf} {output.tsv}
+        cp {input.tsv} {output.tsv}
+        cp {input.spec} {output.spec}
         """

@@ -13,6 +13,7 @@ rule genes_regions_worker_convert:
         unpack(input_genes_regions_worker_convert),
     output:
         bin=f"output/full/worker/genes-regions-{{genome_release}}-{{version}}+{PV.worker}/{{source}}_genes.bin",
+        spec_yaml=f"output/full/worker/genes-regions-{{genome_release}}-{{version}}+{PV.worker}/{{source}}_genes.spec.yaml",
     shell:
         r"""
         varfish-server-worker \
@@ -20,4 +21,15 @@ rule genes_regions_worker_convert:
             --input-type gene-region \
             --path-input {input.bed} \
             --path-output-bin {output.bin}
+
+        varfish-db-downloader tpl \
+            --template rules/output/worker/{wildcards.source}_genes.spec.yaml \
+            --value today={TODAY} \
+            --value genome_release={wildcards.genome_release} \
+            \
+            --value version={wildcards.version} \
+            \
+            --value v_worker={PV.worker} \
+            --value v_downloader={PV.downloader} \
+        > {output.spec_yaml}
         """

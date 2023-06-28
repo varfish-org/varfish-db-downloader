@@ -1,0 +1,21 @@
+dc.identifier: varfish-server-worker/genes-regions/ensembl_genes:{{ version }}-{{ genome_release }}
+dc.title: VarFish Worker ENSEMBL Gene Regions
+dc.creator: ENSEMBL
+dc.contributor:
+  - VarFish Developer Teams
+dc.format: application/x-protobuf
+dc.date: {{ today }}
+x-version: {{ version }}
+x-genome-release: {{ genome_release }}
+dc.description: |
+  Protobuf file with ENSEMBL gene regions.
+dc.source:
+  - https://www.ensembl.org/
+x-created-from:
+  - name: ENSEMBL
+    version: {{ version }}
+x-created-with:
+  - name: varfish-db-downloader
+    version: {{ v_downloader }}
+  - name: varfish-server-worker
+    version: {{ v_worker }}

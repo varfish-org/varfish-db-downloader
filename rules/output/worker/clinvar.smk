@@ -17,6 +17,7 @@ rule annos_strucvar_clinvar_convert:
         unpack(input_annos_strucvar_clinvar_convert),
     output:
         bin=f"output/full/worker/clinvar-strucvars-{{genome_release}}-{{clinvar_release}}+{PV.worker}/clinvar-strucvars.bin",
+        spec=f"output/full/worker/clinvar-strucvars-{{genome_release}}-{{clinvar_release}}+{PV.worker}/clinvar-strucvars.spec.yaml",
     wildcard_constraints:
         genome_release=RE_GENOME,
         clinvar_release=RE_VERSION,
@@ -26,4 +27,16 @@ rule annos_strucvar_clinvar_convert:
             --input-type clinvar-sv \
             --path-input {input.tsv} \
             --path-output-bin {output.bin}
+
+        varfish-db-downloader tpl \
+            --template rules/output/worker/clinvar_strucvars.spec.yaml \
+            --value id_prefix=variant-server-worker/patho-mms \
+            --value today={TODAY} \
+            \
+            --value genome_release={wildcards.genome_release} \
+            --value clinvar_release={wildcards.clinvar_release} \
+            \
+            --value v_worker={PV.worker} \
+            --value v_downloader={PV.downloader} \
+        > {output.spec}
         """

@@ -18,9 +18,31 @@ rule output_worker_patho_mms:
 
         cp $base.bed       {output.tracks_bed}
         cp $base.bed.md5   {output.tracks_bed_md5}
-        cp $base.spec.yaml {output.tracks_spec}
+
+        varfish-db-downloader tpl \
+            --template rules/output/worker/patho_mms.spec.yaml \
+            --value id_prefix=varfish-server-tracks/patho-mms \
+            --value today={TODAY} \
+            \
+            --value genome_release={wildcards.genome_release} \
+            --value v_patho_mms={wildcards.v_patho_mms} \
+            \
+            --value v_worker={PV.worker} \
+            --value v_downloader={PV.downloader} \
+        > {output.tracks_spec}
 
         cp $base.bed       {output.worker_bed}
         cp $base.bed.md5   {output.worker_bed_md5}
-        cp $base.spec.yaml {output.worker_spec}
+
+        varfish-db-downloader tpl \
+            --template rules/output/worker/patho_mms.spec.yaml \
+            --value id_prefix=variant-server-worker/patho-mms \
+            --value today={TODAY} \
+            \
+            --value genome_release={wildcards.genome_release} \
+            --value v_patho_mms={wildcards.v_patho_mms} \
+            \
+            --value v_worker={PV.worker} \
+            --value v_downloader={PV.downloader} \
+        > {output.worker_spec}
         """
