@@ -9,6 +9,7 @@
 from varfish_db_downloader.versions import (
     DATA_VERSIONS as DV,
     PACKAGE_VERSIONS as PV,
+    FORCE_TODAY,
     TODAY,
     RUNS_IN_CI,
 )
@@ -177,9 +178,9 @@ rule all:
         f"output/full/worker/bgdb-exac-grch37-{DV.exac_cnv}/bgdb-exac.bin",
         f"output/full/worker/bgdb-g1k-grch37-{DV.g1k_svs}/bgdb-g1k.bin",
         # -- mehari data
-        f"output/full/worker/genes-xlink-{DV.today}/genes-xlink.tsv",
-        f"output/full/worker/genes-txs-grch37-{DV.mehari_tx}/mehari-data-txs-grch37-{DV.mehari_tx}.bin.zst",
-        f"output/full/worker/genes-txs-grch38-{DV.mehari_tx}/mehari-data-txs-grch38-{DV.mehari_tx}.bin.zst",
+        f"output/full/mehari/genes-xlink-{DV.today}/genes-xlink.tsv",
+        f"output/full/mehari/genes-txs-grch37-{DV.mehari_tx}/mehari-data-txs-grch37-{DV.mehari_tx}.bin.zst",
+        f"output/full/mehari/genes-txs-grch38-{DV.mehari_tx}/mehari-data-txs-grch38-{DV.mehari_tx}.bin.zst",
         # ----- HPO
         f"output/full/viguno/hpo-{DV.hpo}+{PV.viguno}/hp.obo",
         f"output/full/viguno/hpo-{DV.hpo}+{PV.viguno}/phenotype.hpoa",
@@ -187,33 +188,33 @@ rule all:
         f"output/full/viguno/hpo-{DV.hpo}+{PV.viguno}/hpo.bin",
         f"output/full/viguno/hpo-{DV.hpo}+{PV.viguno}/scores-fun-sim-avg-resnik-gene/IDENTITY",
         # ----- background/population structural variants and annotations thereof
-        f"output/full/worker/annos/strucvars/dbvar-grch37-{DV.dbvar}/dbvar.bed.gz",
-        f"output/full/worker/annos/strucvars/dbvar-grch38-{DV.dbvar}/dbvar.bed.gz",
-        f"output/full/worker/annos/strucvars/dgv-grch37-{DV.dgv}/dgv.bed.gz",
-        f"output/full/worker/annos/strucvars/dgv-grch38-{DV.dgv}/dgv.bed.gz",
-        f"output/full/worker/annos/strucvars/dgv-gs-grch37-{DV.dgv_gs}/dgv-gs.bed.gz",
-        f"output/full/worker/annos/strucvars/dgv-gs-grch38-{DV.dgv_gs}/dgv-gs.bed.gz",
-        f"output/full/worker/annos/strucvars/exac-grch37-{DV.exac_cnv}/exac.bed.gz",
-        f"output/full/worker/annos/strucvars/g1k-grch37-{DV.g1k_svs}/g1k.bed.gz",
-        f"output/full/worker/annos/strucvars/gnomad-grch37-{DV.gnomad_sv}/gnomad.bed.gz",
+        f"output/full/worker/track-strucvars-dbvar-grch37-{DV.dbvar}/dbvar.bed.gz",
+        f"output/full/worker/track-strucvars-dbvar-grch38-{DV.dbvar}/dbvar.bed.gz",
+        f"output/full/worker/track-strucvars-dgv-grch37-{DV.dgv}/dgv.bed.gz",
+        f"output/full/worker/track-strucvars-dgv-grch38-{DV.dgv}/dgv.bed.gz",
+        f"output/full/worker/track-strucvars-dgv-gs-grch37-{DV.dgv_gs}/dgv-gs.bed.gz",
+        f"output/full/worker/track-strucvars-dgv-gs-grch38-{DV.dgv_gs}/dgv-gs.bed.gz",
+        f"output/full/worker/track-strucvars-exac-grch37-{DV.exac_cnv}/exac.bed.gz",
+        f"output/full/worker/track-strucvars-g1k-grch37-{DV.g1k_svs}/g1k.bed.gz",
+        f"output/full/worker/track-strucvars-gnomad-grch37-{DV.gnomad_sv}/gnomad.bed.gz",
         # ----- ClinVar SVs
-        f"output/full/worker/annos/strucvars/clinvar-grch37-{DV.clinvar_version}/clinvar_strucvars.bin",
-        f"output/full/worker/annos/strucvars/clinvar-grch38-{DV.clinvar_version}/clinvar_strucvars.bin",
+        f"output/full/worker/track-strucvars-clinvar-grch37-{DV.clinvar_version}/clinvar_strucvars.bin",
+        f"output/full/worker/track-strucvars-clinvar-grch38-{DV.clinvar_version}/clinvar_strucvars.bin",
         # ----- known pathogenic MMS
-        f"output/full/worker/annos/strucvars/patho-mms-grch37-{DV.patho_mms}/patho-mms.bed",
-        f"output/full/worker/annos/strucvars/patho-mms-grch38-{DV.patho_mms}/patho-mms.bed",
+        f"output/full/worker/track-strucvars-patho-mms-grch37-{DV.patho_mms}/patho-mms.bed",
+        f"output/full/worker/track-strucvars-patho-mms-grch38-{DV.patho_mms}/patho-mms.bed",
         # ----- problematic regions (rmsk, genomicSuperDups, altSeqLiftOverPsl, fixSeqLiftOverPsl)
-        f"output/full/worker/annos/features/ucsc-genomicsuperdups-grch37-{DV.ucsc_genomic_super_dups_37}/genomicSuperDups.bed.gz",
-        f"output/full/worker/annos/features/ucsc-genomicsuperdups-grch38-{DV.ucsc_genomic_super_dups_38}/genomicSuperDups.bed.gz",
-        f"output/full/worker/annos/features/ucsc-rmsk-grch37-{DV.ucsc_rmsk_37}/rmsk.bed.gz",
-        f"output/full/worker/annos/features/ucsc-rmsk-grch38-{DV.ucsc_rmsk_38}/rmsk.bed.gz",
-        f"output/full/worker/annos/features/ucsc-altseqliftoverpsl-grch37-{DV.ucsc_alt_seq_liftover_37}/altSeqLiftOverPsl.bed.gz",
-        f"output/full/worker/annos/features/ucsc-altseqliftoverpsl-grch38-{DV.ucsc_alt_seq_liftover_38}/altSeqLiftOverPsl.bed.gz",
-        f"output/full/worker/annos/features/ucsc-fixseqliftoverpsl-grch37-{DV.ucsc_fix_seq_liftover_37}/fixSeqLiftOverPsl.bed.gz",
-        f"output/full/worker/annos/features/ucsc-fixseqliftoverpsl-grch38-{DV.ucsc_fix_seq_liftover_38}/fixSeqLiftOverPsl.bed.gz",
+        f"output/full/worker/track-features-ucsc-genomicsuperdups-grch37-{DV.ucsc_genomic_super_dups_37}/genomicSuperDups.bed.gz",
+        f"output/full/worker/track-features-ucsc-genomicsuperdups-grch38-{DV.ucsc_genomic_super_dups_38}/genomicSuperDups.bed.gz",
+        f"output/full/worker/track-features-ucsc-rmsk-grch37-{DV.ucsc_rmsk_37}/rmsk.bed.gz",
+        f"output/full/worker/track-features-ucsc-rmsk-grch38-{DV.ucsc_rmsk_38}/rmsk.bed.gz",
+        f"output/full/worker/track-features-ucsc-altseqliftoverpsl-grch37-{DV.ucsc_alt_seq_liftover_37}/altSeqLiftOverPsl.bed.gz",
+        f"output/full/worker/track-features-ucsc-altseqliftoverpsl-grch38-{DV.ucsc_alt_seq_liftover_38}/altSeqLiftOverPsl.bed.gz",
+        f"output/full/worker/track-features-ucsc-fixseqliftoverpsl-grch37-{DV.ucsc_fix_seq_liftover_37}/fixSeqLiftOverPsl.bed.gz",
+        f"output/full/worker/track-features-ucsc-fixseqliftoverpsl-grch38-{DV.ucsc_fix_seq_liftover_38}/fixSeqLiftOverPsl.bed.gz",
         # ----- tads
-        "output/full/worker/annos/strucvars/tads-grch37-dixon2015/hesc.bed",
-        "output/full/worker/annos/strucvars/tads-grch38-dixon2015/hesc.bed",
+        "output/full/worker/track-tads-grch37-dixon2015/hesc.bed",
+        "output/full/worker/track-tads-grch38-dixon2015/hesc.bed",
         #
         # == development (reduced data) directories =============================================
         #

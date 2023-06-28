@@ -3,9 +3,9 @@
 
 rule output_worker_patho_mms:
     output:
-        bed="output/full/worker/annos/strucvars/patho-mms-{genome_release}-{v_patho_mms}/patho-mms.bed",
-        bed_md5="output/full/worker/annos/strucvars/patho-mms-{genome_release}-{v_patho_mms}/patho-mms.bed.md5",
-        spec="output/full/worker/annos/strucvars/patho-mms-{genome_release}-{v_patho_mms}/patho-mms.spec.yaml",
+        bed="output/full/worker/track-strucvars-patho-mms-{genome_release}-{v_patho_mms}/patho-mms.bed",
+        bed_md5="output/full/worker/track-strucvars-patho-mms-{genome_release}-{v_patho_mms}/patho-mms.bed.md5",
+        spec="output/full/worker/track-strucvars-patho-mms-{genome_release}-{v_patho_mms}/patho-mms.spec.yaml",
     wildcard_constraints:
         genome_release=RE_GENOME,
         v_patho_mms=RE_VERSION,

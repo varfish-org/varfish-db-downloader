@@ -3,7 +3,7 @@
 
 rule output_worker_bgdb_g1k:
     input:
-        bed="output/full/worker/annos/strucvars/g1k-grch37-{version}/g1k.bed.gz",
+        bed="output/full/worker/track-strucvars-g1k-grch37-{version}/g1k.bed.gz",
     output:
         bin="output/full/worker/bgdb-g1k-grch37-{version}/bgdb-g1k.bin",
     shell:
@@ -17,7 +17,7 @@ rule output_worker_bgdb_g1k:
 
 rule output_worker_bgdb_exac:
     input:
-        bed="output/full/worker/annos/strucvars/exac-grch37-{version}/exac.bed.gz",
+        bed="output/full/worker/track-strucvars-exac-grch37-{version}/exac.bed.gz",
     output:
         bin="output/full/worker/bgdb-exac-grch37-{version}/bgdb-exac.bin",
     shell:
@@ -31,7 +31,7 @@ rule output_worker_bgdb_exac:
 
 rule output_worker_bgdb_gnomad:
     input:
-        bed="output/full/worker/annos/strucvars/gnomad-grch37-{version}/gnomad.bed.gz",
+        bed="output/full/worker/track-strucvars-gnomad-grch37-{version}/gnomad.bed.gz",
     output:
         bin="output/full/worker/bgdb-gnomad-grch37-{version}/bgdb-gnomad.bin",
     shell:
@@ -45,7 +45,7 @@ rule output_worker_bgdb_gnomad:
 
 rule output_worker_bgdb_dbvar:
     input:
-        bed="output/full/worker/annos/strucvars/dbvar-{genome_release}-{version}/dbvar.bed.gz",
+        bed="output/full/worker/track-strucvars-dbvar-{genome_release}-{version}/dbvar.bed.gz",
     output:
         bin="output/full/worker/bgdb-dbvar-{genome_release}-{version}/bgdb-dbvar.bin",
     shell:
@@ -59,7 +59,7 @@ rule output_worker_bgdb_dbvar:
 
 rule output_worker_bgdb_dgv:
     input:
-        bed="output/full/worker/annos/strucvars/dgv-{genome_release}-{version}/dgv.bed.gz",
+        bed="output/full/worker/track-strucvars-dgv-{genome_release}-{version}/dgv.bed.gz",
     output:
         bin="output/full/worker/bgdb-dgv-{genome_release}-{version}/bgdb-dgv.bin",
     shell:
@@ -73,7 +73,7 @@ rule output_worker_bgdb_dgv:
 
 rule output_worker_bgdb_dgv_gs:
     input:
-        bed="output/full/worker/annos/strucvars/dgv-gs-{genome_release}-{version}/dgv-gs.bed.gz",
+        bed="output/full/worker/track-strucvars-dgv-gs-{genome_release}-{version}/dgv-gs.bed.gz",
     output:
         bin="output/full/worker/bgdb-dgv-gs-{genome_release}-{version}/bgdb-dgv-gs.bin",
     shell:

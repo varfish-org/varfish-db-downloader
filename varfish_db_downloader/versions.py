@@ -8,6 +8,8 @@ import attrs
 
 #: Value to use for "today".
 TODAY = os.environ.get("TODAY", datetime.today().strftime("%Y%m%d"))
+#: Allow to disable the today check.
+FORCE_TODAY = os.environ.get("FORCE_TODAY", "false").lower() == "true"
 #: The ClinVar release to use (includes annonars version used for building).
 CLINVAR_RELEASE = os.environ.get("CLINVAR_RELEASE", "2023-0625+0.6.3")
 #: The ClinVar version to use (part of the tag and release name).

@@ -7,7 +7,7 @@ rule genes_hgnc_download:  # -- Download the HGNC data
         json_md5="work/download/hgnc/{date}/hgnc_complete_set.json.md5",
     shell:
         r"""
-        if [[ "$(date +%Y%m%d)" != "{wildcards.date}" ]]; then
+        if [[ "$(date +%Y%m%d)" != "{wildcards.date}" ]] && [[ "{FORCE_TODAY}" != "True" ]]; then
             >&2 echo "{wildcards.date} is not today"
             exit 1
         fi
@@ -24,11 +24,11 @@ rule genes_hgnc_xlink:  # -- Build HGNC xlink table.
     input:
         json="work/download/hgnc/{date}/hgnc_complete_set.json",
     output:
-        tsv="output/full/worker/genes-xlink-{date}/genes-xlink.tsv",
-        tsv_md5="output/full/worker/genes-xlink-{date}/genes-xlink.tsv.md5",
+        tsv="output/full/mehari/genes-xlink-{date}/genes-xlink.tsv",
+        tsv_md5="output/full/mehari/genes-xlink-{date}/genes-xlink.tsv.md5",
     shell:
         r"""
-        if [[ "$(date +%Y%m%d)" != "{wildcards.date}" ]]; then
+        if [[ "$(date +%Y%m%d)" != "{wildcards.date}" ]] && [[ "{FORCE_TODAY}" != "True" ]]; then
             >&2 echo "{wildcards.date} is not today"
             exit 1
         fi
@@ -52,7 +52,7 @@ rule genes_hgnc_gene_info:  # -- Build HGNC gene_info JSONL file.
         jsonl_md5="work/genes/hgnc/{date}/hgnc_info.jsonl.md5",
     shell:
         r"""
-        if [[ "$(date +%Y%m%d)" != "{wildcards.date}" ]]; then
+        if [[ "$(date +%Y%m%d)" != "{wildcards.date}" ]] && [[ "{FORCE_TODAY}" != "True" ]]; then
             >&2 echo "{wildcards.date} is not today"
             exit 1
         fi

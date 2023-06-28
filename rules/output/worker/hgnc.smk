@@ -3,7 +3,7 @@
 
 rule output_hgnc_xlink_binary:
     input:
-        tsv="output/full/worker/genes-xlink-{date}/genes-xlink.tsv",
+        tsv="output/full/mehari/genes-xlink-{date}/genes-xlink.tsv",
     output:
         bin="output/full/worker/genes-xlink-{date}/genes-xlink.bin",
     shell:

@@ -9,7 +9,7 @@ rule genes_ncbi_process_mim2gene:  # -- process NCBI MedGen mim2gene
         tsv_md5="output/full/worker/mim2gene/{date}/mim2gene.tsv.md5",
     shell:
         r"""
-        if [[ "$(date +%Y%m%d)" != "{wildcards.date}" ]]; then
+        if [[ "$(date +%Y%m%d)" != "{wildcards.date}" ]] && [[ "{FORCE_TODAY}" != "True" ]]; then
             >&2 echo "{wildcards.date} is not today"
             exit 1
         fi

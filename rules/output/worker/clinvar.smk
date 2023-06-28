@@ -16,7 +16,7 @@ rule annos_strucvar_clinvar_convert:
     input:
         unpack(input_annos_strucvar_clinvar_convert),
     output:
-        bin="output/full/worker/annos/strucvars/clinvar-{genome_release}-{clinvar_release}/clinvar_strucvars.bin",
+        bin="output/full/worker/track-strucvars-clinvar-{genome_release}-{clinvar_release}/clinvar_strucvars.bin",
     wildcard_constraints:
         genome_release=RE_GENOME,
         clinvar_release=RE_VERSION,
