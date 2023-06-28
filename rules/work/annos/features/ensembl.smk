@@ -52,6 +52,7 @@ rule annos_features_ensembl_gene_regions_process:  # -- process ENSEMBL gene reg
             -f scripts/features-ensembl-gene-regions.awk \
             <(zcat {input.gtf}) \
         | (set +e; egrep '^#|^X|^Y|^M|^[1-9]|^chrX|^chrY|^chrM|^chr[1-9]'; set -e) \
+        | egrep -v '_gl|_alt|_random|Un|_fix' \
         | sort-bed - \
         | bgzip -c \
         > {output.tsv}
