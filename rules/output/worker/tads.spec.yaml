@@ -1,0 +1,18 @@
+dc.identifier: varfish-server-worker/tads/{{ genome_release }}:dixon2015+{{ v_worker }}
+dc.title: TAD Map
+dc.creator: YUE Lab, Northwestern University
+dc.contributor:
+  - VarFish Developer Teams
+dc.format: text/tsv
+dc.date: {{ today }}
+x-version: dixon2015
+dc.description: |
+  BED file with TADs from Dixon et al. (2015)
+dc.source:
+  - http://3dgenome.fsm.northwestern.edu/
+  - PMID:22495300
+x-created-with:
+  - name: varfish-db-downloader
+    version: {{ v_downloader }}
+  - name: varfish-server-worker
+    version: {{ v_worker }}

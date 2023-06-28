@@ -30,7 +30,9 @@ def input_annos_strucvars_dgv_process(wildcards):
     )
     return {
         "txt": tpl.format(
-            version_dashes="-".join([wildcards.version[0:4], wildcards.version[4:6], wildcards.version[6:8]]),
+            version_dashes="-".join(
+                [wildcards.version[0:4], wildcards.version[4:6], wildcards.version[6:8]]
+            ),
             **mapping[wildcards.genome_release],
             **wildcards,
         )
@@ -41,17 +43,17 @@ rule annos_strucvars_dgv_process:  # -- download DGV files
     input:
         unpack(input_annos_strucvars_dgv_process),
     output:
-        bed="output/full/worker/annos/strucvars/dgv-{genome_release}-{version}/dgv.bed.gz",
-        bed_md5="output/full/worker/annos/strucvars/dgv-{genome_release}-{version}/dgv.bed.gz.md5",
-        bed_tbi="output/full/worker/annos/strucvars/dgv-{genome_release}-{version}/dgv.bed.gz.tbi",
-        bed_tbi_md5="output/full/worker/annos/strucvars/dgv-{genome_release}-{version}/dgv.bed.gz.tbi.md5",
+        bed=f"output/full/tracks/track-strucvars-dgv-{{genome_release}}-{{version}}+{DV.tracks}/dgv.bed.gz",
+        bed_md5=f"output/full/tracks/track-strucvars-dgv-{{genome_release}}-{{version}}+{DV.tracks}/dgv.bed.gz.md5",
+        bed_tbi=f"output/full/tracks/track-strucvars-dgv-{{genome_release}}-{{version}}+{DV.tracks}/dgv.bed.gz.tbi",
+        bed_tbi_md5=f"output/full/tracks/track-strucvars-dgv-{{genome_release}}-{{version}}+{DV.tracks}/dgv.bed.gz.tbi.md5",
     shell:
         r"""
         awk \
             -F $'\t' \
             -f scripts/vardbs-strucvar-dgv.awk \
             {input.txt} \
-        | grep -v _gl \
+        | egrep -v '_gl|_alt|_random|Un|^N' \
         | sort-bed - \
         | bgzip -c \
         > {output.bed}
@@ -91,17 +93,17 @@ rule annos_strucvars_dgv_gs_process:  # -- download DGV GS files
     input:
         unpack(input_annos_strucvars_dgv_gs_process),
     output:
-        bed="output/full/worker/annos/strucvars/dgv-gs-{genome_release}-{version}/dgv-gs.bed.gz",
-        bed_md5="output/full/worker/annos/strucvars/dgv-gs-{genome_release}-{version}/dgv-gs.bed.gz.md5",
-        bed_tbi="output/full/worker/annos/strucvars/dgv-gs-{genome_release}-{version}/dgv-gs.bed.gz.tbi",
-        bed_tbi_md5="output/full/worker/annos/strucvars/dgv-gs-{genome_release}-{version}/dgv-gs.bed.gz.tbi.md5",
+        bed=f"output/full/tracks/track-strucvars-dgv-gs-{{genome_release}}-{{version}}+{DV.tracks}/dgv-gs.bed.gz",
+        bed_md5=f"output/full/tracks/track-strucvars-dgv-gs-{{genome_release}}-{{version}}+{DV.tracks}/dgv-gs.bed.gz.md5",
+        bed_tbi=f"output/full/tracks/track-strucvars-dgv-gs-{{genome_release}}-{{version}}+{DV.tracks}/dgv-gs.bed.gz.tbi",
+        bed_tbi_md5=f"output/full/tracks/track-strucvars-dgv-gs-{{genome_release}}-{{version}}+{DV.tracks}/dgv-gs.bed.gz.tbi.md5",
     shell:
         r"""
         awk \
             -F $'\t' \
             -f scripts/vardbs-strucvar-dgv_gs.awk \
             {input.gff3} \
-        | grep -v _gl \
+        | egrep -v '_gl|_alt|_random|Un' \
         | sort-bed - \
         | bgzip -c \
         > {output.bed}

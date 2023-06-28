@@ -1,0 +1,21 @@
+dc.identifier: varfish-server-worker/genes-regions/refseq_genes:{{ version }}-{{ genome_release }}
+dc.title: VarFish Worker RefSeq Gene Regions
+dc.creator: NCBI RefSeq
+dc.contributor:
+  - VarFish Developer Teams
+dc.format: application/x-protobuf
+dc.date: {{ today }}
+x-version: {{ version }}
+x-genome-release: {{ genome_release }}
+dc.description: |
+  Protobuf file with RefSeq gene regions.
+dc.source:
+  - https://www.ncbi.nlm.nih.gov/refseq/
+x-created-from:
+  - name: RefSeq
+    version: {{ version }}
+x-created-with:
+  - name: varfish-db-downloader
+    version: {{ v_downloader }}
+  - name: varfish-server-worker
+    version: {{ v_worker }}

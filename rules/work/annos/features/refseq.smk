@@ -72,7 +72,8 @@ rule annos_features_refseq_gene_regions_process:  # -- process RefSeq gene regio
             -f scripts/features-refseq-gene-regions.awk \
             {input.acc} \
             <(zcat {input.gtf}) \
-        | egrep '^#|^X|^Y|^M|^[1-9]' \
+        | (set +e; egrep '^#|^X|^Y|^M|^[1-9]|^chrX|^chrY|^chrM|^chr[1-9]'; set -e) \
+        | egrep -v '_gl|_alt|_random|Un|fix' \
         | sort-bed - \
         | bgzip -c \
         > {output.tsv}

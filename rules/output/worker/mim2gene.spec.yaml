@@ -1,0 +1,20 @@
+dc.identifier: varfish-server-worker/mim2gene:{{ date }}+{{ v_worker }}
+dc.title: "VarFish Server Worker Masked Regions: Segmental Duplications"
+dc.creator: NCBI MedGen Team
+dc.contributor:
+  - VarFish Developer Teams
+dc.format: text/tsv
+dc.date: {{ today }}
+x-version: {{ date }}
+dc.description: |
+  TSV file that maps MIM IDs to Entrez/NCBI gene IDs.
+dc.source:
+  - https://ftp.ncbi.nih.gov/gene/DATA/mim2gene_medgen
+x-created-from:
+  - name: CBI mim2gene_medgen
+    version: {{ date }}
+x-created-with:
+  - name: varfish-db-downloader
+    version: {{ v_downloader }}
+  - name: varfish-server-worker
+    version: {{ v_worker }}

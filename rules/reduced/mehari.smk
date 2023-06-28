@@ -1,10 +1,10 @@
-## Rules to create build annonars database subsets (dev/exomes).
+## Rules to create build mehari database subsets (dev/exomes).
 #
 # We will copy the full HPO (text and binary) but reduce the simulation count.
 
 
-def input_subset_annonars(wildcards):
-    """Input function for ``rule subset_annonars``."""
+def input_subset_mehari(wildcards):
+    """Input function for ``rule subset_mehari``."""
     if wildcards.genome_release == "grch37":
         refseq_version = DV.refseq_37
     else:
@@ -15,20 +15,19 @@ def input_subset_annonars(wildcards):
             f"refseq/{refseq_version}/refseq_target_exons.bed"
         ),
         "rocksdb_identity": (
-            f"output/full/annonars/{wildcards.name}-{wildcards.genome_release}-"
+            f"output/full/mehari/freqs-{wildcards.genome_release}-"
             f"{wildcards.version_multi}/rocksdb/IDENTITY"
         ),
     }
     return result
 
 
-rule subset_annonars:  # -- create exomes subset
+rule subset_mehari:  # -- create exomes subset
     input:
-        unpack(input_subset_annonars),
+        unpack(input_subset_mehari),
     output:
-        rocksdb_identity="output/reduced-{set_name}/annonars/{name}-{genome_release}-{version_multi}/rocksdb/IDENTITY",
+        rocksdb_identity="output/reduced-{set_name}/mehari/freqs-{genome_release}-{version_multi}/rocksdb/IDENTITY",
     wildcard_constraints:
-        name=RE_NAME,
         genome_release=RE_GENOME,
         v_hpo=RE_VERSION,
         versions=RE_VERSION_MULTI,

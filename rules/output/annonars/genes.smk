@@ -3,7 +3,7 @@
 
 rule output_annonars_genes:  # -- build annonars genes RocksDB file
     input:
-        acmg_sf="data/acmg/{v_acmg_sf}/acmg.tsv",
+        acmg_sf="data/acmg_sf/{v_acmg_sf}/acmg_sf.tsv",
         gnomad_constraints="work/genes/gnomad/{v_gnomad_constraints}/gnomad_constraints.tsv",
         dbnsfp="work/genes/dbnsfp/{v_dbnsfp}/genes.tsv.gz",
         hgnc="work/genes/hgnc/{date}/hgnc_info.jsonl",

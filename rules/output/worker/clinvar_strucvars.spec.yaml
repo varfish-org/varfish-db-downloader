@@ -1,0 +1,21 @@
+dc.identifier: varfish-server-worker/clinvar-strucvars/{{ genome_release }}:{{ clinvar_release }}+{{ v_worker }}
+dc.title: ClinVar Structural Variants
+dc.creator: NCBI ClinVar
+dc.contributor:
+  - VarFish Developer Teams
+dc.format: application/x-protobuf
+dc.date: {{ today }}
+x-version: {{ clinvar_release }}
+x-genome-release: {{ genome_release }}
+dc.description: |
+  Protobuf file with ClinVar structural variants.
+dc.source:
+  - https://www.ncbi.nlm.nih.gov/clinvar/
+x-created-from:
+  - name: ClinVar
+    version: {{ clinvar_release }}
+x-created-with:
+  - name: varfish-db-downloader
+    version: {{ v_downloader }}
+  - name: varfish-server-worker
+    version: {{ v_worker }}

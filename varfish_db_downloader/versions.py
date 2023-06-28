@@ -8,6 +8,12 @@ import attrs
 
 #: Value to use for "today".
 TODAY = os.environ.get("TODAY", datetime.today().strftime("%Y%m%d"))
+#: Allow to disable the today check.
+FORCE_TODAY = os.environ.get("FORCE_TODAY", "false").lower() == "true"
+#: The ClinVar release to use (includes annonars version used for building).
+CLINVAR_RELEASE = os.environ.get("CLINVAR_RELEASE", "2023-0625+0.6.3")
+#: The ClinVar version to use (part of the tag and release name).
+CLINVAR_VERSION = CLINVAR_RELEASE.replace("-", "").split("+")[0]
 
 
 #: Wether we run in CI/test mode.
@@ -88,6 +94,13 @@ class DataVersions:
     patho_mms: str
     #: Mehari transcript data.
     mehari_tx: str
+    #: ClinVar release.
+    clinvar_release: str
+    #: ClinVar version.
+    clinvar_version: str
+    #: Marker file for the tracks version.  This allows us to update the
+    #: tracks BED files later on.
+    tracks: str
 
 
 #: The data versions to use.
@@ -108,7 +121,7 @@ DATA_VERSIONS = DataVersions(
     dgv="20200225",
     dgv_gs="20160515",
     exac_cnv="0.3.1",
-    g1k_svs="phase3-v2",
+    g1k_svs="phase3v2",
     helixmtdb="20200327",
     ucsc_cons_37="20161007",
     ucsc_cons_38="20190906",
@@ -127,6 +140,9 @@ DATA_VERSIONS = DataVersions(
     hpo="20230606",
     patho_mms="20220730",
     mehari_tx="0.2.2",
+    clinvar_release=CLINVAR_RELEASE,
+    clinvar_version=CLINVAR_VERSION,
+    tracks="0",
 )
 
 

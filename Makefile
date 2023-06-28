@@ -86,4 +86,4 @@ black:
 .PHONY: run-snakefmt
 run-snakefmt:
 	snakefmt --line-length 100 Snakefile
-	snakefmt --line-length 100 rules/*/*/*.smk rules/*/*/*.smk
+	snakefmt --line-length 100 rules/*/*.smk rules/*/*/*.smk  rules/*/*/*/*.smk

@@ -1,0 +1,22 @@
+dc.identifier: varfish-server-worker/bgdb-{{ db_name }}/{{ genome_release }}:{{ version }}+{{ v_worker }}
+dc.title: {{ title }}
+dc.creator: {{ creator }}
+dc.contributor:
+  - VarFish Developer Teams
+dc.format: application/x-protobuf
+dc.date: {{ today }}
+x-version: {{ version }}
+x-genome-release: {{ genome_release }}
+dc.description: |
+  Protobuf file with structural variants from background database
+  {{ title }}.
+dc.source:
+  - {{ source }}
+x-created-from:
+  - name: {{ title }}
+    version: {{ version }}
+x-created-with:
+  - name: varfish-db-downloader
+    version: {{ v_downloader }}
+  - name: varfish-server-worker
+    version: {{ v_worker }}

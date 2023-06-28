@@ -1,0 +1,20 @@
+dc.identifier: varfish-server-worker/genes-xlink:{{ date }}+{{ v_worker }}
+dc.title: VarFish Worker ENSEMBL Gene Identifier Interlink
+dc.creator: HUGO Gene Nomenclature Committee
+dc.contributor:
+  - VarFish Developer Teams
+dc.format: application/x-protobuf
+dc.date: {{ today }}
+x-version: {{ date }}
+dc.description: |
+  Protobuf file with gene identifier interlink information from HGNC.
+dc.source:
+  - https://www.ensembl.org/
+x-created-from:
+  - name: HGNC
+    version: {{ date }}
+x-created-with:
+  - name: varfish-db-downloader
+    version: {{ v_downloader }}
+  - name: varfish-server-worker
+    version: {{ v_worker }}

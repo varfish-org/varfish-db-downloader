@@ -49,9 +49,7 @@ def files_dbnsfp():
 
 def var_tsv_dbnsfp():
     """Return paths to variant TSV files."""
-    return [
-        path for path in files_dbnsfp() if "_variant" in path and path.endswith(".gz")
-    ]
+    return [path for path in files_dbnsfp() if "_variant" in path and path.endswith(".gz")]
 
 
 rule annos_seqvars_dbnsfp_download:  # -- download dbNSFP ZIP file
