@@ -181,6 +181,8 @@ rule all:
         f"output/full/worker/clinvar-strucvars-grch38-{DV.clinvar_version}+{PV.worker}/clinvar-strucvars.bin",
         f"output/full/worker/patho-mms-grch37-{DV.patho_mms}+{PV.worker}/patho-mms.bed",
         f"output/full/worker/patho-mms-grch38-{DV.patho_mms}+{PV.worker}/patho-mms.bed",
+        "output/full/worker/tads-grch37-dixon2015/hesc.bed",
+        "output/full/worker/tads-grch38-dixon2015/hesc.bed",
         # -- mehari data
         f"output/full/mehari/genes-xlink-{DV.today}/genes-xlink.tsv",
         f"output/full/mehari/genes-txs-grch37-{DV.mehari_tx}/mehari-data-txs-grch37-{DV.mehari_tx}.bin.zst",
@@ -345,6 +347,7 @@ include: "rules/output/worker/acmg.smk"
 include: "rules/output/worker/mim2gene.smk"
 include: "rules/output/worker/masked.smk"
 include: "rules/output/worker/bgdb.smk"
+include: "rules/output/worker/tads.smk"
 # -- reduced output directory (dev/exomes) ------------------------------------------------------
 # ---- bed file
 include: "rules/reduced/annonars.smk"
