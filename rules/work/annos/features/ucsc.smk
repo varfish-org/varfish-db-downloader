@@ -32,10 +32,10 @@ rule features_ucsc_genomic_super_dups_process:  # -- processing of UCSC genomicS
     input:
         txt="work/download/annos/{genome_release}/features/ucsc/{version}/genomicSuperDups.txt.gz",
     output:
-        bed="output/full/worker/track-features-ucsc-genomicsuperdups-{genome_release}-{version}/genomicSuperDups.bed.gz",
-        bed_md5="output/full/worker/track-features-ucsc-genomicsuperdups-{genome_release}-{version}/genomicSuperDups.bed.gz.md5",
-        bed_tbi="output/full/worker/track-features-ucsc-genomicsuperdups-{genome_release}-{version}/genomicSuperDups.bed.gz.tbi",
-        bed_tbi_md5="output/full/worker/track-features-ucsc-genomicsuperdups-{genome_release}-{version}/genomicSuperDups.bed.gz.tbi.md5",
+        bed=f"output/full/tracks/track-features-ucsc-genomicsuperdups-{{genome_release}}-{{version}}+{DV.tracks}/genomicSuperDups.bed.gz",
+        bed_md5=f"output/full/tracks/track-features-ucsc-genomicsuperdups-{{genome_release}}-{{version}}+{DV.tracks}/genomicSuperDups.bed.gz.md5",
+        bed_tbi=f"output/full/tracks/track-features-ucsc-genomicsuperdups-{{genome_release}}-{{version}}+{DV.tracks}/genomicSuperDups.bed.gz.tbi",
+        bed_tbi_md5=f"output/full/tracks/track-features-ucsc-genomicsuperdups-{{genome_release}}-{{version}}+{DV.tracks}/genomicSuperDups.bed.gz.tbi.md5",
     shell:
         r"""
         (
@@ -60,10 +60,10 @@ rule features_ucsc_rmsk_process:  # -- processing of UCSC rmsk
     input:
         txt="work/download/annos/{genome_release}/features/ucsc/{version}/rmsk.txt.gz",
     output:
-        bed="output/full/worker/track-features-ucsc-rmsk-{genome_release}-{version}/rmsk.bed.gz",
-        bed_md5="output/full/worker/track-features-ucsc-rmsk-{genome_release}-{version}/rmsk.bed.gz.md5",
-        bed_tbi="output/full/worker/track-features-ucsc-rmsk-{genome_release}-{version}/rmsk.bed.gz.tbi",
-        bed_tbi_md5="output/full/worker/track-features-ucsc-rmsk-{genome_release}-{version}/rmsk.bed.gz.tbi.md5",
+        bed=f"output/full/tracks/track-features-ucsc-rmsk-{{genome_release}}-{{version}}+{DV.tracks}/rmsk.bed.gz",
+        bed_md5=f"output/full/tracks/track-features-ucsc-rmsk-{{genome_release}}-{{version}}+{DV.tracks}/rmsk.bed.gz.md5",
+        bed_tbi=f"output/full/tracks/track-features-ucsc-rmsk-{{genome_release}}-{{version}}+{DV.tracks}/rmsk.bed.gz.tbi",
+        bed_tbi_md5=f"output/full/tracks/track-features-ucsc-rmsk-{{genome_release}}-{{version}}+{DV.tracks}/rmsk.bed.gz.tbi.md5",
     shell:
         r"""
         (
@@ -88,10 +88,10 @@ rule features_ucsc_liftover_process:  # -- process of UCSC *SeqLiftOverPsl
     input:
         txt="work/download/annos/{genome_release}/features/ucsc/{version}/{prefix}SeqLiftOverPsl.txt.gz",
     output:
-        bed="output/full/worker/track-features-ucsc-{prefix}seqliftoverpsl-{genome_release}-{version}/{prefix}SeqLiftOverPsl.bed.gz",
-        bed_md5="output/full/worker/track-features-ucsc-{prefix}seqliftoverpsl-{genome_release}-{version}/{prefix}SeqLiftOverPsl.bed.gz.md5",
-        bed_tbi="output/full/worker/track-features-ucsc-{prefix}seqliftoverpsl-{genome_release}-{version}/{prefix}SeqLiftOverPsl.bed.gz.tbi",
-        bed_tbi_md5="output/full/worker/track-features-ucsc-{prefix}seqliftoverpsl-{genome_release}-{version}/{prefix}SeqLiftOverPsl.bed.gz.tbi.md5",
+        bed=f"output/full/tracks/track-features-ucsc-{{prefix}}seqliftoverpsl-{{genome_release}}-{{version}}+{DV.tracks}/{{prefix}}SeqLiftOverPsl.bed.gz",
+        bed_md5=f"output/full/tracks/track-features-ucsc-{{prefix}}seqliftoverpsl-{{genome_release}}-{{version}}+{DV.tracks}/{{prefix}}SeqLiftOverPsl.bed.gz.md5",
+        bed_tbi=f"output/full/tracks/track-features-ucsc-{{prefix}}seqliftoverpsl-{{genome_release}}-{{version}}+{DV.tracks}/{{prefix}}SeqLiftOverPsl.bed.gz.tbi",
+        bed_tbi_md5=f"output/full/tracks/track-features-ucsc-{{prefix}}seqliftoverpsl-{{genome_release}}-{{version}}+{DV.tracks}/{{prefix}}SeqLiftOverPsl.bed.gz.tbi.md5",
     shell:
         r"""
         (

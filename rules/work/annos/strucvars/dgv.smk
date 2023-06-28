@@ -43,10 +43,10 @@ rule annos_strucvars_dgv_process:  # -- download DGV files
     input:
         unpack(input_annos_strucvars_dgv_process),
     output:
-        bed="output/full/worker/track-strucvars-dgv-{genome_release}-{version}/dgv.bed.gz",
-        bed_md5="output/full/worker/track-strucvars-dgv-{genome_release}-{version}/dgv.bed.gz.md5",
-        bed_tbi="output/full/worker/track-strucvars-dgv-{genome_release}-{version}/dgv.bed.gz.tbi",
-        bed_tbi_md5="output/full/worker/track-strucvars-dgv-{genome_release}-{version}/dgv.bed.gz.tbi.md5",
+        bed=f"output/full/tracks/track-strucvars-dgv-{{genome_release}}-{{version}}+{DV.tracks}/dgv.bed.gz",
+        bed_md5=f"output/full/tracks/track-strucvars-dgv-{{genome_release}}-{{version}}+{DV.tracks}/dgv.bed.gz.md5",
+        bed_tbi=f"output/full/tracks/track-strucvars-dgv-{{genome_release}}-{{version}}+{DV.tracks}/dgv.bed.gz.tbi",
+        bed_tbi_md5=f"output/full/tracks/track-strucvars-dgv-{{genome_release}}-{{version}}+{DV.tracks}/dgv.bed.gz.tbi.md5",
     shell:
         r"""
         awk \
@@ -93,10 +93,10 @@ rule annos_strucvars_dgv_gs_process:  # -- download DGV GS files
     input:
         unpack(input_annos_strucvars_dgv_gs_process),
     output:
-        bed="output/full/worker/track-strucvars-dgv-gs-{genome_release}-{version}/dgv-gs.bed.gz",
-        bed_md5="output/full/worker/track-strucvars-dgv-gs-{genome_release}-{version}/dgv-gs.bed.gz.md5",
-        bed_tbi="output/full/worker/track-strucvars-dgv-gs-{genome_release}-{version}/dgv-gs.bed.gz.tbi",
-        bed_tbi_md5="output/full/worker/track-strucvars-dgv-gs-{genome_release}-{version}/dgv-gs.bed.gz.tbi.md5",
+        bed=f"output/full/tracks/track-strucvars-dgv-gs-{{genome_release}}-{{version}}+{DV.tracks}/dgv-gs.bed.gz",
+        bed_md5=f"output/full/tracks/track-strucvars-dgv-gs-{{genome_release}}-{{version}}+{DV.tracks}/dgv-gs.bed.gz.md5",
+        bed_tbi=f"output/full/tracks/track-strucvars-dgv-gs-{{genome_release}}-{{version}}+{DV.tracks}/dgv-gs.bed.gz.tbi",
+        bed_tbi_md5=f"output/full/tracks/track-strucvars-dgv-gs-{{genome_release}}-{{version}}+{DV.tracks}/dgv-gs.bed.gz.tbi.md5",
     shell:
         r"""
         awk \

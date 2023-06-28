@@ -16,10 +16,10 @@ rule annos_strucvars_exac_grch37_process:  # -- process ExAC-CNV files
     input:
         bed="work/download/annos/grch37/strucvars/exac/0.3.1/exac-final.autosome-1pct-sq60-qc-prot-coding.cnv.bed",
     output:
-        bed="output/full/worker/track-strucvars-exac-grch37-0.3.1/exac.bed.gz",
-        bed_md5="output/full/worker/track-strucvars-exac-grch37-0.3.1/exac.bed.gz.md5",
-        bed_tbi="output/full/worker/track-strucvars-exac-grch37-0.3.1/exac.bed.gz.tbi",
-        bed_tbi_md5="output/full/worker/track-strucvars-exac-grch37-0.3.1/exac.bed.gz.tbi.md5",
+        bed=f"output/full/tracks/track-strucvars-exac-grch37-0.3.1+{DV.tracks}/exac.bed.gz",
+        bed_md5=f"output/full/tracks/track-strucvars-exac-grch37-0.3.1+{DV.tracks}/exac.bed.gz.md5",
+        bed_tbi=f"output/full/tracks/track-strucvars-exac-grch37-0.3.1+{DV.tracks}/exac.bed.gz.tbi",
+        bed_tbi_md5=f"output/full/tracks/track-strucvars-exac-grch37-0.3.1+{DV.tracks}/exac.bed.gz.tbi.md5",
     shell:
         r"""
         awk \

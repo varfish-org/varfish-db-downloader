@@ -3,7 +3,7 @@
 
 rule output_masked_repeat:
     input:
-        "output/full/worker/track-features-ucsc-rmsk-{genome_release}-{version}/rmsk.bed.gz",
+        f"output/full/tracks/track-features-ucsc-rmsk-{{genome_release}}-{{version}}+{DV.tracks}/rmsk.bed.gz",
     output:
         "output/full/worker/masked-repeat-{genome_release}-{version}/masked-repeat.bin",
     shell:
@@ -17,7 +17,7 @@ rule output_masked_repeat:
 
 rule output_masked_segdup:
     input:
-        "output/full/worker/track-features-ucsc-genomicsuperdups-{genome_release}-{version}/genomicSuperDups.bed.gz",
+        f"output/full/tracks/track-features-ucsc-genomicsuperdups-{{genome_release}}-{{version}}+{DV.tracks}/genomicSuperDups.bed.gz",
     output:
         "output/full/worker/masked-segdup-{genome_release}-{version}/masked-segdup.bin",
     shell:

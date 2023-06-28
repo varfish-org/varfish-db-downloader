@@ -98,6 +98,9 @@ class DataVersions:
     clinvar_release: str
     #: ClinVar version.
     clinvar_version: str
+    #: Marker file for the tracks version.  This allows us to update the
+    #: tracks BED files later on.
+    tracks: str
 
 
 #: The data versions to use.
@@ -139,6 +142,7 @@ DATA_VERSIONS = DataVersions(
     mehari_tx="0.2.2",
     clinvar_release=CLINVAR_RELEASE,
     clinvar_version=CLINVAR_VERSION,
+    tracks="0",
 )
 
 

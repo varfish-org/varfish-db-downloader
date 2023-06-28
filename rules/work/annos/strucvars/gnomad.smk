@@ -16,10 +16,10 @@ rule annos_strucvars_gnomad_grch37_process:  # -- process gnomAD-SV files
     input:
         vcf="work/download/annos/grch37/strucvars/gnomad/2.1.1/gnomad_v2.1_sv.sites.vcf.gz",
     output:
-        bed="output/full/worker/track-strucvars-gnomad-grch37-2.1.1/gnomad.bed.gz",
-        bed_md5="output/full/worker/track-strucvars-gnomad-grch37-2.1.1/gnomad.bed.gz.md5",
-        bed_tbi="output/full/worker/track-strucvars-gnomad-grch37-2.1.1/gnomad.bed.gz.tbi",
-        bed_tbi_md5="output/full/worker/track-strucvars-gnomad-grch37-2.1.1/gnomad.bed.gz.tbi.md5",
+        bed=f"output/full/tracks/track-strucvars-gnomad-grch37-2.1.1+{DV.tracks}/gnomad.bed.gz",
+        bed_md5=f"output/full/tracks/track-strucvars-gnomad-grch37-2.1.1+{DV.tracks}/gnomad.bed.gz.md5",
+        bed_tbi=f"output/full/tracks/track-strucvars-gnomad-grch37-2.1.1+{DV.tracks}/gnomad.bed.gz.tbi",
+        bed_tbi_md5=f"output/full/tracks/track-strucvars-gnomad-grch37-2.1.1+{DV.tracks}/gnomad.bed.gz.tbi.md5",
     shell:
         r"""
         export TMPDIR=$(mktemp -d)
