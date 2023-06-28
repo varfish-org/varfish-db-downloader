@@ -53,7 +53,7 @@ rule annos_strucvars_dgv_process:  # -- download DGV files
             -F $'\t' \
             -f scripts/vardbs-strucvar-dgv.awk \
             {input.txt} \
-        | grep -v _gl \
+        | egrep -v '_gl|_alt|_random|Un|^N' \
         | sort-bed - \
         | bgzip -c \
         > {output.bed}
@@ -103,7 +103,7 @@ rule annos_strucvars_dgv_gs_process:  # -- download DGV GS files
             -F $'\t' \
             -f scripts/vardbs-strucvar-dgv_gs.awk \
             {input.gff3} \
-        | grep -v _gl \
+        | egrep -v '_gl|_alt|_random|Un' \
         | sort-bed - \
         | bgzip -c \
         > {output.bed}
