@@ -167,6 +167,15 @@ rule all:
         f"output/full/worker/masked-repeat-grch38-{DV.ucsc_rmsk_38}/masked-repeat.bin",
         f"output/full/worker/masked-segdup-grch37-{DV.ucsc_genomic_super_dups_37}/masked-segdup.bin",
         f"output/full/worker/masked-segdup-grch38-{DV.ucsc_genomic_super_dups_38}/masked-segdup.bin",
+        f"output/full/worker/bgdb-dbvar-grch37-{DV.dbvar}/bgdb-dbvar.bin",
+        f"output/full/worker/bgdb-dbvar-grch38-{DV.dbvar}/bgdb-dbvar.bin",
+        f"output/full/worker/bgdb-dgv-grch37-{DV.dgv}/bgdb-dgv.bin",
+        f"output/full/worker/bgdb-dgv-grch38-{DV.dgv}/bgdb-dgv.bin",
+        f"output/full/worker/bgdb-dgv-gs-grch37-{DV.dgv}/bgdb-dgv-gs.bin",
+        f"output/full/worker/bgdb-dgv-gs-grch38-{DV.dgv}/bgdb-dgv-gs.bin",
+        f"output/full/worker/bgdb-gnomad-grch37-{DV.gnomad_sv}/bgdb-gnomad.bin",
+        f"output/full/worker/bgdb-exac-grch37-{DV.exac_cnv}/bgdb-exac.bin",
+        f"output/full/worker/bgdb-g1k-grch37-{DV.g1k_svs}/bgdb-g1k.bin",
         # -- mehari data
         f"output/full/worker/genes-xlink-{DV.today}/genes-xlink.tsv",
         f"output/full/worker/genes-txs-grch37-{DV.mehari_tx}/mehari-data-txs-grch37-{DV.mehari_tx}.bin.zst",
@@ -327,6 +336,7 @@ include: "rules/output/worker/hgnc.smk"
 include: "rules/output/worker/acmg.smk"
 include: "rules/output/worker/mim2gene.smk"
 include: "rules/output/worker/masked.smk"
+include: "rules/output/worker/bgdb.smk"
 # -- reduced output directory (dev/exomes) ------------------------------------------------------
 # ---- bed file
 include: "rules/reduced/annonars.smk"
