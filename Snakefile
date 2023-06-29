@@ -218,6 +218,29 @@ rule all:
         # ----- tads
         f"output/full/tracks/track-tads-grch37-dixon2015+{DV.tracks}/hesc.bed",
         f"output/full/tracks/track-tads-grch38-dixon2015+{DV.tracks}/hesc.bed",
+        # ----- probesets
+        f"output/full/tracks/track-enrichment-probesets-targets/agilent-all-exon-v4-grch37-{DV.tracks}.bed.gz",
+        f"output/full/tracks/track-enrichment-probesets-targets/agilent-all-exon-v4-grch38-{DV.tracks}.bed.gz",
+        f"output/full/tracks/track-enrichment-probesets-targets/agilent-all-exon-v5-grch37-{DV.tracks}.bed.gz",
+        f"output/full/tracks/track-enrichment-probesets-targets/agilent-all-exon-v5-grch38-{DV.tracks}.bed.gz",
+        f"output/full/tracks/track-enrichment-probesets-targets/agilent-all-exon-v6-grch37-{DV.tracks}.bed.gz",
+        f"output/full/tracks/track-enrichment-probesets-targets/agilent-all-exon-v6-grch38-{DV.tracks}.bed.gz",
+        f"output/full/tracks/track-enrichment-probesets-targets/agilent-all-exon-v7-grch37-{DV.tracks}.bed.gz",
+        f"output/full/tracks/track-enrichment-probesets-targets/agilent-all-exon-v7-grch38-{DV.tracks}.bed.gz",
+        f"output/full/tracks/track-enrichment-probesets-targets/agilent-all-exon-v8-grch37-{DV.tracks}.bed.gz",
+        f"output/full/tracks/track-enrichment-probesets-targets/agilent-all-exon-v8-grch38-{DV.tracks}.bed.gz",
+        f"output/full/tracks/track-enrichment-probesets-targets/idt-xgen-exome-research-panel-v1-grch37-{DV.tracks}.bed.gz",
+        f"output/full/tracks/track-enrichment-probesets-targets/idt-xgen-exome-research-panel-v1-grch38-{DV.tracks}.bed.gz",
+        f"output/full/tracks/track-enrichment-probesets-targets/idt-xgen-exome-research-panel-v2-grch37-{DV.tracks}.bed.gz",
+        f"output/full/tracks/track-enrichment-probesets-targets/idt-xgen-exome-research-panel-v2-grch38-{DV.tracks}.bed.gz",
+        f"output/full/tracks/track-enrichment-probesets-targets/twist-comprehensive-exome-grch37-{DV.tracks}.bed.gz",
+        f"output/full/tracks/track-enrichment-probesets-targets/twist-comprehensive-exome-grch38-{DV.tracks}.bed.gz",
+        f"output/full/tracks/track-enrichment-probesets-targets/twist-core-exome-grch37-{DV.tracks}.bed.gz",
+        f"output/full/tracks/track-enrichment-probesets-targets/twist-core-exome-grch38-{DV.tracks}.bed.gz",
+        f"output/full/tracks/track-enrichment-probesets-targets/twist-exome-v2_0-grch37-{DV.tracks}.bed.gz",
+        f"output/full/tracks/track-enrichment-probesets-targets/twist-exome-v2_0-grch38-{DV.tracks}.bed.gz",
+        f"output/full/tracks/track-enrichment-probesets-targets/twist-refseq-exome-grch37-{DV.tracks}.bed.gz",
+        f"output/full/tracks/track-enrichment-probesets-targets/twist-refseq-exome-grch38-{DV.tracks}.bed.gz",
         #
         # == development (reduced data) directories =============================================
         #
@@ -348,6 +371,8 @@ include: "rules/output/worker/mim2gene.smk"
 include: "rules/output/worker/masked.smk"
 include: "rules/output/worker/bgdb.smk"
 include: "rules/output/worker/tads.smk"
+# ---- tracks
+include: "rules/output/tracks/exome_probesets.smk"
 # -- reduced output directory (dev/exomes) ------------------------------------------------------
 # ---- bed file
 include: "rules/reduced/annonars.smk"
