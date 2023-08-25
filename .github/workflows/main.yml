@@ -74,5 +74,5 @@ jobs:
 
       - name: Run in test mode
         run: |
-          CI=true snakemake --cores=1 -p
+          CI=true snakemake --cores=1 -p all
         shell: bash -el {0}

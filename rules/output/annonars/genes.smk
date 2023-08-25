@@ -10,15 +10,16 @@ rule output_annonars_genes:  # -- build annonars genes RocksDB file
         hgnc="work/genes/hgnc/{date}/hgnc_info.jsonl",
         ncbi="work/genes/entrez/{date}/gene_info.jsonl",
         omim="work/genes/omim/{v_hpo}+{date}/omim_diseases.tsv",
+        orpha="work/genes/orphapacket/{v_orpha}+{date}/orpha_diseases.tsv",
         rcnv="work/genes/rcnv/2022/rcnv_collins_2022.tsv",
         shet="work/genes/shet/2019/shet_weghorn_2019.tsv",
     output:
         rocksdb_identity=(
-            "output/full/annonars/genes-{v_acmg_sf}+{v_gnomad_constraints}+{v_dbnsfp}+{v_hpo}+{date}+{v_annonars}/"
+            "output/full/annonars/genes-{v_acmg_sf}+{v_gnomad_constraints}+{v_dbnsfp}+{v_hpo}+{v_orpha}+{date}+{v_annonars}/"
             "rocksdb/IDENTITY"
         ),
         spec_yaml=(
-            "output/full/annonars/genes-{v_acmg_sf}+{v_gnomad_constraints}+{v_dbnsfp}+{v_hpo}+{date}+{v_annonars}/"
+            "output/full/annonars/genes-{v_acmg_sf}+{v_gnomad_constraints}+{v_dbnsfp}+{v_hpo}+{v_orpha}+{date}+{v_annonars}/"
             "spec.yaml"
         ),
     wildcard_constraints:
@@ -42,6 +43,7 @@ rule output_annonars_genes:  # -- build annonars genes RocksDB file
             --path-in-dbnsfp {input.dbnsfp} \
             --path-in-hgnc {input.hgnc} \
             --path-in-omim {input.omim} \
+            --path-in-orpha {input.orpha} \
             --path-in-ncbi {input.ncbi} \
             --path-in-rcnv {input.rcnv} \
             --path-in-shet {input.shet}
@@ -58,5 +60,6 @@ rule output_annonars_genes:  # -- build annonars genes RocksDB file
             \
             --value v_annonars={wildcards.v_annonars} \
             --value v_downloader={PV.downloader} \
+            --value v_orphapacket={wildcards.v_orpha} \
         > {output.spec_yaml}
         """
