@@ -87,13 +87,13 @@ rule all:
         # genes
         f"work/download/genes/clingen/{DV.clingen_gene}/clingen.csv",
         f"work/download/genes/rcnv/2022/Collins_rCNV_2022.dosage_sensitivity_scores.tsv.gz",
-        f"work/download/genes/shet/2019/Collins_rCNV_2022.dosage_sensitivity_scores.tsv.gz",
         f"work/genes/dbnsfp/{DV.dbnsfp}/genes.tsv.gz",
         f"work/genes/ensembl/{DV.ensembl}/ensembl_xlink.tsv",
         f"work/genes/enst_ensg/grch37/{DV.ensembl_37}/enst_ensg.tsv",
         f"work/genes/entrez/{DV.today}/gene_info.jsonl",
         f"work/genes/gnomad/{DV.gnomad_constraints}/gnomad_constraints.tsv",
         f"work/genes/hgnc/{DV.today}/hgnc_info.jsonl",
+        f"work/genes/omim/{DV.hpo}+{DV.today}/omim_diseases.tsv",
         "work/genes/rcnv/2022/rcnv_collins_2022.tsv",
         "work/genes/shet/2019/shet_weghorn_2019.tsv",
         # reference-specific annotations
@@ -160,7 +160,7 @@ rule all:
         f"output/full/annonars/cons-grch37-{DV.ucsc_cons_37}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/full/annonars/cons-grch38-{DV.ucsc_cons_38}+{PV.annonars}/rocksdb/IDENTITY",
         # ----- genes
-        f"output/full/annonars/genes-{DV.acmg_sf}+{DV.gnomad_constraints}+{DV.dbnsfp}+{DV.today}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/full/annonars/genes-{DV.acmg_sf}+{DV.gnomad_constraints}+{DV.dbnsfp}+{DV.hpo}+{DV.today}+{PV.annonars}/rocksdb/IDENTITY",
         # -- worker data
         f"output/full/worker/genes-regions-grch37-{DV.refseq_37}+{PV.worker}/refseq_genes.bin",
         f"output/full/worker/genes-regions-grch37-{DV.ensembl_37}+{PV.worker}/ensembl_genes.bin",
@@ -328,6 +328,7 @@ include: "rules/work/genes/gnomad.smk"
 include: "rules/work/genes/hgnc.smk"
 include: "rules/work/genes/mehari_data_tx.smk"
 include: "rules/work/genes/ncbi.smk"
+include: "rules/work/genes/omim.smk"
 include: "rules/work/genes/rcnv.smk"
 include: "rules/work/genes/shet.smk"
 # Reference sequence--related rules.
