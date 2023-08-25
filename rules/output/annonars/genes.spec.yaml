@@ -32,3 +32,9 @@ x-created-from:
     version: {{ today }}
   - name: HGNC
     version: {{ today }}
+  - name: OMIM
+    version: {{ today }}
+  - name: rCNV pHaplo/pTriplo scores
+    version: 2022-Collins-et-al
+  - name: sHet scores
+    version: 2019-Weghorn-et-a.
