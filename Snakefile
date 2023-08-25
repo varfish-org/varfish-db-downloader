@@ -85,6 +85,7 @@ rule all:
         # == work directory =====================================================================
         #
         # genes
+        f"work/download/genes/clingen/{DV.clingen_gene}/clingen.csv",
         f"work/genes/dbnsfp/{DV.dbnsfp}/genes.tsv.gz",
         f"work/genes/ensembl/{DV.ensembl}/ensembl_xlink.tsv",
         f"work/genes/enst_ensg/grch37/{DV.ensembl_37}/enst_ensg.tsv",
@@ -317,6 +318,7 @@ rule all:
 include: "rules/work/misc/hpo.smk"
 # Gene-related rules.
 include: "rules/work/genes/dbnsfp.smk"
+include: "rules/work/genes/clingen.smk"
 include: "rules/work/genes/ensembl.smk"
 include: "rules/work/genes/gnomad.smk"
 include: "rules/work/genes/hgnc.smk"
