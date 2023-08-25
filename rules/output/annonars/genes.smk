@@ -4,6 +4,7 @@
 rule output_annonars_genes:  # -- build annonars genes RocksDB file
     input:
         acmg_sf="data/acmg_sf/{v_acmg_sf}/acmg_sf.tsv",
+        clingen="work/download/genes/clingen/{date}/clingen.csv",
         gnomad_constraints="work/genes/gnomad/{v_gnomad_constraints}/gnomad_constraints.tsv",
         dbnsfp="work/genes/dbnsfp/{v_dbnsfp}/genes.tsv.gz",
         hgnc="work/genes/hgnc/{date}/hgnc_info.jsonl",
@@ -25,9 +26,15 @@ rule output_annonars_genes:  # -- build annonars genes RocksDB file
         v_annonars=RE_VERSION,
     shell:
         r"""
+        export TMPDIR=$(mktemp -d)
+        trap "rm -rf $TMPDIR" EXIT
+
+        tail -n +4 {input.clingen} > $TMPDIR/clingen.csv
+
         annonars gene import \
             --path-out-rocksdb $(dirname {output.rocksdb_identity}) \
             --path-in-acmg {input.acmg_sf} \
+            --path-in-clingen $TMPDIR/clingen.csv \
             --path-in-gnomad-constraints {input.gnomad_constraints} \
             --path-in-dbnsfp {input.dbnsfp} \
             --path-in-hgnc {input.hgnc} \

@@ -230,7 +230,7 @@ def download_excerpt(url: UrlEntry, data_dir: str, force: bool):
 
     excerpt_fun = STRATEGY_MAP[url.excerpt_strategy.strategy]
     parsed = urllib.parse.urlparse(url.url)
-    basename = parsed.path.split("/")[-1]
+    basename = parsed.path.split("/")[-1] or "__index__"
     out_path_data = str(out_path / basename)
     logger.info("    getting excerpt to {}", out_path_data)
     excerpt_fun(url.url, str(out_path_data), url.excerpt_strategy.count)

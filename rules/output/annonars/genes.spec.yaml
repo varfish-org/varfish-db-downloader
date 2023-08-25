@@ -22,6 +22,8 @@ dc.source:
 x-created-from:
   - name: ACMG SF Gene List
     version: {{ v_acmg_sf }}
+  - name: ClinGen Gene Curation
+    version: {{ today }}
   - name: gnomAD constraints
     version: {{ v_gnomad_constraints }}
   - name: dbNSFP
