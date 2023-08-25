@@ -9,6 +9,8 @@ rule output_annonars_genes:  # -- build annonars genes RocksDB file
         dbnsfp="work/genes/dbnsfp/{v_dbnsfp}/genes.tsv.gz",
         hgnc="work/genes/hgnc/{date}/hgnc_info.jsonl",
         ncbi="work/genes/entrez/{date}/gene_info.jsonl",
+        rcnv="work/genes/rcnv/2022/rcnv_collins_2022.tsv",
+        shet="work/genes/shet/2019/shet_weghorn_2019.tsv",
     output:
         rocksdb_identity=(
             "output/full/annonars/genes-{v_acmg_sf}+{v_gnomad_constraints}+{v_dbnsfp}+{date}+{v_annonars}/"
@@ -38,7 +40,9 @@ rule output_annonars_genes:  # -- build annonars genes RocksDB file
             --path-in-gnomad-constraints {input.gnomad_constraints} \
             --path-in-dbnsfp {input.dbnsfp} \
             --path-in-hgnc {input.hgnc} \
-            --path-in-ncbi {input.ncbi}
+            --path-in-ncbi {input.ncbi} \
+            --path-in-rcnv {input.rcnv} \
+            --path-in-shet {input.shet}
 
         varfish-db-downloader tpl \
             --template rules/output/annonars/genes.spec.yaml \

@@ -86,12 +86,16 @@ rule all:
         #
         # genes
         f"work/download/genes/clingen/{DV.clingen_gene}/clingen.csv",
+        f"work/download/genes/rcnv/2022/Collins_rCNV_2022.dosage_sensitivity_scores.tsv.gz",
+        f"work/download/genes/shet/2019/Collins_rCNV_2022.dosage_sensitivity_scores.tsv.gz",
         f"work/genes/dbnsfp/{DV.dbnsfp}/genes.tsv.gz",
         f"work/genes/ensembl/{DV.ensembl}/ensembl_xlink.tsv",
         f"work/genes/enst_ensg/grch37/{DV.ensembl_37}/enst_ensg.tsv",
         f"work/genes/entrez/{DV.today}/gene_info.jsonl",
         f"work/genes/gnomad/{DV.gnomad_constraints}/gnomad_constraints.tsv",
         f"work/genes/hgnc/{DV.today}/hgnc_info.jsonl",
+        "work/genes/rcnv/2022/rcnv_collins_2022.tsv",
+        "work/genes/shet/2019/shet_weghorn_2019.tsv",
         # reference-specific annotations
         # -- background/population sequence variants and annotations thereof
         # ---- GRCh37
@@ -324,6 +328,8 @@ include: "rules/work/genes/gnomad.smk"
 include: "rules/work/genes/hgnc.smk"
 include: "rules/work/genes/mehari_data_tx.smk"
 include: "rules/work/genes/ncbi.smk"
+include: "rules/work/genes/rcnv.smk"
+include: "rules/work/genes/shet.smk"
 # Reference sequence--related rules.
 include: "rules/work/reference/human.smk"
 # Features (position and not variant specific).
