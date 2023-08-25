@@ -155,7 +155,7 @@ rule all:
         f"output/full/annonars/cons-grch37-{DV.ucsc_cons_37}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/full/annonars/cons-grch38-{DV.ucsc_cons_38}+{PV.annonars}/rocksdb/IDENTITY",
         # ----- genes
-        f"output/full/annonars/genes-{DV.acmg_sf}+{DV.gnomad_constraints}+{DV.dbnsfp}+{DV.today}+{PV.worker}/rocksdb/IDENTITY",
+        f"output/full/annonars/genes-{DV.acmg_sf}+{DV.gnomad_constraints}+{DV.dbnsfp}+{DV.today}+{PV.annonars}/rocksdb/IDENTITY",
         # -- worker data
         f"output/full/worker/genes-regions-grch37-{DV.refseq_37}+{PV.worker}/refseq_genes.bin",
         f"output/full/worker/genes-regions-grch37-{DV.ensembl_37}+{PV.worker}/ensembl_genes.bin",
