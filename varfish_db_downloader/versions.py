@@ -94,6 +94,8 @@ class DataVersions:
     acmg_sf: str
     #: HPO
     hpo: str
+    #: OrphaPacket
+    orphapacket: str
     #: Pathogenic MMS
     patho_mms: str
     #: Mehari transcript data.
@@ -144,6 +146,7 @@ DATA_VERSIONS = DataVersions(
     dbsnp="b151",
     acmg_sf="3.1",
     hpo="20230606",
+    orphapacket="10.1",
     patho_mms="20220730",
     mehari_tx="0.2.2",
     clinvar_release=CLINVAR_RELEASE,

@@ -67,6 +67,13 @@ jobs:
           cache-environment: true
           post-cleanup: none  # breaks otherwise
 
+      - name: Install qsv (not in conda-forge yet)
+        run: |
+           cd /tmp
+           wget https://github.com/jqnatividad/qsv/releases/download/0.112.0/qsv-0.112.0-x86_64-unknown-linux-musl.zip
+           unzip qsv-0.112.0-x86_64-unknown-linux-musl.zip
+           cp qsv_musl-1.2.3 /usr/local/bin/qsv
+
       - name: Install python package
         run: |
           pip install -e .
@@ -74,5 +81,7 @@ jobs:
 
       - name: Run in test mode
         run: |
-          CI=true snakemake --cores=1 -p
+          CI=true snakemake --cores=1 -p all
         shell: bash -el {0}
+        env:
+         QSV_NO_UPDATE: "1"

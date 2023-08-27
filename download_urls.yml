@@ -1,3 +1,8 @@
+- url: https://github.com/Orphanet/orphapacket/archive/refs/tags/v10.1.tar.gz
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+
 - url: https://zenodo.org/record/6347673/files/Collins_rCNV_2022.dosage_sensitivity_scores.tsv.gz
 
 - comment: The curation activity summary report is built in real-time.

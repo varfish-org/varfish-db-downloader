@@ -15,6 +15,7 @@ jobs:
         id: release
         with:
           release-type: simple
+          token: ${{ secrets.BOT_TOKEN }}
 
       - name: Checkout repository
         uses: actions/checkout@v3
