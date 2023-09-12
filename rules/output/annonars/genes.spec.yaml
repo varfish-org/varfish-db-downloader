@@ -40,3 +40,5 @@ x-created-from:
     version: 2022-Collins-et-al
   - name: sHet scores
     version: 2019-Weghorn-et-a.
+  - name: GTex data
+    version: v8
