@@ -91,7 +91,7 @@ rule genes_gtex_v8_map:  # -- map GTex v8 gene files for annonars
                     smtds = sampid_to_smtsd[sampid]
                     if smtds not in tissue_records:
                         tissue_records[smtds] = GtexTissueRecord(tissue=smtds)
-                    tissue_records[smtds].tpms.append(int(tpm))
+                    tissue_records[smtds].tpms.append(float(tpm))
 
                 gene_record = GtexGeneRecord(
                     hgnc_id=hgnc_id,
