@@ -11,6 +11,7 @@ dependencies:
   - cattrs
   - click
   - loguru
+  - numpy
   - pyyaml
   - requests
   - requests-ftp

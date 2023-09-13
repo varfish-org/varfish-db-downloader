@@ -6,11 +6,13 @@ import typing
 
 import attrs
 import cattrs
+import numpy as np
 
 
 @attrs.frozen(auto_attribs=True)
 class GtexTissueRecord:
     tissue: str
+    tissue_detailed: str
     tpms: typing.List[float] = attrs.field(factory=list)
 
 
@@ -55,9 +57,9 @@ rule genes_gtex_v8_map:  # -- map GTex v8 gene files for annonars
         smtsd_count = {}
         with open(input.attributes, "rt") as inputf:
             reader = csv.DictReader(inputf, delimiter="\t")
-            sampid_to_smtsd = {}
+            sampid_to_tissue = {}
             for row in reader:
-                sampid_to_smtsd[row["SAMPID"]] = row["SMTSD"]
+                sampid_to_tissue[row["SAMPID"]] = (row["SMTS"], row["SMTSD"])
                 smtsd_count.setdefault(row["SMTSD"], 0)
                 smtsd_count[row["SMTSD"]] += 1
         print("Sample counts per tissue:", file=sys.stderr)
@@ -88,19 +90,28 @@ rule genes_gtex_v8_map:  # -- map GTex v8 gene files for annonars
                 for sampid, tpm in row.items():
                     if not sampid.startswith("GTEX-"):
                         continue
-                    smtds = sampid_to_smtsd[sampid]
-                    if smtds not in tissue_records:
-                        tissue_records[smtds] = GtexTissueRecord(tissue=smtds)
-                    tissue_records[smtds].tpms.append(float(tpm))
+                    smts, smtsd = sampid_to_tissue[sampid]
+                    if smtsd not in tissue_records:
+                        tissue_records[smtsd] = GtexTissueRecord(tissue=smts, tissue_detailed=smtsd)
+                    tissue_records[smtsd].tpms.append(float(tpm))
+
+                records = []
+                for tissue_record in tissue_records.values():
+                    records.append(
+                        attrs.evolve(
+                            tissue_record,
+                            tpms=np.quantile(
+                                np.array(tissue_record.tpms), [0.0, 0.25, 0.5, 0.75, 1.0]
+                            ).tolist(),
+                        )
+                    )
 
                 gene_record = GtexGeneRecord(
                     hgnc_id=hgnc_id,
                     ensembl_gene_id=ensembl_gene_id,
                     ensembl_gene_version=ensembl_gene_version,
-                    records=list(sorted(tissue_records.values(), key=lambda r: r.tissue)),
+                    records=list(sorted(records, key=lambda r: (r.tissue, r.tissue_detailed))),
                 )
-                for tissue_record in tissue_records.values():
-                    tissue_record.tpms.sort()
                 print(
                     json.dumps(cattrs.unstructure(gene_record)),
                     file=outputf,
