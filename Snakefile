@@ -88,6 +88,7 @@ rule all:
         f"work/download/genes/clingen/{DV.clingen_gene}/clingen.csv",
         f"work/download/genes/rcnv/2022/Collins_rCNV_2022.dosage_sensitivity_scores.tsv.gz",
         f"work/download/genes/orphapacket/{DV.orphapacket}/orphapacket.tar.gz",
+        "work/download/genes/alphamissense/1/AlphaMissense_gene_hg38.tsv.gz",
         f"work/genes/dbnsfp/{DV.dbnsfp}/genes.tsv.gz",
         f"work/genes/ensembl/{DV.ensembl}/ensembl_xlink.tsv",
         f"work/genes/enst_ensg/grch37/{DV.ensembl_37}/enst_ensg.tsv",
@@ -323,6 +324,7 @@ rule all:
 # Misc rules.
 include: "rules/work/misc/hpo.smk"
 # Gene-related rules.
+include: "rules/work/genes/alphamissense.smk"
 include: "rules/work/genes/dbnsfp.smk"
 include: "rules/work/genes/clingen.smk"
 include: "rules/work/genes/ensembl.smk"
@@ -344,6 +346,7 @@ include: "rules/work/annos/features/refseq.smk"
 include: "rules/work/annos/features/tads.smk"
 include: "rules/work/annos/features/ucsc.smk"
 # Sequence variants and annotations.
+include: "rules/work/annos/seqvars/alphamissense.smk"
 include: "rules/work/annos/seqvars/cadd.smk"
 include: "rules/work/annos/seqvars/dbnsfp.smk"
 include: "rules/work/annos/seqvars/dbscsnv.smk"

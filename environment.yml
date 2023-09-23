@@ -1,4 +1,3 @@
-name: varfish-db-downloader
 channels:
   - bioconda
   - conda-forge
