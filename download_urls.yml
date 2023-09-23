@@ -1,3 +1,7 @@
+- url: https://storage.googleapis.com/dm_alphamissense/AlphaMissense_hg19.tsv.gz
+- url: https://storage.googleapis.com/dm_alphamissense/AlphaMissense_hg38.tsv.gz
+- url: https://storage.googleapis.com/dm_alphamissense/AlphaMissense_gene_hg38.tsv.gz
+
 - url: https://storage.googleapis.com/gtex_analysis_v8/annotations/GTEx_Analysis_v8_Annotations_SampleAttributesDS.txt
   excerpt_strategy:
     strategy: no-excerpt
