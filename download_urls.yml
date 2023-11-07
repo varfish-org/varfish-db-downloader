@@ -1,3 +1,6 @@
+- url: ftp://ftp.clinicalgenome.org/ClinGen_region_curation_list_GRCh37.tsv
+- url: ftp://ftp.clinicalgenome.org/ClinGen_region_curation_list_GRCh38.tsv
+
 - url: https://storage.googleapis.com/gtex_analysis_v8/annotations/GTEx_Analysis_v8_Annotations_SampleAttributesDS.txt
   excerpt_strategy:
     strategy: no-excerpt

@@ -1,0 +1,13 @@
+dc.identifier: annonars/features/clingen-dosage:{{ version }}-{{ genome_release }}
+dc.title: ClinGen Dosage Sensitivity
+dc.creator: NCBI ClinGen Team
+dc.contributor:
+  - VarFish Developer Teams
+dc.format: application/x-bed
+dc.date: {{ today }}
+x-version: {{ today }}
+x-genome-release: {{ genome_release }}
+dc.description: |
+  BED file with ClinGen dosage sensitivity regions.
+dc.source:
+  - https://search.clinicalgenome.org/kb/downloads#section_dosage
