@@ -131,6 +131,7 @@ rule all:
         f"work/annos/grch38/features/cons/{DV.ucsc_cons_38}/ucsc_conservation.tsv",
         f"work/annos/grch38/features/ensembl/{DV.ensembl_38}/ensembl_genes.bed.gz",
         f"work/annos/grch38/features/refseq/{DV.refseq_38}/refseq_genes.bed.gz",
+        # f"work/annos/grch38/features/clingen_dosage/{DV.today}/clingen_dosage_sensitivity_regions.bed.gz",
         #
         # == output directory ===================================================================
         #
@@ -161,6 +162,9 @@ rule all:
         # ----- conservation
         f"output/full/annonars/cons-grch37-{DV.ucsc_cons_37}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/full/annonars/cons-grch38-{DV.ucsc_cons_38}+{PV.annonars}/rocksdb/IDENTITY",
+        # ----- features
+        f"output/full/annonars/clingen-dosage-grch37/{DV.today}/clingen_region_curation_list.bed.gz",
+        f"output/full/annonars/clingen-dosage-grch38/{DV.today}/clingen_region_curation_list.bed.gz",
         # ----- genes
         f"output/full/annonars/genes-{DV.acmg_sf}+{DV.gnomad_constraints}+{DV.dbnsfp}+{DV.hpo}+{DV.orphapacket}+{DV.today}+{PV.annonars}/rocksdb/IDENTITY",
         # -- worker data
@@ -339,6 +343,7 @@ include: "rules/work/genes/shet.smk"
 include: "rules/work/reference/human.smk"
 # Features (position and not variant specific).
 include: "rules/work/annos/features/cons.smk"
+include: "rules/work/annos/features/clingen_dosage.smk"
 include: "rules/work/annos/features/ensembl.smk"
 include: "rules/work/annos/features/refseq.smk"
 include: "rules/work/annos/features/tads.smk"
@@ -363,7 +368,7 @@ include: "rules/work/annos/strucvars/clinvar.smk"
 include: "rules/output/mehari/freqs.smk"
 # ---- viguno
 include: "rules/output/viguno/hpo.smk"
-# ------ annonars
+# ---- annonars
 include: "rules/output/annonars/cadd.smk"
 include: "rules/output/annonars/cons.smk"
 include: "rules/output/annonars/dbnsfp.smk"
@@ -374,6 +379,8 @@ include: "rules/output/annonars/gnomad_genomes.smk"
 include: "rules/output/annonars/gnomad_mtdna.smk"
 include: "rules/output/annonars/helix.smk"
 include: "rules/output/annonars/genes.smk"
+# ------ features
+include: "rules/output/annonars/clingen_dosage.smk"
 # ---- worker
 include: "rules/output/worker/patho_mms.smk"
 include: "rules/output/worker/clinvar.smk"
