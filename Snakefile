@@ -89,6 +89,7 @@ rule all:
         f"work/download/genes/rcnv/2022/Collins_rCNV_2022.dosage_sensitivity_scores.tsv.gz",
         f"work/download/genes/orphapacket/{DV.orphapacket}/orphapacket.tar.gz",
         f"work/genes/dbnsfp/{DV.dbnsfp}/genes.tsv.gz",
+        "work/genes/decipher/v3/decipher_hi_prediction.tsv.gz",
         f"work/genes/ensembl/{DV.ensembl}/ensembl_xlink.tsv",
         f"work/genes/enst_ensg/grch37/{DV.ensembl_37}/enst_ensg.tsv",
         f"work/genes/entrez/{DV.today}/gene_info.jsonl",
@@ -329,6 +330,7 @@ include: "rules/work/misc/hpo.smk"
 # Gene-related rules.
 include: "rules/work/genes/dbnsfp.smk"
 include: "rules/work/genes/clingen.smk"
+include: "rules/work/genes/decipher.smk"
 include: "rules/work/genes/ensembl.smk"
 include: "rules/work/genes/gnomad.smk"
 include: "rules/work/genes/gtex.smk"

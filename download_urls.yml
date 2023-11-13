@@ -1,3 +1,5 @@
+- url: https://www.deciphergenomics.org/files/downloads/HI_Predictions_Version3.bed.gz
+
 - url: ftp://ftp.clinicalgenome.org/ClinGen_region_curation_list_GRCh37.tsv
 - url: ftp://ftp.clinicalgenome.org/ClinGen_region_curation_list_GRCh38.tsv
 
