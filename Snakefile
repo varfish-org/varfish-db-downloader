@@ -131,7 +131,6 @@ rule all:
         f"work/annos/grch38/features/cons/{DV.ucsc_cons_38}/ucsc_conservation.tsv",
         f"work/annos/grch38/features/ensembl/{DV.ensembl_38}/ensembl_genes.bed.gz",
         f"work/annos/grch38/features/refseq/{DV.refseq_38}/refseq_genes.bed.gz",
-        # f"work/annos/grch38/features/clingen_dosage/{DV.today}/clingen_dosage_sensitivity_regions.bed.gz",
         #
         # == output directory ===================================================================
         #
