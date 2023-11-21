@@ -1,5 +1,5 @@
 dc.identifier: annonars/seqvars/dbsnp:{{ version }}-{{ genome_release }}
-dc.title: annona-rs dbSNP RocksDB Database
+dc.title: annonars dbSNP RocksDB Database
 dc.creator: NCBI dbSNP Team
 dc.contributor:
   - VarFish Developer Teams

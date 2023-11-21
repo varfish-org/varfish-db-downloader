@@ -161,6 +161,10 @@ rule all:
         f"output/full/annonars/gnomad-genomes-grch38-{DV.gnomad_v3}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/full/annonars/helixmtdb-grch37-{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/full/annonars/helixmtdb-grch38-{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/full/annonars/gnomad-sv-exomes-grch37-{DV.exac_cnv}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/full/annonars/gnomad-sv-exomes-grch38-{DV.gnomad_cnv4}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/full/annonars/gnomad-sv-genomes-grch37-{DV.gnomad_sv}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/full/annonars/gnomad-sv-genomes-grch38-{DV.gnomad_sv4}+{PV.annonars}/rocksdb/IDENTITY",
         # ----- conservation
         f"output/full/annonars/cons-grch37-{DV.ucsc_cons_37}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/full/annonars/cons-grch38-{DV.ucsc_cons_38}+{PV.annonars}/rocksdb/IDENTITY",
@@ -364,6 +368,7 @@ include: "rules/work/annos/strucvars/exac.smk"
 include: "rules/work/annos/strucvars/g1k.smk"
 include: "rules/work/annos/strucvars/gnomad.smk"
 include: "rules/work/annos/strucvars/clinvar.smk"
+include: "rules/work/annos/strucvars/gnomad_sv4.smk"
 # -- output directory ---------------------------------------------------------------------------
 # ---- mehari
 include: "rules/output/mehari/freqs.smk"
@@ -378,6 +383,7 @@ include: "rules/output/annonars/dbsnp.smk"
 include: "rules/output/annonars/gnomad_exomes.smk"
 include: "rules/output/annonars/gnomad_genomes.smk"
 include: "rules/output/annonars/gnomad_mtdna.smk"
+include: "rules/output/annonars/gnomad_sv.smk"
 include: "rules/output/annonars/helix.smk"
 include: "rules/output/annonars/genes.smk"
 # ---- worker
