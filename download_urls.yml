@@ -2,6 +2,8 @@
 
 - url: ftp://ftp.clinicalgenome.org/ClinGen_region_curation_list_GRCh37.tsv
 - url: ftp://ftp.clinicalgenome.org/ClinGen_region_curation_list_GRCh38.tsv
+- url: ftp://ftp.clinicalgenome.org/ClinGen_gene_curation_list_GRCh37.tsv
+- url: ftp://ftp.clinicalgenome.org/ClinGen_gene_curation_list_GRCh38.tsv
 
 - url: https://storage.googleapis.com/gtex_analysis_v8/annotations/GTEx_Analysis_v8_Annotations_SampleAttributesDS.txt
   excerpt_strategy:
@@ -22,9 +24,6 @@
 
 - comment: The curation activity summary report is built in real-time.
   url: https://search.clinicalgenome.org/kb/reports/curation-activity-summary-report
-
-- comment: ClinGen variant summary is built in real-time
-  url: http://erepo.clinicalgenome.org/evrepo/api/classifications/all?format=tabbed
 
 - url: https://github.com/bihealth/annonars-data-clinvar/releases/download/clinvar-weekly-20230625/clinvar-strucvar-grch37-2023-0625+0.6.3.tar.gz
   excerpt_strategy:
