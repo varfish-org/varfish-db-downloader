@@ -112,6 +112,18 @@ The known URLs are managed in `download_urls.yml`.
 # terraform apply
 ```
 
+### Uploading Data to S3
+
+For example, as follows
+
+```
+# s5cmd --dry-run --profile ext-varfish-public \
+    --endpoint-url https://ceph-s3-ext.cubi.bihealth.org \
+    sync \
+    'output/full/mehari/genes-txs-grch3*' \
+    s3://varfish-public/public/
+```
+
 ### Semantic Commits
 
 Generally, follow [Semantic Commits v1](https://www.conventionalcommits.org/en/v1.0.0/#specification), also see [examples](https://www.conventionalcommits.org/en/v1.0.0/#examples).

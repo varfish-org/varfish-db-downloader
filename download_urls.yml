@@ -78,11 +78,11 @@
     strategy: no-excerpt
     count: null
 
-- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.2.2/mehari-data-txs-grch37-0.2.2.bin.zst
+- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.3.0/mehari-data-txs-grch37-0.3.0.bin.zst
   excerpt_strategy:
     strategy: no-excerpt
     count: null
-- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.2.2/mehari-data-txs-grch38-0.2.2.bin.zst
+- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.3.0/mehari-data-txs-grch38-0.3.0.bin.zst
   excerpt_strategy:
     strategy: no-excerpt
     count: null

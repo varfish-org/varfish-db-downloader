@@ -33,9 +33,6 @@ rule output_annonars_genes:  # -- build annonars genes RocksDB file
         v_annonars=RE_VERSION,
     shell:
         r"""
-        export TMPDIR=$(mktemp -d)
-        trap "rm -rf $TMPDIR" EXIT
-
         annonars gene import \
             --path-out-rocksdb $(dirname {output.rocksdb_identity}) \
             --path-in-acmg {input.acmg_sf} \
