@@ -36,14 +36,11 @@ rule output_annonars_genes:  # -- build annonars genes RocksDB file
         export TMPDIR=$(mktemp -d)
         trap "rm -rf $TMPDIR" EXIT
 
-        tail -n +4 {input.clingen} > $TMPDIR/clingen.csv
-
         annonars gene import \
             --path-out-rocksdb $(dirname {output.rocksdb_identity}) \
             --path-in-acmg {input.acmg_sf} \
             --path-in-clingen-37 {input.clingen_37} \
             --path-in-clingen-38 {input.clingen_38} \
-            --path-in-clingen $TMPDIR/clingen.csv \
             --path-in-gnomad-constraints {input.gnomad_constraints} \
             --path-in-dbnsfp {input.dbnsfp} \
             --path-in-hgnc {input.hgnc} \
