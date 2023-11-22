@@ -1,10 +1,10 @@
-## Rules related to ClinGen curation download.
+## Rules related to ClinGen gene dosage pathogenicity annotation.
 
 
-rule genes_clingen_download:  # -- download ClinGen curations
+rule clingen_gene_download:  # -- download files
     output:
-        csv="work/download/genes/clingen/{date}/clingen.csv",
-        csv_md5="work/download/genes/clingen/{date}/clingen.csv.md5",
+        tsv="work/genes/clingen/{date}/ClinGen_gene_curation_list_{genome_release}.tsv",
+        tsv_md5="work/genes/clingen/{date}/ClinGen_gene_curation_list_{genome_release}.tsv.md5",
     shell:
         r"""
         if [[ "$(date +%Y%m%d)" != "{wildcards.date}" ]] && [[ "{FORCE_TODAY}" != "True" ]]; then
@@ -12,9 +12,8 @@ rule genes_clingen_download:  # -- download ClinGen curations
             exit 1
         fi
 
-        wget --no-check-certificate \
-            -O {output.csv} \
-            https://search.clinicalgenome.org/kb/reports/curation-activity-summary-report
+        wget -O {output.tsv} \
+            ftp://ftp.clinicalgenome.org/ClinGen_gene_curation_list_{wildcards.genome_release}.tsv
 
-        md5sum {output.csv} > {output.csv_md5}
+        md5sum {output.tsv} > {output.tsv}.md5
         """

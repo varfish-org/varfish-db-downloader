@@ -85,7 +85,6 @@ rule all:
         # == work directory =====================================================================
         #
         # genes
-        f"work/download/genes/clingen/{DV.clingen_gene}/clingen.csv",
         f"work/download/genes/rcnv/2022/Collins_rCNV_2022.dosage_sensitivity_scores.tsv.gz",
         f"work/download/genes/orphapacket/{DV.orphapacket}/orphapacket.tar.gz",
         f"work/genes/dbnsfp/{DV.dbnsfp}/genes.tsv.gz",
@@ -99,6 +98,9 @@ rule all:
         f"work/genes/orphapacket/{DV.orphapacket}+{DV.today}/orpha_diseases.tsv",
         "work/genes/rcnv/2022/rcnv_collins_2022.tsv",
         "work/genes/shet/2019/shet_weghorn_2019.tsv",
+        f"work/genes/clingen/{DV.today}/ClinGen_gene_curation_list_GRCh37.tsv",
+        f"work/genes/clingen/{DV.today}/ClinGen_gene_curation_list_GRCh38.tsv",
+        "work/genes/domino/20190219/domino.tsv",
         # reference-specific annotations
         # -- background/population sequence variants and annotations thereof
         # ---- GRCh37
@@ -132,7 +134,6 @@ rule all:
         f"work/annos/grch38/features/cons/{DV.ucsc_cons_38}/ucsc_conservation.tsv",
         f"work/annos/grch38/features/ensembl/{DV.ensembl_38}/ensembl_genes.bed.gz",
         f"work/annos/grch38/features/refseq/{DV.refseq_38}/refseq_genes.bed.gz",
-        # f"work/annos/grch38/features/clingen_dosage/{DV.today}/clingen_dosage_sensitivity_regions.bed.gz",
         #
         # == output directory ===================================================================
         #
@@ -163,9 +164,6 @@ rule all:
         # ----- conservation
         f"output/full/annonars/cons-grch37-{DV.ucsc_cons_37}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/full/annonars/cons-grch38-{DV.ucsc_cons_38}+{PV.annonars}/rocksdb/IDENTITY",
-        # ----- features
-        f"output/full/annonars/clingen-dosage-grch37/{DV.today}/clingen_region_curation_list.bed.gz",
-        f"output/full/annonars/clingen-dosage-grch38/{DV.today}/clingen_region_curation_list.bed.gz",
         # ----- genes
         f"output/full/annonars/genes-{DV.acmg_sf}+{DV.gnomad_constraints}+{DV.dbnsfp}+{DV.hpo}+{DV.orphapacket}+{DV.today}+{PV.annonars}/rocksdb/IDENTITY",
         # -- worker data
@@ -341,11 +339,12 @@ include: "rules/work/genes/omim.smk"
 include: "rules/work/genes/orphapacket.smk"
 include: "rules/work/genes/rcnv.smk"
 include: "rules/work/genes/shet.smk"
+include: "rules/work/genes/domino.smk"
+include: "rules/work/genes/clingen.smk"
 # Reference sequence--related rules.
 include: "rules/work/reference/human.smk"
 # Features (position and not variant specific).
 include: "rules/work/annos/features/cons.smk"
-include: "rules/work/annos/features/clingen_dosage.smk"
 include: "rules/work/annos/features/ensembl.smk"
 include: "rules/work/annos/features/refseq.smk"
 include: "rules/work/annos/features/tads.smk"
@@ -381,8 +380,6 @@ include: "rules/output/annonars/gnomad_genomes.smk"
 include: "rules/output/annonars/gnomad_mtdna.smk"
 include: "rules/output/annonars/helix.smk"
 include: "rules/output/annonars/genes.smk"
-# ------ features
-include: "rules/output/annonars/clingen_dosage.smk"
 # ---- worker
 include: "rules/output/worker/patho_mms.smk"
 include: "rules/output/worker/clinvar.smk"

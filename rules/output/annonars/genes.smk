@@ -4,7 +4,8 @@
 rule output_annonars_genes:  # -- build annonars genes RocksDB file
     input:
         acmg_sf="data/acmg_sf/{v_acmg_sf}/acmg_sf.tsv",
-        clingen="work/download/genes/clingen/{date}/clingen.csv",
+        clingen_37="work/genes/clingen/{date}/ClinGen_gene_curation_list_GRCh37.tsv",
+        clingen_38="work/genes/clingen/{date}/ClinGen_gene_curation_list_GRCh38.tsv",
         gnomad_constraints="work/genes/gnomad/{v_gnomad_constraints}/gnomad_constraints.tsv",
         dbnsfp="work/genes/dbnsfp/{v_dbnsfp}/genes.tsv.gz",
         hgnc="work/genes/hgnc/{date}/hgnc_info.jsonl",
@@ -14,6 +15,7 @@ rule output_annonars_genes:  # -- build annonars genes RocksDB file
         rcnv="work/genes/rcnv/2022/rcnv_collins_2022.tsv",
         shet="work/genes/shet/2019/shet_weghorn_2019.tsv",
         gtex="work/genes/annonars/gtex_v8/genes_tpm.jsonl.gz",
+        domino="work/genes/domino/20190219/domino.tsv",
     output:
         rocksdb_identity=(
             "output/full/annonars/genes-{v_acmg_sf}+{v_gnomad_constraints}+{v_dbnsfp}+{v_hpo}+{v_orpha}+{date}+{v_annonars}/"
@@ -31,15 +33,11 @@ rule output_annonars_genes:  # -- build annonars genes RocksDB file
         v_annonars=RE_VERSION,
     shell:
         r"""
-        export TMPDIR=$(mktemp -d)
-        trap "rm -rf $TMPDIR" EXIT
-
-        tail -n +4 {input.clingen} > $TMPDIR/clingen.csv
-
         annonars gene import \
             --path-out-rocksdb $(dirname {output.rocksdb_identity}) \
             --path-in-acmg {input.acmg_sf} \
-            --path-in-clingen $TMPDIR/clingen.csv \
+            --path-in-clingen-37 {input.clingen_37} \
+            --path-in-clingen-38 {input.clingen_38} \
             --path-in-gnomad-constraints {input.gnomad_constraints} \
             --path-in-dbnsfp {input.dbnsfp} \
             --path-in-hgnc {input.hgnc} \
@@ -48,7 +46,8 @@ rule output_annonars_genes:  # -- build annonars genes RocksDB file
             --path-in-ncbi {input.ncbi} \
             --path-in-rcnv {input.rcnv} \
             --path-in-shet {input.shet} \
-            --path-in-gtex {input.gtex}
+            --path-in-gtex {input.gtex} \
+            --path-in-domino {input.domino}
 
         varfish-db-downloader tpl \
             --template rules/output/annonars/genes.spec.yaml \
