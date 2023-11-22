@@ -43,7 +43,7 @@ dependencies:
   # Varfish related
   - annonars =0.28.0
   - viguno =0.1.6
-  - mehari =0.6.2
+  - mehari =0.18.1
   - varfish-server-worker =0.10.1
   # S3 uploads
   - s5cmd =2.1.0
