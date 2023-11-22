@@ -52,6 +52,10 @@ class DataVersions:
     gnomad_v3: str
     #: Version of gnomAD SV.
     gnomad_sv: str
+    #: Version of gnomAD CNV v4.
+    gnomad_cnv4: str
+    #: Version of gnomAD SV v4.
+    gnomad_sv4: str
     #: Version of dbVar.
     dbvar: str
     #: Version of DGV.
@@ -125,6 +129,8 @@ DATA_VERSIONS = DataVersions(
     gnomad_v2="2.1.1",
     gnomad_v3="3.1.2",
     gnomad_sv="2.1.1",
+    gnomad_cnv4="4.0",
+    gnomad_sv4="4.0",
     dbvar="20230516",
     dgv="20200225",
     dgv_gs="20160515",
@@ -163,7 +169,7 @@ class PackageVersions:
 
     #: VarFish DB Downloader.
     downloader: str
-    #: Version of ``annona-rs`` executable.
+    #: Version of ``annonars`` executable.
     annonars: str
     #: Version of ``viguno`` executable.
     viguno: str

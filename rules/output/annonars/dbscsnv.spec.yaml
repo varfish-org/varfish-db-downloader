@@ -1,5 +1,5 @@
 dc.identifier: annonars/seqvars/dbscsnv:{{ version }}-{{ genome_release }}
-dc.title: annona-rs dbscSNV RocksDB Database
+dc.title: annonars dbscSNV RocksDB Database
 dc.creator: Xiaoming Liu Lab
 dc.contributor:
   - VarFish Developer Teams

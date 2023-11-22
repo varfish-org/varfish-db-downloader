@@ -1,0 +1,18 @@
+dc.identifier: annonars/strucvars/gnomad-sv-genomes:{{ version }}-{{ genome_release }}
+dc.title: annonars gnomAD-CNV RocksDB Database
+dc.creator: gnomAD Team
+dc.contributor:
+  - VarFish Developer Teams
+dc.format: application/x-rocksdb
+dc.date: {{ today }}
+x-version: {{ version }}
+x-genome-release: {{ genome_release }}
+dc.description: |
+  RocksDB with the information from gnomAD SV v{{ v_gnomad }} converted with
+  annonars v{{ v_annonars }} in varfish-downloader v{{ v_downloader }}.
+dc.source:
+  - PMID:32461654
+  - https://gnomad.broadinstitute.org/
+x-created-from:
+  - name: gnomAD-SV
+    version: {{ v_gnomad }}
