@@ -16,6 +16,7 @@ rule output_annonars_genes:  # -- build annonars genes RocksDB file
         shet="work/genes/shet/2019/shet_weghorn_2019.tsv",
         gtex="work/genes/annonars/gtex_v8/genes_tpm.jsonl.gz",
         domino="work/genes/domino/20190219/domino.tsv",
+        decipher_hi="work/genes/decipher/v3/decipher_hi_prediction.tsv.gz",
     output:
         rocksdb_identity=(
             "output/full/annonars/genes-{v_acmg_sf}+{v_gnomad_constraints}+{v_dbnsfp}+{v_hpo}+{v_orpha}+{date}+{v_annonars}/"
@@ -47,7 +48,8 @@ rule output_annonars_genes:  # -- build annonars genes RocksDB file
             --path-in-rcnv {input.rcnv} \
             --path-in-shet {input.shet} \
             --path-in-gtex {input.gtex} \
-            --path-in-domino {input.domino}
+            --path-in-domino {input.domino} \
+            --path-in-decipher-hi {input.decipher_hi}
 
         varfish-db-downloader tpl \
             --template rules/output/annonars/genes.spec.yaml \
