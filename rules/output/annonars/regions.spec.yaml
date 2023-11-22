@@ -1,0 +1,14 @@
+dc.identifier: annonars/regions:{{ version }}-{{ genome_release }}
+dc.title: annonars regions annotation RocksDB
+dc.creator: VarFish Developer Teams
+dc.format: application/x-rocksdb
+dc.date: {{ today }}
+x-version: {{ version }}
+x-genome-release: {{ genome_release }}
+dc.description: |
+  RocksDB with region annotation.
+dc.source:
+  - https://search.clinicalgenome.org/kb/gene-dosage
+x-created-from:
+  - name: ClinGen Region Dosage Pathogenicity
+    version: {{ today }}

@@ -165,6 +165,11 @@ rule all:
         f"output/full/annonars/gnomad-sv-exomes-grch38-{DV.gnomad_cnv4}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/full/annonars/gnomad-sv-genomes-grch37-{DV.gnomad_sv}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/full/annonars/gnomad-sv-genomes-grch38-{DV.gnomad_sv4}+{PV.annonars}/rocksdb/IDENTITY",
+        # ----- sequence annotation
+        f"output/full/annonars/functional-grch37-{DV.refseq_fe_37}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/full/annonars/functional-grch38-{DV.refseq_fe_38}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/full/annonars/regions-grch37-{DV.today}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/full/annonars/regions-grch38-{DV.today}+{PV.annonars}/rocksdb/IDENTITY",
         # ----- conservation
         f"output/full/annonars/cons-grch37-{DV.ucsc_cons_37}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/full/annonars/cons-grch38-{DV.ucsc_cons_38}+{PV.annonars}/rocksdb/IDENTITY",
@@ -386,6 +391,8 @@ include: "rules/output/annonars/gnomad_mtdna.smk"
 include: "rules/output/annonars/gnomad_sv.smk"
 include: "rules/output/annonars/helix.smk"
 include: "rules/output/annonars/genes.smk"
+include: "rules/output/annonars/functional.smk"
+include: "rules/output/annonars/regions.smk"
 # ---- worker
 include: "rules/output/worker/patho_mms.smk"
 include: "rules/output/worker/clinvar.smk"

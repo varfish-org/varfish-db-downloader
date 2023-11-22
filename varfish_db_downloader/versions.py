@@ -111,6 +111,10 @@ class DataVersions:
     #: Marker file for the tracks version.  This allows us to update the
     #: tracks BED files later on.
     tracks: str
+    #: RefSeq functional elements for GRCh37.
+    refseq_fe_37: str
+    #: RefSeq functional elements for GRCh38.
+    refseq_fe_38: str
 
 
 #: The data versions to use.
@@ -158,6 +162,8 @@ DATA_VERSIONS = DataVersions(
     clinvar_release=CLINVAR_RELEASE,
     clinvar_version=CLINVAR_VERSION,
     tracks="0",
+    refseq_fe_37="105.20201022",
+    refseq_fe_38="110",
 )
 
 

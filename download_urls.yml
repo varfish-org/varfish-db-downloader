@@ -1,3 +1,12 @@
+- url: https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/9606/105.20201022/GCF_000001405.25_GRCh37.p13/GCF_000001405.25_GRCh37.p13_genomic.gff.gz
+  excerpt_strategy:
+    strategy: gz-head
+    count: 1000
+- url: https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/9606/110/GCF_000001405.40_GRCh38.p14/GCF_000001405.40_GRCh38.p14_genomic.gff.gz
+  excerpt_strategy:
+    strategy: gz-head
+    count: 1000
+
 - url: https://storage.googleapis.com/gcp-public-data--gnomad/legacy/exac_browser/ExAC.r1.sites.vep.vcf.gz
   excerpt_strategy:
     strategy: gz-head
