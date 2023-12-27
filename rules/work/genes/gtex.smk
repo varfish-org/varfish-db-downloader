@@ -34,11 +34,11 @@ rule genes_gtex_v8_download:  # -- download GTex v8 gene expression data
         r"""
         wget --no-check-certificate \
             -O {output.attributes} \
-            https://storage.googleapis.com/gtex_analysis_v8/annotations/GTEx_Analysis_v8_Annotations_SampleAttributesDS.txt
+            https://storage.cloud.google.com/adult-gtex/bulk-gex/v8/rna-seq/GTEx_Analysis_v8_Annotations_SampleAttributesDS.txt
 
         wget --no-check-certificate \
             -O {output.genes_tpm} \
-            https://storage.googleapis.com/gtex_analysis_v8/rna_seq_data/GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_tpm.gct.gz
+            https://storage.cloud.google.com/adult-gtex/bulk-gex/v8/rna-seq/GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_tpm.gct.gz
 
         md5sum {output.attributes} > {output.attributes_md5}
         md5sum {output.genes_tpm} > {output.genes_tpm_md5}
