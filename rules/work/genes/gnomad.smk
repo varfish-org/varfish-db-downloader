@@ -130,12 +130,20 @@ def run_genes_gnomad_constraints_v4_0_to_tsv(input, output, wildcards):
     columns_dst = ["ensembl_gene_id", "entrez_id", "gene_symbol"] + list(columns_src_dst.values())[
         1:
     ]
-    columns_dst_str = ",".join(columns_dst)
+    columns_dst_str = ",".join(
+        columns_dst
+        + [
+            "exac_pLI",
+            "exac_obs_lof",
+            "exac_exp_lof",
+            "exac_oe_lof",
+        ]
+    )
     shell(
         r"""
-        export TMPDIR=/tmp/x
+        export TMPDIR=$(mktemp -d)
         mkdir -p $TMPDIR
-        # trap "rm -rf $TMPDIR" EXIT
+        trap "rm -rf $TMPDIR" EXIT
 
         # Extract transcripts that are MANE Select for genes that have one.
         head -n 1 {input.tsv} \
@@ -146,19 +154,22 @@ def run_genes_gnomad_constraints_v4_0_to_tsv(input, output, wildcards):
         | sed -e 's/","/"__COMMA__"/g' \
         >> $TMPDIR/tmp.tsv
 
-        # Convert to CSV so `qsv` has an easier time.
+        # Convert to CSV so `qsv` has an easier time
         cat $TMPDIR/tmp.tsv \
         | tr '\t' ',' \
         > $TMPDIR/tmp.txt
 
+        # Select columns, rename, pad with the exac_* fields having NA values.
         qsv select {columns_src_str} $TMPDIR/tmp.txt \
         | qsv rename {columns_tmp_str} \
+        | perl -p -e 's/$/,exac_pLI,exac_obs_lof,exac_exp_lof,exac_oe_lof/ if $. == 1' \
+        | perl -p -e 's/$/,NA,NA,NA,NA/ if $. != 1' \
         | tr ',' '\t' \
         | sed -e 's/__COMMA__/,/g' \
-        > $TMPDIR/tmp.tsv
+        > $TMPDIR/tmp2.tsv
 
         qsv join -d '\t' \
-            ensembl_transcript_id $TMPDIR/tmp.tsv \
+            ensembl_transcript_id $TMPDIR/tmp2.tsv \
             ensembl_transcript_id {input.xlink_ensembl} \
         | qsv select {columns_dst_str} \
         | tr ',' '\t' \
