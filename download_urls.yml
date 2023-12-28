@@ -213,6 +213,7 @@
     count: null
 
 - url: https://storage.googleapis.com/gcp-public-data--gnomad/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.by_gene.txt.bgz
+- url: https://storage.googleapis.com/gcp-public-data--gnomad/release/v4.0/constraint/gnomad.v4.0.constraint_metrics.tsv
 - url: https://ftp.ncbi.nih.gov/gene/DATA/mim2gene_medgen
 
 - comment: We replace the linux64.gene2.xml binary with a wrapper to zcat...
