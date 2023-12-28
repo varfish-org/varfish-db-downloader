@@ -5,7 +5,7 @@
 GNOMAD_PREFIX = "https://gnomad-public-us-east-1.s3.amazonaws.com/release"
 
 
-rule annos_gnomad_nuclear_download_grch37:  # -- download gnomAD v2 exomes/genomes for GRCh37
+rule annos_gnomad_nuclear_download_grch37_v2:  # -- download gnomAD v2 exomes/genomes for GRCh37
     output:
         vcf="work/download/annos/grch37/seqvars/gnomad_{kind}/{version}/gnomad.{kind}.r{version}.sites.{chrom}.vcf.bgz",
         vcf_tbi="work/download/annos/grch37/seqvars/gnomad_{kind}/{version}/gnomad.{kind}.r{version}.sites.{chrom}.vcf.bgz.tbi",
@@ -67,7 +67,7 @@ rule annos_gnomad_nuclear_download_grch38_liftover_v2:  # -- download gnomAD v2 
         """
 
 
-rule annos_gnomad_nuclear_download_grch38_v3:  # -- download gnomAD genomes v3
+rule annos_gnomad_nuclear_download_grch38_v3_v4:  # -- download gnomAD genomes v3 and v4
     output:
         vcf="work/download/annos/grch38/seqvars/gnomad_{kind}/{version}/gnomad.{kind}.v{version}.sites.chr{chrom}.vcf.bgz",
         vcf_tbi="work/download/annos/grch38/seqvars/gnomad_{kind}/{version}/gnomad.{kind}.v{version}.sites.chr{chrom}.vcf.bgz.tbi",
@@ -111,16 +111,22 @@ def input_annos_gnomad_nuclear_grch37(wildcards):
 def input_annos_gnomad_nuclear_grch38(wildcards):
     """Input files for gnomAD exomes/genomes GRCh38."""
     chroms = list(range(1, 23)) + ["X", "Y"]
-    if wildcards.kind == "exomes":
-        tpl = "work/download/annos/grch38/seqvars/gnomad_{kind}/{version}/gnomad.{kind}.r{version}.sites.{chrom}.liftover_grch38.vcf.bgz"
-        return [
-            tpl.format(kind=wildcards.kind, version=DV.gnomad_v2, chrom=chrom) for chrom in chroms
-        ]
-    else:
+    if wildcards.version == DV.gnomad_v4:
         tpl = "work/download/annos/grch38/seqvars/gnomad_{kind}/{version}/gnomad.{kind}.v{version}.sites.chr{chrom}.vcf.bgz"
         return [
-            tpl.format(kind=wildcards.kind, version=DV.gnomad_v3, chrom=chrom) for chrom in chroms
+            tpl.format(chrom=chrom, **wildcards) for chrom in chroms
         ]
+    else:
+        if wildcards.kind == "exomes":
+            tpl = "work/download/annos/grch38/seqvars/gnomad_{kind}/{version}/gnomad.{kind}.r{version}.sites.{chrom}.liftover_grch38.vcf.bgz"
+            return [
+                tpl.format(kind=wildcards.kind, version=DV.gnomad_v2, chrom=chrom) for chrom in chroms
+            ]
+        else:
+            tpl = "work/download/annos/grch38/seqvars/gnomad_{kind}/{version}/gnomad.{kind}.v{version}.sites.chr{chrom}.vcf.bgz"
+            return [
+                tpl.format(kind=wildcards.kind, version=DV.gnomad_v3, chrom=chrom) for chrom in chroms
+            ]
 
 
 rule annos_seqvars_gnomad_nuclear_grch37:  # -- collect gnomAD exomes/genomes for GRCh37

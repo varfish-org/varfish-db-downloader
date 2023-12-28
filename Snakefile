@@ -122,8 +122,8 @@ rule all:
         f"work/download/annos/grch37/seqvars/dbsnp/{DV.dbsnp}/dbsnp.vcf.gz",
         f"work/annos/grch38/seqvars/helixmtdb/{DV.helixmtdb}/helixmtdb.vcf.gz",
         f"work/annos/grch38/seqvars/gnomad_mtdna/{DV.gnomad_mtdna}/gnomad_mtdna.vcf.gz",
-        f"work/download/annos/grch38/seqvars/gnomad_exomes/{DV.gnomad_v2}/.done",
-        f"work/download/annos/grch38/seqvars/gnomad_genomes/{DV.gnomad_v3}/.done",
+        f"work/download/annos/grch38/seqvars/gnomad_exomes/{DV.gnomad_v4}/.done",
+        f"work/download/annos/grch38/seqvars/gnomad_genomes/{DV.gnomad_v4}/.done",
         # NB: gnomAD-SV GRCh38 was announced end of 2020 but not released yet
         # -- genome browser "features" (position-specific)
         # ---- GRCh37
@@ -140,7 +140,7 @@ rule all:
         # -- mehari data
         # ---- frequencies (via annonars)
         f"output/full/mehari/freqs-grch37-{DV.gnomad_v2}+{DV.gnomad_v2}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
-        f"output/full/mehari/freqs-grch38-{DV.gnomad_v3}+{DV.gnomad_v2}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/full/mehari/freqs-grch38-{DV.gnomad_v4}+{DV.gnomad_v4}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
         # -- annonars data
         # ----- sequence variant annotations
         f"output/full/annonars/cadd-grch37-{DV.cadd}+{PV.annonars}/rocksdb/IDENTITY",
@@ -156,9 +156,9 @@ rule all:
         f"output/full/annonars/gnomad-mtdna-grch37-{DV.gnomad_mtdna}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/full/annonars/gnomad-mtdna-grch38-{DV.gnomad_mtdna}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/full/annonars/gnomad-exomes-grch37-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
-        f"output/full/annonars/gnomad-exomes-grch38-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/full/annonars/gnomad-exomes-grch38-{DV.gnomad_v4}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/full/annonars/gnomad-genomes-grch37-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
-        f"output/full/annonars/gnomad-genomes-grch38-{DV.gnomad_v3}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/full/annonars/gnomad-genomes-grch38-{DV.gnomad_v4}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/full/annonars/helixmtdb-grch37-{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/full/annonars/helixmtdb-grch38-{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/full/annonars/gnomad-sv-exomes-grch37-{DV.exac_cnv}+{PV.annonars}/rocksdb/IDENTITY",
