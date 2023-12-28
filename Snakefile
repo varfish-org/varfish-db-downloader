@@ -286,12 +286,12 @@ rule all:
         f"output/reduced-dev/annonars/dbscsnv-grch37-{DV.dbscsnv}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/reduced-dev/annonars/dbscsnv-grch38-{DV.dbscsnv}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/reduced-dev/annonars/gnomad-exomes-grch37-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
-        f"output/reduced-dev/annonars/gnomad-exomes-grch38-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-dev/annonars/gnomad-exomes-grch38-{DV.gnomad_v4}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/reduced-dev/annonars/gnomad-genomes-grch37-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
-        f"output/reduced-dev/annonars/gnomad-genomes-grch38-{DV.gnomad_v3}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-dev/annonars/gnomad-genomes-grch38-{DV.gnomad_v4}+{PV.annonars}/rocksdb/IDENTITY",
         # -- mehari
         f"output/reduced-dev/mehari/freqs-grch37-{DV.gnomad_v2}+{DV.gnomad_v2}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
-        f"output/reduced-dev/mehari/freqs-grch38-{DV.gnomad_v3}+{DV.gnomad_v2}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-dev/mehari/freqs-grch38-{DV.gnomad_v4}+{DV.gnomad_v4}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
         #
         # == exomes (reduced data) directories ==================================================
         #
@@ -318,12 +318,12 @@ rule all:
         f"output/reduced-exomes/annonars/dbscsnv-grch37-{DV.dbscsnv}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/reduced-exomes/annonars/dbscsnv-grch38-{DV.dbscsnv}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/reduced-exomes/annonars/gnomad-exomes-grch37-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
-        f"output/reduced-exomes/annonars/gnomad-exomes-grch38-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-exomes/annonars/gnomad-exomes-grch38-{DV.gnomad_v4}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/reduced-exomes/annonars/gnomad-genomes-grch37-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
-        f"output/reduced-exomes/annonars/gnomad-genomes-grch38-{DV.gnomad_v3}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-exomes/annonars/gnomad-genomes-grch38-{DV.gnomad_v4}+{PV.annonars}/rocksdb/IDENTITY",
         # -- mehari
         f"output/reduced-exomes/mehari/freqs-grch37-{DV.gnomad_v2}+{DV.gnomad_v2}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
-        f"output/reduced-exomes/mehari/freqs-grch38-{DV.gnomad_v3}+{DV.gnomad_v2}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-exomes/mehari/freqs-grch38-{DV.gnomad_v4}+{DV.gnomad_v4}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
 
 
 # ===============================================================================================
