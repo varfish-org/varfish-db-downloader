@@ -87,11 +87,11 @@
     strategy: no-excerpt
     count: null
 
-- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.3.0/mehari-data-txs-grch37-0.3.0.bin.zst
+- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.4.4/mehari-data-txs-grch37-0.4.4.bin.zst
   excerpt_strategy:
     strategy: no-excerpt
     count: null
-- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.3.0/mehari-data-txs-grch38-0.3.0.bin.zst
+- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.4.4/mehari-data-txs-grch38-0.4.4.bin.zst
   excerpt_strategy:
     strategy: no-excerpt
     count: null
@@ -213,6 +213,7 @@
     count: null
 
 - url: https://storage.googleapis.com/gcp-public-data--gnomad/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.by_gene.txt.bgz
+- url: https://storage.googleapis.com/gcp-public-data--gnomad/release/v4.0/constraint/gnomad.v4.0.constraint_metrics.tsv
 - url: https://ftp.ncbi.nih.gov/gene/DATA/mim2gene_medgen
 
 - comment: We replace the linux64.gene2.xml binary with a wrapper to zcat...
@@ -257,6 +258,106 @@
 - url: http://dgv.tcag.ca/dgv/docs/DGV.GS.hg38.gff3
 - url: ftp://ftp.broadinstitute.org/pub/ExAC_release/release0.3.1/cnv/exac-final.autosome-1pct-sq60-qc-prot-coding.cnv.bed
 - url: https://ftp-trace.ncbi.nih.gov/1000genomes/ftp/phase3/integrated_sv_map/ALL.wgs.integrated_sv_map_v2.20130502.svs.genotypes.vcf.gz
+
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr1.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr2.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr3.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr4.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr5.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr6.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr7.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr8.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr9.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr10.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr11.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr12.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr13.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr14.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr15.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr16.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr17.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr18.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr19.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr20.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr21.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr22.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chrX.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chrY.vcf.bgz
+
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr1.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr2.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr3.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr4.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr5.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr6.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr7.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr8.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr9.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr10.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr11.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr12.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr13.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr14.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr15.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr16.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr17.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr18.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr19.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr20.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr21.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chr22.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chrX.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/exomes/gnomad.exomes.v4.0.sites.chrY.vcf.bgz.tbi
+
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr1.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr2.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr3.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr4.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr5.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr6.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr7.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr8.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr9.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr10.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr11.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr12.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr13.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr14.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr15.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr16.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr17.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr18.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr19.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr20.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr21.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr22.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chrX.vcf.bgz
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chrY.vcf.bgz
+
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr1.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr2.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr3.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr4.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr5.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr6.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr7.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr8.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr9.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr10.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr11.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr12.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr13.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr14.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr15.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr16.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr17.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr18.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr19.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr20.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr21.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chr22.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chrX.vcf.bgz.tbi
+- url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/4.0/vcf/genomes/gnomad.genomes.v4.0.sites.chrY.vcf.bgz.tbi
 
 - url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/2.1.1/vcf/genomes/gnomad.genomes.r2.1.1.sites.1.vcf.bgz
 - url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/2.1.1/vcf/genomes/gnomad.genomes.r2.1.1.sites.2.vcf.bgz

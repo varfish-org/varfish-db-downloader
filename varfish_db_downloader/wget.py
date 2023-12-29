@@ -87,9 +87,10 @@ def excerpt_head(url: str, path_out: str, count: int):
                     break
                 f_out.write(line.encode("utf-8"))
                 f_out.write(b"\n")
-    # Fixup resulting compressed files so they are proper bgzip.
-    subprocess.check_call(["gzip", "-d", path_out])
-    subprocess.check_call(["bgzip", path_out.replace(".gz", "")])
+    if try_gzip:
+        # Fixup resulting compressed files so they are proper bgzip.
+        subprocess.check_call(["gzip", "-d", path_out])
+        subprocess.check_call(["bgzip", path_out.replace(".gz", "")])
 
 
 def excerpt_copy_tbi(url: str, path_out: str, count: int):

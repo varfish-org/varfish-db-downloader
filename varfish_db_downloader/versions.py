@@ -50,6 +50,8 @@ class DataVersions:
     gnomad_v2: str
     #: Version of gnomAD v3.
     gnomad_v3: str
+    #: Version of gnomAD v4.
+    gnomad_v4: str
     #: Version of gnomAD SV.
     gnomad_sv: str
     #: Version of gnomAD CNV v4.
@@ -123,15 +125,16 @@ DATA_VERSIONS = DataVersions(
     clingen_variant=TODAY,
     ensembl_37="87",
     ensembl_38="109",
-    ensembl="109",
+    ensembl="110",
     today=TODAY,
     dbnsfp="4.4",
     dbscsnv="1.1",
     cadd="1.6",
-    gnomad_constraints="2.1.1",
+    gnomad_constraints="4.0",
     gnomad_mtdna="3.1",
     gnomad_v2="2.1.1",
     gnomad_v3="3.1.2",
+    gnomad_v4="4.0",
     gnomad_sv="2.1.1",
     gnomad_cnv4="4.0",
     gnomad_sv4="4.0",
@@ -158,7 +161,7 @@ DATA_VERSIONS = DataVersions(
     hpo="20230606",
     orphapacket="10.1",
     patho_mms="20220730",
-    mehari_tx="0.3.0",
+    mehari_tx="0.4.4",
     clinvar_release=CLINVAR_RELEASE,
     clinvar_version=CLINVAR_VERSION,
     tracks="0",
