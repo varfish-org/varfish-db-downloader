@@ -433,6 +433,70 @@
       "typ": "Float"
     },
     {
+      "name": "ESM1b_score",
+      "typ": "String"
+    },
+    {
+      "name": "ESM1b_rankscore",
+      "typ": "Float"
+    },
+    {
+      "name": "ESM1b_pred",
+      "typ": "String"
+    },
+    {
+      "name": "EVE_score",
+      "typ": "String"
+    },
+    {
+      "name": "EVE_rankscore",
+      "typ": "Float"
+    },
+    {
+      "name": "EVE_Class10_pred",
+      "typ": "String"
+    },
+    {
+      "name": "EVE_Class20_pred",
+      "typ": "String"
+    },
+    {
+      "name": "EVE_Class25_pred",
+      "typ": "String"
+    },
+    {
+      "name": "EVE_Class30_pred",
+      "typ": "String"
+    },
+    {
+      "name": "EVE_Class40_pred",
+      "typ": "String"
+    },
+    {
+      "name": "EVE_Class50_pred",
+      "typ": "String"
+    },
+    {
+      "name": "EVE_Class60_pred",
+      "typ": "String"
+    },
+    {
+      "name": "EVE_Class70_pred",
+      "typ": "String"
+    },
+    {
+      "name": "EVE_Class75_pred",
+      "typ": "String"
+    },
+    {
+      "name": "EVE_Class80_pred",
+      "typ": "String"
+    },
+    {
+      "name": "EVE_Class90_pred",
+      "typ": "String"
+    },
+    {
       "name": "Aloft_Fraction_transcripts_affected",
       "typ": "String"
     },

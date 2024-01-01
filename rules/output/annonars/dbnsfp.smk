@@ -32,9 +32,9 @@ rule output_annonars_dbnsfp:  # -- build dbNSFP RocksDB with annonars
             --genome-release {wildcards.genome_release} \
             --null-values=. \
             --inference-row-count 100000 \
-            --path-schema-json rules/output/annonars/dbnsfp-schema-{wildcards.v_dbnsfp}.json \
             \
             --path-out-rocksdb $(dirname {output.rocksdb_identity}) \
+            --path-schema-json rules/output/annonars/dbnsfp-schema-{wildcards.v_dbnsfp}.json \
             \
             $(if [[ "{wildcards.genome_release}" == "grch37" ]]; then \
                 echo --col-chrom 'hg19_chr'; \

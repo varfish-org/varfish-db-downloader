@@ -1,12 +1,6 @@
 ## Rules related to dbNSFP.
 
 
-#: Download URL for dbNSFP 4.4a
-DBNSFP_ACADEMIC_URL = "https://usf.box.com/shared/static/bvfzmkpgtphvbmmrvb2iyl2jl21o49kc"
-#: Download URL for dbNSFP 4.4c
-DBNSFP_COMMMERCIAL_URL = "https://usf.box.com/shared/static/a84zcdlkx2asq2nxh6xr2gdb4csmyvhk"
-
-
 def files_dbnsfp():
     """Helper that returns the files within the dbNSFP archive."""
     lst = [
@@ -60,11 +54,7 @@ rule annos_seqvars_dbnsfp_download:  # -- download dbNSFP ZIP file
     threads: 8
     shell:
         r"""
-        if [[ "{wildcards.variant}" == a ]]; then
-            url={DBNSFP_ACADEMIC_URL}
-        else
-            url={DBNSFP_COMMMERCIAL_URL}
-        fi
+        url=https://dbnsfp.s3.amazonaws.com/dbNSFP4.5{wildcards.variant}.zip
 
         aria2c \
             --check-certificate=false \
