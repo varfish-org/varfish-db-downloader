@@ -144,6 +144,8 @@ rule all:
         f"output/full/mehari/freqs-grch38-{DV.gnomad_v4}+{DV.gnomad_v4}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
         # -- annonars data
         # ----- sequence variant annotations
+        f"output/full/annonars/alphamissense-grch37-{DV.alphamissense}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/full/annonars/alphamissense-grch38-{DV.alphamissense}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/full/annonars/cadd-grch37-{DV.cadd}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/full/annonars/cadd-grch38-{DV.cadd}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/full/annonars/dbsnp-grch37-{DV.dbsnp}+{PV.annonars}/rocksdb/IDENTITY",
@@ -383,6 +385,7 @@ include: "rules/output/mehari/freqs.smk"
 # ---- viguno
 include: "rules/output/viguno/hpo.smk"
 # ---- annonars
+include: "rules/output/annonars/alphamissense.smk"
 include: "rules/output/annonars/cadd.smk"
 include: "rules/output/annonars/cons.smk"
 include: "rules/output/annonars/dbnsfp.smk"

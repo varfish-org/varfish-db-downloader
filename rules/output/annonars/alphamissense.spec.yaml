@@ -1,0 +1,18 @@
+dc.identifier: annonars/seqvars/alphamissense:{{ version }}-{{ genome_release }}
+dc.title: annonars AlphaMissense RocksDB Database
+dc.creator: DeepMind
+dc.contributor:
+  - VarFish Developer Teams
+dc.format: application/x-rocksdb
+dc.date: {{ today }}
+x-version: {{ version }}
+x-genome-release: {{ genome_release }}
+dc.description: |
+  RocksDB with the information from the AlphaMissense_hgGENOME.tsv.gz
+  files for the canonical transcripts.
+dc.source:
+  - PMID:37733863
+  - https://storage.googleapis.com/dm_alphamissense/README.pdf
+x-created-from:
+  - name: AlphaMissense
+    version: {{ v_alphamissense }}
