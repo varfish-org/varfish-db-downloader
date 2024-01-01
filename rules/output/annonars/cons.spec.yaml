@@ -1,5 +1,5 @@
 dc.identifier: annonars/seqvars/cons:{{ version }}-{{ genome_release }}
-dc.title: annona-rs UCSC Conservation RocksDB Database
+dc.title: annonars UCSC Conservation RocksDB Database
 dc.creator: UCSC Genome Browser Team
 dc.contributor:
   - VarFish Developer Teams

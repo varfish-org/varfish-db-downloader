@@ -78,7 +78,7 @@ def excerpt_head(url: str, path_out: str, count: int):
             # manually.
             r = s.get(url, stream=True)
             parseable_data = decompress_stream(r.iter_content(1024))
-            hacky_n_chunks = 10  # we will read only 10 chunks for now
+            hacky_n_chunks = 100  # we will read only 10 chunks for now
             chunks_byte = list(itertools.islice(parseable_data, hacky_n_chunks))
             collapsed_byte = b"".join(chunks_byte)
             collapsed = collapsed_byte.decode("utf-8")
@@ -87,6 +87,10 @@ def excerpt_head(url: str, path_out: str, count: int):
                     break
                 f_out.write(line.encode("utf-8"))
                 f_out.write(b"\n")
+    if try_gzip:
+        # Fixup resulting compressed files so they are proper bgzip.
+        subprocess.check_call(["gzip", "-d", path_out])
+        subprocess.check_call(["bgzip", path_out.replace(".gz", "")])
 
 
 def excerpt_copy_tbi(url: str, path_out: str, count: int):

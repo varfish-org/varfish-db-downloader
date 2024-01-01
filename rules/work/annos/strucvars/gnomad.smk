@@ -3,12 +3,12 @@
 
 rule annos_strucvars_gnomad_grch37_download:  # -- download gnomAD-SV files
     output:
-        vcf="work/download/annos/grch37/strucvars/gnomad/2.1.1/gnomad_v2.1_sv.sites.vcf.gz",
+        vcf="work/download/annos/grch37/strucvars/gnomad/2.1.1/gnomad_v2.1_sv.{token}.vcf.gz",
     shell:
         r"""
         wget --no-check-certificate \
             -O {output.vcf} \
-            https://storage.googleapis.com/gcp-public-data--gnomad/papers/2019-sv/gnomad_v2.1_sv.sites.vcf.gz
+            https://storage.googleapis.com/gcp-public-data--gnomad/papers/2019-sv/gnomad_v2.1_sv.{wildcards.token}.vcf.gz
         """
 
 

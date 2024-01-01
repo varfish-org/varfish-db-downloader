@@ -50,8 +50,14 @@ class DataVersions:
     gnomad_v2: str
     #: Version of gnomAD v3.
     gnomad_v3: str
+    #: Version of gnomAD v4.
+    gnomad_v4: str
     #: Version of gnomAD SV.
     gnomad_sv: str
+    #: Version of gnomAD CNV v4.
+    gnomad_cnv4: str
+    #: Version of gnomAD SV v4.
+    gnomad_sv4: str
     #: Version of dbVar.
     dbvar: str
     #: Version of DGV.
@@ -107,6 +113,10 @@ class DataVersions:
     #: Marker file for the tracks version.  This allows us to update the
     #: tracks BED files later on.
     tracks: str
+    #: RefSeq functional elements for GRCh37.
+    refseq_fe_37: str
+    #: RefSeq functional elements for GRCh38.
+    refseq_fe_38: str
 
 
 #: The data versions to use.
@@ -115,16 +125,19 @@ DATA_VERSIONS = DataVersions(
     clingen_variant=TODAY,
     ensembl_37="87",
     ensembl_38="109",
-    ensembl="109",
+    ensembl="110",
     today=TODAY,
     dbnsfp="4.4",
     dbscsnv="1.1",
     cadd="1.6",
-    gnomad_constraints="2.1.1",
+    gnomad_constraints="4.0",
     gnomad_mtdna="3.1",
     gnomad_v2="2.1.1",
     gnomad_v3="3.1.2",
+    gnomad_v4="4.0",
     gnomad_sv="2.1.1",
+    gnomad_cnv4="4.0",
+    gnomad_sv4="4.0",
     dbvar="20230516",
     dgv="20200225",
     dgv_gs="20160515",
@@ -148,10 +161,12 @@ DATA_VERSIONS = DataVersions(
     hpo="20230606",
     orphapacket="10.1",
     patho_mms="20220730",
-    mehari_tx="0.2.2",
+    mehari_tx="0.4.4",
     clinvar_release=CLINVAR_RELEASE,
     clinvar_version=CLINVAR_VERSION,
     tracks="0",
+    refseq_fe_37="105.20201022",
+    refseq_fe_38="110",
 )
 
 
@@ -163,7 +178,7 @@ class PackageVersions:
 
     #: VarFish DB Downloader.
     downloader: str
-    #: Version of ``annona-rs`` executable.
+    #: Version of ``annonars`` executable.
     annonars: str
     #: Version of ``viguno`` executable.
     viguno: str

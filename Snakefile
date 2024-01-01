@@ -85,11 +85,11 @@ rule all:
         # == work directory =====================================================================
         #
         # genes
-        f"work/download/genes/clingen/{DV.clingen_gene}/clingen.csv",
         f"work/download/genes/rcnv/2022/Collins_rCNV_2022.dosage_sensitivity_scores.tsv.gz",
         f"work/download/genes/orphapacket/{DV.orphapacket}/orphapacket.tar.gz",
         "work/download/genes/alphamissense/1/AlphaMissense_gene_hg38.tsv.gz",
         f"work/genes/dbnsfp/{DV.dbnsfp}/genes.tsv.gz",
+        "work/genes/decipher/v3/decipher_hi_prediction.tsv.gz",
         f"work/genes/ensembl/{DV.ensembl}/ensembl_xlink.tsv",
         f"work/genes/enst_ensg/grch37/{DV.ensembl_37}/enst_ensg.tsv",
         f"work/genes/entrez/{DV.today}/gene_info.jsonl",
@@ -99,6 +99,9 @@ rule all:
         f"work/genes/orphapacket/{DV.orphapacket}+{DV.today}/orpha_diseases.tsv",
         "work/genes/rcnv/2022/rcnv_collins_2022.tsv",
         "work/genes/shet/2019/shet_weghorn_2019.tsv",
+        f"work/genes/clingen/{DV.today}/ClinGen_gene_curation_list_GRCh37.tsv",
+        f"work/genes/clingen/{DV.today}/ClinGen_gene_curation_list_GRCh38.tsv",
+        "work/genes/domino/20190219/domino.tsv",
         # reference-specific annotations
         # -- background/population sequence variants and annotations thereof
         # ---- GRCh37
@@ -120,8 +123,8 @@ rule all:
         f"work/download/annos/grch37/seqvars/dbsnp/{DV.dbsnp}/dbsnp.vcf.gz",
         f"work/annos/grch38/seqvars/helixmtdb/{DV.helixmtdb}/helixmtdb.vcf.gz",
         f"work/annos/grch38/seqvars/gnomad_mtdna/{DV.gnomad_mtdna}/gnomad_mtdna.vcf.gz",
-        f"work/download/annos/grch38/seqvars/gnomad_exomes/{DV.gnomad_v2}/.done",
-        f"work/download/annos/grch38/seqvars/gnomad_genomes/{DV.gnomad_v3}/.done",
+        f"work/download/annos/grch38/seqvars/gnomad_exomes/{DV.gnomad_v4}/.done",
+        f"work/download/annos/grch38/seqvars/gnomad_genomes/{DV.gnomad_v4}/.done",
         # NB: gnomAD-SV GRCh38 was announced end of 2020 but not released yet
         # -- genome browser "features" (position-specific)
         # ---- GRCh37
@@ -138,7 +141,7 @@ rule all:
         # -- mehari data
         # ---- frequencies (via annonars)
         f"output/full/mehari/freqs-grch37-{DV.gnomad_v2}+{DV.gnomad_v2}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
-        f"output/full/mehari/freqs-grch38-{DV.gnomad_v3}+{DV.gnomad_v2}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/full/mehari/freqs-grch38-{DV.gnomad_v4}+{DV.gnomad_v4}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
         # -- annonars data
         # ----- sequence variant annotations
         f"output/full/annonars/cadd-grch37-{DV.cadd}+{PV.annonars}/rocksdb/IDENTITY",
@@ -154,11 +157,20 @@ rule all:
         f"output/full/annonars/gnomad-mtdna-grch37-{DV.gnomad_mtdna}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/full/annonars/gnomad-mtdna-grch38-{DV.gnomad_mtdna}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/full/annonars/gnomad-exomes-grch37-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
-        f"output/full/annonars/gnomad-exomes-grch38-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/full/annonars/gnomad-exomes-grch38-{DV.gnomad_v4}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/full/annonars/gnomad-genomes-grch37-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
-        f"output/full/annonars/gnomad-genomes-grch38-{DV.gnomad_v3}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/full/annonars/gnomad-genomes-grch38-{DV.gnomad_v4}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/full/annonars/helixmtdb-grch37-{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/full/annonars/helixmtdb-grch38-{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/full/annonars/gnomad-sv-exomes-grch37-{DV.exac_cnv}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/full/annonars/gnomad-sv-exomes-grch38-{DV.gnomad_cnv4}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/full/annonars/gnomad-sv-genomes-grch37-{DV.gnomad_sv}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/full/annonars/gnomad-sv-genomes-grch38-{DV.gnomad_sv4}+{PV.annonars}/rocksdb/IDENTITY",
+        # ----- sequence annotation
+        f"output/full/annonars/functional-grch37-{DV.refseq_fe_37}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/full/annonars/functional-grch38-{DV.refseq_fe_38}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/full/annonars/regions-grch37-{DV.today}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/full/annonars/regions-grch38-{DV.today}+{PV.annonars}/rocksdb/IDENTITY",
         # ----- conservation
         f"output/full/annonars/cons-grch37-{DV.ucsc_cons_37}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/full/annonars/cons-grch38-{DV.ucsc_cons_38}+{PV.annonars}/rocksdb/IDENTITY",
@@ -275,12 +287,12 @@ rule all:
         f"output/reduced-dev/annonars/dbscsnv-grch37-{DV.dbscsnv}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/reduced-dev/annonars/dbscsnv-grch38-{DV.dbscsnv}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/reduced-dev/annonars/gnomad-exomes-grch37-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
-        f"output/reduced-dev/annonars/gnomad-exomes-grch38-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-dev/annonars/gnomad-exomes-grch38-{DV.gnomad_v4}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/reduced-dev/annonars/gnomad-genomes-grch37-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
-        f"output/reduced-dev/annonars/gnomad-genomes-grch38-{DV.gnomad_v3}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-dev/annonars/gnomad-genomes-grch38-{DV.gnomad_v4}+{PV.annonars}/rocksdb/IDENTITY",
         # -- mehari
         f"output/reduced-dev/mehari/freqs-grch37-{DV.gnomad_v2}+{DV.gnomad_v2}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
-        f"output/reduced-dev/mehari/freqs-grch38-{DV.gnomad_v3}+{DV.gnomad_v2}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-dev/mehari/freqs-grch38-{DV.gnomad_v4}+{DV.gnomad_v4}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
         #
         # == exomes (reduced data) directories ==================================================
         #
@@ -307,12 +319,12 @@ rule all:
         f"output/reduced-exomes/annonars/dbscsnv-grch37-{DV.dbscsnv}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/reduced-exomes/annonars/dbscsnv-grch38-{DV.dbscsnv}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/reduced-exomes/annonars/gnomad-exomes-grch37-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
-        f"output/reduced-exomes/annonars/gnomad-exomes-grch38-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-exomes/annonars/gnomad-exomes-grch38-{DV.gnomad_v4}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/reduced-exomes/annonars/gnomad-genomes-grch37-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
-        f"output/reduced-exomes/annonars/gnomad-genomes-grch38-{DV.gnomad_v3}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-exomes/annonars/gnomad-genomes-grch38-{DV.gnomad_v4}+{PV.annonars}/rocksdb/IDENTITY",
         # -- mehari
         f"output/reduced-exomes/mehari/freqs-grch37-{DV.gnomad_v2}+{DV.gnomad_v2}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
-        f"output/reduced-exomes/mehari/freqs-grch38-{DV.gnomad_v3}+{DV.gnomad_v2}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-exomes/mehari/freqs-grch38-{DV.gnomad_v4}+{DV.gnomad_v4}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
 
 
 # ===============================================================================================
@@ -327,6 +339,7 @@ include: "rules/work/misc/hpo.smk"
 include: "rules/work/genes/alphamissense.smk"
 include: "rules/work/genes/dbnsfp.smk"
 include: "rules/work/genes/clingen.smk"
+include: "rules/work/genes/decipher.smk"
 include: "rules/work/genes/ensembl.smk"
 include: "rules/work/genes/gnomad.smk"
 include: "rules/work/genes/gtex.smk"
@@ -337,6 +350,8 @@ include: "rules/work/genes/omim.smk"
 include: "rules/work/genes/orphapacket.smk"
 include: "rules/work/genes/rcnv.smk"
 include: "rules/work/genes/shet.smk"
+include: "rules/work/genes/domino.smk"
+include: "rules/work/genes/clingen.smk"
 # Reference sequence--related rules.
 include: "rules/work/reference/human.smk"
 # Features (position and not variant specific).
@@ -361,12 +376,13 @@ include: "rules/work/annos/strucvars/exac.smk"
 include: "rules/work/annos/strucvars/g1k.smk"
 include: "rules/work/annos/strucvars/gnomad.smk"
 include: "rules/work/annos/strucvars/clinvar.smk"
+include: "rules/work/annos/strucvars/gnomad_sv4.smk"
 # -- output directory ---------------------------------------------------------------------------
 # ---- mehari
 include: "rules/output/mehari/freqs.smk"
 # ---- viguno
 include: "rules/output/viguno/hpo.smk"
-# ------ annonars
+# ---- annonars
 include: "rules/output/annonars/cadd.smk"
 include: "rules/output/annonars/cons.smk"
 include: "rules/output/annonars/dbnsfp.smk"
@@ -375,8 +391,11 @@ include: "rules/output/annonars/dbsnp.smk"
 include: "rules/output/annonars/gnomad_exomes.smk"
 include: "rules/output/annonars/gnomad_genomes.smk"
 include: "rules/output/annonars/gnomad_mtdna.smk"
+include: "rules/output/annonars/gnomad_sv.smk"
 include: "rules/output/annonars/helix.smk"
 include: "rules/output/annonars/genes.smk"
+include: "rules/output/annonars/functional.smk"
+include: "rules/output/annonars/regions.smk"
 # ---- worker
 include: "rules/output/worker/patho_mms.smk"
 include: "rules/output/worker/clinvar.smk"

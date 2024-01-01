@@ -13,16 +13,19 @@ dc.description: |
   - dbNSFP v{{ v_dbnsfp }}
   - NCBI gene database downloaded at {{ today }}
   - HGNC database downloaded at {{ today }}
+  - ClinGen Gene Dosage pathogenicity {{ today }}
+  - DOMINO data v2019-02-19
 dc.source:
   - PMID:35802134
   - PMID:32461654
   - PMID:33261662
+  - PMID:28985496
   - https://www.ncbi.nlm.nih.gov/gene/
   - https://www.genenames.org/
 x-created-from:
   - name: ACMG SF Gene List
     version: {{ v_acmg_sf }}
-  - name: ClinGen Gene Curation
+  - name: ClinGen Gene Dosage pathog
     version: {{ today }}
   - name: gnomAD constraints
     version: {{ v_gnomad_constraints }}
@@ -42,3 +45,5 @@ x-created-from:
     version: 2019-Weghorn-et-a.
   - name: GTex data
     version: v8
+  - name: DOMINO data
+    version: "2019-02-19"

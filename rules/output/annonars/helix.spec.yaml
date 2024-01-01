@@ -1,5 +1,5 @@
 dc.identifier: annonars/seqvars/helixmtdb:{{ version }}-{{ genome_release }}
-dc.title: annona-rs HelixMtDb RocksDB Database
+dc.title: annonars HelixMtDb RocksDB Database
 dc.creator: Helix OpCo, LLC
 dc.contributor:
   - VarFish Developer Teams

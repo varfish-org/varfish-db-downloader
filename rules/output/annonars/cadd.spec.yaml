@@ -1,5 +1,5 @@
 dc.identifier: annonars/seqvars/cadd:{{ version }}-{{ genome_release }}
-dc.title: annona-rs CADD RocksDB Database
+dc.title: annonars CADD RocksDB Database
 dc.creator: Kircher Lab
 dc.contributor:
   - VarFish Developer Teams
