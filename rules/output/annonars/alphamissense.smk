@@ -1,0 +1,61 @@
+## Rules to create annonars RocksDB for AlphaMissense.
+
+
+def input_output_annonars_alphamissense(wildcards):
+    """Input function for ``rule output_annonars_alphamissense``."""
+    if wildcards.genome_release == "grch37":
+        genome = "hg19"
+    else:
+        genome = "hg38"
+    return f"work/download/annos/alphamissense/1/{genome}/AlphaMissense_{genome}.tsv.gz"
+
+
+rule output_annonars_alphamissense:  # -- build AlphaMissense RocksDB with annonars
+    input:
+        input_output_annonars_alphamissense,
+    output:
+        rocksdb_identity=(
+            "output/full/annonars/alphamissense-{genome_release}-{v_alphamissense}+{v_annonars}/rocksdb/IDENTITY"
+        ),
+        spec_yaml=(
+            "output/full/annonars/alphamissense-{genome_release}-{v_alphamissense}+{v_annonars}/spec.yaml"
+        ),
+    threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
+    resources:
+        runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
+        mem_mb_per_cpu=2000,
+    wildcard_constraints:
+        genome_release=RE_GENOME,
+        v_alphamissense=RE_VERSION,
+        v_annonars=RE_VERSION,
+    shell:
+        r"""
+        annonars tsv import \
+            --path-in-tsv {input} \
+            --path-out-rocksdb $(dirname {output.rocksdb_identity}) \
+            \
+            --col-chrom Chrom \
+            --col-start Pos \
+            --col-ref Ref \
+            --col-alt Alt \
+            \
+            --db-name AlphaMissense \
+            --db-version {wildcards.v_alphamissense} \
+            --genome-release {wildcards.genome_release} \
+            \
+            --inference-row-count 100000 \
+            --skip-row-count 3 \
+            --add-default-null-values
+
+        varfish-db-downloader tpl \
+            --template rules/output/annonars/alphamissense.spec.yaml \
+            --value today={TODAY} \
+            --value genome_release={wildcards.genome_release} \
+            \
+            --value version={wildcards.v_alphamissense}+{wildcards.v_annonars} \
+            --value v_alphamissense={wildcards.v_alphamissense} \
+            \
+            --value v_annonars={wildcards.v_annonars} \
+            --value v_downloader={PV.downloader} \
+        > {output.spec_yaml}
+        """

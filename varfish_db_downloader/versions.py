@@ -24,6 +24,8 @@ RUNS_IN_CI = os.environ.get("CI", "false").lower() == "true"
 class DataVersions:
     """Container with data versions."""
 
+    #: String to use for AlphaMissense version.
+    alphamissense: str
     #: String to use for ClinGen gene curation version.
     clingen_gene: str
     #: String to use for ClinGen variant curation version.
@@ -121,6 +123,7 @@ class DataVersions:
 
 #: The data versions to use.
 DATA_VERSIONS = DataVersions(
+    alphamissense="1",
     clingen_gene=TODAY,
     clingen_variant=TODAY,
     ensembl_37="87",

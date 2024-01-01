@@ -87,6 +87,7 @@ rule all:
         # genes
         f"work/download/genes/rcnv/2022/Collins_rCNV_2022.dosage_sensitivity_scores.tsv.gz",
         f"work/download/genes/orphapacket/{DV.orphapacket}/orphapacket.tar.gz",
+        "work/download/genes/alphamissense/1/AlphaMissense_gene_hg38.tsv.gz",
         f"work/genes/dbnsfp/{DV.dbnsfp}/genes.tsv.gz",
         "work/genes/decipher/v3/decipher_hi_prediction.tsv.gz",
         f"work/genes/ensembl/{DV.ensembl}/ensembl_xlink.tsv",
@@ -143,6 +144,8 @@ rule all:
         f"output/full/mehari/freqs-grch38-{DV.gnomad_v4}+{DV.gnomad_v4}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
         # -- annonars data
         # ----- sequence variant annotations
+        f"output/full/annonars/alphamissense-grch37-{DV.alphamissense}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/full/annonars/alphamissense-grch38-{DV.alphamissense}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/full/annonars/cadd-grch37-{DV.cadd}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/full/annonars/cadd-grch38-{DV.cadd}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/full/annonars/dbsnp-grch37-{DV.dbsnp}+{PV.annonars}/rocksdb/IDENTITY",
@@ -335,6 +338,7 @@ rule all:
 # Misc rules.
 include: "rules/work/misc/hpo.smk"
 # Gene-related rules.
+include: "rules/work/genes/alphamissense.smk"
 include: "rules/work/genes/dbnsfp.smk"
 include: "rules/work/genes/clingen.smk"
 include: "rules/work/genes/decipher.smk"
@@ -359,6 +363,7 @@ include: "rules/work/annos/features/refseq.smk"
 include: "rules/work/annos/features/tads.smk"
 include: "rules/work/annos/features/ucsc.smk"
 # Sequence variants and annotations.
+include: "rules/work/annos/seqvars/alphamissense.smk"
 include: "rules/work/annos/seqvars/cadd.smk"
 include: "rules/work/annos/seqvars/dbnsfp.smk"
 include: "rules/work/annos/seqvars/dbscsnv.smk"
@@ -380,6 +385,7 @@ include: "rules/output/mehari/freqs.smk"
 # ---- viguno
 include: "rules/output/viguno/hpo.smk"
 # ---- annonars
+include: "rules/output/annonars/alphamissense.smk"
 include: "rules/output/annonars/cadd.smk"
 include: "rules/output/annonars/cons.smk"
 include: "rules/output/annonars/dbnsfp.smk"

@@ -1,3 +1,7 @@
+- url: https://storage.googleapis.com/dm_alphamissense/AlphaMissense_hg19.tsv.gz
+- url: https://storage.googleapis.com/dm_alphamissense/AlphaMissense_hg38.tsv.gz
+- url: https://storage.googleapis.com/dm_alphamissense/AlphaMissense_gene_hg38.tsv.gz
+
 - url: https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/9606/105.20201022/GCF_000001405.25_GRCh37.p13/GCF_000001405.25_GRCh37.p13_genomic.gff.gz
   excerpt_strategy:
     strategy: gz-head
@@ -77,6 +81,7 @@
 
 - comment: The curation activity summary report is built in real-time.
   url: https://search.clinicalgenome.org/kb/reports/curation-activity-summary-report
+  skip_upstream_check: true  # does not work reliably in tests
 
 - url: https://github.com/bihealth/annonars-data-clinvar/releases/download/clinvar-weekly-20230625/clinvar-strucvar-grch37-2023-0625+0.6.3.tar.gz
   excerpt_strategy:
