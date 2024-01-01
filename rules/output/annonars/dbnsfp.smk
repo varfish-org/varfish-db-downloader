@@ -26,8 +26,6 @@ rule output_annonars_dbnsfp:  # -- build dbNSFP RocksDB with annonars
         v_annonars=RE_VERSION,
     shell:
         r"""
-        #   --path-schema-json rules/output/annonars/dbnsfp-schema-{wildcards.v_dbnsfp}.json \
-
         annonars tsv import \
             --db-name dbNSFP \
             --db-version {wildcards.v_dbnsfp} \
@@ -36,6 +34,7 @@ rule output_annonars_dbnsfp:  # -- build dbNSFP RocksDB with annonars
             --inference-row-count 100000 \
             \
             --path-out-rocksdb $(dirname {output.rocksdb_identity}) \
+            --path-schema-json rules/output/annonars/dbnsfp-schema-{wildcards.v_dbnsfp}.json \
             \
             $(if [[ "{wildcards.genome_release}" == "grch37" ]]; then \
                 echo --col-chrom 'hg19_chr'; \
