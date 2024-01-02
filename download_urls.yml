@@ -1,3 +1,16 @@
+- url: https://panelapp.genomicsengland.co.uk/api/v1/entities/
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+- url: https://panelapp.genomicsengland.co.uk/api/v1/entities/?page=2
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+- url: https://panelapp.genomicsengland.co.uk/api/v1/entities/?page=3
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+
 # dbNSFP v4.5a
 - url: https://dbnsfp.s3.amazonaws.com/dbNSFP4.5a.zip
   excerpt_strategy:

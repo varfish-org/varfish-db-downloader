@@ -250,4 +250,7 @@ def copy_excerpt(url: UrlEntry, data_dir: str, output_document: str):
     basename = parsed.path.split("/")[-1]
     excerpt_path = in_path / basename
     click.echo(err=True, message="copying {} => {}".format(excerpt_path, output_document))
-    shutil.copy(excerpt_path, output_document)
+    if os.path.isdir(excerpt_path):
+        shutil.copy(f"{excerpt_path}/__index__", output_document)
+    else:
+        shutil.copy(excerpt_path, output_document)
