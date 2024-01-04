@@ -91,12 +91,12 @@
 - url: ftp://ftp.clinicalgenome.org/ClinGen_gene_curation_list_GRCh37.tsv
 - url: ftp://ftp.clinicalgenome.org/ClinGen_gene_curation_list_GRCh38.tsv
 
-- url: https://storage.cloud.google.com/adult-gtex/bulk-gex/v8/rna-seq/GTEx_Analysis_v8_Annotations_SampleAttributesDS.txt
+- url: https://storage.googleapis.com/adult-gtex/annotations/v8/metadata-files/GTEx_Analysis_v8_Annotations_SampleAttributesDS.txt
   excerpt_strategy:
     strategy: no-excerpt
     count: null
 
-- url: https://storage.cloud.google.com/adult-gtex/bulk-gex/v8/rna-seq/GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_tpm.gct.gz
+- url: https://storage.googleapis.com/adult-gtex/bulk-gex/v8/rna-seq/GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_tpm.gct.gz
   excerpt_strategy:
     strategy: manual
     count: null

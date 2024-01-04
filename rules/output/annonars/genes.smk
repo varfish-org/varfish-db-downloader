@@ -12,6 +12,7 @@ rule output_annonars_genes:  # -- build annonars genes RocksDB file
         ncbi="work/genes/entrez/{date}/gene_info.jsonl",
         omim="work/genes/omim/{v_hpo}+{date}/omim_diseases.tsv",
         orpha="work/genes/orphapacket/{v_orpha}+{date}/orpha_diseases.tsv",
+        panelapp="work/download/genes/panelapp/{date}/panelapp.jsonl",
         rcnv="work/genes/rcnv/2022/rcnv_collins_2022.tsv",
         shet="work/genes/shet/2019/shet_weghorn_2019.tsv",
         gtex="work/genes/annonars/gtex_v8/genes_tpm.jsonl.gz",
@@ -44,6 +45,7 @@ rule output_annonars_genes:  # -- build annonars genes RocksDB file
             --path-in-hgnc {input.hgnc} \
             --path-in-omim {input.omim} \
             --path-in-orpha {input.orpha} \
+            --path-in-panelapp {input.panelapp} \
             --path-in-ncbi {input.ncbi} \
             --path-in-rcnv {input.rcnv} \
             --path-in-shet {input.shet} \
