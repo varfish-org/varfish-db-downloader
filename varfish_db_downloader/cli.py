@@ -8,10 +8,11 @@ import requests
 import requests_ftp
 from loguru import logger
 
-from varfish_db_downloader import wget
+from varfish_db_downloader import __version__, wget
 
 
 @click.group()
+@click.version_option(__version__)
 def main():
     """Main entry point for the CLI interface"""
     logger.remove()

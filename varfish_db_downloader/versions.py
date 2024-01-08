@@ -192,22 +192,17 @@ class PackageVersions:
 def get_version(executable: str) -> str:
     """Return version of ``executable``."""
     tmp: str = subprocess.check_output([executable, "--version"], text=True)
-    _, version = tmp.strip().split(" ", 1)
-    return version
-
-
-def downloader_version() -> str:
-    """Return the downloader version."""
-    if RUNS_IN_CI:
-        return "0.0.0"
+    if executable == "varfish-db-downloader":
+        _, _, version = tmp.strip().split(" ", 2)
     else:
-        subprocess.check_output(["git", "describe", "--tags"], text=True).strip()[1:]
+        _, version = tmp.strip().split(" ", 1)
+    return version
 
 
 #: The package versions from environment.
 PACKAGE_VERSIONS = PackageVersions(
-    downloader=downloader_version(),
     annonars=get_version("annonars"),
     viguno=get_version("viguno"),
     worker=get_version("varfish-server-worker"),
+    downloader=get_version("varfish-db-downloader"),
 )
