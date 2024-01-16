@@ -12,6 +12,8 @@ dependencies:
   - click
   - loguru
   - numpy
+  - pydantic
+  - pronto >=2.5,<3.0
   - pyyaml
   - requests
   - requests-ftp
@@ -47,3 +49,7 @@ dependencies:
   - varfish-server-worker =0.10.2
   # S3 uploads
   - s5cmd =2.1.0
+  # async HTTP requests
+  - httpx =0.25.0
+  - httpcore =0.18.0
+  - trio

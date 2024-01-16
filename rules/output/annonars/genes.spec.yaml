@@ -38,7 +38,7 @@ x-created-from:
   - name: OMIM
     version: {{ today }}
   - name: ORDO
-    version: {{ v_orphapacket }}
+    version: {{ v_ordo }}
   - name: rCNV pHaplo/pTriplo scores
     version: 2022-Collins-et-al
   - name: sHet scores

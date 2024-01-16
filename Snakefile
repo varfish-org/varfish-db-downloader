@@ -86,8 +86,9 @@ rule all:
         #
         # genes
         f"work/download/genes/rcnv/2022/Collins_rCNV_2022.dosage_sensitivity_scores.tsv.gz",
-        f"work/download/genes/orphapacket/{DV.orphapacket}/orphapacket.tar.gz",
         "work/download/genes/alphamissense/1/AlphaMissense_gene_hg38.tsv.gz",
+        f"work/download/genes/ctd/{DV.today}/CTD_diseases.tsv.gz",
+        f"work/download/do/{DV.today}/omim-unmapped.csv",
         f"work/genes/dbnsfp/{DV.dbnsfp}/genes.tsv.gz",
         "work/genes/decipher/v3/decipher_hi_prediction.tsv.gz",
         f"work/genes/ensembl/{DV.ensembl}/ensembl_xlink.tsv",
@@ -96,7 +97,8 @@ rule all:
         f"work/genes/gnomad/{DV.gnomad_constraints}/gnomad_constraints.tsv",
         f"work/genes/hgnc/{DV.today}/hgnc_info.jsonl",
         f"work/genes/omim/{DV.hpo}+{DV.today}/omim_diseases.tsv",
-        f"work/genes/orphapacket/{DV.orphapacket}+{DV.today}/orpha_diseases.tsv",
+        f"work/genes/orphadata/{DV.orphadata}/orphadata.jsonl",
+        f"work/genes/mondo/{DV.today}/mondo.obo",
         "work/genes/rcnv/2022/rcnv_collins_2022.tsv",
         "work/genes/shet/2019/shet_weghorn_2019.tsv",
         f"work/genes/clingen/{DV.today}/ClinGen_gene_curation_list_GRCh37.tsv",
@@ -177,7 +179,7 @@ rule all:
         f"output/full/annonars/cons-grch37-{DV.ucsc_cons_37}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/full/annonars/cons-grch38-{DV.ucsc_cons_38}+{PV.annonars}/rocksdb/IDENTITY",
         # ----- genes
-        f"output/full/annonars/genes-{DV.acmg_sf}+{DV.gnomad_constraints}+{DV.dbnsfp}+{DV.hpo}+{DV.orphapacket}+{DV.today}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/full/annonars/genes-{DV.acmg_sf}+{DV.gnomad_constraints}+{DV.dbnsfp}+{DV.hpo}+{DV.today}+{PV.annonars}/rocksdb/IDENTITY",
         # -- worker data
         f"output/full/worker/genes-regions-grch37-{DV.refseq_37}+{PV.worker}/refseq_genes.bin",
         f"output/full/worker/genes-regions-grch37-{DV.ensembl_37}+{PV.worker}/ensembl_genes.bin",
@@ -341,6 +343,9 @@ include: "rules/work/misc/hpo.smk"
 include: "rules/work/genes/alphamissense.smk"
 include: "rules/work/genes/dbnsfp.smk"
 include: "rules/work/genes/clingen.smk"
+include: "rules/work/genes/conditions.smk"
+include: "rules/work/genes/ctd.smk"
+include: "rules/work/genes/do.smk"
 include: "rules/work/genes/decipher.smk"
 include: "rules/work/genes/ensembl.smk"
 include: "rules/work/genes/gnomad.smk"
@@ -350,11 +355,11 @@ include: "rules/work/genes/mehari_data_tx.smk"
 include: "rules/work/genes/ncbi.smk"
 include: "rules/work/genes/omim.smk"
 include: "rules/work/genes/panelapp.smk"
-include: "rules/work/genes/orphapacket.smk"
+include: "rules/work/genes/mondo.smk"
+include: "rules/work/genes/orphadata.smk"
 include: "rules/work/genes/rcnv.smk"
 include: "rules/work/genes/shet.smk"
 include: "rules/work/genes/domino.smk"
-include: "rules/work/genes/clingen.smk"
 # Reference sequence--related rules.
 include: "rules/work/reference/human.smk"
 # Features (position and not variant specific).

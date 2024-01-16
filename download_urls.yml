@@ -1,3 +1,33 @@
+- url: https://raw.githubusercontent.com/monarch-initiative/mondo-ingest/main/src/ontology/reports/omim_unmapped_terms.tsv
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+
+- url: https://github.com/DiseaseOntology/HumanDiseaseOntology/raw/main/src/deprecated/DO_NON_Production_Files/omim_import.obo
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+
+- url: https://raw.githubusercontent.com/DiseaseOntology/HumanDiseaseOntology/main/DOreports/OMIMinDO.tsv
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+
+- url: https://github.com/DiseaseOntology/HumanDiseaseOntology/raw/main/src/deprecated/reports/omim-unmapped.csv
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+
+- url: https://ctdbase.org/reports/CTD_diseases.tsv.gz
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+
+- url: http://purl.obolibrary.org/obo/mondo.obo
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+
 - url: https://panelapp.genomicsengland.co.uk/api/v1/entities/
   excerpt_strategy:
     strategy: no-excerpt
@@ -101,7 +131,7 @@
     strategy: manual
     count: null
 
-- url: https://github.com/Orphanet/orphapacket/archive/refs/tags/v10.1.tar.gz
+- url: https://data.bioontology.org/ontologies/ORDO/download?apikey=8b5b7825-538d-40e0-9e9e-5ab9274a9aeb&download_format=csv
   excerpt_strategy:
     strategy: no-excerpt
     count: null
@@ -130,19 +160,19 @@
     strategy: no-excerpt
     count: null
 
-- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2023-06-06/hp.obo
+- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2024-01-11/hp.obo
   excerpt_strategy:
     strategy: no-excerpt
     count: null
-- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2023-06-06/phenotype.hpoa
+- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2024-01-11/phenotype.hpoa
   excerpt_strategy:
     strategy: no-excerpt
     count: null
-- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2023-06-06/phenotype_to_genes.txt
+- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2024-01-11/phenotype_to_genes.txt
   excerpt_strategy:
     strategy: no-excerpt
     count: null
-- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2023-06-06/genes_to_phenotype.txt
+- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2024-01-11/genes_to_phenotype.txt
   excerpt_strategy:
     strategy: no-excerpt
     count: null

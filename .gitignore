@@ -1,3 +1,6 @@
+# Ignore all pickled data
+*.pickle*
+
 # Ignore the workflow directories.
 /work/
 /output/
