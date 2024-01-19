@@ -831,17 +831,6 @@ GOOD_ORPHA_RELATIONS = (
 )
 
 
-class GeneDiseaseKey(BaseModel):
-    """Key for a gene-disease association."""
-
-    model_config = ConfigDict(frozen=True)
-
-    #: Gene HGNC ID.
-    hgnc_id: str
-    #: Disease database ID.
-    disease_id: str
-
-
 class Integrator:
     """Implementation of the integration algorithm."""
 
@@ -880,29 +869,26 @@ class Integrator:
     def __init__(self):
         """Initialise the integrator."""
         #: Mapping from `(gene_hgnc_id, disease_id)` to `GeneDiseaseAssociationEntry`.
-        self.disease_assocs: Dict[GeneDiseaseKey, GeneDiseaseAssociation] = {}
+        self.disease_assocs: Dict[str, List[GeneDiseaseAssociation]] = {}
         #: Mapping from `hgnc_id` to list of `PanelappAssociation`s.
         self.panelapp_assocs: Dict[str, List[PanelappAssociation]] = {}
 
     def register_disease_assoc(self, assoc: GeneDiseaseAssociation):
         """Register a gene-disease association."""
-        found_list = set()
-        for disease_id in assoc.disease_ids:
-            key = GeneDiseaseKey(hgnc_id=assoc.hgnc_id, disease_id=disease_id)
-            if key in self.disease_assocs:
-                found_list.add(self.disease_assocs[key])
+        found_list = self.disease_assocs.get(assoc.hgnc_id, [])
         if not found_list:
-            for disease_id in assoc.disease_ids:
-                key = GeneDiseaseKey(hgnc_id=assoc.hgnc_id, disease_id=disease_id)
-                self.disease_assocs[key] = assoc
+            self.disease_assocs[assoc.hgnc_id] = [assoc]
         else:
-            if len(found_list) != 1:
-                logger.warning(f"Found multiple associations for {assoc.hgnc_id}")
+            merged_any = False
+            new_list = []
             for found in found_list:
-                found = found.merge(assoc)
-                for disease_id in assoc.disease_ids:
-                    key = GeneDiseaseKey(hgnc_id=assoc.hgnc_id, disease_id=disease_id)
-                    self.disease_assocs[key] = found
+                if set(assoc.disease_ids) & set(found.disease_ids):
+                    merged_any = True
+                    found = found.merge(assoc)
+                new_list.append(found)
+            if not merged_any:
+                new_list.append(assoc)
+            self.disease_assocs[assoc.hgnc_id] = new_list
 
     def run(self, pickle_path: Optional[str] = None):
         logger.info("Building gene-disease map...")
@@ -918,7 +904,8 @@ class Integrator:
             for hgnc_id in sorted(
                 set(
                     chain(
-                        (k.hgnc_id for k in self.disease_assocs.keys()), self.panelapp_assocs.keys()
+                        (hgnc_id for hgnc_id in self.disease_assocs.keys()),
+                        self.panelapp_assocs.keys(),
                     )
                 )
             )
@@ -929,14 +916,9 @@ class Integrator:
                     "panelapp_associations": tuple(sorted(assocs, key=lambda a: a.confidence_level))
                 }
             )
-        for key, assoc in self.disease_assocs.items():
-            disease_assoc = conditions_by_hgnc[key.hgnc_id].disease_associations
-            conditions_by_hgnc[key.hgnc_id] = conditions_by_hgnc[key.hgnc_id].model_copy(
-                update={
-                    "disease_associations": tuple(
-                        sorted(chain(disease_assoc, [assoc]), key=lambda a: a.confidence)
-                    )
-                }
+        for hgnc_id, assocs in self.disease_assocs.items():
+            conditions_by_hgnc[hgnc_id] = conditions_by_hgnc[hgnc_id].model_copy(
+                update={"disease_associations": tuple(sorted(assocs, key=lambda a: a.confidence))}
             )
         result = ResultContainer(results=tuple(conditions_by_hgnc.values()))
         for assoc in result.results:
