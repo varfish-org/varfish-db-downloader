@@ -36,6 +36,11 @@ rule output_annonars_genes:  # -- build annonars genes RocksDB file
         v_annonars=RE_VERSION,
     shell:
         r"""
+        if [[ "$(date +%Y%m%d)" != "{wildcards.date}" ]] && [[ "{FORCE_TODAY}" != "True" ]]; then
+            >&2 echo "{wildcards.date} is not today"
+            exit 1
+        fi
+
         annonars gene import \
             --path-out-rocksdb $(dirname {output.rocksdb_identity}) \
             --path-in-acmg {input.acmg_sf} \

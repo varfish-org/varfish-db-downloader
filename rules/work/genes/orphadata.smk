@@ -3,13 +3,15 @@
 
 rule genes_orphadata_download:  # -- download orphadatas
     output:
-        jsonl="work/genes/orphadata/{version}/orphadata.jsonl",
-        jsonl_md5="work/genes/orphadata/{version}/orphadata.jsonl.md5",
-        tsv="work/genes/orphadata/{version}/orpha_diseases.tsv",  # xxx
+        jsonl="work/genes/orphadata/{date}/orphadata.jsonl",
+        jsonl_md5="work/genes/orphadata/{date}/orphadata.jsonl.md5",
+        tsv="work/genes/orphadata/{date}/orpha_diseases.tsv",  # xxx
     shell:
         """
-        export TMPDIR=$(mktemp -d)
-        trap "rm -rf $TMPDIR" ERR EXIT
+        if [[ "$(date +%Y%m%d)" != "{wildcards.date}" ]] && [[ "{FORCE_TODAY}" != "True" ]]; then
+            >&2 echo "{wildcards.date} is not today"
+            exit 1
+        fi
 
         python ./scripts/genes-orpha-diseases.py \
         > {output.jsonl}

@@ -9,6 +9,11 @@ rule output_hgnc_xlink_binary:
         spec_yaml=f"output/full/worker/genes-xlink-{{date}}+{PV.worker}/genes-xlink.spec.yaml",
     shell:
         r"""
+        if [[ "$(date +%Y%m%d)" != "{wildcards.date}" ]] && [[ "{FORCE_TODAY}" != "True" ]]; then
+            >&2 echo "{wildcards.date} is not today"
+            exit 1
+        fi
+
         varfish-server-worker db to-bin \
             --input-type xlink \
             --path-input {input.tsv} \

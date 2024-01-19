@@ -12,8 +12,13 @@ rule genes_omim:  # -- prepare HGNC to OMIM disease mapping
         """
         set -x
 
+        if [[ "$(date +%Y%m%d)" != "{wildcards.date}" ]] && [[ "{FORCE_TODAY}" != "True" ]]; then
+            >&2 echo "{wildcards.date} is not today"
+            exit 1
+        fi
+
         export TMPDIR=$(mktemp -d)
-        # trap "rm -rf $TMPDIR" ERR EXIT
+        trap "rm -rf $TMPDIR" ERR EXIT
 
         head -n 1 {input.mim2gene} | sed -e 's/ /_/g' -e 's/#//g' \
         > $TMPDIR/mim2gene.tsv

@@ -18,6 +18,11 @@ rule work_conditions_integrate:  # integrate conditions file
         jsonl="work/genes/conditions/{v_hpo}+{date}/conditions.jsonl",
     shell:
         r"""
+        if [[ "$(date +%Y%m%d)" != "{wildcards.date}" ]] && [[ "{FORCE_TODAY}" != "True" ]]; then
+            >&2 echo "{wildcards.date} is not today"
+            exit 1
+        fi
+
         MIM2GENE_MEDGEN_PATH="{input.mim2gene_medgen}" \
         GENES_XLINK_PATH="{input.genes_xlink}" \
         HPOA_PATH="{input.hpoa}" \

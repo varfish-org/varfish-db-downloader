@@ -8,6 +8,11 @@ rule work_disease_ontology_download:  # -- download DO files
         omim_import="work/download/do/{date}/omim_import.obo",
     shell:
         r"""
+        if [[ "$(date +%Y%m%d)" != "{wildcards.date}" ]] && [[ "{FORCE_TODAY}" != "True" ]]; then
+            >&2 echo "{wildcards.date} is not today"
+            exit 1
+        fi
+
         wget -O {output.unmapped_csv} \
             https://github.com/DiseaseOntology/HumanDiseaseOntology/raw/main/src/deprecated/reports/omim-unmapped.csv
         wget -O {output.omimindo_tsv} \
