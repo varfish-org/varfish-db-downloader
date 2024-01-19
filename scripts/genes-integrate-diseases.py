@@ -916,7 +916,6 @@ class Integrator:
                     "panelapp_associations": tuple(sorted(assocs, key=lambda a: a.confidence_level))
                 }
             )
-        seen = set()
         for hgnc_id, assocs in self.disease_assocs.items():
             conditions_by_hgnc[hgnc_id] = conditions_by_hgnc[hgnc_id].model_copy(
                 update={"disease_associations": tuple(sorted(assocs, key=lambda a: a.confidence))}
