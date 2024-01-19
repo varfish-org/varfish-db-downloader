@@ -11,8 +11,9 @@ rule output_annonars_genes:  # -- build annonars genes RocksDB file
         hgnc="work/genes/hgnc/{date}/hgnc_info.jsonl",
         ncbi="work/genes/entrez/{date}/gene_info.jsonl",
         omim="work/genes/omim/{v_hpo}+{date}/omim_diseases.tsv",
-        orpha="work/genes/orphapacket/{v_orpha}+{date}/orpha_diseases.tsv",
+        orpha="work/genes/orphadata/{date}/orpha_diseases.tsv",
         panelapp="work/download/genes/panelapp/{date}/panelapp.jsonl",
+        conditions="work/genes/conditions/{v_hpo}+{date}/conditions.jsonl",
         rcnv="work/genes/rcnv/2022/rcnv_collins_2022.tsv",
         shet="work/genes/shet/2019/shet_weghorn_2019.tsv",
         gtex="work/genes/annonars/gtex_v8/genes_tpm.jsonl.gz",
@@ -20,11 +21,11 @@ rule output_annonars_genes:  # -- build annonars genes RocksDB file
         decipher_hi="work/genes/decipher/v3/decipher_hi_prediction.tsv.gz",
     output:
         rocksdb_identity=(
-            "output/full/annonars/genes-{v_acmg_sf}+{v_gnomad_constraints}+{v_dbnsfp}+{v_hpo}+{v_orpha}+{date}+{v_annonars}/"
+            "output/full/annonars/genes-{v_acmg_sf}+{v_gnomad_constraints}+{v_dbnsfp}+{v_hpo}+{date}+{v_annonars}/"
             "rocksdb/IDENTITY"
         ),
         spec_yaml=(
-            "output/full/annonars/genes-{v_acmg_sf}+{v_gnomad_constraints}+{v_dbnsfp}+{v_hpo}+{v_orpha}+{date}+{v_annonars}/"
+            "output/full/annonars/genes-{v_acmg_sf}+{v_gnomad_constraints}+{v_dbnsfp}+{v_hpo}+{date}+{v_annonars}/"
             "spec.yaml"
         ),
     wildcard_constraints:
@@ -35,11 +36,17 @@ rule output_annonars_genes:  # -- build annonars genes RocksDB file
         v_annonars=RE_VERSION,
     shell:
         r"""
+        if [[ "$(date +%Y%m%d)" != "{wildcards.date}" ]] && [[ "{FORCE_TODAY}" != "True" ]]; then
+            >&2 echo "{wildcards.date} is not today"
+            exit 1
+        fi
+
         annonars gene import \
             --path-out-rocksdb $(dirname {output.rocksdb_identity}) \
             --path-in-acmg {input.acmg_sf} \
             --path-in-clingen-37 {input.clingen_37} \
             --path-in-clingen-38 {input.clingen_38} \
+            --path-in-conditions {input.conditions} \
             --path-in-gnomad-constraints {input.gnomad_constraints} \
             --path-in-dbnsfp {input.dbnsfp} \
             --path-in-hgnc {input.hgnc} \
@@ -64,7 +71,6 @@ rule output_annonars_genes:  # -- build annonars genes RocksDB file
             --value date={wildcards.date} \
             \
             --value v_annonars={wildcards.v_annonars} \
-            --value v_downloader={PV.downloader} \
-            --value v_orphapacket={wildcards.v_orpha} \
+            --value v_downloader={PV.downloader}
         > {output.spec_yaml}
         """

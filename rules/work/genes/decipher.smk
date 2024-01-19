@@ -38,19 +38,20 @@ rule genes_decipher_hi_convert:  # -- convert DECIPHER HI predictions to TSV
         | sed -e 's/%$//g' \
         >> $TMPDIR/tmp.tsv
 
-        qsv join \
-            gene_symbol {input.hgnc} \
-            gene_symbol $TMPDIR/tmp.tsv \
-        > $TMPDIR/tmp2.tsv
+        qsv select -d $'\t' '!omim_ids' {input.hgnc} \
+        | tr ',' '\t' \
+        > $TMPDIR/tmp3.tsv
 
-        ( \
-            echo -e "hgnc_id\thgnc_symbol\tp_hi\thi_index"; \
-            tail -n +2 $TMPDIR/tmp2.tsv \
-            | tr ',' '\t' \
-            | cut -f 1,5-7 \
-            | LC_ALL=C sort \
-        ) \
-        | gzip -c \
+        qsv join -d $'\t' \
+            gene_symbol $TMPDIR/tmp3.tsv \
+            gene_symbol $TMPDIR/tmp.tsv \
+        > $TMPDIR/tmp2.csv
+
+        qsv select \
+            'hgnc_id,gene_symbol,p_hi,hi_index' \
+            $TMPDIR/tmp2.csv \
+        | qsv rename 'hgnc_id,hgnc_symbol,p_hi,hi_index' \
+        | tr ',' '\t' \
         > {output.tsv}
 
         md5sum {output.tsv} > {output.tsv_md5}
