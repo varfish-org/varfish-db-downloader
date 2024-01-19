@@ -929,15 +929,19 @@ class Integrator:
                     "panelapp_associations": tuple(sorted(assocs, key=lambda a: a.confidence_level))
                 }
             )
+        seen = set()
         for key, assoc in self.disease_assocs.items():
             disease_assoc = conditions_by_hgnc[key.hgnc_id].disease_associations
-            conditions_by_hgnc[key.hgnc_id] = conditions_by_hgnc[key.hgnc_id].model_copy(
-                update={
-                    "disease_associations": tuple(
-                        sorted(chain(disease_assoc, [assoc]), key=lambda a: a.confidence)
-                    )
-                }
-            )
+            marker = (assoc.hgnc_id, assoc.labeled_disorders)
+            if marker not in seen:
+                seen.add(marker)
+                conditions_by_hgnc[key.hgnc_id] = conditions_by_hgnc[key.hgnc_id].model_copy(
+                    update={
+                        "disease_associations": tuple(
+                            sorted(chain(disease_assoc, [assoc]), key=lambda a: a.confidence)
+                        )
+                    }
+                )
         result = ResultContainer(results=tuple(conditions_by_hgnc.values()))
         for assoc in result.results:
             json.dump(obj=assoc.model_dump(mode="json"), fp=sys.stdout)
