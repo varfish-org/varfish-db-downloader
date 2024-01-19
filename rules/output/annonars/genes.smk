@@ -66,7 +66,6 @@ rule output_annonars_genes:  # -- build annonars genes RocksDB file
             --value date={wildcards.date} \
             \
             --value v_annonars={wildcards.v_annonars} \
-            --value v_downloader={PV.downloader} \
-            --value v_ordo={wildcards.v_orpha} \
+            --value v_downloader={PV.downloader}
         > {output.spec_yaml}
         """

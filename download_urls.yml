@@ -1,3 +1,18 @@
+# Note that this just tests the availability of the OrphaData API.  We have a file in
+# excerpts/__orphadata__ that is used by `genes-orpha-diseases.py` in CI=true mode.
+- url: https://api.orphadata.com/rd-cross-referencing/orphacodes
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+- url: https://api.orphadata.com/rd-cross-referencing/orphacodes/20?lang=en
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+- url: https://api.orphadata.com/rd-associated-genes/orphacodes/20
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+
 - url: https://raw.githubusercontent.com/monarch-initiative/mondo-ingest/main/src/ontology/reports/omim_unmapped_terms.tsv
   excerpt_strategy:
     strategy: no-excerpt
@@ -160,19 +175,19 @@
     strategy: no-excerpt
     count: null
 
-- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2024-01-11/hp.obo
+- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2024-01-16/hp.obo
   excerpt_strategy:
     strategy: no-excerpt
     count: null
-- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2024-01-11/phenotype.hpoa
+- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2024-01-16/phenotype.hpoa
   excerpt_strategy:
     strategy: no-excerpt
     count: null
-- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2024-01-11/phenotype_to_genes.txt
+- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2024-01-16/phenotype_to_genes.txt
   excerpt_strategy:
     strategy: no-excerpt
     count: null
-- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2024-01-11/genes_to_phenotype.txt
+- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2024-01-16/genes_to_phenotype.txt
   excerpt_strategy:
     strategy: no-excerpt
     count: null

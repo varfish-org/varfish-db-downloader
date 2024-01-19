@@ -1,7 +1,13 @@
 #!/usr/bin/env python
-"""Helper script to retrieve ORDO gene-disease associations from OrphaData."""
+"""Helper script to retrieve ORDO gene-disease associations from OrphaData.
+
+When run in CI mode environment variable "CI" is "true" then we will copy
+the manually created file from excerpts/__orphadata__.  Note that this is
+a deviation from the usual approach of putting the URL into `download_urls`.
+"""
 
 import json
+import os
 import sys
 
 import httpx
@@ -14,6 +20,9 @@ URL_ORPHACODE_LIST = "https://api.orphadata.com/rd-cross-referencing/orphacodes"
 URL_ORPHACODE_GET = "https://api.orphadata.com/rd-cross-referencing/orphacodes/{}?lang=en"
 #: URL template for getting enes on one ORPHAcode.
 URL_ORPHACODE_GET_GENE = "https://api.orphadata.com/rd-associated-genes/orphacodes/{}"
+
+#: Whether we run in test mode.
+RUNS_IN_CI = os.environ.get("CI", "false") == "true"
 
 
 async def main():
@@ -56,4 +65,8 @@ async def main():
 
 
 if __name__ == "__main__":
-    trio.run(main)
+    if RUNS_IN_CI:
+        with open("excerpt-data/__orphadata__/orphadata.jsonl", "rt") as inputf:
+            sys.stdout.write(inputf.read())
+    else:
+        trio.run(main)

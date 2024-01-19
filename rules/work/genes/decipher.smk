@@ -47,7 +47,7 @@ rule genes_decipher_hi_convert:  # -- convert DECIPHER HI predictions to TSV
             echo -e "hgnc_id\thgnc_symbol\tp_hi\thi_index"; \
             tail -n +2 $TMPDIR/tmp2.tsv \
             | tr ',' '\t' \
-            | cut -f 1,5-7 \
+            | cut -f 1,6-8 \
             | LC_ALL=C sort \
         ) \
         | gzip -c \

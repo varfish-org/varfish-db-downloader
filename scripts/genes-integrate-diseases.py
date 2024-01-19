@@ -38,6 +38,9 @@ DO_OMIM_INDO_PATH = os.environ["DO_OMIM_INDO_PATH"]
 #: DO legacy OMIM import file.
 DO_OMIM_IMPORT_PATH = os.environ["DO_OMIM_IMPORT_PATH"]
 
+#: Development mode => pickling of data
+DEV_MODE = os.environ.get("DEV_MODE", "0") == "1"
+
 
 class GeneXlink(BaseModel):
     """Cross-reference of gene."""
@@ -430,9 +433,9 @@ def parse_panelapp_jsonl(
     path: str, xlink_by_gene_symbol: Dict[str, GeneXlink]
 ) -> List[PanelappAssociation]:
     entity_type_mapping = {
-        "gene": PanelappEntityType.GENE,
-        "region": PanelappEntityType.REGION,
-        "str": PanelappEntityType.STR,
+        "gene": PanelappEntityType.GENE.value,
+        "region": PanelappEntityType.REGION.value,
+        "str": PanelappEntityType.STR.value,
     }
     confidence_level_mapping = {
         "3": PanelappConfidence.GREEN.value,
@@ -942,7 +945,7 @@ class Integrator:
         logger.info("All done. Have a nice day.")
 
     def load_data(self, pickle_path: Optional[str] = None):  # noqa: C901
-        if os.path.exists(pickle_path):
+        if pickle_path and os.path.exists(pickle_path):
             logger.info("unpickling...")
             with gzip.open(pickle_path, "rb") as inputf:
                 (
@@ -1000,26 +1003,27 @@ class Integrator:
             self.omim_in_dos = parse_do_omim_in_do(DO_OMIM_INDO_PATH)
             self.do_omim_import = parse_do_omim_import(DO_OMIM_IMPORT_PATH)
 
-            with gzip.open(pickle_path, "wb") as outputf:
-                logger.info("Pickling...")
-                pickle.dump(
-                    (
-                        self.gene_xlinks,
-                        self.mim2gene_medgen,
-                        self.hpoa_entries,
-                        self.disease_label_map,
-                        self.orpha_disorders,
-                        self.orpha_mappings,
-                        self.panelapp_associations,
-                        self.mondo_diseases,
-                        self.mondo_unmapped_omim,
-                        self.ctd_diseases,
-                        self.do_unmapped_labels,
-                        self.omim_in_dos,
-                        self.do_omim_import,
-                    ),
-                    outputf,
-                )
+            if pickle_path:
+                with gzip.open(pickle_path, "wb") as outputf:
+                    logger.info("Pickling...")
+                    pickle.dump(
+                        (
+                            self.gene_xlinks,
+                            self.mim2gene_medgen,
+                            self.hpoa_entries,
+                            self.disease_label_map,
+                            self.orpha_disorders,
+                            self.orpha_mappings,
+                            self.panelapp_associations,
+                            self.mondo_diseases,
+                            self.mondo_unmapped_omim,
+                            self.ctd_diseases,
+                            self.do_unmapped_labels,
+                            self.omim_in_dos,
+                            self.do_omim_import,
+                        ),
+                        outputf,
+                    )
 
         #: Build gene mappings.
         self.xlink_by_hgnc_id = {xlink.hgnc_id: xlink for xlink in self.gene_xlinks}
@@ -1314,4 +1318,4 @@ class Integrator:
 
 
 if __name__ == "__main__":
-    Integrator().run("store.pickle.gz")
+    Integrator().run("store.pickle.gz" if DEV_MODE else None)
