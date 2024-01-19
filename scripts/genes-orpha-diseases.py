@@ -38,7 +38,7 @@ async def main():
                 try:
                     cross_references = (await client.get(URL_ORPHACODE_GET.format(orpha_id))).json()
                     disease_genes = (
-                        await client.get(URL_ORPHACODE_GET_GENE.format(orpha_id))
+                        await client.get(URL_ORPHACODE_GET_GENE.format(orpha_id), timeout=60)
                     ).json()
                 except Exception as e:
                     logger.error(f"Error fetching {orpha_id}: {e}")
