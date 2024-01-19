@@ -27,7 +27,7 @@ rule genes_decipher_hi_convert:  # -- convert DECIPHER HI predictions to TSV
         set -x
 
         export TMPDIR=$(mktemp -d)
-        #trap "rm -rf $TMPDIR" EXIT
+        trap "rm -rf $TMPDIR" EXIT
 
         echo -e "gene_symbol\tp_hi\thi_index" > $TMPDIR/tmp.tsv
 
