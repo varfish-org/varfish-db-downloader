@@ -11,6 +11,7 @@ rule annos_strucvars_gnomad_sv_4_grch38_download:  # -- download gnomAD-SV 4.0 f
             https://storage.googleapis.com/gcp-public-data--gnomad/release/4.0/genome_sv/gnomad.v4.0.sv.chr{wildcards.chrom}.vcf.gz
         """
 
+
 rule annos_strucvars_gnomad_sv_4_grch38_process:  # -- process gnomAD-SV v4 files
     input:
         vcf=[
@@ -61,7 +62,7 @@ rule annos_strucvars_gnomad_cnv_4_grch38_download:  # -- download gnomAD-CNV 4.0
 
 rule annos_strucvars_gnomad_cnv_4_grch38_process:  # -- process gnomAD-CNV 4.0 files
     input:
-        vcf="work/download/annos/grch38/strucvars/gnomad_cnv/{version}/gnomad.v{version}.cnv.all.vcf.gz"
+        vcf="work/download/annos/grch38/strucvars/gnomad_cnv/{version}/gnomad.v{version}.cnv.all.vcf.gz",
     output:
         bed=f"output/full/tracks/track-strucvars-gnomad-cnv-grch38-{{version}}+{DV.tracks}/gnomad-cnv.bed.gz",
         bed_md5=f"output/full/tracks/track-strucvars-gnomad-cnv-grch38-{{version}}+{DV.tracks}/gnomad-cnv.bed.gz.md5",

@@ -65,7 +65,7 @@ rule output_worker_bgdb_exac:
 
 rule output_worker_bgdb_gnomad_exomes_cnv_grch38:
     input:
-        bed=f"output/full/tracks/track-strucvars-gnomad-cnv-grch38-{{version}}+{DV.tracks}/gnomad-cnv.bed.gz"
+        bed=f"output/full/tracks/track-strucvars-gnomad-cnv-grch38-{{version}}+{DV.tracks}/gnomad-cnv.bed.gz",
     output:
         bin=f"output/full/worker/bgdb-gnomad-exomes-cnv-grch38-{{version}}+{PV.worker}/bgdb-gnomad-exomes-cnv-grch38.bin",
         spec=f"output/full/worker/bgdb-gnomad-exomes-cnv-grch38-{{version}}+{PV.worker}/bgdb-gnomad-exomes-cnv-grch38.spec.yaml",
@@ -154,6 +154,7 @@ rule output_worker_bgdb_gnomad_genomes_sv_grch38:
             --value v_downloader={PV.downloader} \
         > {output.spec}
         """
+
 
 rule output_worker_bgdb_dbvar:
     input:
