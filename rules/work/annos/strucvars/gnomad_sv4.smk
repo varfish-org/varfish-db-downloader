@@ -28,15 +28,36 @@ rule annos_strucvars_gnomad_sv_4_grch38_process:  # -- process gnomAD-SV v4 file
         export TMPDIR=$(mktemp -d)
         trap "rm -rf $TMPDIR" ERR EXIT
 
-        echo -e "#chromosome\tbegin\tend\tsv_type\tmale_n_homref\tmale_n_het\tmale_n_homalt\tmale_n_hemiref\tmale_n_hemialt\tfemale_n_homref\tfemale_n_het\tfemale_n_homalt" \
+        echo -e "#chromosome\tbegin\tend\tsv_type\tmale_n_homref\tmale_n_het\tmale_n_homalt\tmale_n_hemiref\tmale_n_hemialt\tfemale_n_homref\tfemale_n_het\tfemale_n_homalt\tcnv_n_total\tcnv_n_var" \
         > $TMPDIR/tmp.bed
 
         for vcf in {input.vcf}; do
             bcftools query \
-                -e 'SVTYPE="CNV"' \
-                -f "%CHROM\t%POS0\t%INFO/END\t%INFO/SVTYPE\t%INFO/MALE_N_HOMREF\t%INFO/MALE_N_HET\t%INFO/MALE_N_HOMALT\t%INFO/MALE_N_HEMIREF\t%INFO/MALE_N_HEMIALT\t%INFO/FEMALE_N_HOMREF\t%INFO/FEMALE_N_HET\t%INFO/FEMALE_N_HOMALT\n" \
+                -f "%CHROM\t%POS0\t%INFO/END\t%INFO/SVTYPE\t%INFO/MALE_N_HOMREF\t%INFO/MALE_N_HET\t%INFO/MALE_N_HOMALT\t%INFO/MALE_N_HEMIREF\t%INFO/MALE_N_HEMIALT\t%INFO/FEMALE_N_HOMREF\t%INFO/FEMALE_N_HET\t%INFO/FEMALE_N_HOMALT\t%CN_NUMBER\t%CN_COUNT\n" \
                 $vcf \
-            | sed -e 's/CPX/BND/g' \
+            | awk -v OFS='\t' '{{
+                if ($5 == ".") {{ $5 = 0; }}
+                if ($6 == ".") {{ $6 = 0; }}
+                if ($7 == ".") {{ $7 = 0; }}
+                if ($8 == ".") {{ $8 = 0; }}
+                if ($9 == ".") {{ $9 = 0; }}
+                if ($10 == ".") {{ $10 = 0; }}
+                if ($11 == ".") {{ $11 = 0; }}
+                if ($12 == ".") {{ $12 = 0; }}
+                if ($13 == ".") {{ $13 = 0; }}
+                if ($14 == ".") {{
+                    $14 = 0
+                }} else {{
+                    sum = 0
+                    split($14, a, ",")
+                    for (x in a) {{
+                        sum += x
+                    }}
+                    $14 = sum
+                }}
+                print $0
+            }}' \
+            | sed -e 's/CPX/BND/g' -e 's/CTX/BND/g' \
             >> $TMPDIR/tmp.bed
         done
 
