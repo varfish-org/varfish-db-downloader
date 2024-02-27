@@ -1,7 +1,7 @@
 ## Rules related to gnomAD-SV.
 
 
-rule annos_strucvars_gnomad_grch37_download:  # -- download gnomAD-SV files
+rule annos_strucvars_gnomad_sv2_grch37_download:  # -- download gnomAD-SV v2 files
     output:
         vcf="work/download/annos/grch37/strucvars/gnomad/2.1.1/gnomad_v2.1_sv.{token}.vcf.gz",
     shell:
@@ -12,7 +12,7 @@ rule annos_strucvars_gnomad_grch37_download:  # -- download gnomAD-SV files
         """
 
 
-rule annos_strucvars_gnomad_grch37_process:  # -- process gnomAD-SV files
+rule annos_strucvars_gnomad_sv2_grch37_process:  # -- process gnomAD-SV v2 files
     input:
         vcf="work/download/annos/grch37/strucvars/gnomad/2.1.1/gnomad_v2.1_sv.sites.vcf.gz",
     output:
