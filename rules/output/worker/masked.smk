@@ -15,7 +15,7 @@ rule output_masked_repeat:
         varfish-server-worker db to-bin \
             --input-type masked-region \
             --path-input {input} \
-            --path-output-bin {output.bin}
+            --path-output {output.bin}
 
         varfish-db-downloader tpl \
             --template rules/output/worker/masked_repeat.spec.yaml \
@@ -44,7 +44,7 @@ rule output_masked_segdup:
         varfish-server-worker db to-bin \
             --input-type masked-region \
             --path-input {input} \
-            --path-output-bin {output.bin}
+            --path-output {output.bin}
 
         varfish-db-downloader tpl \
             --template rules/output/worker/masked_segdup.spec.yaml \

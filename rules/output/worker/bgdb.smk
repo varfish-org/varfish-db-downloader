@@ -12,7 +12,7 @@ rule output_worker_bgdb_g1k:
         varfish-server-worker strucvars txt-to-bin \
             --input-type strucvar-g1k \
             --path-input {input.bed} \
-            --path-output-bin {output.bin}
+            --path-output {output.bin}
 
         varfish-db-downloader tpl \
             --template rules/output/worker/bgdb.spec.yaml \
@@ -43,7 +43,7 @@ rule output_worker_bgdb_exac:
         varfish-server-worker strucvars txt-to-bin \
             --input-type strucvar-exac-cnv \
             --path-input {input.bed} \
-            --path-output-bin {output.bin}
+            --path-output {output.bin}
 
         varfish-db-downloader tpl \
             --template rules/output/worker/bgdb.spec.yaml \
@@ -72,9 +72,9 @@ rule output_worker_bgdb_gnomad_exomes_cnv_grch38:
     shell:
         r"""
         varfish-server-worker strucvars txt-to-bin \
-            --input-type strucvar-gnomad-exomes-cnv4 \
-            --path-in {input.bed} \
-            --path-output-bin {output.bin}
+            --input-type strucvar-gnomad-cnv4 \
+            --path-input {input.bed} \
+            --path-output {output.bin}
 
         varfish-db-downloader tpl \
             --template rules/output/worker/bgdb.spec.yaml \
@@ -105,7 +105,7 @@ rule output_worker_bgdb_gnomad_sv_grch37:
         varfish-server-worker strucvars txt-to-bin \
             --input-type strucvar-gnomad-sv2 \
             --path-input {input.bed} \
-            --path-output-bin {output.bin}
+            --path-output {output.bin}
 
         varfish-db-downloader tpl \
             --template rules/output/worker/bgdb.spec.yaml \
@@ -136,7 +136,7 @@ rule output_worker_bgdb_gnomad_genomes_sv_grch38:
         varfish-server-worker strucvars txt-to-bin \
             --input-type strucvar-gnomad-sv4 \
             --path-input {input.bed} \
-            --path-output-bin {output.bin}
+            --path-output {output.bin}
 
         varfish-db-downloader tpl \
             --template rules/output/worker/bgdb.spec.yaml \
@@ -167,7 +167,7 @@ rule output_worker_bgdb_dbvar:
         varfish-server-worker strucvars txt-to-bin \
             --input-type strucvar-db-var \
             --path-input {input.bed} \
-            --path-output-bin {output.bin}
+            --path-output {output.bin}
 
         varfish-db-downloader tpl \
             --template rules/output/worker/bgdb.spec.yaml \
@@ -198,7 +198,7 @@ rule output_worker_bgdb_dgv:
         varfish-server-worker strucvars txt-to-bin \
             --input-type strucvar-dgv \
             --path-input {input.bed} \
-            --path-output-bin {output.bin}
+            --path-output {output.bin}
 
         varfish-db-downloader tpl \
             --template rules/output/worker/bgdb.spec.yaml \
@@ -229,7 +229,7 @@ rule output_worker_bgdb_dgv_gs:
         varfish-server-worker strucvars txt-to-bin \
             --input-type strucvar-dgv-gs \
             --path-input {input.bed} \
-            --path-output-bin {output.bin}
+            --path-output {output.bin}
 
         varfish-db-downloader tpl \
             --template rules/output/worker/bgdb.spec.yaml \
