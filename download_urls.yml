@@ -105,29 +105,101 @@
     strategy: gz-head
     count: 160
 - url: https://storage.googleapis.com/gcp-public-data--gnomad/release/4.0/genome_sv/gnomad.v4.0.sv.chr1.vcf.gz
+  excerpt_strategy:
+    strategy: gz-head
+    count: 1800
 - url: https://storage.googleapis.com/gcp-public-data--gnomad/release/4.0/genome_sv/gnomad.v4.0.sv.chr2.vcf.gz
+  excerpt_strategy:
+    strategy: gz-head
+    count: 1800
 - url: https://storage.googleapis.com/gcp-public-data--gnomad/release/4.0/genome_sv/gnomad.v4.0.sv.chr3.vcf.gz
+  excerpt_strategy:
+    strategy: gz-head
+    count: 1800
 - url: https://storage.googleapis.com/gcp-public-data--gnomad/release/4.0/genome_sv/gnomad.v4.0.sv.chr4.vcf.gz
+  excerpt_strategy:
+    strategy: gz-head
+    count: 1800
 - url: https://storage.googleapis.com/gcp-public-data--gnomad/release/4.0/genome_sv/gnomad.v4.0.sv.chr5.vcf.gz
+  excerpt_strategy:
+    strategy: gz-head
+    count: 1800
 - url: https://storage.googleapis.com/gcp-public-data--gnomad/release/4.0/genome_sv/gnomad.v4.0.sv.chr6.vcf.gz
+  excerpt_strategy:
+    strategy: gz-head
+    count: 1800
 - url: https://storage.googleapis.com/gcp-public-data--gnomad/release/4.0/genome_sv/gnomad.v4.0.sv.chr7.vcf.gz
+  excerpt_strategy:
+    strategy: gz-head
+    count: 1800
 - url: https://storage.googleapis.com/gcp-public-data--gnomad/release/4.0/genome_sv/gnomad.v4.0.sv.chr8.vcf.gz
+  excerpt_strategy:
+    strategy: gz-head
+    count: 1800
 - url: https://storage.googleapis.com/gcp-public-data--gnomad/release/4.0/genome_sv/gnomad.v4.0.sv.chr9.vcf.gz
+  excerpt_strategy:
+    strategy: gz-head
+    count: 1800
 - url: https://storage.googleapis.com/gcp-public-data--gnomad/release/4.0/genome_sv/gnomad.v4.0.sv.chr10.vcf.gz
+  excerpt_strategy:
+    strategy: gz-head
+    count: 1800
 - url: https://storage.googleapis.com/gcp-public-data--gnomad/release/4.0/genome_sv/gnomad.v4.0.sv.chr11.vcf.gz
+  excerpt_strategy:
+    strategy: gz-head
+    count: 1800
 - url: https://storage.googleapis.com/gcp-public-data--gnomad/release/4.0/genome_sv/gnomad.v4.0.sv.chr12.vcf.gz
+  excerpt_strategy:
+    strategy: gz-head
+    count: 1800
 - url: https://storage.googleapis.com/gcp-public-data--gnomad/release/4.0/genome_sv/gnomad.v4.0.sv.chr13.vcf.gz
+  excerpt_strategy:
+    strategy: gz-head
+    count: 1800
 - url: https://storage.googleapis.com/gcp-public-data--gnomad/release/4.0/genome_sv/gnomad.v4.0.sv.chr14.vcf.gz
+  excerpt_strategy:
+    strategy: gz-head
+    count: 1800
 - url: https://storage.googleapis.com/gcp-public-data--gnomad/release/4.0/genome_sv/gnomad.v4.0.sv.chr15.vcf.gz
+  excerpt_strategy:
+    strategy: gz-head
+    count: 1800
 - url: https://storage.googleapis.com/gcp-public-data--gnomad/release/4.0/genome_sv/gnomad.v4.0.sv.chr16.vcf.gz
+  excerpt_strategy:
+    strategy: gz-head
+    count: 1800
 - url: https://storage.googleapis.com/gcp-public-data--gnomad/release/4.0/genome_sv/gnomad.v4.0.sv.chr17.vcf.gz
+  excerpt_strategy:
+    strategy: gz-head
+    count: 1800
 - url: https://storage.googleapis.com/gcp-public-data--gnomad/release/4.0/genome_sv/gnomad.v4.0.sv.chr18.vcf.gz
+  excerpt_strategy:
+    strategy: gz-head
+    count: 1800
 - url: https://storage.googleapis.com/gcp-public-data--gnomad/release/4.0/genome_sv/gnomad.v4.0.sv.chr19.vcf.gz
+  excerpt_strategy:
+    strategy: gz-head
+    count: 1800
 - url: https://storage.googleapis.com/gcp-public-data--gnomad/release/4.0/genome_sv/gnomad.v4.0.sv.chr20.vcf.gz
+  excerpt_strategy:
+    strategy: gz-head
+    count: 1800
 - url: https://storage.googleapis.com/gcp-public-data--gnomad/release/4.0/genome_sv/gnomad.v4.0.sv.chr21.vcf.gz
+  excerpt_strategy:
+    strategy: gz-head
+    count: 1800
 - url: https://storage.googleapis.com/gcp-public-data--gnomad/release/4.0/genome_sv/gnomad.v4.0.sv.chr22.vcf.gz
+  excerpt_strategy:
+    strategy: gz-head
+    count: 1800
 - url: https://storage.googleapis.com/gcp-public-data--gnomad/release/4.0/genome_sv/gnomad.v4.0.sv.chrX.vcf.gz
+  excerpt_strategy:
+    strategy: gz-head
+    count: 1800
 - url: https://storage.googleapis.com/gcp-public-data--gnomad/release/4.0/genome_sv/gnomad.v4.0.sv.chrY.vcf.gz
+  excerpt_strategy:
+    strategy: gz-head
+    count: 1800
 
 - url: https://www.deciphergenomics.org/files/downloads/HI_Predictions_Version3.bed.gz
 

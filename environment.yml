@@ -46,7 +46,7 @@ dependencies:
   - annonars =0.34.0
   - viguno =0.2.0
   - mehari =0.21.1
-  - varfish-server-worker =0.10.2
+  - varfish-server-worker =0.12.0
   # S3 uploads
   - s5cmd =2.1.0
   # async HTTP requests

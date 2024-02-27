@@ -20,7 +20,7 @@ rule genes_regions_worker_convert:
             db to-bin \
             --input-type gene-region \
             --path-input {input.bed} \
-            --path-output-bin {output.bin}
+            --path-output {output.bin}
 
         varfish-db-downloader tpl \
             --template rules/output/worker/{wildcards.source}_genes.spec.yaml \
