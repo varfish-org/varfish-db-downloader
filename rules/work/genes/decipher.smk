@@ -20,8 +20,8 @@ rule genes_decipher_hi_convert:  # -- convert DECIPHER HI predictions to TSV
         hgnc=f"output/full/mehari/genes-xlink-{DV.today}/genes-xlink.tsv",
         bed="work/download/genes/decipher/v3/HI_Predictions_Version3.bed.gz",
     output:
-        tsv="work/genes/decipher/v3/decipher_hi_prediction.tsv.gz",
-        tsv_md5="work/genes/decipher/v3/decipher_hi_prediction.tsv.gz.md5",
+        tsv="work/genes/decipher/v3/decipher_hi_prediction.tsv",
+        tsv_md5="work/genes/decipher/v3/decipher_hi_prediction.tsv.md5",
     shell:
         r"""
         set -x
