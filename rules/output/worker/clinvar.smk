@@ -26,7 +26,7 @@ rule annos_strucvar_clinvar_convert:
         varfish-server-worker db to-bin \
             --input-type clinvar-sv \
             --path-input {input.tsv} \
-            --path-output-bin {output.bin}
+            --path-output {output.bin}
 
         varfish-db-downloader tpl \
             --template rules/output/worker/clinvar_strucvars.spec.yaml \

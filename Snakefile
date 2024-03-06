@@ -127,7 +127,6 @@ rule all:
         f"work/annos/grch38/seqvars/gnomad_mtdna/{DV.gnomad_mtdna}/gnomad_mtdna.vcf.gz",
         f"work/download/annos/grch38/seqvars/gnomad_exomes/{DV.gnomad_v4}/.done",
         f"work/download/annos/grch38/seqvars/gnomad_genomes/{DV.gnomad_v4}/.done",
-        # NB: gnomAD-SV GRCh38 was announced end of 2020 but not released yet
         # -- genome browser "features" (position-specific)
         # ---- GRCh37
         f"work/annos/grch37/features/cons/{DV.ucsc_cons_37}/ucsc_conservation.tsv",
@@ -200,6 +199,8 @@ rule all:
         f"output/full/worker/bgdb-dgv-gs-grch38-{DV.dgv}+{PV.worker}/bgdb-dgv-gs.bin",
         f"output/full/worker/bgdb-gnomad-grch37-{DV.gnomad_sv}+{PV.worker}/bgdb-gnomad.bin",
         f"output/full/worker/bgdb-exac-grch37-{DV.exac_cnv}+{PV.worker}/bgdb-exac.bin",
+        f"output/full/worker/bgdb-gnomad-exomes-cnv-grch38-{DV.gnomad_sv4}+{PV.worker}/bgdb-gnomad-exomes-cnv-grch38.bin",
+        f"output/full/worker/bgdb-gnomad-genomes-sv-grch38-{DV.gnomad_sv4}+{PV.worker}/bgdb-gnomad-genomes-sv-grch38.bin",
         f"output/full/worker/bgdb-g1k-grch37-{DV.g1k_svs}+{PV.worker}/bgdb-g1k.bin",
         f"output/full/worker/clinvar-strucvars-grch37-{DV.clinvar_version}+{PV.worker}/clinvar-strucvars.bin",
         f"output/full/worker/clinvar-strucvars-grch38-{DV.clinvar_version}+{PV.worker}/clinvar-strucvars.bin",
@@ -227,6 +228,8 @@ rule all:
         f"output/full/tracks/track-strucvars-exac-grch37-{DV.exac_cnv}+{DV.tracks}/exac.bed.gz",
         f"output/full/tracks/track-strucvars-g1k-grch37-{DV.g1k_svs}+{DV.tracks}/g1k.bed.gz",
         f"output/full/tracks/track-strucvars-gnomad-grch37-{DV.gnomad_sv}+{DV.tracks}/gnomad.bed.gz",
+        f"output/full/tracks/track-strucvars-gnomad-sv-grch38-{DV.gnomad_sv4}+{DV.tracks}/gnomad-sv.bed.gz",
+        f"output/full/tracks/track-strucvars-gnomad-cnv-grch38-{DV.gnomad_cnv4}+{DV.tracks}/gnomad-cnv.bed.gz",
         # ----- known pathogenic MMS
         f"output/full/tracks/track-strucvars-patho-mms-grch37-{DV.patho_mms}+{DV.tracks}/patho-mms.bed",
         f"output/full/tracks/track-strucvars-patho-mms-grch38-{DV.patho_mms}+{DV.tracks}/patho-mms.bed",
