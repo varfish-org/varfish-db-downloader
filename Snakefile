@@ -90,7 +90,7 @@ rule all:
         f"work/download/genes/ctd/{DV.today}/CTD_diseases.tsv.gz",
         f"work/download/do/{DV.today}/omim-unmapped.csv",
         f"work/genes/dbnsfp/{DV.dbnsfp}/genes.tsv.gz",
-        "work/genes/decipher/v3/decipher_hi_prediction.tsv.gz",
+        "work/genes/decipher/v3/decipher_hi_prediction.tsv",
         f"work/genes/ensembl/{DV.ensembl}/ensembl_xlink.tsv",
         f"work/genes/enst_ensg/grch37/{DV.ensembl_37}/enst_ensg.tsv",
         f"work/genes/entrez/{DV.today}/gene_info.jsonl",

@@ -1210,6 +1210,7 @@ class Integrator:
                     omim_ids: List[LabeledDisorder] = []
                     orpha_ids: List[LabeledDisorder] = []
                     orpha_disorder: Optional[OrphaDisorder] = None
+                    omim_id = ""  # in case it's unset
                     if m_mondo:
                         mondo_id = f"MONDO:{m_mondo.group(1)}"
                         omim_ids = list(self.mondo_to_omim.get(mondo_id, []))
