@@ -18,6 +18,7 @@ rule subset_viguno_pheno_exomes:  # -- create exomes subset
         rocksdb_identity="output/reduced-exomes/viguno/hpo-{v_hpo}+{v_viguno}/scores-fun-sim-avg-resnik-gene/IDENTITY",
         bin="output/reduced-exomes/viguno/hpo-{v_hpo}+{v_viguno}/hpo.bin",
         spec_yaml="output/reduced-exomes/viguno/hpo-{v_hpo}+{v_viguno}/spec.yaml",
+        manifest="output/reduced-exomes/viguno/hpo-{v_hpo}+{v_viguno}/MANIFEST.txt",
     wildcard_constraints:
         v_hpo=RE_VERSION,
         v_viguno=RE_VERSION,
@@ -30,6 +31,15 @@ rule subset_viguno_pheno_exomes:  # -- create exomes subset
         cp -a {input.spec_yaml} {output.spec_yaml}
 
         cp -ar $(dirname {input.rocksdb_identity})/. $(dirname {output.rocksdb_identity})/.
+
+        export TMPDIR=$(mktemp -d)
+        pushd $(dirname {output.spec_yaml})
+        rm -f MANIFEST.txt
+        hashdeep -l -r . >$TMPDIR/MANIFEST.txt
+        CHECKSUM=$(sha256sum $TMPDIR/MANIFEST.txt | cut -d ' ' -f 1)
+        echo "## EOF SHA256=$CHECKSUM" >> $TMPDIR/MANIFEST.txt
+        cp $TMPDIR/MANIFEST.txt MANIFEST.txt
+        popd
         """
 
 
@@ -48,6 +58,7 @@ rule subset_worker_pheno_dev:  # -- create development subset
         rocksdb_identity="output/reduced-dev/viguno/hpo-{v_hpo}+{v_viguno}/scores-fun-sim-avg-resnik-gene/IDENTITY",
         bin="output/reduced-dev/viguno/hpo-{v_hpo}+{v_viguno}/hpo.bin",
         spec_yaml="output/reduced-dev/viguno/hpo-{v_hpo}+{v_viguno}/spec.yaml",
+        manifest="output/reduced-dev/viguno/hpo-{v_hpo}+{v_viguno}/MANIFEST.txt",
     wildcard_constraints:
         v_hpo=RE_VERSION,
         v_viguno=RE_VERSION,
@@ -78,4 +89,13 @@ rule subset_worker_pheno_dev:  # -- create development subset
                 echo --num-simulations 100; \
             fi) \
             --seed 42
+
+        export TMPDIR=$(mktemp -d)
+        pushd $(dirname {output.spec_yaml})
+        rm -f MANIFEST.txt
+        hashdeep -l -r . >$TMPDIR/MANIFEST.txt
+        CHECKSUM=$(sha256sum $TMPDIR/MANIFEST.txt | cut -d ' ' -f 1)
+        echo "## EOF SHA256=$CHECKSUM" >> $TMPDIR/MANIFEST.txt
+        cp $TMPDIR/MANIFEST.txt MANIFEST.txt
+        popd
         """

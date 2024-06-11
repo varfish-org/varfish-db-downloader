@@ -18,6 +18,10 @@ rule output_mehari_freqs_build:  # -- build frequency tables for mehari
             "output/full/mehari/freqs-{genome_release}-{v_gnomad_genomes}+{v_gnomad_exomes}+"
             "{v_gnomad_mtdna}+{v_helixmtdb}+{v_annonars}/spec.yaml"
         ),
+        manifest=(
+            "output/full/mehari/freqs-{genome_release}-{v_gnomad_genomes}+{v_gnomad_exomes}+"
+            "{v_gnomad_mtdna}+{v_helixmtdb}+{v_annonars}/MANIFEST.txt"
+        ),
     threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
@@ -79,4 +83,13 @@ rule output_mehari_freqs_build:  # -- build frequency tables for mehari
             --value v_annovars={wildcards.v_annonars} \
             --value v_downloader={PV.downloader} \
         > {output.spec_yaml}
+
+        export TMPDIR=$(mktemp -d)
+        pushd $(dirname {output.spec_yaml})
+        rm -f MANIFEST.txt
+        hashdeep -l -r . >$TMPDIR/MANIFEST.txt
+        CHECKSUM=$(sha256sum $TMPDIR/MANIFEST.txt | cut -d ' ' -f 1)
+        echo "## EOF SHA256=$CHECKSUM" >> $TMPDIR/MANIFEST.txt
+        cp $TMPDIR/MANIFEST.txt MANIFEST.txt
+        popd
         """
