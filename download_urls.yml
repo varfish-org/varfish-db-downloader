@@ -229,11 +229,11 @@
   url: https://search.clinicalgenome.org/kb/reports/curation-activity-summary-report
   skip_upstream_check: true  # does not work reliably in tests
 
-- url: https://github.com/bihealth/annonars-data-clinvar/releases/download/clinvar-weekly-20230625/clinvar-strucvar-grch37-2023-0625+0.6.3.tar.gz
+- url: https://github.com/varfish-org/annonars-data-clinvar/releases/download/annonars-data-clinvar-20240612/annonars-clinvar-sv-grch37-20240612+0.38.0.tar.gz
   excerpt_strategy:
     strategy: no-excerpt
     count: null
-- url: https://github.com/bihealth/annonars-data-clinvar/releases/download/clinvar-weekly-20230625/clinvar-strucvar-grch38-2023-0625+0.6.3.tar.gz
+- url: https://github.com/varfish-org/annonars-data-clinvar/releases/download/annonars-data-clinvar-20240612/annonars-clinvar-sv-grch38-20240612+0.38.0.tar.gz
   excerpt_strategy:
     strategy: no-excerpt
     count: null
