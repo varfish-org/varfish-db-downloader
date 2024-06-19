@@ -14,7 +14,7 @@ rule output_hgnc_xlink_binary:
             exit 1
         fi
 
-        varfish-server-worker db to-bin \
+        varfish-server-worker strucvars txt-to-bin \
             --input-type xlink \
             --path-input {input.tsv} \
             --path-output {output.bin}

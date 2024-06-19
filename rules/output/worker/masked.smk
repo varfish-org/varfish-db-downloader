@@ -12,7 +12,7 @@ rule output_masked_repeat:
         version=RE_VERSION,
     shell:
         r"""
-        varfish-server-worker db to-bin \
+        varfish-server-worker strucvars txt-to-bin \
             --input-type masked-region \
             --path-input {input} \
             --path-output {output.bin}
@@ -41,7 +41,7 @@ rule output_masked_segdup:
         version=RE_VERSION,
     shell:
         r"""
-        varfish-server-worker db to-bin \
+        varfish-server-worker strucvars txt-to-bin \
             --input-type masked-region \
             --path-input {input} \
             --path-output {output.bin}

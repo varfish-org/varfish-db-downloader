@@ -23,7 +23,7 @@ rule annos_strucvar_clinvar_convert:
         clinvar_release=RE_VERSION,
     shell:
         r"""
-        varfish-server-worker db to-bin \
+        varfish-server-worker strucvars txt-to-bin \
             --input-type clinvar-sv \
             --path-input {input.tsv} \
             --path-output {output.bin}
