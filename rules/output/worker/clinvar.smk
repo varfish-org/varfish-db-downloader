@@ -3,11 +3,11 @@
 
 def input_annos_strucvar_clinvar_convert(wildcards):
     """Return input files for ``rule annos_strucvar_clinvar_convert``."""
-    clinvar_version = wildcards.clinvar_release.replace("-", "").split("+")[0]
+    assert DV.clinvar_release.startswith(wildcards.clinvar_release), f"DV.clinvar_release={DV.clinvar_release}, wildcards.clinvar_release={wildcards.clinvar_release}"
     return {
-        "tsv": (
+        "jsonl": (
             f"work/download/annos/{wildcards.genome_release}/strucvars/"
-            f"clinvar/{clinvar_version}/clinvar_strucvar.tsv.gz"
+            f"clinvar/{DV.clinvar_release}/clinvar-variants-{wildcards.genome_release}-strucvars.jsonl.gz"
         )
     }
 
@@ -25,7 +25,7 @@ rule annos_strucvar_clinvar_convert:
         r"""
         varfish-server-worker strucvars txt-to-bin \
             --input-type clinvar-sv \
-            --path-input {input.tsv} \
+            --path-input {input.jsonl} \
             --path-output {output.bin}
 
         varfish-db-downloader tpl \
