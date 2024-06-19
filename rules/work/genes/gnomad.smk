@@ -85,21 +85,21 @@ rule genes_gnomad_convert_v2_1_1:  # -- create gnomAD gene constraints TSV (v2.1
         run_genes_gnomad_constraints_v2_1_1_to_tsv(input, output, wildcards)
 
 
-rule genes_gnomad_download_v4_0:  # -- download gnomAD gene constraints v4.0
+rule genes_gnomad_download_v4:  # -- download gnomAD gene constraints v4.1
     output:
-        tsv="work/download/genes/gnomad/4.0/gnomad.v4.0.constraint_metrics.tsv",
-        tsv_md5="work/download/genes/gnomad/4.0/gnomad.v4.0.constraint_metrics.tsv.md5",
+        tsv="work/download/genes/gnomad/{version}/gnomad.v{version}.constraint_metrics.tsv",
+        tsv_md5="work/download/genes/gnomad/{version}/gnomad.v{version}.constraint_metrics.tsv.md5",
     shell:
         r"""
         wget --no-check-certificate \
             -O {output.tsv} \
-            https://storage.googleapis.com/gcp-public-data--gnomad/release/v4.0/constraint/gnomad.v4.0.constraint_metrics.tsv
+            https://storage.googleapis.com/gcp-public-data--gnomad/release/{wildcards.version}/constraint/gnomad.v{wildcards.version}.constraint_metrics.tsv
 
         md5sum {output.tsv} >{output.tsv_md5}
         """
 
 
-def run_genes_gnomad_constraints_v4_0_to_tsv(input, output, wildcards):
+def run_genes_gnomad_constraints_v4_to_tsv(input, output, wildcards):
     """Extra function because of snakefmt issues.
 
     Note that the names in the output file are taken from the v2.1.1 file.
@@ -180,12 +180,12 @@ def run_genes_gnomad_constraints_v4_0_to_tsv(input, output, wildcards):
     )
 
 
-rule genes_gnomad_convert_v4_0:  # -- create gnomAD gene constraints TSV (v4.0)
+rule genes_gnomad_convert_v4:  # -- create gnomAD gene constraints TSV (v4.x)
     input:
-        tsv="work/download/genes/gnomad/4.0/gnomad.v4.0.constraint_metrics.tsv",
+        tsv="work/download/genes/gnomad/{v_gnomad_constraints}/gnomad.v{v_gnomad_constraints}.constraint_metrics.tsv",
         xlink_ensembl=f"work/genes/ensembl/{DV.ensembl}/ensembl_xlink.tsv",
     output:
-        tsv="work/genes/gnomad/4.0/gnomad_constraints.tsv",
-        tsv_md5="work/genes/gnomad/4.0/gnomad_constraints.tsv.md5",
+        tsv="work/genes/gnomad/{v_gnomad_constraints}/gnomad_constraints.tsv",
+        tsv_md5="work/genes/gnomad/{v_gnomad_constraints}/gnomad_constraints.tsv.md5",
     run:
-        run_genes_gnomad_constraints_v4_0_to_tsv(input, output, wildcards)
+        run_genes_gnomad_constraints_v4_to_tsv(input, output, wildcards)
