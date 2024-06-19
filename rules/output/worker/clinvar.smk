@@ -3,7 +3,9 @@
 
 def input_annos_strucvar_clinvar_convert(wildcards):
     """Return input files for ``rule annos_strucvar_clinvar_convert``."""
-    assert DV.clinvar_release.startswith(wildcards.clinvar_release), f"DV.clinvar_release={DV.clinvar_release}, wildcards.clinvar_release={wildcards.clinvar_release}"
+    assert DV.clinvar_release.startswith(
+        wildcards.clinvar_release
+    ), f"DV.clinvar_release={DV.clinvar_release}, wildcards.clinvar_release={wildcards.clinvar_release}"
     return {
         "jsonl": (
             f"work/download/annos/{wildcards.genome_release}/strucvars/"
