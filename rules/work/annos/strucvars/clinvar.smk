@@ -19,5 +19,5 @@ rule annos_strucvars_clinvar_download:  # -- download/extract ClinVar files
             https://github.com/varfish-org/clinvar-data-jsonl/releases/download/clinvar-weekly-$clinvar_version/clinvar-data-extract-vars-{wildcards.clinvar_version}.tar.gz
 
         tar -C $TMPDIR -xvf /tmp/clinvar-data-extract-vars-{wildcards.clinvar_version}.tar.gz
-        cp /tmp/clinvar-data-extract-vars-{wildcards.clinvar_version}/clinvar-variants-grch37-strucvars.jsonl.gz {output.jsonl}
+        cp $TMPDIR/clinvar-data-extract-vars-{wildcards.clinvar_version}/clinvar-variants-{wildcards.genome_release}-strucvars.jsonl.gz {output.jsonl}
         """
