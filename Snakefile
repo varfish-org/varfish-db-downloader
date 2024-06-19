@@ -180,10 +180,6 @@ rule all:
         # ----- genes
         f"output/full/annonars/genes-{DV.acmg_sf}+{DV.gnomad_constraints}+{DV.dbnsfp}+{DV.hpo}+{DV.today}+{PV.annonars}/rocksdb/IDENTITY",
         # -- worker data
-        f"output/full/worker/genes-regions-grch37-{DV.refseq_37}+{PV.worker}/refseq_genes.bin",
-        f"output/full/worker/genes-regions-grch37-{DV.ensembl_37}+{PV.worker}/ensembl_genes.bin",
-        f"output/full/worker/genes-regions-grch38-{DV.refseq_38}+{PV.worker}/refseq_genes.bin",
-        f"output/full/worker/genes-regions-grch38-{DV.ensembl_38}+{PV.worker}/ensembl_genes.bin",
         f"output/full/worker/genes-xlink-{DV.today}+{PV.worker}/genes-xlink.bin",
         f"output/full/worker/acmg-sf-{DV.acmg_sf}+{PV.worker}/acmg_sf.tsv",
         f"output/full/worker/mim2gene-{DV.today}+{PV.worker}/mim2gene.tsv",
@@ -411,7 +407,6 @@ include: "rules/output/annonars/regions.smk"
 # ---- worker
 include: "rules/output/worker/patho_mms.smk"
 include: "rules/output/worker/clinvar.smk"
-include: "rules/output/worker/genes_regions.smk"
 include: "rules/output/worker/hgnc.smk"
 include: "rules/output/worker/acmg.smk"
 include: "rules/output/worker/mim2gene.smk"
