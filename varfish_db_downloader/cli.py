@@ -171,7 +171,7 @@ def urls_check_upstream(urls, urls_yaml):
             logger.info(" checking {}...", entry.url)
             try:
                 try_get(s, entry.url)
-            except UrlCheckException as e:
+            except UrlCheckFailed as e:
                 error_count += 1
                 logger.warning("  NOT OK: {}", e)
             else:
