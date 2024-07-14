@@ -39,6 +39,8 @@ rule subset_annonars:  # -- create exomes subset
     shell:
         r"""
         annonars db-utils copy \
+            --skip-cfs dbsnp_by_rsid \
+            --skip-cfs clinvar_by_accession \
             --path-in $(dirname {input.rocksdb_identity}) \
             --path-out $(dirname {output.rocksdb_identity}) \
             --path-beds {input.bed}

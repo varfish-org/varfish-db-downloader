@@ -7,6 +7,7 @@ import jinja2
 import requests
 import requests_ftp
 from loguru import logger
+from reretry import retry
 
 from varfish_db_downloader import __version__, wget
 
@@ -138,6 +139,10 @@ def urls_download(urls, data_dir, urls_yaml, force):
             raise click.ClickException("URL discrepancy (see logs above)")
 
 
+class UrlCheckFailed(Exception):
+    pass
+
+
 @wget_.command()
 @click.option("--urls-yaml", default="download_urls.yml")
 @click.argument("urls", nargs=-1)
@@ -148,18 +153,29 @@ def urls_check_upstream(urls, urls_yaml):
 
     requests_ftp.monkeypatch_session()
 
+    def try_get_failed(e: UrlCheckFailed):
+        logger.info("    failed: {} (maybe retry)", e)
+
+    @retry(tries=5, delay=1, backoff=2, logger=None, fail_callback=try_get_failed)
+    def try_get(session: requests.Session, url: str):
+        with s.get(entry.url, allow_redirects=True, stream=True) as r:
+            if r.ok:
+                r.close()
+            else:
+                raise UrlCheckFailed(str(r))
+
     error_count = 0
     for entry in wget.load_urls_yaml(urls_yaml):
         s = requests.Session()
         if not entry.skip_upstream_check and (not urls or entry.url in urls):
             logger.info(" checking {}...", entry.url)
-            with s.get(entry.url, allow_redirects=True, stream=True) as r:
-                if r.ok:
-                    logger.info("   => OK")
-                    r.close()
-                else:
-                    error_count += 1
-                    logger.warning("  NOT OK: {}", r)
+            try:
+                try_get(s, entry.url)
+            except UrlCheckFailed as e:
+                error_count += 1
+                logger.warning("  NOT OK: {}", e)
+            else:
+                logger.info("   => OK")
         else:
             logger.info("  Skipping {}...", entry.url)
 
