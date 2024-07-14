@@ -13,7 +13,7 @@ rule genes_ensembl_create_xlink:  # -- create ENSEMBL gene information xlink tab
         wget --no-check-certificate \
             -O $TMPDIR/current_README \
             https://ftp.ensembl.org/pub/current_README
-        grep "Ensembl Release {DV.ensembl} Databases" $TMPDIR/current_README \
+        grep "The current release is Ensembl {DV.ensembl}" $TMPDIR/current_README \
         || (echo "Ensembl version is not {DV.ensembl}." && exit 1)
 
         echo -e "ensembl_gene_id\tensembl_transcript_id\tentrez_id\tgene_symbol" \
