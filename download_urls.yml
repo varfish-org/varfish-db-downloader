@@ -245,7 +245,7 @@
     strategy: head
     count: 10000
 
-- url: https://ftp.ensembl.org/pub/release-109/gtf/homo_sapiens/Homo_sapiens.GRCh38.109.gtf.gz
+- url: https://ftp.ensembl.org/pub/release-112/gtf/homo_sapiens/Homo_sapiens.GRCh38.112.gtf.gz
   excerpt_strategy:
     strategy: head
     count: 10000
