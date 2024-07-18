@@ -18,6 +18,10 @@ def input_subset_mehari(wildcards):
             f"output/full/mehari/freqs-{wildcards.genome_release}-"
             f"{wildcards.version_multi}/rocksdb/IDENTITY"
         ),
+        "spec_yaml": (
+            f"output/full/mehari/freqs-{wildcards.genome_release}-"
+            f"{wildcards.version_multi}/spec.yaml"
+        ),
     }
     return result
 
@@ -27,6 +31,7 @@ rule subset_mehari:  # -- create exomes subset
         unpack(input_subset_mehari),
     output:
         rocksdb_identity="output/reduced-{set_name}/mehari/freqs-{genome_release}-{version_multi}/rocksdb/IDENTITY",
+        spec_yaml="output/reduced-{set_name}/mehari/freqs-{genome_release}-{version_multi}/spec.yaml",
     wildcard_constraints:
         genome_release=RE_GENOME,
         v_hpo=RE_VERSION,
@@ -41,4 +46,6 @@ rule subset_mehari:  # -- create exomes subset
             --path-in $(dirname {input.rocksdb_identity}) \
             --path-out $(dirname {output.rocksdb_identity}) \
             --path-beds {input.bed}
+
+        cp {input.spec_yaml} {output.spec_yaml}
         """
