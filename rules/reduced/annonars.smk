@@ -18,6 +18,10 @@ def input_subset_annonars(wildcards):
             f"output/full/annonars/{wildcards.name}-{wildcards.genome_release}-"
             f"{wildcards.version_multi}/rocksdb/IDENTITY"
         ),
+        "spec_yaml": (
+            f"output/full/annonars/{wildcards.name}-{wildcards.genome_release}-"
+            f"{wildcards.version_multi}/spec.yaml"
+        ),
     }
     return result
 
@@ -27,6 +31,7 @@ rule subset_annonars:  # -- create exomes subset
         unpack(input_subset_annonars),
     output:
         rocksdb_identity="output/reduced-{set_name}/annonars/{name}-{genome_release}-{version_multi}/rocksdb/IDENTITY",
+        spec_yaml="output/reduced-{set_name}/annonars/{name}-{genome_release}-{version_multi}/spec.yaml",
     wildcard_constraints:
         name=RE_NAME,
         genome_release=RE_GENOME,
@@ -44,4 +49,6 @@ rule subset_annonars:  # -- create exomes subset
             --path-in $(dirname {input.rocksdb_identity}) \
             --path-out $(dirname {output.rocksdb_identity}) \
             --path-beds {input.bed}
+
+        cp {input.spec_yaml} {output.spec_yaml}
         """
