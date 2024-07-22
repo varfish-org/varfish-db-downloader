@@ -112,7 +112,7 @@ rule output_annonars_gnomad_sv_grch37_gnomad_sv2:  # -- build gnomAD-SV RocksDB 
 rule output_annonars_gnomad_sv_grch38_gnomad_cnv4:  # -- build gnomAD-SV RocksDB with annonars; gnomAD-CNV v4 variant
     input:
         vcf=[
-            f"work/download/annos/grch38/strucvars/gnomad_cnv/4.0/gnomad.v4.0.cnv.{token}.vcf.gz"
+            f"work/download/annos/grch38/strucvars/gnomad_cnv/{{v_gnomad}}/gnomad.v{{v_gnomad}}.cnv.{token}.vcf.gz"
             for token in ("all", "non_neuro", "non_neuro_controls")
         ],
     output:
@@ -164,10 +164,7 @@ rule output_annonars_gnomad_sv_grch38_gnomad_cnv4:  # -- build gnomAD-SV RocksDB
 
 rule output_annonars_gnomad_sv_grch38_gnomad_sv4:  # -- build gnomAD-SV RocksDB with annonars; gnomAD-SV v4 variant
     input:
-        vcf=[
-            f"work/download/annos/grch38/strucvars/gnomad_sv/4.0/gnomad.v4.0.sv.chr{chrom}.vcf.gz"
-            for chrom in list(range(1, 23)) + ["X", "Y"]
-        ],
+        vcf="work/download/annos/grch38/strucvars/gnomad_sv/{v_gnomad}/gnomad.v{v_gnomad}.sv.sites.vcf.gz",
     output:
         rocksdb_identity=(
             "output/full/annonars/gnomad-sv-genomes-grch38-{v_gnomad}+{v_annonars}/rocksdb/IDENTITY",
@@ -191,7 +188,7 @@ rule output_annonars_gnomad_sv_grch38_gnomad_sv4:  # -- build gnomAD-SV RocksDB 
         annonars gnomad-sv import \
             --gnomad-kind genomes \
             --genome-release grch38 \
-            $(for vcf in {input.vcf}; do echo --path-in-vcf $vcf; done) \
+            --path-in-vcf {input.vcf} \
             --path-out-rocksdb $(dirname {output.rocksdb_identity}) \
             --gnomad-version {wildcards.v_gnomad}
 

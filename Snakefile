@@ -127,7 +127,6 @@ rule all:
         f"work/annos/grch38/seqvars/gnomad_mtdna/{DV.gnomad_mtdna}/gnomad_mtdna.vcf.gz",
         f"work/download/annos/grch38/seqvars/gnomad_exomes/{DV.gnomad_v4}/.done",
         f"work/download/annos/grch38/seqvars/gnomad_genomes/{DV.gnomad_v4}/.done",
-        # NB: gnomAD-SV GRCh38 was announced end of 2020 but not released yet
         # -- genome browser "features" (position-specific)
         # ---- GRCh37
         f"work/annos/grch37/features/cons/{DV.ucsc_cons_37}/ucsc_conservation.tsv",
@@ -181,10 +180,6 @@ rule all:
         # ----- genes
         f"output/full/annonars/genes-{DV.acmg_sf}+{DV.gnomad_constraints}+{DV.dbnsfp}+{DV.hpo}+{DV.today}+{PV.annonars}/rocksdb/IDENTITY",
         # -- worker data
-        f"output/full/worker/genes-regions-grch37-{DV.refseq_37}+{PV.worker}/refseq_genes.bin",
-        f"output/full/worker/genes-regions-grch37-{DV.ensembl_37}+{PV.worker}/ensembl_genes.bin",
-        f"output/full/worker/genes-regions-grch38-{DV.refseq_38}+{PV.worker}/refseq_genes.bin",
-        f"output/full/worker/genes-regions-grch38-{DV.ensembl_38}+{PV.worker}/ensembl_genes.bin",
         f"output/full/worker/genes-xlink-{DV.today}+{PV.worker}/genes-xlink.bin",
         f"output/full/worker/acmg-sf-{DV.acmg_sf}+{PV.worker}/acmg_sf.tsv",
         f"output/full/worker/mim2gene-{DV.today}+{PV.worker}/mim2gene.tsv",
@@ -200,6 +195,8 @@ rule all:
         f"output/full/worker/bgdb-dgv-gs-grch38-{DV.dgv}+{PV.worker}/bgdb-dgv-gs.bin",
         f"output/full/worker/bgdb-gnomad-grch37-{DV.gnomad_sv}+{PV.worker}/bgdb-gnomad.bin",
         f"output/full/worker/bgdb-exac-grch37-{DV.exac_cnv}+{PV.worker}/bgdb-exac.bin",
+        f"output/full/worker/bgdb-gnomad-exomes-cnv-grch38-{DV.gnomad_sv4}+{PV.worker}/bgdb-gnomad-exomes-cnv-grch38.bin",
+        f"output/full/worker/bgdb-gnomad-genomes-sv-grch38-{DV.gnomad_sv4}+{PV.worker}/bgdb-gnomad-genomes-sv-grch38.bin",
         f"output/full/worker/bgdb-g1k-grch37-{DV.g1k_svs}+{PV.worker}/bgdb-g1k.bin",
         f"output/full/worker/clinvar-strucvars-grch37-{DV.clinvar_version}+{PV.worker}/clinvar-strucvars.bin",
         f"output/full/worker/clinvar-strucvars-grch38-{DV.clinvar_version}+{PV.worker}/clinvar-strucvars.bin",
@@ -216,7 +213,6 @@ rule all:
         f"output/full/viguno/hpo-{DV.hpo}+{PV.viguno}/phenotype.hpoa",
         f"output/full/viguno/hpo-{DV.hpo}+{PV.viguno}/phenotype_to_genes.txt",
         f"output/full/viguno/hpo-{DV.hpo}+{PV.viguno}/hpo.bin",
-        f"output/full/viguno/hpo-{DV.hpo}+{PV.viguno}/scores-fun-sim-avg-resnik-gene/IDENTITY",
         # ----- background/population structural variants and annotations thereof
         f"output/full/tracks/track-strucvars-dbvar-grch37-{DV.dbvar}+{DV.tracks}/dbvar.bed.gz",
         f"output/full/tracks/track-strucvars-dbvar-grch38-{DV.dbvar}+{DV.tracks}/dbvar.bed.gz",
@@ -227,6 +223,8 @@ rule all:
         f"output/full/tracks/track-strucvars-exac-grch37-{DV.exac_cnv}+{DV.tracks}/exac.bed.gz",
         f"output/full/tracks/track-strucvars-g1k-grch37-{DV.g1k_svs}+{DV.tracks}/g1k.bed.gz",
         f"output/full/tracks/track-strucvars-gnomad-grch37-{DV.gnomad_sv}+{DV.tracks}/gnomad.bed.gz",
+        f"output/full/tracks/track-strucvars-gnomad-sv-grch38-{DV.gnomad_sv4}+{DV.tracks}/gnomad-sv.bed.gz",
+        f"output/full/tracks/track-strucvars-gnomad-cnv-grch38-{DV.gnomad_cnv4}+{DV.tracks}/gnomad-cnv.bed.gz",
         # ----- known pathogenic MMS
         f"output/full/tracks/track-strucvars-patho-mms-grch37-{DV.patho_mms}+{DV.tracks}/patho-mms.bed",
         f"output/full/tracks/track-strucvars-patho-mms-grch38-{DV.patho_mms}+{DV.tracks}/patho-mms.bed",
@@ -276,27 +274,44 @@ rule all:
         f"output/reduced-dev/viguno/hpo-{DV.hpo}+{PV.viguno}/phenotype.hpoa",
         f"output/reduced-dev/viguno/hpo-{DV.hpo}+{PV.viguno}/phenotype_to_genes.txt",
         f"output/reduced-dev/viguno/hpo-{DV.hpo}+{PV.viguno}/hpo.bin",
-        f"output/reduced-dev/viguno/hpo-{DV.hpo}+{PV.viguno}/scores-fun-sim-avg-resnik-gene/IDENTITY",
         # -- annonars
         f"output/reduced-dev/annonars/cadd-grch37-{DV.cadd}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-dev/annonars/cadd-grch37-{DV.cadd}+{PV.annonars}/spec.yaml",
         f"output/reduced-dev/annonars/cadd-grch38-{DV.cadd}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-dev/annonars/cadd-grch38-{DV.cadd}+{PV.annonars}/spec.yaml",
         f"output/reduced-dev/annonars/cons-grch37-{DV.ucsc_cons_37}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-dev/annonars/cons-grch37-{DV.ucsc_cons_37}+{PV.annonars}/spec.yaml",
         f"output/reduced-dev/annonars/cons-grch38-{DV.ucsc_cons_38}+{PV.annonars}/rocksdb/IDENTITY",
-        f"output/reduced-dev/annonars/dbsnp-grch37-{DV.dbsnp}+{PV.annonars}/rocksdb/IDENTITY",
-        f"output/reduced-dev/annonars/dbsnp-grch38-{DV.dbsnp}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-dev/annonars/cons-grch38-{DV.ucsc_cons_38}+{PV.annonars}/spec.yaml",
         f"output/reduced-dev/annonars/dbnsfp-grch37-{DV.dbnsfp}a+{PV.annonars}/rocksdb/IDENTITY",
-        f"output/reduced-dev/annonars/dbnsfp-grch38-{DV.dbnsfp}a+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-dev/annonars/dbnsfp-grch37-{DV.dbnsfp}a+{PV.annonars}/spec.yaml",
         f"output/reduced-dev/annonars/dbnsfp-grch37-{DV.dbnsfp}c+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-dev/annonars/dbnsfp-grch37-{DV.dbnsfp}c+{PV.annonars}/spec.yaml",
+        f"output/reduced-dev/annonars/dbnsfp-grch38-{DV.dbnsfp}a+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-dev/annonars/dbnsfp-grch38-{DV.dbnsfp}a+{PV.annonars}/spec.yaml",
         f"output/reduced-dev/annonars/dbnsfp-grch38-{DV.dbnsfp}c+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-dev/annonars/dbnsfp-grch38-{DV.dbnsfp}c+{PV.annonars}/spec.yaml",
         f"output/reduced-dev/annonars/dbscsnv-grch37-{DV.dbscsnv}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-dev/annonars/dbscsnv-grch37-{DV.dbscsnv}+{PV.annonars}/spec.yaml",
         f"output/reduced-dev/annonars/dbscsnv-grch38-{DV.dbscsnv}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-dev/annonars/dbscsnv-grch38-{DV.dbscsnv}+{PV.annonars}/spec.yaml",
+        f"output/reduced-dev/annonars/dbsnp-grch37-{DV.dbsnp}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-dev/annonars/dbsnp-grch37-{DV.dbsnp}+{PV.annonars}/spec.yaml",
+        f"output/reduced-dev/annonars/dbsnp-grch38-{DV.dbsnp}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-dev/annonars/dbsnp-grch38-{DV.dbsnp}+{PV.annonars}/spec.yaml",
         f"output/reduced-dev/annonars/gnomad-exomes-grch37-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-dev/annonars/gnomad-exomes-grch37-{DV.gnomad_v2}+{PV.annonars}/spec.yaml",
         f"output/reduced-dev/annonars/gnomad-exomes-grch38-{DV.gnomad_v4}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-dev/annonars/gnomad-exomes-grch38-{DV.gnomad_v4}+{PV.annonars}/spec.yaml",
         f"output/reduced-dev/annonars/gnomad-genomes-grch37-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-dev/annonars/gnomad-genomes-grch37-{DV.gnomad_v2}+{PV.annonars}/spec.yaml",
         f"output/reduced-dev/annonars/gnomad-genomes-grch38-{DV.gnomad_v4}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-dev/annonars/gnomad-genomes-grch38-{DV.gnomad_v4}+{PV.annonars}/spec.yaml",
         # -- mehari
         f"output/reduced-dev/mehari/freqs-grch37-{DV.gnomad_v2}+{DV.gnomad_v2}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-dev/mehari/freqs-grch37-{DV.gnomad_v2}+{DV.gnomad_v2}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/spec.yaml",
         f"output/reduced-dev/mehari/freqs-grch38-{DV.gnomad_v4}+{DV.gnomad_v4}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-dev/mehari/freqs-grch38-{DV.gnomad_v4}+{DV.gnomad_v4}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/spec.yaml",
         #
         # == exomes (reduced data) directories ==================================================
         #
@@ -308,27 +323,44 @@ rule all:
         f"output/reduced-exomes/viguno/hpo-{DV.hpo}+{PV.viguno}/phenotype.hpoa",
         f"output/reduced-exomes/viguno/hpo-{DV.hpo}+{PV.viguno}/phenotype_to_genes.txt",
         f"output/reduced-exomes/viguno/hpo-{DV.hpo}+{PV.viguno}/hpo.bin",
-        f"output/reduced-exomes/viguno/hpo-{DV.hpo}+{PV.viguno}/scores-fun-sim-avg-resnik-gene/IDENTITY",
         # -- annonars
         f"output/reduced-exomes/annonars/cadd-grch37-{DV.cadd}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-exomes/annonars/cadd-grch37-{DV.cadd}+{PV.annonars}/spec.yaml",
         f"output/reduced-exomes/annonars/cadd-grch38-{DV.cadd}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-exomes/annonars/cadd-grch38-{DV.cadd}+{PV.annonars}/spec.yaml",
         f"output/reduced-exomes/annonars/cons-grch37-{DV.ucsc_cons_37}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-exomes/annonars/cons-grch37-{DV.ucsc_cons_37}+{PV.annonars}/spec.yaml",
         f"output/reduced-exomes/annonars/cons-grch38-{DV.ucsc_cons_38}+{PV.annonars}/rocksdb/IDENTITY",
-        f"output/reduced-exomes/annonars/dbsnp-grch37-{DV.dbsnp}+{PV.annonars}/rocksdb/IDENTITY",
-        f"output/reduced-exomes/annonars/dbsnp-grch38-{DV.dbsnp}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-exomes/annonars/cons-grch38-{DV.ucsc_cons_38}+{PV.annonars}/spec.yaml",
         f"output/reduced-exomes/annonars/dbnsfp-grch37-{DV.dbnsfp}a+{PV.annonars}/rocksdb/IDENTITY",
-        f"output/reduced-exomes/annonars/dbnsfp-grch38-{DV.dbnsfp}a+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-exomes/annonars/dbnsfp-grch37-{DV.dbnsfp}a+{PV.annonars}/spec.yaml",
         f"output/reduced-exomes/annonars/dbnsfp-grch37-{DV.dbnsfp}c+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-exomes/annonars/dbnsfp-grch37-{DV.dbnsfp}c+{PV.annonars}/spec.yaml",
+        f"output/reduced-exomes/annonars/dbnsfp-grch38-{DV.dbnsfp}a+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-exomes/annonars/dbnsfp-grch38-{DV.dbnsfp}a+{PV.annonars}/spec.yaml",
         f"output/reduced-exomes/annonars/dbnsfp-grch38-{DV.dbnsfp}c+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-exomes/annonars/dbnsfp-grch38-{DV.dbnsfp}c+{PV.annonars}/spec.yaml",
         f"output/reduced-exomes/annonars/dbscsnv-grch37-{DV.dbscsnv}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-exomes/annonars/dbscsnv-grch37-{DV.dbscsnv}+{PV.annonars}/spec.yaml",
         f"output/reduced-exomes/annonars/dbscsnv-grch38-{DV.dbscsnv}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-exomes/annonars/dbscsnv-grch38-{DV.dbscsnv}+{PV.annonars}/spec.yaml",
+        f"output/reduced-exomes/annonars/dbsnp-grch37-{DV.dbsnp}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-exomes/annonars/dbsnp-grch37-{DV.dbsnp}+{PV.annonars}/spec.yaml",
+        f"output/reduced-exomes/annonars/dbsnp-grch38-{DV.dbsnp}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-exomes/annonars/dbsnp-grch38-{DV.dbsnp}+{PV.annonars}/spec.yaml",
         f"output/reduced-exomes/annonars/gnomad-exomes-grch37-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-exomes/annonars/gnomad-exomes-grch37-{DV.gnomad_v2}+{PV.annonars}/spec.yaml",
         f"output/reduced-exomes/annonars/gnomad-exomes-grch38-{DV.gnomad_v4}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-exomes/annonars/gnomad-exomes-grch38-{DV.gnomad_v4}+{PV.annonars}/spec.yaml",
         f"output/reduced-exomes/annonars/gnomad-genomes-grch37-{DV.gnomad_v2}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-exomes/annonars/gnomad-genomes-grch37-{DV.gnomad_v2}+{PV.annonars}/spec.yaml",
         f"output/reduced-exomes/annonars/gnomad-genomes-grch38-{DV.gnomad_v4}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-exomes/annonars/gnomad-genomes-grch38-{DV.gnomad_v4}+{PV.annonars}/spec.yaml",
         # -- mehari
         f"output/reduced-exomes/mehari/freqs-grch37-{DV.gnomad_v2}+{DV.gnomad_v2}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-exomes/mehari/freqs-grch37-{DV.gnomad_v2}+{DV.gnomad_v2}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/spec.yaml",
         f"output/reduced-exomes/mehari/freqs-grch38-{DV.gnomad_v4}+{DV.gnomad_v4}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/reduced-exomes/mehari/freqs-grch38-{DV.gnomad_v4}+{DV.gnomad_v4}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/spec.yaml",
 
 
 # ===============================================================================================
@@ -408,7 +440,6 @@ include: "rules/output/annonars/regions.smk"
 # ---- worker
 include: "rules/output/worker/patho_mms.smk"
 include: "rules/output/worker/clinvar.smk"
-include: "rules/output/worker/genes_regions.smk"
 include: "rules/output/worker/hgnc.smk"
 include: "rules/output/worker/acmg.smk"
 include: "rules/output/worker/mim2gene.smk"

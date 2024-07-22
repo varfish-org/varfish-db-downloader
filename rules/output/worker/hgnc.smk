@@ -14,10 +14,10 @@ rule output_hgnc_xlink_binary:
             exit 1
         fi
 
-        varfish-server-worker db to-bin \
+        varfish-server-worker strucvars txt-to-bin \
             --input-type xlink \
             --path-input {input.tsv} \
-            --path-output-bin {output.bin}
+            --path-output {output.bin}
 
         varfish-db-downloader tpl \
             --template rules/output/worker/hgnc_xlink.spec.yaml \

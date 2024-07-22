@@ -11,7 +11,7 @@ TODAY = os.environ.get("TODAY", datetime.today().strftime("%Y%m%d"))
 #: Allow to disable the today check.
 FORCE_TODAY = os.environ.get("FORCE_TODAY", "false").lower() == "true"
 #: The ClinVar release to use (includes annonars version used for building).
-CLINVAR_RELEASE = os.environ.get("CLINVAR_RELEASE", "2023-0625+0.6.3")
+CLINVAR_RELEASE = os.environ.get("CLINVAR_RELEASE", "20240612+0.17.0")
 #: The ClinVar version to use (part of the tag and release name).
 CLINVAR_VERSION = CLINVAR_RELEASE.replace("-", "").split("+")[0]
 
@@ -127,20 +127,20 @@ DATA_VERSIONS = DataVersions(
     clingen_gene=TODAY,
     clingen_variant=TODAY,
     ensembl_37="87",
-    ensembl_38="109",
-    ensembl="111",
+    ensembl_38="112",
+    ensembl="112",
     today=TODAY,
     dbnsfp="4.5",
     dbscsnv="1.1",
     cadd="1.6",
-    gnomad_constraints="4.0",
+    gnomad_constraints="4.1",
     gnomad_mtdna="3.1",
     gnomad_v2="2.1.1",
     gnomad_v3="3.1.2",
-    gnomad_v4="4.0",
+    gnomad_v4="4.1",
     gnomad_sv="2.1.1",
-    gnomad_cnv4="4.0",
-    gnomad_sv4="4.0",
+    gnomad_cnv4="4.1",
+    gnomad_sv4="4.1",
     dbvar="20231030",
     dgv="20200225",
     dgv_gs="20160515",
@@ -155,7 +155,7 @@ DATA_VERSIONS = DataVersions(
     ucsc_genomic_super_dups_38="20141019",
     ucsc_alt_seq_liftover_37="20200322",
     ucsc_alt_seq_liftover_38="20221103",
-    ucsc_fix_seq_liftover_37="20200524",
+    ucsc_fix_seq_liftover_37="20200609",
     ucsc_fix_seq_liftover_38="20221103",
     refseq_37="105",
     refseq_38="GCF_000001405.40+RS_2023_03",

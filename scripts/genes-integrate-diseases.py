@@ -545,7 +545,8 @@ def parse_mondo_obo(path: str) -> List[MondoDisease]:
                         relation=list(map(MondoDiseaseRelation, synonym.scope.split(" "))),
                     )
                 )
-        result.append(MondoDisease(mondo_id=term.id, name=term.name, synonyms=synonyms))
+        if term.name:
+            result.append(MondoDisease(mondo_id=term.id, name=term.name, synonyms=synonyms))
     return result
 
 
