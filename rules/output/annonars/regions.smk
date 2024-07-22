@@ -25,7 +25,7 @@ rule output_annonars_regions:  # -- build annonars regions RocksDB file
             "output/full/annonars/regions-{genome_release}-{date}+{v_annonars}/" "rocksdb/IDENTITY"
         ),
         spec_yaml=("output/full/annonars/regions-{genome_release}-{date}+{v_annonars}/spec.yaml"),
-        manifest=("output/full/annonars/cadd-{genome_release}-{v_cadd}+{v_annonars}/MANIFEST.txt"),
+        manifest=("output/full/annonars/regions-{genome_release}-{date}+{v_annonars}/MANIFEST.txt"),
     wildcard_constraints:
         v_refseq=RE_VERSION,
         v_annonars=RE_VERSION,
