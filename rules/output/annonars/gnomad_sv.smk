@@ -12,6 +12,9 @@ rule output_annonars_gnomad_sv_grch37_exac:  # -- build gnomAD-SV RocksDB with a
             "output/full/annonars/gnomad-sv-exomes-grch37-{v_gnomad}+{v_annonars}/rocksdb/IDENTITY",
         ),
         spec_yaml=("output/full/annonars/gnomad-sv-exomes-grch37-{v_gnomad}+{v_annonars}/spec.yaml"),
+        manifest=(
+            "output/full/annonars/gnomad-sv-exomes-grch37-{v_gnomad}+{v_annonars}/MANIFEST.txt"
+        ),
     threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
@@ -39,6 +42,15 @@ rule output_annonars_gnomad_sv_grch37_exac:  # -- build gnomAD-SV RocksDB with a
             --value v_annonars={wildcards.v_annonars} \
             --value v_downloader={PV.downloader} \
         > {output.spec_yaml}
+
+        export TMPDIR=$(mktemp -d)
+        pushd $(dirname {output.spec_yaml})
+        rm -f MANIFEST.txt
+        hashdeep -l -r . >$TMPDIR/MANIFEST.txt
+        CHECKSUM=$(sha256sum $TMPDIR/MANIFEST.txt | cut -d ' ' -f 1)
+        echo "## EOF SHA256=$CHECKSUM" >> $TMPDIR/MANIFEST.txt
+        cp $TMPDIR/MANIFEST.txt MANIFEST.txt
+        popd
         """
 
 
@@ -54,6 +66,9 @@ rule output_annonars_gnomad_sv_grch37_gnomad_sv2:  # -- build gnomAD-SV RocksDB 
         ),
         spec_yaml=(
             "output/full/annonars/gnomad-sv-genomes-grch37-{v_gnomad}+{v_annonars}/spec.yaml"
+        ),
+        manifest=(
+            "output/full/annonars/gnomad-sv-genomes-grch37-{v_gnomad}+{v_annonars}/MANIFEST.txt"
         ),
     threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
     resources:
@@ -82,6 +97,15 @@ rule output_annonars_gnomad_sv_grch37_gnomad_sv2:  # -- build gnomAD-SV RocksDB 
             --value v_annonars={wildcards.v_annonars} \
             --value v_downloader={PV.downloader} \
         > {output.spec_yaml}
+
+        export TMPDIR=$(mktemp -d)
+        pushd $(dirname {output.spec_yaml})
+        rm -f MANIFEST.txt
+        hashdeep -l -r . >$TMPDIR/MANIFEST.txt
+        CHECKSUM=$(sha256sum $TMPDIR/MANIFEST.txt | cut -d ' ' -f 1)
+        echo "## EOF SHA256=$CHECKSUM" >> $TMPDIR/MANIFEST.txt
+        cp $TMPDIR/MANIFEST.txt MANIFEST.txt
+        popd
         """
 
 
@@ -96,6 +120,9 @@ rule output_annonars_gnomad_sv_grch38_gnomad_cnv4:  # -- build gnomAD-SV RocksDB
             "output/full/annonars/gnomad-sv-exomes-grch38-{v_gnomad}+{v_annonars}/rocksdb/IDENTITY",
         ),
         spec_yaml=("output/full/annonars/gnomad-sv-exomes-grch38-{v_gnomad}+{v_annonars}/spec.yaml"),
+        manifest=(
+            "output/full/annonars/gnomad-sv-exomes-grch38-{v_gnomad}+{v_annonars}/MANIFEST.txt"
+        ),
     threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
@@ -123,6 +150,15 @@ rule output_annonars_gnomad_sv_grch38_gnomad_cnv4:  # -- build gnomAD-SV RocksDB
             --value v_annonars={wildcards.v_annonars} \
             --value v_downloader={PV.downloader} \
         > {output.spec_yaml}
+
+        export TMPDIR=$(mktemp -d)
+        pushd $(dirname {output.spec_yaml})
+        rm -f MANIFEST.txt
+        hashdeep -l -r . >$TMPDIR/MANIFEST.txt
+        CHECKSUM=$(sha256sum $TMPDIR/MANIFEST.txt | cut -d ' ' -f 1)
+        echo "## EOF SHA256=$CHECKSUM" >> $TMPDIR/MANIFEST.txt
+        cp $TMPDIR/MANIFEST.txt MANIFEST.txt
+        popd
         """
 
 
@@ -135,6 +171,9 @@ rule output_annonars_gnomad_sv_grch38_gnomad_sv4:  # -- build gnomAD-SV RocksDB 
         ),
         spec_yaml=(
             "output/full/annonars/gnomad-sv-genomes-grch38-{v_gnomad}+{v_annonars}/spec.yaml"
+        ),
+        manifest=(
+            "output/full/annonars/gnomad-sv-genomes-grch38-{v_gnomad}+{v_annonars}/MANIFEST.txt"
         ),
     threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
     resources:
@@ -164,4 +203,13 @@ rule output_annonars_gnomad_sv_grch38_gnomad_sv4:  # -- build gnomAD-SV RocksDB 
             --value v_annonars={wildcards.v_annonars} \
             --value v_downloader={PV.downloader} \
         > {output.spec_yaml}
+
+        export TMPDIR=$(mktemp -d)
+        pushd $(dirname {output.spec_yaml})
+        rm -f MANIFEST.txt
+        hashdeep -l -r . >$TMPDIR/MANIFEST.txt
+        CHECKSUM=$(sha256sum $TMPDIR/MANIFEST.txt | cut -d ' ' -f 1)
+        echo "## EOF SHA256=$CHECKSUM" >> $TMPDIR/MANIFEST.txt
+        cp $TMPDIR/MANIFEST.txt MANIFEST.txt
+        popd
         """

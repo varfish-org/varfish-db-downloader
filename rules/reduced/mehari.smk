@@ -32,6 +32,7 @@ rule subset_mehari:  # -- create exomes subset
     output:
         rocksdb_identity="output/reduced-{set_name}/mehari/freqs-{genome_release}-{version_multi}/rocksdb/IDENTITY",
         spec_yaml="output/reduced-{set_name}/mehari/freqs-{genome_release}-{version_multi}/spec.yaml",
+        manifest="output/reduced-{set_name}/mehari/freqs-{genome_release}-{version_multi}/MANIFEST.txt",
     wildcard_constraints:
         genome_release=RE_GENOME,
         v_hpo=RE_VERSION,
@@ -48,4 +49,13 @@ rule subset_mehari:  # -- create exomes subset
             --path-beds {input.bed}
 
         cp {input.spec_yaml} {output.spec_yaml}
+
+        export TMPDIR=$(mktemp -d)
+        pushd $(dirname {output.spec_yaml})
+        rm -f MANIFEST.txt
+        hashdeep -l -r . >$TMPDIR/MANIFEST.txt
+        CHECKSUM=$(sha256sum $TMPDIR/MANIFEST.txt | cut -d ' ' -f 1)
+        echo "## EOF SHA256=$CHECKSUM" >> $TMPDIR/MANIFEST.txt
+        cp $TMPDIR/MANIFEST.txt MANIFEST.txt
+        popd
         """

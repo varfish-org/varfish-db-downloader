@@ -39,6 +39,9 @@ rule output_annonars_functional:  # -- build annonars functional RocksDB file
         spec_yaml=(
             "output/full/annonars/functional-{genome_release}-{v_refseq}+{v_annonars}/spec.yaml"
         ),
+        manifest=(
+            "output/full/annonars/functional-{genome_release}-{v_refseq}+{v_annonars}/MANIFEST.txt"
+        ),
     wildcard_constraints:
         v_refseq=RE_VERSION,
         v_annonars=RE_VERSION,
@@ -64,4 +67,13 @@ rule output_annonars_functional:  # -- build annonars functional RocksDB file
             --value v_annonars={wildcards.v_annonars} \
             --value v_downloader={PV.downloader} \
         > {output.spec_yaml}
+
+        export TMPDIR=$(mktemp -d)
+        pushd $(dirname {output.spec_yaml})
+        rm -f MANIFEST.txt
+        hashdeep -l -r . >$TMPDIR/MANIFEST.txt
+        CHECKSUM=$(sha256sum $TMPDIR/MANIFEST.txt | cut -d ' ' -f 1)
+        echo "## EOF SHA256=$CHECKSUM" >> $TMPDIR/MANIFEST.txt
+        cp $TMPDIR/MANIFEST.txt MANIFEST.txt
+        popd
         """

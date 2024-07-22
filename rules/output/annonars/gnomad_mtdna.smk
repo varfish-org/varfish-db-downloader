@@ -13,6 +13,9 @@ rule output_annonars_gnomad_mtdna:  # -- build gnomAD-mtDNA RocksDB with annonar
         spec_yaml=(
             "output/full/annonars/gnomad-mtdna-{genome_release}-{v_gnomad}+{v_annonars}/spec.yaml"
         ),
+        manifest=(
+            "output/full/annonars/gnomad-mtdna-{genome_release}-{v_gnomad}+{v_annonars}/MANIFEST.txt"
+        ),
     threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
@@ -40,4 +43,13 @@ rule output_annonars_gnomad_mtdna:  # -- build gnomAD-mtDNA RocksDB with annonar
             --value v_annonars={wildcards.v_annonars} \
             --value v_downloader={PV.downloader} \
         > {output.spec_yaml}
+
+        export TMPDIR=$(mktemp -d)
+        pushd $(dirname {output.spec_yaml})
+        rm -f MANIFEST.txt
+        hashdeep -l -r . >$TMPDIR/MANIFEST.txt
+        CHECKSUM=$(sha256sum $TMPDIR/MANIFEST.txt | cut -d ' ' -f 1)
+        echo "## EOF SHA256=$CHECKSUM" >> $TMPDIR/MANIFEST.txt
+        cp $TMPDIR/MANIFEST.txt MANIFEST.txt
+        popd
         """
