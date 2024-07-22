@@ -28,8 +28,6 @@ rule subset_viguno_pheno_exomes:  # -- create exomes subset
         cp -a {input.bin} {output.bin}
         cp -a {input.spec_yaml} {output.spec_yaml}
 
-        cp -ar $(dirname {input.rocksdb_identity})/. $(dirname {output.rocksdb_identity})/.
-
         export TMPDIR=$(mktemp -d)
         pushd $(dirname {output.spec_yaml})
         rm -f MANIFEST.txt
