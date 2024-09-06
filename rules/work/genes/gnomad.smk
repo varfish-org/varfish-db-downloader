@@ -149,6 +149,7 @@ def run_genes_gnomad_constraints_v4_to_tsv(input, output, wildcards):
         head -n 1 {input.tsv} \
         > $TMPDIR/tmp.tsv
         tail -n +2 {input.tsv} \
+        | grep ENSG \
         | sort -k3,3r \
         | sort -k1,1 -u \
         | sed -e 's/","/"__COMMA__"/g' \
