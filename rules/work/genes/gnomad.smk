@@ -188,5 +188,7 @@ rule genes_gnomad_convert_v4:  # -- create gnomAD gene constraints TSV (v4.x)
     output:
         tsv="work/genes/gnomad/{v_gnomad_constraints}/gnomad_constraints.tsv",
         tsv_md5="work/genes/gnomad/{v_gnomad_constraints}/gnomad_constraints.tsv.md5",
-    run:
-        run_genes_gnomad_constraints_v4_to_tsv(input, output, wildcards)
+    conda:
+        "envs/polars.yaml"
+    script:
+        "scripts/gnomad_constraints_v4_to_tsv.py"
