@@ -59,7 +59,7 @@ def main(
         .fill_null("NA")
     )
     df.write_csv(output_tsv_path, separator="\t")
-    shell(f"md5sum {output_tsv_path} > {output_tsv_md5_path}")
+    snakemake.shell(f"md5sum {output_tsv_path} > {output_tsv_md5_path}")
 
 
 if __name__ == "__main__":
