@@ -1,4 +1,5 @@
 import polars as pl
+from snakemake.shell import shell
 
 def main(
     constraint_tsv_path, ensembl_xlink_tsv_path, output_tsv_path, output_tsv_md5_path
@@ -59,7 +60,7 @@ def main(
         .fill_null("NA")
     )
     df.write_csv(output_tsv_path, separator="\t")
-    snakemake.shell(f"md5sum {output_tsv_path} > {output_tsv_md5_path}")
+    shell(f"md5sum {output_tsv_path} > {output_tsv_md5_path}")
 
 
 if __name__ == "__main__":
