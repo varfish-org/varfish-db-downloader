@@ -1,7 +1,7 @@
 name: varfish-db-downloader
 channels:
-  - bioconda
   - conda-forge
+  - bioconda
 dependencies:
   # Python and Python packages.
   - python =3.10
