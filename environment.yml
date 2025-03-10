@@ -1,7 +1,7 @@
 name: varfish-db-downloader
 channels:
-  - bioconda
   - conda-forge
+  - bioconda
 dependencies:
   # Python and Python packages.
   - python =3.10
@@ -43,7 +43,7 @@ dependencies:
   # Parallel (de)compression.
   - pigz
   # Varfish related
-  - annonars =0.41.3
+  # - annonars =0.41.3  # current versions not on bioconda due to build issue, but docker images are available
   - viguno =0.3.1
   - mehari =0.25.5
   - varfish-server-worker =0.13.0

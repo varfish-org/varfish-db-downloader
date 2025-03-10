@@ -20,7 +20,7 @@ jobs:
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
 
   Formatting-Linting:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -52,8 +52,14 @@ jobs:
 
   Run-Test-Mode:
     needs: Formatting-Linting
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
+      # temporary workaround until annonars is available on bioconda again
+      - name: Install dependencies
+        run: |
+          sudo apt update -y
+          sudo apt install -y librocksdb8.9 libsnappy1v5
+
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
@@ -74,6 +80,9 @@ jobs:
            unzip qsv-0.112.0-x86_64-unknown-linux-musl.zip
            cp qsv_musl-1.2.3 /usr/local/bin/qsv
 
+      - name: Install annonars
+        run: |
+          sudo bash ./utils/install-annonars.sh
       - name: Install python package
         run: |
           pip install -e .
