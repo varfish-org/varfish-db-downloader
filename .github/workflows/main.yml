@@ -82,8 +82,7 @@ jobs:
 
       - name: Install annonars
         run: |
-          sudo sh install-annonars.sh
-
+          sudo bash ./utils/install-annonars.sh
       - name: Install python package
         run: |
           pip install -e .
