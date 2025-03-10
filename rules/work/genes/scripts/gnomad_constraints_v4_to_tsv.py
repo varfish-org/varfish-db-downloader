@@ -57,7 +57,6 @@ def main(
         .with_columns(pl.lit(None).alias(col) for col in additional_columns)
         .join(ensembl_xlink, on=["ensembl_transcript_id"])
         .select(columns_dst)
-        .fill_null("NA")
     )
     df.write_csv(output_tsv_path, separator="\t")
     shell(f"md5sum {output_tsv_path} > {output_tsv_md5_path}")
