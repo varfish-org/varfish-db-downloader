@@ -14,7 +14,7 @@ rule genes_hgnc_download:  # -- Download the HGNC data
 
         wget --no-check-certificate \
             -O {output.json} \
-            https://ftp.ebi.ac.uk/pub/databases/genenames/hgnc/json/hgnc_complete_set.json
+            https://storage.googleapis.com/public-download-files/hgnc/json/json/hgnc_complete_set.json
 
         md5sum {output.json} > {output.json_md5}
         """
