@@ -35,7 +35,7 @@ jobs:
           environment-file: environment.yml
           init-shell: bash
           cache-environment: true
-          post-cleanup: 'all'
+          post-cleanup: none
 
       - name: Install python package
         run: |
