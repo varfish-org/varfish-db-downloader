@@ -53,3 +53,5 @@ dependencies:
   - httpx =0.25.0
   - httpcore =0.18.0
   - trio
+  # Used in genes_gnomad_convert_v4
+  - polars >=1.23,<2
