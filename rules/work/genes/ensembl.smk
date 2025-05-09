@@ -12,16 +12,16 @@ rule genes_ensembl_create_xlink:  # -- create ENSEMBL gene information xlink tab
         trap "rm -rf $TMPDIR" EXIT
         wget --no-check-certificate \
             -O $TMPDIR/current_README \
-            https://ftp.ensembl.org/pub/current_README
+            https://may2024.archive.ensembl.org/pub/current_README
         grep "The current release is Ensembl {DV.ensembl}" $TMPDIR/current_README \
-        || (echo "Ensembl version is not {DV.ensembl}." && exit 1)
+        || (echo "WARNING: Ensembl version is not {DV.ensembl}.")
 
         echo -e "ensembl_gene_id\tensembl_transcript_id\tentrez_id\tgene_symbol" \
         >{output.tsv}
 
         wget --no-check-certificate \
             -O $TMPDIR/tmp \
-            'https://ensembl.org/biomart/martservice?query=<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE Query><Query  virtualSchemaName = "default" formatter = "TSV" header = "0" uniqueRows = "0" count = "" datasetConfigVersion = "0.6" ><Dataset name = "hsapiens_gene_ensembl" interface = "default" ><Attribute name = "ensembl_gene_id" /><Attribute name = "ensembl_transcript_id" /><Attribute name = "entrezgene_id" /><Attribute name = "external_gene_name" /></Dataset></Query>' \
+            'https://may2024.archive.ensembl.org/biomart/martservice?query=<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE Query><Query  virtualSchemaName = "default" formatter = "TSV" header = "0" uniqueRows = "0" count = "" datasetConfigVersion = "0.6" ><Dataset name = "hsapiens_gene_ensembl" interface = "default" ><Attribute name = "ensembl_gene_id" /><Attribute name = "ensembl_transcript_id" /><Attribute name = "entrezgene_id" /><Attribute name = "external_gene_name" /></Dataset></Query>' \
 
         sort -u $TMPDIR/tmp \
         >> {output.tsv}

@@ -24,6 +24,7 @@ rule genes_rcnv_postproces:  # -- postprocess file for HGNC gene IDs
         tsv_md5="work/genes/rcnv/2022/rcnv_collins_2022.tsv.md5",
     shell:
         """
+        QSV_SKIP_FORMAT_CHECK=1 \
         qsv join -d '\t' \
             '#gene' <(zcat {input.tsv}) \
             gene_symbol {input.xlink} \

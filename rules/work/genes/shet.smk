@@ -9,6 +9,7 @@ rule genes_shet:  # -- postprocess file for HGNC gene IDs
         tsv="work/genes/shet/2019/shet_weghorn_2019.tsv",
     shell:
         """
+        QSV_SKIP_FORMAT_CHECK=1 \
         qsv join -d '\t' \
             'Gene' <(zcat {input.tsv}) \
             gene_symbol {input.xlink} \

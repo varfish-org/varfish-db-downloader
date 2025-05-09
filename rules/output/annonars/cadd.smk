@@ -54,10 +54,10 @@ rule output_annonars_cadd:  # -- build CADD RocksDB with annonars
         ),
         spec_yaml=("output/full/annonars/cadd-{genome_release}-{v_cadd}+{v_annonars}/spec.yaml"),
         manifest=("output/full/annonars/cadd-{genome_release}-{v_cadd}+{v_annonars}/MANIFEST.txt"),
-    threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
+    threads: THREADS
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
-        mem_mb_per_cpu=2000,
+        mem_mb=MEMORY
     wildcard_constraints:
         genome_release=RE_GENOME,
         v_cadd=RE_VERSION,

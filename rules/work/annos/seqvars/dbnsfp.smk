@@ -54,7 +54,14 @@ rule annos_seqvars_dbnsfp_download:  # -- download dbNSFP ZIP file
     threads: 8
     shell:
         r"""
-        url=https://dbnsfp.s3.amazonaws.com/dbNSFP4.5{wildcards.variant}.zip
+        url_a=https://usf.box.com/shared/static/2hzcx5s6p1xui7oen16xqzndfrkt8l9l
+        url_c=https://usf.box.com/shared/static/03xsrpna0nzgrytfo2pzk326t8jad4oc
+
+        if [[ "{wildcards.variant}" == "a" ]]; then
+            url=$url_a
+        else
+            url=$url_c
+        fi
 
         aria2c \
             --check-certificate=false \

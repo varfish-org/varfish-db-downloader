@@ -12,10 +12,10 @@ rule output_annonars_cons:  # -- build UCSC conservation track RocksDB with anno
         ),
         spec_yaml=("output/full/annonars/cons-{genome_release}-{v_cons}+{v_annonars}/spec.yaml"),
         manifest=("output/full/annonars/cons-{genome_release}-{v_cons}+{v_annonars}/MANIFEST.txt"),
-    threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
+    threads: THREADS
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
-        mem_mb_per_cpu=2000,
+        mem_mb=MEMORY
     wildcard_constraints:
         genome_release=RE_GENOME,
         v_cons=RE_VERSION,

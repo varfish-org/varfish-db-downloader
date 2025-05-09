@@ -3,9 +3,6 @@
 import os
 
 
-#: Number of threads to use for simulating in viguno.
-VIGUNO_SIMULATE_THREADS = int(os.environ.get("VIGUNO_SIMULATE_THREADS", 96))
-
 
 rule output_viguno_pheno:  # -- copy HPO
     input:
@@ -19,9 +16,9 @@ rule output_viguno_pheno:  # -- copy HPO
     wildcard_constraints:
         v_hpo=RE_VERSION,
         v_viguno=RE_VERSION,
-    threads: VIGUNO_SIMULATE_THREADS
+    threads: THREADS
     resources:
-        mem_mb_per_cpu="2GB",
+        mem_mb=MEMORY,
     shell:
         r"""
         cp -a {input.obo} {output.obo}

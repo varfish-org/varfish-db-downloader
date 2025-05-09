@@ -40,6 +40,12 @@ DEV_GENE_SYMBOLS = "|".join(
 # Padding to add to exons in dev and exons mode.
 EXON_PADDING = 200
 
+# Define number of threads for resource-intensive tasks
+THREADS = int(os.environ.get("THREADS", "32"))
+
+# Define amount of ram for resource-intesnive tasks (in mb)
+MEMORY = int(os.environ.get("MEMORY", "196000"))
+
 # ===============================================================================================
 # Test Mode
 # ===============================================================================================
@@ -91,10 +97,10 @@ rule all:
         f"work/download/do/{DV.today}/omim-unmapped.csv",
         f"work/genes/dbnsfp/{DV.dbnsfp}/genes.tsv.gz",
         "work/genes/decipher/v3/decipher_hi_prediction.tsv",
-        f"work/genes/ensembl/{DV.ensembl}/ensembl_xlink.tsv",
+        f"work/genes/ensembl/{DV.ensembl}/ensembl_xlink.tsv", # TODO broken on their side (AAA)
         f"work/genes/enst_ensg/grch37/{DV.ensembl_37}/enst_ensg.tsv",
         f"work/genes/entrez/{DV.today}/gene_info.jsonl",
-        f"work/genes/gnomad/{DV.gnomad_constraints}/gnomad_constraints.tsv",
+        f"work/genes/gnomad/{DV.gnomad_constraints}/gnomad_constraints.tsv", # TODO depends on ensembl_xlink.tsv (ref AAA)
         f"work/genes/hgnc/{DV.today}/hgnc_info.jsonl",
         f"work/genes/omim/{DV.hpo}+{DV.today}/omim_diseases.tsv",
         f"work/genes/orphadata/{DV.orphadata}/orphadata.jsonl",
@@ -178,7 +184,7 @@ rule all:
         # f"output/full/annonars/cons-grch37-{DV.ucsc_cons_37}+{PV.annonars}/rocksdb/IDENTITY",
         f"output/full/annonars/cons-grch38-{DV.ucsc_cons_38}+{PV.annonars}/rocksdb/IDENTITY",
         # ----- genes
-        f"output/full/annonars/genes-{DV.acmg_sf}+{DV.gnomad_constraints}+{DV.dbnsfp}+{DV.hpo}+{DV.today}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/full/annonars/genes-{DV.acmg_sf}+{DV.gnomad_constraints}+{DV.dbnsfp}+{DV.hpo}+{DV.today}+{PV.annonars}/rocksdb/IDENTITY", # TODO depend on (ref AAA)
         # -- worker data
         f"output/full/worker/genes-xlink-{DV.today}+{PV.worker}/genes-xlink.bin",
         f"output/full/worker/acmg-sf-{DV.acmg_sf}+{PV.worker}/acmg_sf.tsv",
@@ -207,7 +213,9 @@ rule all:
         # -- mehari data
         f"output/full/mehari/genes-xlink-{DV.today}/genes-xlink.tsv",
         # f"output/full/mehari/genes-txs-grch37-{DV.mehari_tx}/mehari-data-txs-grch37-{DV.mehari_tx}.bin.zst",
-        f"output/full/mehari/genes-txs-grch38-{DV.mehari_tx}/mehari-data-txs-grch38-{DV.mehari_tx}.bin.zst",
+        f"output/full/mehari/genes-txs-grch38-{DV.mehari_tx}/mehari-data-txs-grch38-ensembl-{DV.mehari_tx}.bin.zst",
+        f"output/full/mehari/genes-txs-grch38-{DV.mehari_tx}/mehari-data-txs-grch38-refseq-{DV.mehari_tx}.bin.zst",
+        f"output/full/mehari/genes-txs-grch38-{DV.mehari_tx}/mehari-data-txs-grch38-ensembl-and-refseq-{DV.mehari_tx}.bin.zst",
         # ----- HPO
         f"output/full/viguno/hpo-{DV.hpo}+{PV.viguno}/hp.obo",
         f"output/full/viguno/hpo-{DV.hpo}+{PV.viguno}/phenotype.hpoa",

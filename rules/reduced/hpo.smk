@@ -56,9 +56,9 @@ rule subset_worker_pheno_dev:  # -- create development subset
     wildcard_constraints:
         v_hpo=RE_VERSION,
         v_viguno=RE_VERSION,
-    threads: VIGUNO_SIMULATE_THREADS
+    threads: THREADS
     resources:
-        mem_mb_per_cpu="2GB",
+        mem_mb=MEMORY,
     shell:
         r"""
         cp -a {input.obo} {output.obo}

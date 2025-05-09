@@ -5,8 +5,8 @@ import os
 
 rule output_mehari_freqs_build:  # -- build frequency tables for mehari
     input:
-        gnomad_genomes="work/download/annos/{genome_release}/seqvars/gnomad_exomes/{v_gnomad_exomes}/.done",
-        gnomad_exomes="work/download/annos/{genome_release}/seqvars/gnomad_genomes/{v_gnomad_genomes}/.done",
+        gnomad_genomes="work/download/annos/{genome_release}/seqvars/gnomad_genomes/{v_gnomad_genomes}/.done",
+        gnomad_exomes="work/download/annos/{genome_release}/seqvars/gnomad_exomes/{v_gnomad_exomes}/.done",
         gnomad_mtdna="work/annos/{genome_release}/seqvars/gnomad_mtdna/{v_gnomad_mtdna}/gnomad_mtdna.vcf.gz",
         helixmtdb="work/annos/{genome_release}/seqvars/helixmtdb/{v_helixmtdb}/helixmtdb.vcf.gz",
     output:
@@ -22,10 +22,10 @@ rule output_mehari_freqs_build:  # -- build frequency tables for mehari
             "output/full/mehari/freqs-{genome_release}-{v_gnomad_genomes}+{v_gnomad_exomes}+"
             "{v_gnomad_mtdna}+{v_helixmtdb}+{v_annonars}/MANIFEST.txt"
         ),
-    threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
+    threads: THREADS
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
-        mem_mb_per_cpu=2000,
+        mem_mb=MEMORY
     wildcard_constraints:
         genome_release=RE_GENOME,
         v_gnomad_genomes=RE_VERSION,
