@@ -33,23 +33,23 @@ dependencies:
   - jq
   # Tools for file downloads.
   - aria2 >=1.36.0
-  - wget
   # Tool for processing BED files.
   - bedops =2
   # VCF/BCF/HTSlib/Samtools.
-  - bcftools =1.17
-  - htslib =1.17
-  - samtools =1.17
+  - bcftools =1.21
+  - htslib =1.21
+  - samtools =1.21
   # Parallel (de)compression.
   - pigz
   # Varfish related
-  # - annonars =0.41.3  # current versions not on bioconda due to build issue, but docker images are available
-  - viguno =0.3.1
-  - mehari =0.25.5
-  - varfish-server-worker =0.13.0
+  - annonars =0.44.0
+  - viguno =0.4.0
+  - mehari =0.35.1
+  - varfish-server-worker =0.17.2
   # S3 uploads
   - s5cmd =2.1.0
   # async HTTP requests
   - httpx =0.25.0
   - httpcore =0.18.0
   - trio
+  - qsv

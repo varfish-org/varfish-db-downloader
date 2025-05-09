@@ -145,6 +145,8 @@ class Aspect(enum.Enum):
     CLINICAL_COURSE = "C"
     #: Modifier
     CLINICAL_MODIFIER = "M"
+    #: Past medical history
+    PAST_MEDICAL_HISTORY = "H"
 
 
 class HpoaEntry(BaseModel):

@@ -19,10 +19,10 @@ rule output_annonars_dbnsfp:  # -- build dbNSFP RocksDB with annonars
         manifest=(
             "output/full/annonars/dbnsfp-{genome_release}-{v_dbnsfp}+{v_annonars}/MANIFEST.txt"
         ),
-    threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
+    threads: THREADS
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
-        mem_mb_per_cpu=2000,
+        mem_mb=MEMORY
     wildcard_constraints:
         genome_release=RE_GENOME,
         v_dbnsfp=RE_VERSION,

@@ -41,6 +41,7 @@ rule genes_omim:  # -- prepare HGNC to OMIM disease mapping
         echo hgnc_id,omim_id,disease_name \
         > $TMPDIR/output.csv
 
+        QSV_SKIP_FORMAT_CHECK=1 \
         qsv join -d '\t' \
             omim_id $TMPDIR/mim2gene_hgnc.tsv \
             database_id $TMPDIR/phenotype.hpoa \

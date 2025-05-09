@@ -11,7 +11,7 @@ TODAY = os.environ.get("TODAY", datetime.today().strftime("%Y%m%d"))
 #: Allow to disable the today check.
 FORCE_TODAY = os.environ.get("FORCE_TODAY", "false").lower() == "true"
 #: The ClinVar release to use (includes annonars version used for building).
-CLINVAR_RELEASE = os.environ.get("CLINVAR_RELEASE", "20240612+0.17.0")
+CLINVAR_RELEASE = os.environ.get("CLINVAR_RELEASE", "20250410+0.18.5")
 #: The ClinVar version to use (part of the tag and release name).
 CLINVAR_VERSION = CLINVAR_RELEASE.replace("-", "").split("+")[0]
 
@@ -161,10 +161,10 @@ DATA_VERSIONS = DataVersions(
     refseq_38="GCF_000001405.40+RS_2023_03",
     dbsnp="b151",
     acmg_sf="3.1",
-    hpo="20240116",
+    hpo="20250303",
     orphadata=TODAY,
     patho_mms="20220730",
-    mehari_tx="0.4.4",
+    mehari_tx="0.10.3",
     clinvar_release=CLINVAR_RELEASE,
     clinvar_version=CLINVAR_VERSION,
     tracks="0",

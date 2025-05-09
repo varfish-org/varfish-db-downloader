@@ -27,7 +27,7 @@ rule annos_seqvars_dbscsnv_download:  # -- download dbscSNV ZIP file
             --split=8 \
             --max-concurrent-downloads=8 \
             --max-connection-per-server=8 \
-            ftp://dbnsfp:dbnsfp@dbnsfp.softgenetics.com/dbscSNV1.1.zip
+            https://usf.box.com/shared/static/ffwlywsat3q5ijypvunno3rg6steqfs8
         """
 
 
