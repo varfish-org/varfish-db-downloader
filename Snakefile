@@ -136,7 +136,7 @@ def generate_input_files(wildcards):
     input_files = []
     if "grch38" in genomebuilds:
         input_files += [
-            f"work/genes/clingen/{DV.today}/ClinGen_gene_curation_list_GRCh38.tsv"
+            f"work/genes/clingen/{DV.today}/ClinGen_gene_curation_list_GRCh38.tsv",
             "work/download/genes/alphamissense/1/AlphaMissense_gene_hg38.tsv.gz",
             f"work/download/annos/grch38/seqvars/cadd/{DV.cadd}/whole_genome_SNVs_inclAnno.tsv.gz",
             f"work/download/annos/grch38/seqvars/cadd/{DV.cadd}/gnomad.genomes.r3.0.indel_inclAnno.tsv.gz",
@@ -183,7 +183,7 @@ def generate_input_files(wildcards):
         input_files += [
             # -- mehari data
             # ---- frequencies (via annonars)
-            f"output/full/mehari/freqs-{genomebuild}-{DV.gnomad_v2}+{DV.gnomad_v2}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
+            f"output/full/mehari/freqs-{genomebuild}-{gnomad_versions[genomebuild]}+{gnomad_versions[genomebuild]}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
             f"output/full/annonars/alphamissense-{genomebuild}-{DV.alphamissense}+{PV.annonars}/rocksdb/IDENTITY",
             # -- annonars data
             # ----- sequence variant annotations
@@ -200,7 +200,7 @@ def generate_input_files(wildcards):
             f"output/full/annonars/gnomad-sv-genomes-{genomebuild}-{gnomad_sv_versions[genomebuild]}+{PV.annonars}/rocksdb/IDENTITY",
             # ----- sequence annotation
             f"output/full/annonars/functional-{genomebuild}-{refseq_fe_versions[genomebuild]}+{PV.annonars}/rocksdb/IDENTITY",
-            f"output/full/annonars/regions-{genomebuid}-{DV.today}+{PV.annonars}/rocksdb/IDENTITY",
+            f"output/full/annonars/regions-{genomebuild}-{DV.today}+{PV.annonars}/rocksdb/IDENTITY",
             # ----- conservation
             f"output/full/annonars/cons-{genomebuild}-{cons_versions[genomebuild]}+{PV.annonars}/rocksdb/IDENTITY",
             # ----- worker
@@ -213,7 +213,9 @@ def generate_input_files(wildcards):
             f"output/full/worker/patho-mms-{genomebuild}-{DV.patho_mms}+{PV.worker}/patho-mms.bed",
             f"output/full/worker/tads-{genomebuild}-dixon2015/hesc.bed",
             # -- mehari data
-            f"output/full/mehari/genes-txs-{genomebuild}-{DV.mehari_tx}/mehari-data-txs-{genomebuild}-{DV.mehari_tx}.bin.zst",
+            f"output/full/mehari/genes-txs-{genomebuild}-{DV.mehari_tx}/mehari-data-txs-{genomebuild}-ensembl-{DV.mehari_tx}.bin.zst",
+            f"output/full/mehari/genes-txs-{genomebuild}-{DV.mehari_tx}/mehari-data-txs-{genomebuild}-refseq-{DV.mehari_tx}.bin.zst",
+            f"output/full/mehari/genes-txs-{genomebuild}-{DV.mehari_tx}/mehari-data-txs-{genomebuild}-ensembl-and-refseq-{DV.mehari_tx}.bin.zst",
             f"output/full/tracks/track-strucvars-dbvar-{genomebuild}-{DV.dbvar}+{DV.tracks}/dbvar.bed.gz",
             f"output/full/tracks/track-strucvars-dgv-{genomebuild}-{DV.dgv}+{DV.tracks}/dgv.bed.gz",
             f"output/full/tracks/track-strucvars-dgv-gs-{genomebuild}-{DV.dgv_gs}+{DV.tracks}/dgv-gs.bed.gz",
@@ -221,7 +223,7 @@ def generate_input_files(wildcards):
             f"output/full/tracks/track-strucvars-patho-mms-{genomebuild}-{DV.patho_mms}+{DV.tracks}/patho-mms.bed",
             # ----- problematic regions (rmsk, genomicSuperDups, altSeqLiftOverPsl, fixSeqLiftOverPsl)
             f"output/full/tracks/track-features-ucsc-genomicsuperdups-{genomebuild}-{genomic_super_dups_versions[genomebuild]}+{DV.tracks}/genomicSuperDups.bed.gz",
-            f"output/full/tracks/track-features-ucsc-rmsk-{genomebuild}-{rmask_version[genomebuild]}+{DV.tracks}/rmsk.bed.gz",
+            f"output/full/tracks/track-features-ucsc-rmsk-{genomebuild}-{rmask_versions[genomebuild]}+{DV.tracks}/rmsk.bed.gz",
             f"output/full/tracks/track-features-ucsc-altseqliftoverpsl-{genomebuild}-{lift_over_versions[genomebuild]}+{DV.tracks}/altSeqLiftOverPsl.bed.gz",
             f"output/full/tracks/track-features-ucsc-fixseqliftoverpsl-{genomebuild}-{lift_over_fix_versions[genomebuild]}+{DV.tracks}/fixSeqLiftOverPsl.bed.gz",
             # ----- tads
@@ -334,6 +336,7 @@ def generate_input_files(wildcards):
         f"output/reduced-exomes/viguno/hpo-{DV.hpo}+{PV.viguno}/phenotype_to_genes.txt",
         f"output/reduced-exomes/viguno/hpo-{DV.hpo}+{PV.viguno}/hpo.bin",
     ]
+    return input_files
 
 
 ## all -- run all rules
