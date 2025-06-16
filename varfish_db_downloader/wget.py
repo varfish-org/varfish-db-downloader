@@ -1,5 +1,6 @@
 """Implementation of the stub ``wget`` and supporting tool."""
 
+import cgi
 import gzip
 import hashlib
 import itertools
@@ -11,6 +12,7 @@ import tempfile
 import typing
 import urllib.parse
 import zlib
+from urllib.parse import urlparse
 
 import attrs
 import cattrs
@@ -19,6 +21,50 @@ import requests
 import requests_ftp
 import yaml
 from loguru import logger
+
+
+def get_filename_from_url(url: str) -> str | None:
+    """
+    Extracts the filename from a URL.
+
+    First, it tries to get the filename from the 'Content-Disposition' header.
+    If not found, it falls back to parsing the URL path.
+
+    Args:
+        url: The URL of the file to inspect.
+
+    Returns:
+        The detected filename as a string, or None if an error occurs
+        or no filename can be found.
+    """
+    try:
+        # We use stream=True to avoid downloading the file content
+        with requests.get(url, allow_redirects=True, stream=True) as response:
+            # Raise an exception for bad status codes (4xx or 5xx)
+            response.raise_for_status()
+
+            # 1. Check for Content-Disposition header
+            content_disposition = response.headers.get("content-disposition")
+            if content_disposition:
+                # Parse the header to extract the filename
+                _, params = cgi.parse_header(content_disposition)
+                if "filename" in params:
+                    return params["filename"]
+
+            # 2. If no header, fall back to the URL path
+            path = urllib.parse.urlparse(
+                response.url
+            ).path  # Use response.url to get the final URL after redirects
+            filename = os.path.basename(path)
+            if filename:
+                return filename
+
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching URL: {e}")
+        return None
+
+    # 3. If all else fails
+    return None
 
 
 def excerpt_manual(url: str, path_out: str, count: int):
@@ -233,8 +279,9 @@ def download_excerpt(url: UrlEntry, data_dir: str, force: bool):
         print(url.url, file=f)
 
     excerpt_fun = STRATEGY_MAP[url.excerpt_strategy.strategy]
-    parsed = urllib.parse.urlparse(url.url)
-    basename = parsed.path.split("/")[-1] or "__index__"
+    # parsed = urllib.parse.urlparse(url.url)
+    # basename = parsed.path.split("/")[-1] or "__index__"
+    basename = get_filename_from_url(url.url) or "__index__"
     out_path_data = str(out_path / basename)
     logger.info("    getting excerpt to {}", out_path_data)
     excerpt_fun(url.url, str(out_path_data), url.excerpt_strategy.count)

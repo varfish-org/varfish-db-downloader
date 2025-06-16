@@ -146,11 +146,29 @@
     strategy: manual
     count: null
 
-- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.4.4/mehari-data-txs-grch37-0.4.4.bin.zst
+- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.10.3/mehari-data-txs-grch37-ensembl-0.10.3.bin.zst
   excerpt_strategy:
     strategy: no-excerpt
     count: null
-- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.4.4/mehari-data-txs-grch38-0.4.4.bin.zst
+- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.10.3/mehari-data-txs-grch38-ensembl-0.10.3.bin.zst
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+
+- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.10.3/mehari-data-txs-grch37-refseq-0.10.3.bin.zst
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.10.3/mehari-data-txs-grch38-refseq-0.10.3.bin.zst
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+
+- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.10.3/mehari-data-txs-grch37-ensembl-0.10.3.bin.zst
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.10.3/mehari-data-txs-grch38-ensembl-0.10.3.bin.zst
   excerpt_strategy:
     strategy: no-excerpt
     count: null
@@ -251,7 +269,7 @@
     count: 10000
 
 - url: 'https://ensembl.org/biomart/martservice?query=<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE Query><Query  virtualSchemaName = "default" formatter = "TSV" header = "0" uniqueRows = "0" count = "" datasetConfigVersion = "0.6" ><Dataset name = "hsapiens_gene_ensembl" interface = "default" ><Attribute name = "ensembl_gene_id" /><Attribute name = "ensembl_transcript_id" /><Attribute name = "entrezgene_id" /><Attribute name = "external_gene_name" /></Dataset></Query>'
-- url: 'https://ftp.ebi.ac.uk/pub/databases/genenames/hgnc/json/hgnc_complete_set.json'
+- url: 'https://storage.googleapis.com/public-download-files/hgnc/json/json/hgnc_complete_set.json'
   skip_upstream_check: true  # does not work reliably in tests
   excerpt_strategy:
     strategy: manual
