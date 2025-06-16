@@ -19,7 +19,7 @@ rule output_annonars_gnomad_mtdna:  # -- build gnomAD-mtDNA RocksDB with annonar
     threads: THREADS
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
-        mem_mb=MEMORY
+        mem_mb=MEMORY,
     wildcard_constraints:
         genome_release=RE_GENOME,
         v_gnomad=RE_VERSION,

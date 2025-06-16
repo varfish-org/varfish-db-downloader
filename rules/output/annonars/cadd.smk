@@ -57,7 +57,7 @@ rule output_annonars_cadd:  # -- build CADD RocksDB with annonars
     threads: THREADS
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
-        mem_mb=MEMORY
+        mem_mb=MEMORY,
     wildcard_constraints:
         genome_release=RE_GENOME,
         v_cadd=RE_VERSION,

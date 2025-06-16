@@ -18,7 +18,7 @@ rule output_annonars_gnomad_sv_grch37_exac:  # -- build gnomAD-SV RocksDB with a
     threads: THREADS
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
-        mem_mb=MEMORY
+        mem_mb=MEMORY,
     wildcard_constraints:
         v_gnomad=RE_VERSION,
         v_annonars=RE_VERSION,
@@ -73,7 +73,7 @@ rule output_annonars_gnomad_sv_grch37_gnomad_sv2:  # -- build gnomAD-SV RocksDB 
     threads: THREADS
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
-        mem_mb=MEMORY
+        mem_mb=MEMORY,
     wildcard_constraints:
         v_gnomad=RE_VERSION,
         v_annonars=RE_VERSION,
@@ -126,7 +126,7 @@ rule output_annonars_gnomad_sv_grch38_gnomad_cnv4:  # -- build gnomAD-SV RocksDB
     threads: THREADS
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
-        mem_mb=MEMORY
+        mem_mb=MEMORY,
     wildcard_constraints:
         v_gnomad=RE_VERSION,
         v_annonars=RE_VERSION,
@@ -178,7 +178,7 @@ rule output_annonars_gnomad_sv_grch38_gnomad_sv4:  # -- build gnomAD-SV RocksDB 
     threads: THREADS
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
-        mem_mb=MEMORY
+        mem_mb=MEMORY,
     wildcard_constraints:
         genome_release=RE_GENOME,
         v_gnomad=RE_VERSION,

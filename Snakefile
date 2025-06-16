@@ -152,7 +152,6 @@ def generate_input_files(wildcards):
             # ----- background/population structural variants and annotations thereof
             f"output/full/tracks/track-strucvars-gnomad-sv-grch38-{DV.gnomad_sv4}+{DV.tracks}/gnomad-sv.bed.gz",
             f"output/full/tracks/track-strucvars-gnomad-cnv-grch38-{DV.gnomad_cnv4}+{DV.tracks}/gnomad-cnv.bed.gz",
-
         ]
     if "grch37" in genomebuilds:
         input_files += [
@@ -177,7 +176,6 @@ def generate_input_files(wildcards):
             f"output/full/tracks/track-strucvars-exac-grch37-{DV.exac_cnv}+{DV.tracks}/exac.bed.gz",
             f"output/full/tracks/track-strucvars-g1k-grch37-{DV.g1k_svs}+{DV.tracks}/g1k.bed.gz",
             f"output/full/tracks/track-strucvars-gnomad-grch37-{DV.gnomad_sv}+{DV.tracks}/gnomad.bed.gz",
-
         ]
     for genomebuild in genomebuilds:
         input_files += [
@@ -342,8 +340,8 @@ def generate_input_files(wildcards):
 ## all -- run all rules
 rule all:
     input:
-        generate_input_files
- 
+        generate_input_files,
+
 
 # ===============================================================================================
 # Modular Snakefile Includes
