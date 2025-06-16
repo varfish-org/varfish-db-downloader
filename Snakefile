@@ -40,7 +40,7 @@ DEV_GENE_SYMBOLS = "|".join(
 # Padding to add to exons in dev and exons mode.
 EXON_PADDING = 200
 
-GENOMEBUILDS = ["grch37", "grch38"]
+GENOMEBUILDS = os.environ.get("GENOMEBUILDS", "grch37,grch38").split(",")
 
 # Define number of threads for resource-intensive tasks
 THREADS = int(os.environ.get("THREADS", "32"))
