@@ -80,9 +80,6 @@ jobs:
            unzip qsv-0.112.0-x86_64-unknown-linux-musl.zip
            cp qsv_musl-1.2.3 /usr/local/bin/qsv
 
-      - name: Install annonars
-        run: |
-          sudo bash ./utils/install-annonars.sh
       - name: Install python package
         run: |
           pip install -e .
