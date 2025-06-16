@@ -12,7 +12,6 @@ import tempfile
 import typing
 import urllib.parse
 import zlib
-from urllib.parse import urlparse
 
 import attrs
 import cattrs
