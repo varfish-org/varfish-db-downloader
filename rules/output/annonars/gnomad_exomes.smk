@@ -19,7 +19,7 @@ rule output_annonars_gnomad_exomes:  # -- build gnomAD-exomes RocksDB with annon
     threads: THREADS
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
-        mem_mb=MEMORY
+        mem_mb=MEMORY,
     wildcard_constraints:
         genome_release=RE_GENOME,
         v_gnomad=RE_VERSION,

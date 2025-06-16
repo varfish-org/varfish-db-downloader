@@ -3,7 +3,6 @@
 import os
 
 
-
 rule output_viguno_pheno:  # -- copy HPO
     input:
         obo="work/download/hpo/{v_hpo}/hp.obo",

@@ -40,7 +40,7 @@ rule subset_mehari:  # -- create exomes subset
     threads: THREADS
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
-        mem_mb=MEMORY
+        mem_mb=MEMORY,
     shell:
         r"""
         annonars db-utils copy \
