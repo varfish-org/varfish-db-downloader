@@ -57,11 +57,11 @@ rule annos_seqvars_dbnsfp_download:  # -- download dbNSFP ZIP file
         url_a=https://usf.box.com/shared/static/2hzcx5s6p1xui7oen16xqzndfrkt8l9l
         url_c=https://usf.box.com/shared/static/03xsrpna0nzgrytfo2pzk326t8jad4oc
 
-        if [[ "{wildcards.variant}" == "a" ]]; then
-            url=$url_a
-        else
-            url=$url_c
-        fi
+        case "{wildcards.variant}" in
+          a) url=$url_a ;;
+          c) url=$url_c ;;
+          *) echo "Unsupported dbNSFP variant '{wildcards.variant}'" >&2; exit 1 ;;
+        esac
 
         aria2c \
             --check-certificate=false \

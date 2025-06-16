@@ -278,8 +278,6 @@ def download_excerpt(url: UrlEntry, data_dir: str, force: bool):
         print(url.url, file=f)
 
     excerpt_fun = STRATEGY_MAP[url.excerpt_strategy.strategy]
-    # parsed = urllib.parse.urlparse(url.url)
-    # basename = parsed.path.split("/")[-1] or "__index__"
     basename = get_filename_from_url(url.url) or "__index__"
     out_path_data = str(out_path / basename)
     logger.info("    getting excerpt to {}", out_path_data)
@@ -292,8 +290,7 @@ def copy_excerpt(url: UrlEntry, data_dir: str, output_document: str):
     """Copy downloaded excerpt to output file."""
     logger.info("    copying excerpt for {} to {}", url.url, output_document)
     in_path = pathlib.Path(data_dir) / url.hash
-    parsed = urllib.parse.urlparse(url.url)
-    basename = parsed.path.split("/")[-1]
+    basename = get_filename_from_url(url.url) or "__index__"
     excerpt_path = in_path / basename
     click.echo(err=True, message="copying {} => {}".format(excerpt_path, output_document))
     if os.path.isdir(excerpt_path):
