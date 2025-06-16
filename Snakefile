@@ -87,7 +87,7 @@ rule help:
         )
 
 
-def generate_input_files(wildcards):
+def generate_input_files():
     """
     Helper function to return the input files for the rules.
     """
@@ -340,7 +340,7 @@ def generate_input_files(wildcards):
 ## all -- run all rules
 rule all:
     input:
-        generate_input_files,
+        generate_input_files(),
 
 
 # ===============================================================================================
