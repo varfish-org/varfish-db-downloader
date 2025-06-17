@@ -200,8 +200,6 @@
     strategy: no-excerpt
     count: null
 
-- url: https://may2024.archive.ensembl.org/pub/current_README
-
 - comment: The UCSC listing is used for checking the versions for GRCh37.
   url: https://hgdownload.cse.ucsc.edu/goldenpath/hg19/database
   excerpt_strategy:
