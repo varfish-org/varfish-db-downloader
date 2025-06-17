@@ -22,6 +22,19 @@ import yaml
 from loguru import logger
 
 
+def get_proxies_from_env() -> dict[str, str]:
+    proxies = {}
+    ftp_proxy = os.environ.get("ftp_proxy") or os.environ.get("FTP_PROXY")
+    no_proxy = os.environ.get("no_proxy") or os.environ.get("NO_PROXY")
+    if ftp_proxy:
+        proxies["ftp"] = ftp_proxy
+    if no_proxy:
+        # If no_proxy is set, we need to ensure it is in the right format
+        # for requests, which expects a comma-separated list.
+        proxies["no_proxy"] = no_proxy.replace(",", ";")
+    return proxies or {}
+
+
 def get_filename_from_url(url: str) -> str | None:
     """
     Extracts the filename from a URL.
@@ -79,10 +92,11 @@ def no_excerpt(url: str, path_out: str, count: int):
     """Do not excerpt, use all."""
     logger.info("    (strategy no-excerpt from {} to {})", url, path_out)
     _ = count
+    proxies = get_proxies_from_env()
     with open(path_out, "wb") as outputf:
         requests_ftp.monkeypatch_session()
         s = requests.Session()
-        r = s.get(url, allow_redirects=True)
+        r = s.get(url, proxies=proxies, allow_redirects=True)
         outputf.write(r.content)
 
 
@@ -97,15 +111,18 @@ def decompress_stream(stream):
 def excerpt_head(url: str, path_out: str, count: int):
     """Excerpt a plaint-text file by copying lines."""
     logger.info("    (strategy head from {} to {})", url, path_out)
-    try_gzip = url.endswith(".gz") or url.endswith(".bgz")
+    is_gz = url.endswith(".gz")
+    is_bgz = url.endswith(".bgz")
+    try_gzip = is_gz or is_bgz
     if try_gzip:
         opener = gzip.open
     else:
         opener = open
+    proxies = get_proxies_from_env()
     with opener(path_out, "wb") as f_out:
         requests_ftp.monkeypatch_session()
         s = requests.Session()
-        r = s.get(url, stream=True)
+        r = s.get(url, proxies=proxies, stream=True)
         # First, attempt to read line by line which should work if requests is
         # correctly identifying gzip compression.
         is_raw_gzip = False
@@ -132,7 +149,7 @@ def excerpt_head(url: str, path_out: str, count: int):
                     break
                 f_out.write(line.encode("utf-8"))
                 f_out.write(b"\n")
-    if try_gzip:
+    if is_gz:
         # Fixup resulting compressed files so they are proper bgzip.
         subprocess.check_call(["gzip", "-d", path_out])
         subprocess.check_call(["bgzip", path_out.replace(".gz", "")])
