@@ -66,6 +66,7 @@
   excerpt_strategy:
     strategy: manual
     count: null
+# dbscSNV v1.1
 - url: https://usf.box.com/shared/static/ffwlywsat3q5ijypvunno3rg6steqfs8
   skip_upstream_check: true  # does not work reliably in tests
   excerpt_strategy:
@@ -115,10 +116,10 @@
 
 - url: https://www.deciphergenomics.org/files/downloads/HI_Predictions_Version3.bed.gz
 
-- url: ftp://ftp.clinicalgenome.org/ClinGen_region_curation_list_GRCh37.tsv
-- url: ftp://ftp.clinicalgenome.org/ClinGen_region_curation_list_GRCh38.tsv
-- url: ftp://ftp.clinicalgenome.org/ClinGen_gene_curation_list_GRCh37.tsv
-- url: ftp://ftp.clinicalgenome.org/ClinGen_gene_curation_list_GRCh38.tsv
+- url: https://ftp.clinicalgenome.org/ClinGen_region_curation_list_GRCh37.tsv
+- url: https://ftp.clinicalgenome.org/ClinGen_region_curation_list_GRCh38.tsv
+- url: https://ftp.clinicalgenome.org/ClinGen_gene_curation_list_GRCh37.tsv
+- url: https://ftp.clinicalgenome.org/ClinGen_gene_curation_list_GRCh38.tsv
 
 - url: https://storage.googleapis.com/adult-gtex/annotations/v8/metadata-files/GTEx_Analysis_v8_Annotations_SampleAttributesDS.txt
   excerpt_strategy:
@@ -164,6 +165,15 @@
     strategy: no-excerpt
     count: null
 
+- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.10.3/mehari-data-txs-grch37-ensembl-and-refseq-0.10.3.bin.zst
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.10.3/mehari-data-txs-grch38-ensembl-and-refseq-0.10.3.bin.zst
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+
 - url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.10.3/mehari-data-txs-grch37-ensembl-0.10.3.bin.zst
   excerpt_strategy:
     strategy: no-excerpt
@@ -173,24 +183,24 @@
     strategy: no-excerpt
     count: null
 
-- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2024-01-16/hp.obo
+- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2025-03-03/hp.obo
   excerpt_strategy:
     strategy: no-excerpt
     count: null
-- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2024-01-16/phenotype.hpoa
+- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2025-03-03/phenotype.hpoa
   excerpt_strategy:
     strategy: no-excerpt
     count: null
-- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2024-01-16/phenotype_to_genes.txt
+- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2025-03-03/phenotype_to_genes.txt
   excerpt_strategy:
     strategy: no-excerpt
     count: null
-- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2024-01-16/genes_to_phenotype.txt
+- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2025-03-03/genes_to_phenotype.txt
   excerpt_strategy:
     strategy: no-excerpt
     count: null
 
-- url: https://ftp.ensembl.org/pub/current_README
+- url: https://may2024.archive.ensembl.org/pub/current_README
 
 - comment: The UCSC listing is used for checking the versions for GRCh37.
   url: https://hgdownload.cse.ucsc.edu/goldenpath/hg19/database
@@ -217,11 +227,11 @@
     count: 10000
 - url: https://hgdownload.cse.ucsc.edu/goldenpath/hg38/multiz100way/alignments/knownGene.exonAA.fa.gz
 
-- url: http://3dgenome.fsm.northwestern.edu/downloads/hg19.TADs.zip
+- url: https://3dgenome.fsm.northwestern.edu/downloads/hg19.TADs.zip
   excerpt_strategy:
     strategy: no-excerpt
     count: null
-- url: http://3dgenome.fsm.northwestern.edu/downloads/hg38.TADs.zip
+- url: https://3dgenome.fsm.northwestern.edu/downloads/hg38.TADs.zip
   excerpt_strategy:
     strategy: no-excerpt
     count: null
@@ -268,7 +278,7 @@
     strategy: head
     count: 10000
 
-- url: 'https://ensembl.org/biomart/martservice?query=<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE Query><Query  virtualSchemaName = "default" formatter = "TSV" header = "0" uniqueRows = "0" count = "" datasetConfigVersion = "0.6" ><Dataset name = "hsapiens_gene_ensembl" interface = "default" ><Attribute name = "ensembl_gene_id" /><Attribute name = "ensembl_transcript_id" /><Attribute name = "entrezgene_id" /><Attribute name = "external_gene_name" /></Dataset></Query>'
+- url: 'https://may2024.archive.ensembl.org/biomart/martservice?query=<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE Query><Query  virtualSchemaName = "default" formatter = "TSV" header = "0" uniqueRows = "0" count = "" datasetConfigVersion = "0.6" ><Dataset name = "hsapiens_gene_ensembl" interface = "default" ><Attribute name = "ensembl_gene_id" /><Attribute name = "ensembl_transcript_id" /><Attribute name = "entrezgene_id" /><Attribute name = "external_gene_name" /></Dataset></Query>'
 - url: 'https://storage.googleapis.com/public-download-files/hgnc/json/json/hgnc_complete_set.json'
   skip_upstream_check: true  # does not work reliably in tests
   excerpt_strategy:

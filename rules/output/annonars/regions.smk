@@ -13,7 +13,7 @@ rule work_annonars_regions_download:  # -- download clingen regions
         fi
 
         wget -O {output} \
-            ftp://ftp.clinicalgenome.org/ClinGen_region_curation_list_$GENOME.tsv
+            https://ftp.clinicalgenome.org/ClinGen_region_curation_list_$GENOME.tsv
         """
 
 

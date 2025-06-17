@@ -9,12 +9,6 @@ rule genes_ensembl_create_xlink:  # -- create ENSEMBL gene information xlink tab
         r"""
         # Check wehther ensembl version is correct.
         export TMPDIR=$(mktemp -d)
-        trap "rm -rf $TMPDIR" EXIT
-        wget --no-check-certificate \
-            -O $TMPDIR/current_README \
-            https://may2024.archive.ensembl.org/pub/current_README
-        grep "The current release is Ensembl {DV.ensembl}" $TMPDIR/current_README \
-        || (echo "WARNING: Ensembl version is not {DV.ensembl}.")
 
         echo -e "ensembl_gene_id\tensembl_transcript_id\tentrez_id\tgene_symbol" \
         >{output.tsv}
