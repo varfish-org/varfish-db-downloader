@@ -157,16 +157,18 @@ def excerpt_head(url: str, path_out: str, count: int):
 
 def excerpt_copy_tbi(url: str, path_out: str, count: int):
     """Copy ``.tbi`` file from the (previously downloaded) ``.vcf.gz`` file.)"""
+    logger.info("    (performing download before COPY-TSV from {} to {})", url, path_out)
+    no_excerpt(url, path_out, count)
     _ = count
     vcf_url = url[:-4]
     vcf_file = vcf_url.split("/")[-1]
     vcf_url_hash = hash_url(vcf_url)
     base_path = os.path.dirname(os.path.dirname(path_out))
     vcf_tbi_path = f"{base_path}/{vcf_url_hash}/{vcf_file}.tbi"
-    logger.info("    (strategy COPY_TBI from {} to {})", vcf_tbi_path, path_out)
-    if not os.path.exists(vcf_tbi_path):
-        raise RuntimeError(f"File {vcf_tbi_path} does not exist (strategy COPY-TBI)")
-    shutil.copy(vcf_tbi_path, path_out)
+    if not os.path.exists(path_out):
+        raise RuntimeError(f"File {path_out} does not exist (strategy COPY-TBI)")
+    logger.info("    (strategy COPY_TBI from {} to {})", path_out, vcf_tbi_path)
+    shutil.copy(path_out, vcf_tbi_path)
 
 
 def excerpt_vcf_head(url: str, path_out: str, count: int):
