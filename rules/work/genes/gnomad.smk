@@ -161,6 +161,7 @@ def run_genes_gnomad_constraints_v4_to_tsv(input, output, wildcards):
         > $TMPDIR/tmp.txt
 
         # Select columns, rename, pad with the exac_* fields having NA values.
+        QSV_SKIP_FORMAT_CHECK=1 \
         qsv select {columns_src_str} $TMPDIR/tmp.txt \
         | qsv rename {columns_tmp_str} \
         | perl -p -e 's/$/,exac_pLI,exac_obs_lof,exac_exp_lof,exac_oe_lof/ if $. == 1' \

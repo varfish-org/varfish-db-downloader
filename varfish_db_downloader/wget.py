@@ -1,5 +1,6 @@
 """Implementation of the stub ``wget`` and supporting tool."""
 
+import cgi
 import gzip
 import hashlib
 import itertools
@@ -21,6 +22,63 @@ import yaml
 from loguru import logger
 
 
+def get_proxies_from_env() -> dict[str, str]:
+    proxies = {}
+    ftp_proxy = os.environ.get("ftp_proxy") or os.environ.get("FTP_PROXY")
+    no_proxy = os.environ.get("no_proxy") or os.environ.get("NO_PROXY")
+    if ftp_proxy:
+        proxies["ftp"] = ftp_proxy
+    if no_proxy:
+        # If no_proxy is set, we need to ensure it is in the right format
+        # for requests, which expects a comma-separated list.
+        proxies["no_proxy"] = no_proxy.replace(",", ";")
+    return proxies or {}
+
+
+def get_filename_from_url(url: str) -> str | None:
+    """
+    Extracts the filename from a URL.
+
+    First, it tries to get the filename from the 'Content-Disposition' header.
+    If not found, it falls back to parsing the URL path.
+
+    Args:
+        url: The URL of the file to inspect.
+
+    Returns:
+        The detected filename as a string, or None if an error occurs
+        or no filename can be found.
+    """
+    try:
+        # We use stream=True to avoid downloading the file content
+        with requests.get(url, allow_redirects=True, stream=True) as response:
+            # Raise an exception for bad status codes (4xx or 5xx)
+            response.raise_for_status()
+
+            # 1. Check for Content-Disposition header
+            content_disposition = response.headers.get("content-disposition")
+            if content_disposition:
+                # Parse the header to extract the filename
+                _, params = cgi.parse_header(content_disposition)
+                if "filename" in params:
+                    return params["filename"]
+
+            # 2. If no header, fall back to the URL path
+            path = urllib.parse.urlparse(
+                response.url
+            ).path  # Use response.url to get the final URL after redirects
+            filename = os.path.basename(path)
+            if filename:
+                return filename
+
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching URL: {e}")
+        return None
+
+    # 3. If all else fails
+    return None
+
+
 def excerpt_manual(url: str, path_out: str, count: int):
     """Do not download, assume output is already there."""
     _ = url
@@ -34,10 +92,11 @@ def no_excerpt(url: str, path_out: str, count: int):
     """Do not excerpt, use all."""
     logger.info("    (strategy no-excerpt from {} to {})", url, path_out)
     _ = count
+    proxies = get_proxies_from_env()
     with open(path_out, "wb") as outputf:
         requests_ftp.monkeypatch_session()
         s = requests.Session()
-        r = s.get(url, allow_redirects=True)
+        r = s.get(url, proxies=proxies, allow_redirects=True)
         outputf.write(r.content)
 
 
@@ -52,15 +111,18 @@ def decompress_stream(stream):
 def excerpt_head(url: str, path_out: str, count: int):
     """Excerpt a plaint-text file by copying lines."""
     logger.info("    (strategy head from {} to {})", url, path_out)
-    try_gzip = url.endswith(".gz") or url.endswith(".bgz")
+    is_gz = url.endswith(".gz")
+    is_bgz = url.endswith(".bgz")
+    try_gzip = is_gz or is_bgz
     if try_gzip:
         opener = gzip.open
     else:
         opener = open
+    proxies = get_proxies_from_env()
     with opener(path_out, "wb") as f_out:
         requests_ftp.monkeypatch_session()
         s = requests.Session()
-        r = s.get(url, stream=True)
+        r = s.get(url, proxies=proxies, stream=True)
         # First, attempt to read line by line which should work if requests is
         # correctly identifying gzip compression.
         is_raw_gzip = False
@@ -87,7 +149,7 @@ def excerpt_head(url: str, path_out: str, count: int):
                     break
                 f_out.write(line.encode("utf-8"))
                 f_out.write(b"\n")
-    if try_gzip:
+    if is_gz:
         # Fixup resulting compressed files so they are proper bgzip.
         subprocess.check_call(["gzip", "-d", path_out])
         subprocess.check_call(["bgzip", path_out.replace(".gz", "")])
@@ -95,16 +157,18 @@ def excerpt_head(url: str, path_out: str, count: int):
 
 def excerpt_copy_tbi(url: str, path_out: str, count: int):
     """Copy ``.tbi`` file from the (previously downloaded) ``.vcf.gz`` file.)"""
+    logger.info("    (performing download before COPY-TSV from {} to {})", url, path_out)
+    no_excerpt(url, path_out, count)
     _ = count
     vcf_url = url[:-4]
     vcf_file = vcf_url.split("/")[-1]
     vcf_url_hash = hash_url(vcf_url)
     base_path = os.path.dirname(os.path.dirname(path_out))
     vcf_tbi_path = f"{base_path}/{vcf_url_hash}/{vcf_file}.tbi"
-    logger.info("    (strategy COPY_TBI from {} to {})", vcf_tbi_path, path_out)
-    if not os.path.exists(vcf_tbi_path):
-        raise RuntimeError(f"File {vcf_tbi_path} does not exist (strategy COPY-TBI)")
-    shutil.copy(vcf_tbi_path, path_out)
+    if not os.path.exists(path_out):
+        raise RuntimeError(f"File {path_out} does not exist (strategy COPY-TBI)")
+    logger.info("    (strategy COPY_TBI from {} to {})", path_out, vcf_tbi_path)
+    shutil.copy(path_out, vcf_tbi_path)
 
 
 def excerpt_vcf_head(url: str, path_out: str, count: int):
@@ -233,8 +297,7 @@ def download_excerpt(url: UrlEntry, data_dir: str, force: bool):
         print(url.url, file=f)
 
     excerpt_fun = STRATEGY_MAP[url.excerpt_strategy.strategy]
-    parsed = urllib.parse.urlparse(url.url)
-    basename = parsed.path.split("/")[-1] or "__index__"
+    basename = get_filename_from_url(url.url) or "__index__"
     out_path_data = str(out_path / basename)
     logger.info("    getting excerpt to {}", out_path_data)
     excerpt_fun(url.url, str(out_path_data), url.excerpt_strategy.count)
@@ -246,8 +309,7 @@ def copy_excerpt(url: UrlEntry, data_dir: str, output_document: str):
     """Copy downloaded excerpt to output file."""
     logger.info("    copying excerpt for {} to {}", url.url, output_document)
     in_path = pathlib.Path(data_dir) / url.hash
-    parsed = urllib.parse.urlparse(url.url)
-    basename = parsed.path.split("/")[-1]
+    basename = get_filename_from_url(url.url) or "__index__"
     excerpt_path = in_path / basename
     click.echo(err=True, message="copying {} => {}".format(excerpt_path, output_document))
     if os.path.isdir(excerpt_path):

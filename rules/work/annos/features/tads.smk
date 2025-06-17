@@ -14,7 +14,7 @@ rule annos_features_tads_download:  # -- download TAD ZIP files from 3dgenome.or
 
         wget --no-check-certificate \
             -O {output.zip} \
-            http://3dgenome.fsm.northwestern.edu/downloads/$name.TADs.zip
+            https://3dgenome.fsm.northwestern.edu/downloads/$name.TADs.zip
         """
 
 
