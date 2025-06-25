@@ -1,0 +1,6 @@
+release
+chromosome
+start
+end
+bin
+variation_name

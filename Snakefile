@@ -132,6 +132,14 @@ def generate_input_files():
         "grch37": DV.ucsc_fix_seq_liftover_37,
         "grch38": DV.ucsc_fix_seq_liftover_38,
     }
+    hgnc_gffs = {
+        "grch37": DV.hgnc_gff_37,
+        "grch38": DV.hgnc_gff_38,
+    }
+    genomebuild_conventions = {
+        "grch37": "GRCh37",
+        "grch38": "GRCh38",
+    }
 
     input_files = []
     if "grch38" in genomebuilds:
@@ -152,6 +160,9 @@ def generate_input_files():
             # ----- background/population structural variants and annotations thereof
             f"output/full/tracks/track-strucvars-gnomad-sv-grch38-{DV.gnomad_sv4}+{DV.tracks}/gnomad-sv.bed.gz",
             f"output/full/tracks/track-strucvars-gnomad-cnv-grch38-{DV.gnomad_cnv4}+{DV.tracks}/gnomad-cnv.bed.gz",
+            # -- pre-mehari
+            "output/pre-mehari/GRCh38/gnomAD_constraints/v2.1.1/GnomadConstraints.tsv",
+            "output/pre-mehari/GRCh38/gnomAD_constraints/v2.1.1/GnomadConstraints.release_info",
         ]
     if "grch37" in genomebuilds:
         input_files += [
@@ -288,6 +299,15 @@ def generate_input_files():
             # -- mehari
             f"output/reduced-exomes/mehari/freqs-{genomebuild}-{gnomad_versions[genomebuild]}+{gnomad_versions[genomebuild]}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
             f"output/reduced-exomes/mehari/freqs-{genomebuild}-{gnomad_versions[genomebuild]}+{gnomad_versions[genomebuild]}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/spec.yaml",
+            # -- pre-mehari
+            f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/hgnc/{DV.hgnc_quarterly}+{DV.cdot}+{hgnc_gffs[genomebuild]}/Hgnc.tsv",
+            f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/hgnc/{DV.hgnc_quarterly}+{DV.cdot}+{hgnc_gffs[genomebuild]}/Hgnc.release_info",
+            f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/hgnc/{DV.hgnc_quarterly}+{DV.cdot}+{hgnc_gffs[genomebuild]}/RefseqToHgnc.tsv",
+            f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/hgnc/{DV.hgnc_quarterly}+{DV.cdot}+{hgnc_gffs[genomebuild]}/RefseqToHgnc.release_info",
+            f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/clinvar/{DV.hgnc_quarterly}+{DV.clinvar_release}/Clinvar.tsv",
+            f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/clinvar/{DV.hgnc_quarterly}+{DV.clinvar_release}/Clinvar.release_info",
+            f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/HelixMtDb/{DV.helixmtdb}/HelixMtDb.tsv",
+            f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/HelixMtDb/{DV.helixmtdb}/HelixMtDb.release_info",
         ]
     # Files independent of genomebuild (or serving both)
     input_files += [
@@ -333,6 +353,12 @@ def generate_input_files():
         f"output/reduced-exomes/viguno/hpo-{DV.hpo}+{PV.viguno}/phenotype.hpoa",
         f"output/reduced-exomes/viguno/hpo-{DV.hpo}+{PV.viguno}/phenotype_to_genes.txt",
         f"output/reduced-exomes/viguno/hpo-{DV.hpo}+{PV.viguno}/hpo.bin",
+        # -- pre-mehari
+        f"output/pre-mehari/noref/hpo/{DV.hpo}/Hpo.tsv",
+        f"output/pre-mehari/noref/hpo/{DV.hpo}/Hpo.release_info",
+        f"output/pre-mehari/noref/hpo/{DV.hpo}/HpoName.tsv",
+        f"output/pre-mehari/noref/hpo/{DV.hpo}/HpoName.release_info",
+
     ]
     return input_files
 
@@ -351,6 +377,8 @@ rule all:
 # -- work directory -----------------------------------------------------------------------------
 # Misc rules.
 include: "rules/work/misc/hpo.smk"
+include: "rules/work/misc/clinvar_download.smk"
+include: "rules/work/misc/hgnc_download.smk"
 # Gene-related rules.
 include: "rules/work/genes/alphamissense.smk"
 include: "rules/work/genes/dbnsfp.smk"
@@ -434,3 +462,10 @@ include: "rules/reduced/annonars.smk"
 include: "rules/reduced/hpo.smk"
 include: "rules/reduced/targets.smk"
 include: "rules/reduced/mehari.smk"
+
+# pre-mehari rules for tsv output
+include: "rules/pre-mehari/snakefiles/GRCh3_/hgnc.smk"
+include: "rules/pre-mehari/snakefiles/GRCh3_/clinvar.smk"
+include: "rules/pre-mehari/snakefiles/noref/hpo.smk"
+include: "rules/pre-mehari/snakefiles/GRCh38/gnomad.smk"
+include: "rules/pre-mehari/snakefiles/GRCh3_/helixdb.smk"

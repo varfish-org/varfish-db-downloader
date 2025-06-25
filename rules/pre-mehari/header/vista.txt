@@ -1,0 +1,7 @@
+release
+chromosome
+start
+end
+bin
+element_id
+validation_result
