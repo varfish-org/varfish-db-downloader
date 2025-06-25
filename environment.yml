@@ -21,6 +21,8 @@ dependencies:
   - interval-binning >=1.0,<2.0
   - tqdm
   - vcfpy
+  - clinvar-this =0.18.5
+  - obonet
   # Python and Snakemake formatting and linting.
   - black >=23.0,<24.0
   - snakefmt >=0.8,<0.9

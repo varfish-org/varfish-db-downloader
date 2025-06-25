@@ -1,0 +1,10 @@
+release
+chromosome
+start
+end
+bin
+reference
+alternative
+ac
+an
+af

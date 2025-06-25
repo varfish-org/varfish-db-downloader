@@ -1,0 +1,15 @@
+database_id
+name
+qualifier
+hpo_id
+reference
+evidence
+onset
+frequency
+sex
+modifier
+aspect
+biocuration
+omim_id
+decipher_id
+orpha_id

@@ -119,6 +119,14 @@ class DataVersions:
     refseq_fe_37: str
     #: RefSeq functional elements for GRCh38.
     refseq_fe_38: str
+    #: CDOT version.
+    cdot: str
+    #: HGNC quarterly release date.
+    hgnc_quarterly: str
+    #: HGNC GFF for GRCh37.
+    hgnc_gff_37: str
+    #: HGNC GFF for GRCh38.
+    hgnc_gff_38: str
 
 
 #: The data versions to use.
@@ -164,12 +172,18 @@ DATA_VERSIONS = DataVersions(
     hpo="20250303",
     orphadata=TODAY,
     patho_mms="20220730",
-    mehari_tx="0.10.3",
     clinvar_release=CLINVAR_RELEASE,
     clinvar_version=CLINVAR_VERSION,
     tracks="0",
     refseq_fe_37="105.20201022",
     refseq_fe_38="110",
+    mehari_tx="0.10.3",
+    # The following 4 lines/versions should be consistent with the mehari-data-tx release:
+    # https://github.com/varfish-org/mehari-data-tx/blob/v{mehari_tx}/config/config.yaml
+    cdot="0.2.27", # 1
+    hgnc_quarterly="2025-04-01", # 2
+    hgnc_gff_37="GCF_000001405.40_GRCh38.p14_genomic.110.gff", # 3
+    hgnc_gff_38="GCF_000001405.25_GRCh37.p13_genomic.105.20201022.gff", # 4
 )
 
 

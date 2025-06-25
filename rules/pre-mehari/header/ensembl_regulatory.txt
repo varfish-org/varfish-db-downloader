@@ -1,0 +1,10 @@
+release
+chromosome
+start
+end
+bin
+stable_id
+feature_type
+feature_type_description
+so_term_accession
+so_term_name
