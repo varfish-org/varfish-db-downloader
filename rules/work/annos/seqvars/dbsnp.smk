@@ -74,7 +74,7 @@ rule annos_dbsnp_assembly_release:
 
         wget --no-check-certificate \
             -O {output.txt} \
-            https://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/annotation_releases/$dbsnp_reference_report/${{reference}}_assembly_report.txt
+            https://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/annotation_releases/$reference_report/${{reference}}_assembly_report.txt
         """
 
 

@@ -106,6 +106,10 @@ class DataVersions:
     dbsnp_reference_37_report: str
     #: dbSNP reference version (GRCh38) for reports.
     dbsnp_reference_38_report: str
+    #: dbSNP reference version (GRCh37).
+    dbsnp_reference_37_ext: str
+    #: dbSNP reference version (GRCh38).
+    dbsnp_reference_38_ext: str
     #: ACMG secondary findings version.
     acmg_sf: str
     #: HPO
