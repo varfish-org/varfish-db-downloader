@@ -1,41 +1,19 @@
 # Download dbSNP, map chr names, normalize, and convert into TSV for import.
 
 
-rule grch37_dbsnp_b155_download:
-    output:
-        vcf="GRCh37/dbSNP/b155/download/GCF_000001405.25.gz",
-        tbi="GRCh37/dbSNP/b155/download/GCF_000001405.25.gz.tbi",
-    log:
-        "GRCh37/dbSNP/b155/download/GCF_000001405.25.gz.log",
-    shell:
-        r"""
-        wget --no-check-certificate \
-            -o {log} \
-            -O {output.vcf} \
-            http://ftp.ncbi.nih.gov/snp/latest_release/VCF/GCF_000001405.25.gz
-        wget --no-check-certificate \
-            -a {log} \
-            -O {output.tbi} \
-            http://ftp.ncbi.nih.gov/snp/latest_release/VCF/GCF_000001405.25.gz.tbi
-
-        pushd $(dirname {output.vcf})
-        md5sum $(basename {output.vcf}) >$(basename {output.vcf}).md5
-        md5sum $(basename {output.tbi}) >$(basename {output.tbi}).md5
-        """
-
-
-rule grch37_dbsnp_b155_map_chr:
+rule grch37_dbsnp_map_chr:
     input:
-        vcf="GRCh37/dbSNP/b155/download/GCF_000001405.25.gz",
-        tbi="GRCh37/dbSNP/b155/download/GCF_000001405.25.gz.tbi",
+        vcf="work/download/annos/grch37/seqvars/dbsnp/{version}/dbsnp.vcf.gz",
+        tbi="work/download/annos/grch37/seqvars/dbsnp/{version}/dbsnp.vcf.gz.tbi",
+        report="work/download/annos/grch37/seqvars/dbsnp/{version}/assembly_report.txt",
     output:
-        map=temp("GRCh37/dbSNP/b155/download/GCF_000001405.25.map_chr"),
-        vcf="GRCh37/dbSNP/b155/download/GCF_000001405.25.map_chr.gz",
-        tbi="GRCh37/dbSNP/b155/download/GCF_000001405.25.map_chr.gz.tbi",
+        map=temp("work/download/annos/grch37/seqvars/dbsnp/{version}/dbsnp.map_chr"),
+        vcf="work/download/annos/grch37/seqvars/dbsnp/{version}/dbsnp.map_chr.gz",
+        tbi="work/download/annos/grch37/seqvars/dbsnp/{version}/dbsnp.map_chr.gz.tbi",
     shell:
         r"""
         awk -v RS="(\r)?\n" 'BEGIN {{ FS="\t" }} !/^#/ {{ if ($10 != "na") print $7,$10; else print $7,$5 }}' \
-            tools/data/GCF_000001405.25_GRCh37.p13_assembly_report.txt \
+            {input.report} \
         | sed -e 's/chrM/chrMT/g' \
         | sed -e 's/chr//g' \
         > {output.map}
@@ -49,13 +27,13 @@ rule grch37_dbsnp_b155_map_chr:
         """
 
 
-rule grch37_dbsnp_b155_normalize:
+rule grch37_dbsnp_normalize:
     input:
-        reference="GRCh37/reference/hs37d5/hs37d5.fa",
-        vcf="GRCh37/dbSNP/b155/download/GCF_000001405.25.map_chr.gz",
+        reference="work/reference/grch37/reference.fa",
+        vcf="work/download/annos/grch37/seqvars/dbsnp/{version}/dbsnp.map_chr.gz",
     output:
-        vcf="GRCh37/dbSNP/b155/download/GCF_000001405.25.normalized.{chrom}.vcf.gz",
-        tbi="GRCh37/dbSNP/b155/download/GCF_000001405.25.normalized.{chrom}.vcf.gz.tbi",
+        vcf="work/download/annos/grch37/seqvars/dbsnp/{version}/dbsnp.normalized.{chrom}.vcf.gz",
+        tbi="work/download/annos/grch37/seqvars/dbsnp/{version}/dbsnp.normalized.{chrom}.vcf.gz.tbi",
     shell:
         r"""
         bcftools norm \
@@ -74,11 +52,11 @@ rule grch37_dbsnp_b155_normalize:
         """
 
 
-rule result_grch37_dbsnp_b155_tsv:
+rule result_grch37_dbsnp_tsv:
     input:
-        header="header/dbsnp.txt",
-        vcf="GRCh37/dbSNP/b155/download/GCF_000001405.25.normalized.{chrom}.vcf.gz",
-        tbi="GRCh37/dbSNP/b155/download/GCF_000001405.25.normalized.{chrom}.vcf.gz.tbi",
+        header="rules/pre-mehari/header/dbsnp.txt",
+        vcf="work/download/annos/grch37/seqvars/dbsnp/{version}/dbsnp.normalized.{chrom}.vcf.gz",
+        tbi="work/download/annos/grch37/seqvars/dbsnp/{version}/dbsnp.normalized.{chrom}.vcf.gz.tbi",
     output:
         release_info="GRCh37/dbSNP/b155/Dbsnp.{chrom}.release_info",
         tsv="GRCh37/dbSNP/b155/Dbsnp.{chrom}.tsv",
@@ -89,10 +67,10 @@ rule result_grch37_dbsnp_b155_tsv:
             bcftools query {input.vcf} \
                 -f 'GRCh37\t%CHROM\t%POS\t%END\t\t%REF\t%ALT\t%ID\n' \
             | awk -F $'\t' 'BEGIN {{ OFS=FS }} ((length($6) <= 512) && (length($7) <= 512)) {{ print }}' \
-            | sort -u -t $'\t' -k 2,2 -k 3,3 -k 6,6 -k 7,7 -S {config[sort_memory]}
+            | sort -u -t $'\t' -k 2,2 -k 3,3 -k 6,6 -k 7,7
         ) \
-        | python tools/ucsc_binning.py \
+        | python rules/pre-mehari/tools/ucsc_binning.py \
         > {output.tsv}
 
-        echo -e "table\tversion\tgenomebuild\tnull_value\nDbsnp\tb155\tGRCh37\t" > {output.release_info}
+        echo -e "table\tversion\tgenomebuild\tnull_value\nDbsnp\t{wildcards.version}\tGRCh37\t" > {output.release_info}
         """
