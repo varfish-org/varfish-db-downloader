@@ -86,6 +86,7 @@ rule help:
         """
         )
 
+CHROMS = tuple(list(map(str, range(1, 23))) + ["X", "Y", "MT"])
 
 def generate_input_files():
     """
@@ -308,6 +309,7 @@ def generate_input_files():
             f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/clinvar/{DV.hgnc_quarterly}+{DV.clinvar_release}/Clinvar.release_info",
             f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/HelixMtDb/{DV.helixmtdb}/HelixMtDb.tsv",
             f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/HelixMtDb/{DV.helixmtdb}/HelixMtDb.release_info",
+            expand("output/pre-mehari/{{genomebuild_conventions[genomebuild]}}/dbSNP/{{DV.dbsnp}}/Dbsnp.{chrom}.release_info", chrom=CHROMS)
         ]
     # Files independent of genomebuild (or serving both)
     input_files += [
@@ -469,3 +471,4 @@ include: "rules/pre-mehari/snakefiles/GRCh3_/clinvar.smk"
 include: "rules/pre-mehari/snakefiles/noref/hpo.smk"
 include: "rules/pre-mehari/snakefiles/GRCh38/gnomad.smk"
 include: "rules/pre-mehari/snakefiles/GRCh3_/helixdb.smk"
+include: "rules/pre-mehari/snakefiles/GRCh37/dbsnp.smk"

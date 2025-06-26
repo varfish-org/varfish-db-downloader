@@ -58,8 +58,8 @@ rule result_grch37_dbsnp_tsv:
         vcf="work/download/annos/grch37/seqvars/dbsnp/{version}/dbsnp.normalized.{chrom}.vcf.gz",
         tbi="work/download/annos/grch37/seqvars/dbsnp/{version}/dbsnp.normalized.{chrom}.vcf.gz.tbi",
     output:
-        release_info="GRCh37/dbSNP/b155/Dbsnp.{chrom}.release_info",
-        tsv="GRCh37/dbSNP/b155/Dbsnp.{chrom}.tsv",
+        release_info="output/pre-mehari/GRCh37/dbSNP/{version}/Dbsnp.{chrom}.release_info",
+        tsv="output/pre-mehari/GRCh37/dbSNP/{version}/Dbsnp.{chrom}.tsv",
     shell:
         r"""
         (
