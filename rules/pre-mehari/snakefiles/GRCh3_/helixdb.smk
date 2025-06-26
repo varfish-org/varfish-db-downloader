@@ -10,7 +10,7 @@ rule grchXX_helixmtdb_vcf:
         import math
         from collections import defaultdict
 
-        if wildcards.genome_build == "GRCh37":
+        if wildcards.genome_build == "grch37":
             chrom = "MT"
         else:
             chrom = "chrM"
@@ -175,7 +175,7 @@ rule result_GRChXX_helixmtdb_tsv:
                 {input.txt} \
             | awk -F$'\t' 'BEGIN{{OFS=FS}}{{if($16=="."){{$16=0}}print}}'
         ) \
-        | python tools/ucsc_binning.py \
+        | python rules/pre-mehari/tools/ucsc_binning.py \
         > {output.tsv}
 
         echo -e "table\tversion\tgenomebuild\tnull_value\nHelixMtDb\t{wildcards.helix_v}\t{wildcards.genome_build}\t." > {output.release_info}

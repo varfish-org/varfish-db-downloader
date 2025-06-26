@@ -98,6 +98,14 @@ class DataVersions:
     refseq_38: str
     #: dbSNP version.
     dbsnp: str
+    #: dbSNP reference version (GRCh37).
+    dbsnp_reference_37: str
+    #: dbSNP reference version (GRCh38).
+    dbsnp_reference_38: str
+    #: dbSNP reference version (GRCh37) for reports.
+    dbsnp_reference_37_report: str
+    #: dbSNP reference version (GRCh38) for reports.
+    dbsnp_reference_38_report: str
     #: ACMG secondary findings version.
     acmg_sf: str
     #: HPO
@@ -167,7 +175,13 @@ DATA_VERSIONS = DataVersions(
     ucsc_fix_seq_liftover_38="20221103",
     refseq_37="105",
     refseq_38="GCF_000001405.40+RS_2023_03",
-    dbsnp="b151",
+    dbsnp="b157",
+    dbsnp_reference_37="GCF_000001405.25",
+    dbsnp_reference_38="GCF_000001405.40",
+    dbsnp_reference_37_report="GCF_000001405.25-RS_2024_09",
+    dbsnp_reference_38_report="GCF_000001405.40-RS_2024_08",
+    dbsnp_reference_37_ext="GCF_000001405.25_GRCh37.p13",
+    dbsnp_reference_38_ext="GCF_000001405.40_GRCh38.p14",
     acmg_sf="3.1",
     hpo="20250303",
     orphadata=TODAY,
@@ -182,8 +196,8 @@ DATA_VERSIONS = DataVersions(
     # https://github.com/varfish-org/mehari-data-tx/blob/v{mehari_tx}/config/config.yaml
     cdot="0.2.27", # 1
     hgnc_quarterly="2025-04-01", # 2
-    hgnc_gff_37="GCF_000001405.40_GRCh38.p14_genomic.110.gff", # 3
-    hgnc_gff_38="GCF_000001405.25_GRCh37.p13_genomic.105.20201022.gff", # 4
+    hgnc_gff_37="GCF_000001405.25_GRCh37.p13_genomic.105.20201022.gff", # 4
+    hgnc_gff_38="GCF_000001405.40_GRCh38.p14_genomic.110.gff", # 3
 )
 
 

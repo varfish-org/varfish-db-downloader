@@ -89,7 +89,7 @@ rule result_GRChXX_extra_annos_tsv_step_1:
                     printf("]\n");
                 }}';
             ) \
-            | python tools/ucsc_binning.py \
+            | python rules/pre-mehari/tools/ucsc_binning.py \
             | tail -n +2 \
             | sort -S 1G -k2,2g -k7,7n -o $output
         }}
