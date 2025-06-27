@@ -309,7 +309,7 @@ def generate_input_files():
             f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/clinvar/{DV.hgnc_quarterly}+{DV.clinvar_release}/Clinvar.release_info",
             f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/HelixMtDb/{DV.helixmtdb}/HelixMtDb.tsv",
             f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/HelixMtDb/{DV.helixmtdb}/HelixMtDb.release_info",
-            expand("output/pre-mehari/{{genomebuild_conventions[genomebuild]}}/dbSNP/{{DV.dbsnp}}/Dbsnp.{chrom}.release_info", chrom=CHROMS)
+            expand("output/pre-mehari/{{genomebuild_conventions[genomebuild]}}/dbSNP/{{DV.dbsnp}}/Dbsnp.{chrom}.{file_ext}", chrom=CHROMS, file_ext=["tsv", "release_info"]),
         ]
     # Files independent of genomebuild (or serving both)
     input_files += [
