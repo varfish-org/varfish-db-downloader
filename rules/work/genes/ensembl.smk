@@ -1,10 +1,13 @@
 ## Rules related to ENSEMBL gene information.
 
 
+# TODO fix this genombuild mess!
 rule genes_ensembl_create_xlink:  # -- create ENSEMBL gene information xlink table
     output:
-        tsv=f"work/genes/ensembl/{DV.ensembl}/ensembl_xlink.tsv",
-        tsv_md5=f"work/genes/ensembl/{DV.ensembl}/ensembl_xlink.tsv.md5",
+        tsv="work/genes/ensembl/{ensembl}/ensembl_xlink.tsv",
+        tsv_md5="work/genes/ensembl/{ensembl}/ensembl_xlink.tsv.md5",
+    params:
+        ensembl_archive_url=DV.ensembl_38_archive_url,
     shell:
         r"""
         # Check wehther ensembl version is correct.
@@ -15,7 +18,7 @@ rule genes_ensembl_create_xlink:  # -- create ENSEMBL gene information xlink tab
 
         wget --no-check-certificate \
             -O $TMPDIR/tmp \
-            'https://may2024.archive.ensembl.org/biomart/martservice?query=<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE Query><Query  virtualSchemaName = "default" formatter = "TSV" header = "0" uniqueRows = "0" count = "" datasetConfigVersion = "0.6" ><Dataset name = "hsapiens_gene_ensembl" interface = "default" ><Attribute name = "ensembl_gene_id" /><Attribute name = "ensembl_transcript_id" /><Attribute name = "entrezgene_id" /><Attribute name = "external_gene_name" /></Dataset></Query>' \
+            '{params.ensembl_archive_url}/biomart/martservice?query=<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE Query><Query  virtualSchemaName = "default" formatter = "TSV" header = "0" uniqueRows = "0" count = "" datasetConfigVersion = "0.6" ><Dataset name = "hsapiens_gene_ensembl" interface = "default" ><Attribute name = "ensembl_gene_id" /><Attribute name = "ensembl_transcript_id" /><Attribute name = "entrezgene_id" /><Attribute name = "external_gene_name" /></Dataset></Query>' \
 
         sort -u $TMPDIR/tmp \
         >> {output.tsv}

@@ -310,6 +310,8 @@ def generate_input_files():
             f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/HelixMtDb/{DV.helixmtdb}/HelixMtDb.tsv",
             f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/HelixMtDb/{DV.helixmtdb}/HelixMtDb.release_info",
             expand("output/pre-mehari/{{genomebuild_conventions[genomebuild]}}/dbSNP/{{DV.dbsnp}}/Dbsnp.{chrom}.{file_ext}", chrom=CHROMS, file_ext=["tsv", "release_info"]),
+            f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/ensembltogenesymbol/{DV.ensembl}/EnsemblToGeneSymbol.tsv",
+            f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/ensembltogenesymbol/{DV.ensembl}/EnsemblToGeneSymbol.release_info",
         ]
     # Files independent of genomebuild (or serving both)
     input_files += [
@@ -337,7 +339,7 @@ def generate_input_files():
         f"output/full/annonars/genes-{DV.acmg_sf}+{DV.gnomad_constraints}+{DV.dbnsfp}+{DV.hpo}+{DV.today}+{PV.annonars}/rocksdb/IDENTITY",
         # -- worker data
         f"output/full/worker/genes-xlink-{DV.today}+{PV.worker}/genes-xlink.bin",
-        f"output/full/worker/acmg-sf-{DV.acmg_sf}+{PV.worker}/acmg_sf.tsv",
+        f"output/full/worker/acmg-sf-{DV.acmg_sf}+{PV.worker}/acmg_sf.tsv",  # ATTN! source file is placed manually in the data directory
         f"output/full/worker/mim2gene-{DV.today}+{PV.worker}/mim2gene.tsv",
         f"output/full/mehari/genes-xlink-{DV.today}/genes-xlink.tsv",
         # -- viguno
@@ -360,7 +362,14 @@ def generate_input_files():
         f"output/pre-mehari/noref/hpo/{DV.hpo}/Hpo.release_info",
         f"output/pre-mehari/noref/hpo/{DV.hpo}/HpoName.tsv",
         f"output/pre-mehari/noref/hpo/{DV.hpo}/HpoName.release_info",
-
+        f"output/pre-mehari/noref/refseqtoensembl/{DV.ensembl}/RefseqToEnsembl.tsv",
+        f"output/pre-mehari/noref/refseqtoensembl/{DV.ensembl}/RefseqToEnsembl.release_info",
+        f"output/pre-mehari/noref/acmg/{DV.acmg_sf}/Acmg.tsv",  # ATTN! source file is placed manually in the data directory
+        f"output/pre-mehari/noref/acmg/{DV.acmg_sf}/Acmg.release_info",
+        f"output/pre-mehari/noref/mim2gene/{DV.today}/Mim2geneMedgen.tsv",
+        f"output/pre-mehari/noref/mim2gene/{DV.today}/Mim2geneMedgen.release_info",
+        f"output/pre-mehari/noref/refseqtogenesymbol/{DV.today}/RefseqToGeneSymbol.tsv",
+        f"output/pre-mehari/noref/refseqtogenesymbol/{DV.today}/RefseqToGeneSymbol.release_info",
     ]
     return input_files
 
@@ -466,9 +475,17 @@ include: "rules/reduced/targets.smk"
 include: "rules/reduced/mehari.smk"
 
 # pre-mehari rules for tsv output
+# -- both releases
 include: "rules/pre-mehari/snakefiles/GRCh3_/hgnc.smk"
 include: "rules/pre-mehari/snakefiles/GRCh3_/clinvar.smk"
-include: "rules/pre-mehari/snakefiles/noref/hpo.smk"
-include: "rules/pre-mehari/snakefiles/GRCh38/gnomad.smk"
+include: "rules/pre-mehari/snakefiles/GRCh3_/dbsnp.smk"
 include: "rules/pre-mehari/snakefiles/GRCh3_/helixdb.smk"
-include: "rules/pre-mehari/snakefiles/GRCh37/dbsnp.smk"
+include: "rules/pre-mehari/snakefiles/GRCh3_/ensembltogenesymbol.smk"
+# -- grch38
+include: "rules/pre-mehari/snakefiles/GRCh38/gnomad.smk"
+# -- noref
+include: "rules/pre-mehari/snakefiles/noref/hpo.smk"
+include: "rules/pre-mehari/snakefiles/noref/refseqtoensembl.smk"
+include: "rules/pre-mehari/snakefiles/noref/acmg.smk"
+include: "rules/pre-mehari/snakefiles/noref/mim2gene.smk"
+include: "rules/pre-mehari/snakefiles/noref/refseqtogenesymbol.smk"
