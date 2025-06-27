@@ -36,6 +36,10 @@ class DataVersions:
     ensembl_38: str
     #: String to use for ENSEMBL version.
     ensembl: str
+    #: URL to use for ENSEMBL archive.
+    ensembl_37_archive_url: str
+    #: URL to use for ENSEMBL archive.
+    ensembl_38_archive_url: str
     #: String to use for current date.
     today: str
     #: Version of dbNSFP.
@@ -148,7 +152,9 @@ DATA_VERSIONS = DataVersions(
     clingen_variant=TODAY,
     ensembl_37="87",
     ensembl_38="112",  # keep at 112 for consistency with mehari
-    ensembl="112",  # keep at 112 for consistency with mehari
+    ensembl="112",  # keep at 112 for consistency with mehari and ensembl_archive_url
+    ensembl_37_archive_url="https://grch37.archive.ensembl.org",  # not possible to tag a specific version but according to them they didn't essenitally update sind 75 (2014)
+    ensembl_38_archive_url="https://may2024.archive.ensembl.org",
     today=TODAY,
     dbnsfp="4.5",  # update to 4.9 or 5.1 ?
     dbscsnv="1.1",
@@ -186,7 +192,7 @@ DATA_VERSIONS = DataVersions(
     dbsnp_reference_38_report="GCF_000001405.40-RS_2024_08",
     dbsnp_reference_37_ext="GCF_000001405.25_GRCh37.p13",
     dbsnp_reference_38_ext="GCF_000001405.40_GRCh38.p14",
-    acmg_sf="3.1",
+    acmg_sf="3.1", # ATTN! source file is placed manually in the data directory
     hpo="20250303",
     orphadata=TODAY,
     patho_mms="20220730",
@@ -200,7 +206,7 @@ DATA_VERSIONS = DataVersions(
     # https://github.com/varfish-org/mehari-data-tx/blob/v{mehari_tx}/config/config.yaml
     cdot="0.2.27", # 1
     hgnc_quarterly="2025-04-01", # 2
-    hgnc_gff_37="GCF_000001405.25_GRCh37.p13_genomic.105.20201022.gff", # 4
+    hgnc_gff_37="GCF_000001405.25_GRCh37.p13_genomic.105.20220307.gff", # 4
     hgnc_gff_38="GCF_000001405.40_GRCh38.p14_genomic.110.gff", # 3
 )
 

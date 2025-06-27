@@ -1,6 +1,6 @@
 rule noref_refseq_to_genesymbol_dl:
     output:
-        "noref/refseqtogenesymbol/{download_date}/download/gene2accession.gz",
+        "work/download/pre-mehari/noref/refseqtogenesymbol/{download_date}/gene2accession.gz",
     shell:
         r"""
         wget --no-check-certificate -O {output} http://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2accession.gz
@@ -9,15 +9,14 @@ rule noref_refseq_to_genesymbol_dl:
 
 rule result_noref_refseq_to_genesymbol_tsv:
     input:
-        header="header/refseqtogenesymbol.txt",
-        gz="noref/refseqtogenesymbol/{download_date}/download/gene2accession.gz",
+        gz="work/download/pre-mehari/noref/refseqtogenesymbol/{download_date}/gene2accession.gz",
     output:
-        tsv="noref/refseqtogenesymbol/{download_date}/RefseqToGeneSymbol.tsv",
-        release_info="noref/refseqtogenesymbol/{download_date}/RefseqToGeneSymbol.release_info",
+        tsv="output/pre-mehari/noref/refseqtogenesymbol/{download_date}/RefseqToGeneSymbol.tsv",
+        release_info="output/pre-mehari/noref/refseqtogenesymbol/{download_date}/RefseqToGeneSymbol.release_info",
     shell:
         r"""
         (
-            cat {input.header} | tr '\n' '\t' | sed -e 's/\t*$/\n/g';
+            echo -e "entrez_id\tgene_symbol"
             zcat {input.gz} \
             | awk -F $'\t' '
                 BEGIN {{
