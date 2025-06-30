@@ -38,7 +38,7 @@ rule grch3x_ensembl_exons_download:
         bed="work/download/pre-mehari/{genomebuild}/exons/ensembl_exons.bed",
     params:
         ensembl=lambda wildcards: DV.ensembl_38 if wildcards.genomebuild == "GRCh38" else DV.ensembl_37,
-        genomebuild=lambda wildcards: wildcards.genomebuild.lower()
+        genomebuild=lambda wildcards: wildcards.genomebuild.lower(),
         url=lambda wildcards: DV.ensembl_38_archive_ftp if wildcards.genomebuild == "GRCh38" else DV.ensembl_37_archive_ftp,
     shell:
         r"""
