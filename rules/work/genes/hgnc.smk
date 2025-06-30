@@ -21,7 +21,7 @@ rule genes_hgnc_xlink:  # -- Build HGNC xlink table.
 
 rule genes_hgnc_gene_info:  # -- Build HGNC gene_info JSONL file.
     input:
-        json="work/download/hgnc/{quarterly_release_date}/hgnc_complete_set.json",
+        json="work/download/annos/hgnc/{quarterly_release_date}/hgnc_complete_set.json",
     output:
         jsonl="work/genes/hgnc/{quarterly_release_date}/hgnc_info.jsonl",
         jsonl_md5="work/genes/hgnc/{quarterly_release_date}/hgnc_info.jsonl.md5",
