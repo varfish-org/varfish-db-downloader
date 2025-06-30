@@ -109,9 +109,9 @@ def generate_input_files():
         "grch37": DV.refseq_37,
         "grch38": DV.refseq_38,
     }
-    refseq_fe_versions = {
-        "grch37": DV.refseq_fe_37,
-        "grch38": DV.refseq_fe_38,
+    refseq_versions = {
+        "grch37": DV.refseq_37,
+        "grch38": DV.refseq_38,
     }
     cons_versions = {
         "grch37": DV.ucsc_cons_37,
@@ -209,7 +209,7 @@ def generate_input_files():
             f"output/full/annonars/gnomad-sv-exomes-{genomebuild}-{gnomad_cnv_versions[genomebuild]}+{PV.annonars}/rocksdb/IDENTITY",
             f"output/full/annonars/gnomad-sv-genomes-{genomebuild}-{gnomad_sv_versions[genomebuild]}+{PV.annonars}/rocksdb/IDENTITY",
             # ----- sequence annotation
-            f"output/full/annonars/functional-{genomebuild}-{refseq_fe_versions[genomebuild]}+{PV.annonars}/rocksdb/IDENTITY",
+            f"output/full/annonars/functional-{genomebuild}-{refseq_versions[genomebuild]}+{PV.annonars}/rocksdb/IDENTITY",
             f"output/full/annonars/regions-{genomebuild}-{DV.today}+{PV.annonars}/rocksdb/IDENTITY",
             # ----- conservation
             f"output/full/annonars/cons-{genomebuild}-{cons_versions[genomebuild]}+{PV.annonars}/rocksdb/IDENTITY",
@@ -312,6 +312,10 @@ def generate_input_files():
             expand("output/pre-mehari/{{genomebuild_conventions[genomebuild]}}/dbSNP/{{DV.dbsnp}}/Dbsnp.{chrom}.{file_ext}", chrom=CHROMS, file_ext=["tsv", "release_info"]),
             f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/ensembltogenesymbol/{DV.ensembl}/EnsemblToGeneSymbol.tsv",
             f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/ensembltogenesymbol/{DV.ensembl}/EnsemblToGeneSymbol.release_info",
+            f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/MITOMAP/{DV.today}/Mitomap.tsv",
+            f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/MITOMAP/{DV.today}/Mitomap.release_info",
+            f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/mtDB/{DV.mtdb}/MtDb.tsv",
+            f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/mtDB/{DV.mtdb}/MtDb.release_info",
         ]
     # Files independent of genomebuild (or serving both)
     input_files += [
@@ -481,6 +485,8 @@ include: "rules/pre-mehari/snakefiles/GRCh3_/clinvar.smk"
 include: "rules/pre-mehari/snakefiles/GRCh3_/dbsnp.smk"
 include: "rules/pre-mehari/snakefiles/GRCh3_/helixdb.smk"
 include: "rules/pre-mehari/snakefiles/GRCh3_/ensembltogenesymbol.smk"
+include: "rules/pre-mehari/snakefiles/GRCh3_/mitomap.smk"
+include: "rules/pre-mehari/snakefiles/GRCh3_/mtdb.smk"
 # -- grch38
 include: "rules/pre-mehari/snakefiles/GRCh38/gnomad.smk"
 # -- noref

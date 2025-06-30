@@ -12,9 +12,9 @@ rule annos_dbsnp_download:  # -- download dbSNP data
         trap "rm -rf $TMPDIR" EXIT
 
         if [[ "{wildcards.genome_release}" == grch37 ]]; then
-            reference={DV.dbsnp_reference_37}
+            reference={DV.refseq_ref_37}
         else
-            reference={DV.dbsnp_reference_38}
+            reference={DV.refseq_ref_38}
         fi
 
         # Perform the actual download.
@@ -36,32 +36,15 @@ rule annos_dbsnp_assembly_release:
     shell:
         r"""
         if [[ "{wildcards.genome_release}" == grch37 ]]; then
-            reference={DV.dbsnp_reference_37_ext}
-            reference_report={DV.dbsnp_reference_37_report}
+            reference={DV.refseq_ref_37_assembly}
+            reference_report={DV.refseq_ref_37_date}
         else
-            reference={DV.dbsnp_reference_38_ext}
-            reference_report={DV.dbsnp_reference_38_report}
+            reference={DV.refseq_ref_38_assembly}
+            reference_report={DV.refseq_ref_38_date}
         fi
 
         wget --no-check-certificate \
             -O {output.txt} \
-            https://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/annotation_releases/$reference_report/${{reference}}_assembly_report.txt
+            {DV.refseq_base_url}/$reference_report/${{reference}}_assembly_report.txt
         """
 
-
-# TODO
-# Note: annonars uses an archived version, b151
-# VarFish had a rolling release of dbSNP, with the latest version being b155.
-#
-# Download links used for annonars for b151 are:
-# https://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh37p13/VCF/00-All.vcf.gz
-# https://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/VCF/00-All.vcf.gz
-# However, the files in this folders never received any update.
-#
-# Download links for the latest version used for VarFish are:
-# https://ftp.ncbi.nih.gov/snp/latest_release/VCF/GCF_000001405.25.gz
-# https://ftp.ncbi.nih.gov/snp/latest_release/VCF/GCF_000001405.39.gz
-#
-# Best would be to use a tagged version:
-# https://ftp.ncbi.nih.gov/snp/archive/b157/VCF/GCF_000001405.25.gz
-# https://ftp.ncbi.nih.gov/snp/archive/b157/VCF/GCF_000001405.40.gz

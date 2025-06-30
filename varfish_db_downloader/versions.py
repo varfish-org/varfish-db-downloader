@@ -40,6 +40,10 @@ class DataVersions:
     ensembl_37_archive_url: str
     #: URL to use for ENSEMBL archive.
     ensembl_38_archive_url: str
+    #: URL to use for ENSEMBL archive FTP.
+    ensembl_37_archive_ftp: str
+    #: URL to use for ENSEMBL archive FTP.
+    ensembl_38_archive_ftp: str
     #: String to use for current date.
     today: str
     #: Version of dbNSFP.
@@ -102,18 +106,20 @@ class DataVersions:
     refseq_38: str
     #: dbSNP version.
     dbsnp: str
-    #: dbSNP reference version (GRCh37).
-    dbsnp_reference_37: str
-    #: dbSNP reference version (GRCh38).
-    dbsnp_reference_38: str
-    #: dbSNP reference version (GRCh37) for reports.
-    dbsnp_reference_37_report: str
-    #: dbSNP reference version (GRCh38) for reports.
-    dbsnp_reference_38_report: str
-    #: dbSNP reference version (GRCh37).
-    dbsnp_reference_37_ext: str
-    #: dbSNP reference version (GRCh38).
-    dbsnp_reference_38_ext: str
+    #: Base URL for RefSeq releases.
+    refseq_base_url: str
+    #: Refseq release (GRCh37).
+    refseq_37: str
+    #: Refseq release (GRCh38).
+    refseq_38: str
+    #: Refseq reference version (GRCh37).
+    refseq_ref_37: str
+    #: Refseq reference version (GRCh38).
+    refseq_ref_38: str
+    #: Refseq assembly (refseq reference + GRCh37 build with patch).
+    refseq_ref_37_assembly: str
+    #: Refseq assembly (refseq reference + GRCh38 build with patch).
+    refseq_ref_38_assembly: str
     #: ACMG secondary findings version.
     acmg_sf: str
     #: HPO
@@ -131,10 +137,6 @@ class DataVersions:
     #: Marker file for the tracks version.  This allows us to update the
     #: tracks BED files later on.
     tracks: str
-    #: RefSeq functional elements for GRCh37.
-    refseq_fe_37: str
-    #: RefSeq functional elements for GRCh38.
-    refseq_fe_38: str
     #: CDOT version.
     cdot: str
     #: HGNC quarterly release date.
@@ -143,6 +145,25 @@ class DataVersions:
     hgnc_gff_37: str
     #: HGNC GFF for GRCh38.
     hgnc_gff_38: str
+    #: 
+    mtdb: str
+
+
+# The following should be consistent with the mehari-data-tx release:
+# https://github.com/varfish-org/mehari-data-tx/blob/main/config/config.yaml#L31
+# https://github.com/varfish-org/mehari-data-tx/blob/main/config/config.yaml#L114
+#: RefSeq release for GRCh37
+REFSEQ_37 = "105.20220307"
+#: RefSeq release for GRCh38
+REFSEQ_38 = "110"
+#:  RefSeq reference for GRCh37, corresponding to REFSEQ_37
+REFSEQ_REF_37 = "GCF_000001405.25"
+#:  RefSeq reference for GRCh38, corresponding to REFSEQ_38
+REFSEQ_REF_38 = "GCF_000001405.40"
+#: RefSeq reference build for GRCh37, corresponding to REFSEQ_REF_37
+REFSEQ_REF_37_BUILD = "GRCh37.p13"
+#: RefSeq reference build for GRCh38, corresponding to REFSEQ_REF_38
+REFSEQ_REF_38_BUILD = "GRCh38.p14"
 
 
 #: The data versions to use.
@@ -153,8 +174,10 @@ DATA_VERSIONS = DataVersions(
     ensembl_37="87",
     ensembl_38="112",  # keep at 112 for consistency with mehari
     ensembl="112",  # keep at 112 for consistency with mehari and ensembl_archive_url
-    ensembl_37_archive_url="https://grch37.archive.ensembl.org",  # not possible to tag a specific version but according to them they didn't essenitally update sind 75 (2014)
+    ensembl_37_archive_url="https://grch37.archive.ensembl.org",  # not possible to tag a specific version but according to them they didn't update essential parts since release 75 (2014)
     ensembl_38_archive_url="https://may2024.archive.ensembl.org",
+    ensembl_37_archive_ftp="http://ftp.ensembl.org/pub/grch37/",
+    ensembl_38_archive_ftp="http://ftp.ensembl.org/pub/",
     today=TODAY,
     dbnsfp="4.5",  # update to 4.9 or 5.1 ?
     dbscsnv="1.1",
@@ -183,15 +206,7 @@ DATA_VERSIONS = DataVersions(
     ucsc_alt_seq_liftover_38="20221103",
     ucsc_fix_seq_liftover_37="20200609",
     ucsc_fix_seq_liftover_38="20221103",
-    refseq_37="105",
-    refseq_38="GCF_000001405.40+RS_2023_03",
     dbsnp="b157",
-    dbsnp_reference_37="GCF_000001405.25",
-    dbsnp_reference_38="GCF_000001405.40",
-    dbsnp_reference_37_report="GCF_000001405.25-RS_2024_09",
-    dbsnp_reference_38_report="GCF_000001405.40-RS_2024_08",
-    dbsnp_reference_37_ext="GCF_000001405.25_GRCh37.p13",
-    dbsnp_reference_38_ext="GCF_000001405.40_GRCh38.p14",
     acmg_sf="3.1", # ATTN! source file is placed manually in the data directory
     hpo="20250303",
     orphadata=TODAY,
@@ -199,15 +214,23 @@ DATA_VERSIONS = DataVersions(
     clinvar_release=CLINVAR_RELEASE,
     clinvar_version=CLINVAR_VERSION,
     tracks="0",
-    refseq_fe_37="105.20201022",
-    refseq_fe_38="110",
+    # refseq_37="105",
+    # refseq_38="GCF_000001405.40+RS_2023_03",
+    refseq_base_url="https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/9606",
+    refseq_37=REFSEQ_37,
+    refseq_38=REFSEQ_38,
+    refseq_ref_37=REFSEQ_REF_37,
+    refseq_ref_38=REFSEQ_REF_38,
+    refseq_ref_37_assembly=f"{REFSEQ_REF_37}_{REFSEQ_REF_37_BUILD}",
+    refseq_ref_38_assembly=f"{REFSEQ_REF_38}_{REFSEQ_REF_38_BUILD}",
     mehari_tx="0.10.3",
     # The following 4 lines/versions should be consistent with the mehari-data-tx release:
     # https://github.com/varfish-org/mehari-data-tx/blob/v{mehari_tx}/config/config.yaml
     cdot="0.2.27", # 1
     hgnc_quarterly="2025-04-01", # 2
-    hgnc_gff_37="GCF_000001405.25_GRCh37.p13_genomic.105.20220307.gff", # 4
-    hgnc_gff_38="GCF_000001405.40_GRCh38.p14_genomic.110.gff", # 3
+    hgnc_gff_37=f"{REFSEQ_REF_37_BUILD}_genomic.{REFSEQ_37}.gff", # 3
+    hgnc_gff_38=f"{REFSEQ_REF_38_BUILD}_genomic.{REFSEQ_38}.gff", # 4
+    mtdb="20210728",  # Was manually downloaded at that date, database doesn't exist anymore
 )
 
 

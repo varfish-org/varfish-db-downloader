@@ -55,3 +55,4 @@ dependencies:
   - httpcore =0.18.0
   - trio
   - qsv
+  - biopython
