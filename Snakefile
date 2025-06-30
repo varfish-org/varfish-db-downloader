@@ -309,13 +309,17 @@ def generate_input_files():
             f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/clinvar/{DV.hgnc_quarterly}+{DV.clinvar_release}/Clinvar.release_info",
             f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/HelixMtDb/{DV.helixmtdb}/HelixMtDb.tsv",
             f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/HelixMtDb/{DV.helixmtdb}/HelixMtDb.release_info",
-            expand("output/pre-mehari/{{genomebuild_conventions[genomebuild]}}/dbSNP/{{DV.dbsnp}}/Dbsnp.{chrom}.{file_ext}", chrom=CHROMS, file_ext=["tsv", "release_info"]),
+            expand("output/pre-mehari/{genomebuild}/dbSNP/{dbsnp}/Dbsnp.{chrom}.{file_ext}", genomebuild=genomebuild_conventions[genomebuild], dbsnp=DV.dbsnp, chrom=CHROMS, file_ext=["tsv", "release_info"]),
             f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/ensembltogenesymbol/{DV.ensembl}/EnsemblToGeneSymbol.tsv",
             f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/ensembltogenesymbol/{DV.ensembl}/EnsemblToGeneSymbol.release_info",
             f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/MITOMAP/{DV.today}/Mitomap.tsv",
             f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/MITOMAP/{DV.today}/Mitomap.release_info",
             f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/mtDB/{DV.mtdb}/MtDb.tsv",
             f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/mtDB/{DV.mtdb}/MtDb.release_info",
+            f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/extra_annos/{DV.today}/ExtraAnno.tsv",
+            f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/extra_annos/{DV.today}/ExtraAnno.release_info",
+            f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/extra_annos/{DV.today}/ExtraAnnoFields.tsv",
+            f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/extra_annos/{DV.today}/ExtraAnnoFields.release_info",
         ]
     # Files independent of genomebuild (or serving both)
     input_files += [
@@ -487,6 +491,7 @@ include: "rules/pre-mehari/snakefiles/GRCh3_/helixdb.smk"
 include: "rules/pre-mehari/snakefiles/GRCh3_/ensembltogenesymbol.smk"
 include: "rules/pre-mehari/snakefiles/GRCh3_/mitomap.smk"
 include: "rules/pre-mehari/snakefiles/GRCh3_/mtdb.smk"
+include: "rules/pre-mehari/snakefiles/GRCh3_/extra_annos.smk"
 # -- grch38
 include: "rules/pre-mehari/snakefiles/GRCh38/gnomad.smk"
 # -- noref
