@@ -141,7 +141,7 @@ rule result_GRChXX_extra_annos_tsv_step_1:
                 tabix -R $input {input.cadd_snvs} \
                 | cut -f 1-4,$cut_expr \
                 | awk -v "prefix=$prefix" -F $'\t' 'BEGIN {{ OFS=FS }} {{
-                    printf("{wildcards.genome_build}\t%s\t%d\t%d\t-1\t%s\t%s\t[", prefix $1, $2, $2, $3, $4);
+                    printf("{wildcards.genomebuild}\t%s\t%d\t%d\t-1\t%s\t%s\t[", prefix $1, $2, $2, $3, $4);
                     for (i = 5; i <= NF; i++) {{
                         x = ($i == "NA" || $i == ".") ? "null" : $i;
                         if (i != 5) {{
