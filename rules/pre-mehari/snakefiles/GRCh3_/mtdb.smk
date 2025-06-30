@@ -1,18 +1,24 @@
+def input_mitomap_tsv(wildcards):
+    return {
+        "ref": f"work/reference/{wildcards.genomebuild.lower()}/reference.fa",
+        "txt": "rules/pre-mehari/tools/data/mtdb.tsv",
+        "header": "rules/pre-mehari/header/mtdb.txt",
+    }
+
+
 rule result_GRChXX_mtdb_tsv:
     input:
-        ref="GRCh37/reference/hs37d5/hs37d5.fa",
-        txt="tools/data/mtdb.tsv",
-        header="header/mtdb.txt",
+        unpack(input_mitomap_tsv)
     output:
-        tsv="{genome_build}/mtDB/{download_date}/MtDb.tsv",
-        release_info="{genome_build}/mtDB/{download_date}/MtDb.release_info",
+        tsv="output/pre-mehari/{genomebuild}/mtDB/{download_date}/MtDb.tsv",
+        release_info="output/pre-mehari/{genomebuild}/mtDB/{download_date}/MtDb.release_info",
     run:
         import binning
         import csv
 
         from Bio import SeqIO
 
-        if wildcards.genome_build == "GRCh37":
+        if wildcards.genomebuild == "GRCh37":
             chrom = "MT"
         else:
             chrom = "chrM"
@@ -22,7 +28,7 @@ rule result_GRChXX_mtdb_tsv:
             input.ref, "r"
         ) as fasta:
             fasta_records = SeqIO.to_dict(SeqIO.parse(fasta, "fasta"))
-            mitochondrium = fasta_records["MT"].seq
+            mitochondrium = fasta_records[chrom].seq
             header = [fh_header.read().strip().split("\n")]
             result = []
             line_header = next(fh_input).strip("\n").split("\t")
@@ -58,7 +64,7 @@ rule result_GRChXX_mtdb_tsv:
                             print("Frequency at position {} is 100%!".format(start))
                         result.append(
                             [
-                                wildcards.genome_build,  # release
+                                wildcards.genomebuild,  # release
                                 chrom,  # chromosome
                                 start,  # start
                                 start,  # end
@@ -89,6 +95,6 @@ rule result_GRChXX_mtdb_tsv:
             writer.writerows(
                 [
                     ["table", "version", "genomebuild", "null_value"],
-                    ["MtDb", "latest", "GRCh37", ""],
+                    ["MtDb", wildcards.download_date, wildcards.genomebuild, ""],
                 ]
             )

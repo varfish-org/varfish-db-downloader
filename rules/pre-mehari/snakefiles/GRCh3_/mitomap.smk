@@ -1,6 +1,6 @@
-rule GRCh37_mitomap_download:
+rule mitomap_download:
     output:
-        "GRCh37/MITOMAP/{download_date}/download/polymorphisms.vcf",
+        "work/download/pre-mehari/grch37/MITOMAP/{download_date}/polymorphisms.vcf",
     shell:
         r"""
         wget --no-check-certificate \
@@ -12,17 +12,23 @@ rule GRCh37_mitomap_download:
 
 rule GRChXX_mitomap_normalize:
     input:
-        vcf="GRCh37/MITOMAP/{download_date}/download/polymorphisms.vcf",
-        ref="GRCh37/reference/hs37d5/hs37d5.fa",
+        vcf="work/download/pre-mehari/grch37/MITOMAP/{download_date}/polymorphisms.vcf",
+        ref="work/reference/{genomebuild}/reference.fa",
     output:
-        vcf="{reference}/MITOMAP/{download_date}/download/polymorphisms.normalized.annotated.vcf",
-        norm=temp("{reference}/MITOMAP/{download_date}/download/polymorphisms.normalized.vcf"),
-        txt_tmp=temp("{reference}/MITOMAP/{download_date}/download/query-result.txt"),
-        ann=temp("{reference}/MITOMAP/{download_date}/download/annotate.bed.gz"),
-        anntbi=temp("{reference}/MITOMAP/{download_date}/download/annotate.bed.gz.tbi"),
+        vcf="work/download/pre-mehari/{genomebuild}/MITOMAP/{download_date}/polymorphisms.normalized.annotated.vcf",
+        tmp_vcf=temp("work/download/pre-mehari/{genomebuild}/MITOMAP/{download_date}/mt_tmp.vcf"),
+        norm=temp("work/download/pre-mehari/{genomebuild}/MITOMAP/{download_date}/polymorphisms.normalized.vcf"),
+        txt_tmp=temp("work/download/pre-mehari/{genomebuild}/MITOMAP/{download_date}/query-result.txt"),
+        ann=temp("work/download/pre-mehari/{genomebuild}/MITOMAP/{download_date}/annotate.bed.gz"),
+        anntbi=temp("work/download/pre-mehari/{genomebuild}/MITOMAP/{download_date}/annotate.bed.gz.tbi"),
     shell:
         r"""
-        perl -p -e 's/;HGFL=[^;\s]*;?//g' {input.vcf} | perl -p -e 's/;FreqCR=[^;\s]*;?//g' \
+        if [[ "{wildcards.genomebuild}" == "grch38" ]]; then
+            sed 's/MT\b/chrM/' {input.vcf} > {output.tmp_vcf}
+        else
+            cp {input.vcf} {output.tmp_vcf}
+        fi
+        perl -p -e 's/;HGFL=[^;\s]*;?//g' {output.tmp_vcf} | perl -p -e 's/;FreqCR=[^;\s]*;?//g' \
         | bcftools norm \
             -m -any \
             -c w \
@@ -35,7 +41,6 @@ rule GRChXX_mitomap_normalize:
             -o {output.txt_tmp} \
             {output.norm}
         uniq {output.txt_tmp} | awk -F$'\t' 'BEGIN{{OFS=FS}}{{$2-=1; print $0,$6/$7}}' | bgzip -c > {output.ann}
-        ls -lh {output.ann}
         tabix -p bed {output.ann}
         bcftools annotate \
             -a {output.ann} \
@@ -46,25 +51,28 @@ rule GRChXX_mitomap_normalize:
         """
 
 
+def input_mitomap_tsv(wildcards):
+    return {
+        "vcf": f"work/download/pre-mehari/{wildcards.genomebuild.lower()}/MITOMAP/{wildcards.download_date}/polymorphisms.normalized.annotated.vcf",
+    }
+
+
 rule result_GRChXX_mitomap_tsv:
     input:
-        vcf=(
-            "{genome_build}/MITOMAP/{download_date}/download/polymorphisms.normalized.annotated.vcf"
-        ),
-        header="header/mitomap.txt",
+        unpack(input_mitomap_tsv)
     output:
-        tsv="{genome_build}/MITOMAP/{download_date}/Mitomap.tsv",
-        release_info="{genome_build}/MITOMAP/{download_date}/Mitomap.release_info",
+        tsv="output/pre-mehari/{genomebuild}/MITOMAP/{download_date}/Mitomap.tsv",
+        release_info="output/pre-mehari/{genomebuild}/MITOMAP/{download_date}/Mitomap.release_info",
     shell:
         r"""
         (
-            cat {input.header} | tr '\n' '\t' | sed -e 's/\t*$/\n/g';
+            echo -e "release\tchromosome\tstart\tend\tbin\treference\talternative\tac\tan\taf"
             bcftools query \
-                -f "{wildcards.genome_build}\t%CHROM\t%POS\t%END\t\t%REF\t%ALT\t%AC\t%AN\t%AF\n" \
+                -f "{wildcards.genomebuild}\t%CHROM\t%POS\t%END\t\t%REF\t%ALT\t%AC\t%AN\t%AF\n" \
                 {input.vcf}
         ) \
-        | python tools/ucsc_binning.py \
+        | python rules/pre-mehari/tools/ucsc_binning.py \
         > {output.tsv}
 
-        echo -e "table\tversion\tgenomebuild\tnull_value\nMitomap\t$(date +%Y/%m/%d)\t{wildcards.genome_build}\t." > {output.release_info}
+        echo -e "table\tversion\tgenomebuild\tnull_value\nMitomap\t{wildcards.download_date}\t{wildcards.genomebuild}\t." > {output.release_info}
         """

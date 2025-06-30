@@ -56,3 +56,4 @@ dependencies:
   - trio
   - polars >=1.23,<2
   - qsv
+  - biopython

@@ -2,34 +2,98 @@ import sys
 import tqdm
 
 
+rule grch3x_refseq_exons_download:
+    output:
+        bed="work/download/pre-mehari/{genomebuild}/exons/refseq_exons.bed",
+    params:
+        assembly=lambda wildcards: DV.refseq_ref_38_assembly if wildcards.genomebuild == "GRCh38" else DV.refseq_ref_37_assembly,
+    shell:
+        r"""
+        export TMPDIR=$(mktemp -d)
+        trap "rm -rf $TMPDIR" EXIT ERR
+
+        wget --no-check-certificate -O - '{DV.refseq_base_url}/{params.assembly}/{params.assembly}_assembly_structure/Primary_Assembly/assembled_chromosomes/chr2acc' \
+        | awk 'BEGIN {{ OFS="\t" }} !/^#/ {{ print $2, $1 }}' \
+        | LC_ALL=C sort -k1,1 \
+        > $TMPDIR/names
+
+        wget --no-check-certificate -O - '{DV.refseq_base_url}/{params.assembly}/{params.assembly}_genomic.gff.gz' \
+        | zgrep -v '^#' \
+        | LC_ALL=C sort -k1,1 \
+        > $TMPDIR/genes
+
+        LC_ALL=C join --check-order -t $'\t' -j 1 $TMPDIR/names $TMPDIR/genes \
+        | cut -f 2- \
+        | sed -e 's/[=;:,]/ /g' \
+        | awk 'BEGIN {{ OFS="\t" }} ($3 == "exon") {{ print $1, $4, $5 }}' \
+        | LC_ALL=C sort -k1,1 -k2,2n -k3,3n \
+        | sed -e 's/[";]//g' \
+        | grep '^[1-9XYM]' \
+        > {output.bed}
+        """
+
+
+rule grch3x_ensembl_exons_download:
+    output:
+        bed="work/download/pre-mehari/{genomebuild}/exons/ensembl_exons.bed",
+    params:
+        ensembl=lambda wildcards: DV.ensembl_38 if wildcards.genomebuild == "GRCh38" else DV.ensembl_37,
+        genomebuild=lambda wildcards: wildcards.genomebuild.lower()
+        url=lambda wildcards: DV.ensembl_38_archive_ftp if wildcards.genomebuild == "GRCh38" else DV.ensembl_37_archive_ftp,
+    shell:
+        r"""
+        wget --no-check-certificate -O - '{params.url}/release-{params.ensembl}/gtf/homo_sapiens/Homo_sapiens.{params.genomebuild}.{params.ensembl}.gtf.gz' \
+        | zcat \
+        | awk '
+            BEGIN {{ OFS="\t" }}
+            ($3 == "exon") {{ print $1, $4, $5 }}' \
+        | LC_ALL=C sort -k1,1 -k2,2n -k3,3n \
+        | sed -e 's/[";]//g' \
+        | grep '^[1-9XYM]' \
+        > {output.bed}
+        """
+
+
+rule GRChXX_extra_annos_prepare_bed:
+    input:
+        "work/download/pre-mehari/{genomebuild}/exons/refseq_exons.bed",
+        "work/download/pre-mehari/{genomebuild}/exons/ensembl_exons.bed",
+    output:
+        bed="work/download/pre-mehari/{genomebuild}/exons/refseq_ensembl_exons.bed",
+    shell:
+        r"""
+        bedops --range 100 -m {input} > {output.bed}
+        """
+
+
 rule result_GRChXX_extra_annos_release_info:
     input:
-        "{genome_build}/extra_annos/{release_name}/ExtraAnno.tsv",
-        "{genome_build}/extra_annos/{release_name}/ExtraAnnoField.tsv",
+        "output/pre-mehari/{genomebuild}/extra_annos/{release_name}/ExtraAnno.tsv",
+        "output/pre-mehari/{genomebuild}/extra_annos/{release_name}/ExtraAnnoField.tsv",
     output:
-        anno="{genome_build}/extra_annos/{release_name}/ExtraAnno.release_info",
-        annofield="{genome_build}/extra_annos/{release_name}/ExtraAnnoField.release_info",
+        anno="output/pre-mehari/{genomebuild}/extra_annos/{release_name}/ExtraAnno.release_info",
+        annofield="output/pre-mehari/{genomebuild}/extra_annos/{release_name}/ExtraAnnoField.release_info",
     wildcard_constraints:
         release_name="[^/]+",
     shell:
         r"""
-        echo -e "table\tversion\tgenomebuild\tnull_value\nExtraAnno\t{wildcards.release_name}\t{wildcards.genome_build}\t" > {output.anno}
-        echo -e "table\tversion\tgenomebuild\tnull_value\nExtraAnnoField\t{wildcards.release_name}\t{wildcards.genome_build}\t" > {output.annofield}
+        echo -e "table\tversion\tgenomebuild\tnull_value\nExtraAnno\t{wildcards.release_name}\t{wildcards.genomebuild}\t" > {output.anno}
+        echo -e "table\tversion\tgenomebuild\tnull_value\nExtraAnnoField\t{wildcards.release_name}\t{wildcards.genomebuild}\t" > {output.annofield}
         """
 
 
 rule result_GRChXX_extra_annos_tsv_step_1:
     input:
-        bed="{genome_build}/extra_annos/{release_name}/download/refseq_ensembl_exons.bed",
-        cadd_snvs="{genome_build}/extra_annos/{release_name}/download/whole_genome_SNVs_inclAnno.tsv.gz",
+        bed="work/download/pre-mehari/{genomebuild}/exons/refseq_ensembl_exons.bed",
+        cadd_snvs="work/download/annos/{genomebuild}/seqvars/cadd/{DV.cadd}/whole_genome_SNVs_inclAnno.tsv.gz"
     output:
-        tsv="{genome_build}/extra_annos/{release_name}/download/ExtraAnno.tsv",
-        fields="{genome_build}/extra_annos/{release_name}/ExtraAnnoField.tsv",
+        tsv="work/pre-mehari/{genomebuild}/extra_annos/{release_name}/ExtraAnno.tsv",  # this is intentionally in work
+        fields="output/pre-mehari/{genomebuild}/extra_annos/{release_name}/ExtraAnnoField.tsv",
     wildcard_constraints:
         release_name="[^/]+",
     shell:
         r"""
-        if [[ "{wildcards.release_name}" == "GRCh38" ]]; then
+        if [[ "{wildcards.genomebuild}" == "GRCh38" ]]; then
           cut_expr=109-112,113-117,129,130,134
         else
           cut_expr=94-102,113,114,116
@@ -47,7 +111,7 @@ rule result_GRChXX_extra_annos_tsv_step_1:
         | sed -e 's/PHRED/CADD-PHRED/g' \
         > {output.fields}
 
-        if [[ "{wildcards.genome_build}" == GRCh37 ]]; then
+        if [[ "{wildcards.genomebuild}" == GRCh37 ]]; then
           prefix=""
         else
           prefix="chr"
@@ -117,13 +181,12 @@ class DecodeDotAsNull(json.JSONDecoder):
 
 rule result_GRChXX_extra_annos_tsv_step_2:
     input:
-        tsv="{genome_build}/extra_annos/{release_name}/download/ExtraAnno.tsv",
+        tsv="work/pre-mehari/{genomebuild}/extra_annos/{release_name}/ExtraAnno.tsv",  # this is intentionally in work
     output:
-        tsv="{genome_build}/extra_annos/{release_name}/ExtraAnno.tsv",
+        tsv="output/pre-mehari/{genomebuild}/extra_annos/{release_name}/ExtraAnno.tsv",
     run:
         import json
         import csv
-
 
         def merge_rows(rows):
             result = rows[0][:7] + [[]]
@@ -145,7 +208,6 @@ rule result_GRChXX_extra_annos_tsv_step_2:
             result[-1] = json.dumps(result[-1])
             # print("MERGED\n  %s\nTO\n  %s" % (rows, result), file=sys.stderr)
             return result
-
 
         header = [
             "release",
@@ -176,30 +238,3 @@ rule result_GRChXX_extra_annos_tsv_step_2:
                             rows = [row]
                 if rows:
                     writer.writerow(merge_rows(rows))
-
-
-rule GRChXX_extra_annos_download:
-    output:
-        vcf="{genome_build}/extra_annos/{release_name}/download/whole_genome_SNVs_inclAnno.tsv.gz",
-        tbi="{genome_build}/extra_annos/{release_name}/download/whole_genome_SNVs_inclAnno.tsv.gz.tbi",
-    shell:
-        r"""
-        wget --no-check-certificate \
-            https://kircherlab.bihealth.org/download/CADD/v1.6/{wildcards.genome_build}/whole_genome_SNVs_inclAnno.tsv.gz \
-            -O {output.vcf}
-        wget --no-check-certificate \
-            https://kircherlab.bihealth.org/download/CADD/v1.6/{wildcards.genome_build}/whole_genome_SNVs_inclAnno.tsv.gz.tbi \
-            -O {output.tbi}
-        """
-
-
-rule GRChXX_extra_annos_prepare_bed:
-    input:
-        "tmp/{genome_build}/ensembl_exons.bed",
-        "tmp/{genome_build}/refseq_exons.bed",
-    output:
-        bed="{genome_build}/extra_annos/{release_name}/download/refseq_ensembl_exons.bed",
-    shell:
-        r"""
-        bedops --range 100 -m {input} > {output.bed}
-        """
