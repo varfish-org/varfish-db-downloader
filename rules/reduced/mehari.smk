@@ -35,7 +35,6 @@ rule subset_mehari:  # -- create exomes subset
         manifest="output/reduced-{set_name}/mehari/freqs-{genome_release}-{version_multi}/MANIFEST.txt",
     wildcard_constraints:
         genome_release=RE_GENOME,
-        v_hpo=RE_VERSION,
         versions=RE_VERSION_MULTI,
     threads: THREADS
     resources:

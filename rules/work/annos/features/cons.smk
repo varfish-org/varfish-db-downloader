@@ -43,7 +43,7 @@ def input_annos_features_cons_to_vcf(wildcards):
         "grch38": DV.ensembl_38,
     }[wildcards.genome_release]
     return {
-        "hgnc": f"work/genes/hgnc/{DV.today}/hgnc_info.jsonl",
+        "hgnc": f"work/genes/hgnc/{DV.hgnc_quarterly}/hgnc_info.jsonl",
         "enst_ensg": (
             f"work/genes/enst_ensg/{wildcards.genome_release}/{ensembl_version}/enst_ensg.tsv"
         ),
