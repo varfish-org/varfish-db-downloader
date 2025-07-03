@@ -34,8 +34,6 @@ class DataVersions:
     ensembl_37: str
     #: String to use for GRCh38 ENSEMBL version.
     ensembl_38: str
-    #: String to use for ENSEMBL version.
-    ensembl: str
     #: URL to use for ENSEMBL archive.
     ensembl_37_archive_url: str
     #: URL to use for ENSEMBL archive.
@@ -141,11 +139,15 @@ class DataVersions:
     cdot: str
     #: HGNC quarterly release date.
     hgnc_quarterly: str
-    #: HGNC GFF for GRCh37.
-    hgnc_gff_37: str
-    #: HGNC GFF for GRCh38.
-    hgnc_gff_38: str
-    #: 
+    #: cdot refseq GFF for GRCh37.
+    cdot_refseq_gff_37: str
+    #: cdot refseq GFF for GRCh38.
+    cdot_refseq_gff_38: str
+    #: cdot ensembl GTF for GRCh37.
+    cdot_ensembl_gtf_37: str
+    #: cdot ensembl GTF for GRCh38.
+    cdot_ensembl_gtf_38: str
+    #: MtDb version
     mtdb: str
 
 
@@ -164,6 +166,10 @@ REFSEQ_REF_38 = "GCF_000001405.40"
 REFSEQ_REF_37_BUILD = "GRCh37.p13"
 #: RefSeq reference build for GRCh38, corresponding to REFSEQ_REF_38
 REFSEQ_REF_38_BUILD = "GRCh38.p14"
+#: Ensembl release for GRCh37
+ENSEMBL_37 = "87"
+#: Ensembl release for GRCh38
+ENSEMBL_38 = "112"
 
 
 #: The data versions to use.
@@ -171,13 +177,10 @@ DATA_VERSIONS = DataVersions(
     alphamissense="1",
     clingen_gene=TODAY,
     clingen_variant=TODAY,
-    ensembl_37="87",
-    ensembl_38="112",  # keep at 112 for consistency with mehari
-    ensembl="112",  # keep at 112 for consistency with mehari and ensembl_archive_url
     ensembl_37_archive_url="https://grch37.archive.ensembl.org",  # not possible to tag a specific version but according to them they didn't update essential parts since release 75 (2014)
     ensembl_38_archive_url="https://may2024.archive.ensembl.org",
-    ensembl_37_archive_ftp="http://ftp.ensembl.org/pub/grch37/",
-    ensembl_38_archive_ftp="http://ftp.ensembl.org/pub/",
+    ensembl_37_archive_ftp="https://ftp.ensembl.org/pub/grch37",
+    ensembl_38_archive_ftp="https://ftp.ensembl.org/pub",
     today=TODAY,
     dbnsfp="4.5",  # update to 4.9 or 5.1 ?
     dbscsnv="1.1",
@@ -208,7 +211,6 @@ DATA_VERSIONS = DataVersions(
     ucsc_fix_seq_liftover_38="20221103",
     dbsnp="b157",
     acmg_sf="3.1", # ATTN! source file is placed manually in the data directory
-    hpo="20250303",
     orphadata=TODAY,
     patho_mms="20220730",
     clinvar_release=CLINVAR_RELEASE,
@@ -217,19 +219,26 @@ DATA_VERSIONS = DataVersions(
     # refseq_37="105",
     # refseq_38="GCF_000001405.40+RS_2023_03",
     refseq_base_url="https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/9606",
+    # The lines/versions below the mehari_tx should be consistent with the mehari-data-tx release:
+    # https://github.com/varfish-org/mehari-data-tx/blob/v{mehari_tx}/config/config.yaml
+    mehari_tx="0.10.4",  # ATTN! version to be consistent with
+    # --- 
+    cdot="0.2.27", # line #L30 and others
+    hgnc_quarterly="2025-04-01", # line #L239
+    cdot_refseq_gff_37=f"{REFSEQ_REF_37}_{REFSEQ_REF_37_BUILD}_genomic.{REFSEQ_37}.gff", # line #L114
+    cdot_refseq_gff_38=f"{REFSEQ_REF_38}_{REFSEQ_REF_38_BUILD}_genomic.{REFSEQ_38}.gff", # line #L31
+    cdot_ensembl_gtf_37=f"ensembl.Homo_sapiens.GRCh37.{ENSEMBL_37}.gtf",
+    cdot_ensembl_gtf_38=f"ensembl.Homo_sapiens.GRCh38.{ENSEMBL_38}.gtf",
+    hpo="v2025-05-06", # line #L250
+    ensembl_37=ENSEMBL_37, # line #L217
+    ensembl_38=ENSEMBL_38, # line #L155
     refseq_37=REFSEQ_37,
     refseq_38=REFSEQ_38,
     refseq_ref_37=REFSEQ_REF_37,
     refseq_ref_38=REFSEQ_REF_38,
     refseq_ref_37_assembly=f"{REFSEQ_REF_37}_{REFSEQ_REF_37_BUILD}",
     refseq_ref_38_assembly=f"{REFSEQ_REF_38}_{REFSEQ_REF_38_BUILD}",
-    mehari_tx="0.10.3",
-    # The following 4 lines/versions should be consistent with the mehari-data-tx release:
-    # https://github.com/varfish-org/mehari-data-tx/blob/v{mehari_tx}/config/config.yaml
-    cdot="0.2.27", # 1
-    hgnc_quarterly="2025-04-01", # 2
-    hgnc_gff_37=f"{REFSEQ_REF_37_BUILD}_genomic.{REFSEQ_37}.gff", # 3
-    hgnc_gff_38=f"{REFSEQ_REF_38_BUILD}_genomic.{REFSEQ_38}.gff", # 4
+    # ---
     mtdb="20210728",  # Was manually downloaded at that date, database doesn't exist anymore
 )
 

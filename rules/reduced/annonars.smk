@@ -36,7 +36,6 @@ rule subset_annonars:  # -- create exomes subset
     wildcard_constraints:
         name=RE_NAME,
         genome_release=RE_GENOME,
-        v_hpo=RE_VERSION,
         versions=RE_VERSION_MULTI,
     threads: THREADS
     resources:

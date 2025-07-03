@@ -109,9 +109,9 @@ def generate_input_files():
         "grch37": DV.refseq_37,
         "grch38": DV.refseq_38,
     }
-    refseq_versions = {
-        "grch37": DV.refseq_37,
-        "grch38": DV.refseq_38,
+    ensembl_versions = {
+        "grch37": DV.ensembl_37,
+        "grch38": DV.ensembl_38,
     }
     cons_versions = {
         "grch37": DV.ucsc_cons_37,
@@ -133,11 +133,7 @@ def generate_input_files():
         "grch37": DV.ucsc_fix_seq_liftover_37,
         "grch38": DV.ucsc_fix_seq_liftover_38,
     }
-    hgnc_gffs = {
-        "grch37": DV.hgnc_gff_37,
-        "grch38": DV.hgnc_gff_38,
-    }
-    genomebuild_conventions = {
+    genomebuild_cap = {
         "grch37": "GRCh37",
         "grch38": "GRCh38",
     }
@@ -154,7 +150,6 @@ def generate_input_files():
             f"work/download/annos/grch38/seqvars/gnomad_exomes/{DV.gnomad_v4}/.done",
             f"work/download/annos/grch38/seqvars/gnomad_genomes/{DV.gnomad_v4}/.done",
             f"work/annos/grch38/features/cons/{DV.ucsc_cons_38}/ucsc_conservation.tsv",
-            f"work/annos/grch38/features/ensembl/{DV.ensembl_38}/ensembl_genes.bed.gz",
             f"work/annos/grch38/features/refseq/{DV.refseq_38}/refseq_genes.bed.gz",
             f"output/full/worker/bgdb-gnomad-exomes-cnv-grch38-{DV.gnomad_sv4}+{PV.worker}/bgdb-gnomad-exomes-cnv-grch38.bin",
             f"output/full/worker/bgdb-gnomad-genomes-sv-grch38-{DV.gnomad_sv4}+{PV.worker}/bgdb-gnomad-genomes-sv-grch38.bin",
@@ -180,7 +175,6 @@ def generate_input_files():
             f"work/download/annos/grch37/seqvars/gnomad_exomes/{DV.gnomad_v2}/.done",
             f"work/download/annos/grch37/seqvars/gnomad_genomes/{DV.gnomad_v2}/.done",
             f"work/annos/grch37/features/cons/{DV.ucsc_cons_37}/ucsc_conservation.tsv",
-            f"work/annos/grch37/features/ensembl/{DV.ensembl_37}/ensembl_genes.bed.gz",
             f"work/annos/grch37/features/refseq/{DV.refseq_37}/refseq_genes.bed.gz",
             f"output/full/worker/bgdb-gnomad-grch37-{DV.gnomad_sv}+{PV.worker}/bgdb-gnomad.bin",
             f"output/full/worker/bgdb-exac-grch37-{DV.exac_cnv}+{PV.worker}/bgdb-exac.bin",
@@ -191,6 +185,8 @@ def generate_input_files():
         ]
     for genomebuild in genomebuilds:
         input_files += [
+            # -- work
+            f"work/annos/{genomebuild}/features/ensembl/{ensembl_versions[genomebuild]}/ensembl_genes.bed.gz",
             # -- mehari data
             # ---- frequencies (via annonars)
             f"output/full/mehari/freqs-{genomebuild}-{gnomad_versions[genomebuild]}+{gnomad_versions[genomebuild]}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
@@ -301,25 +297,25 @@ def generate_input_files():
             f"output/reduced-exomes/mehari/freqs-{genomebuild}-{gnomad_versions[genomebuild]}+{gnomad_versions[genomebuild]}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
             f"output/reduced-exomes/mehari/freqs-{genomebuild}-{gnomad_versions[genomebuild]}+{gnomad_versions[genomebuild]}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/spec.yaml",
             # -- pre-mehari
-            f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/hgnc/{DV.hgnc_quarterly}+{DV.cdot}+{hgnc_gffs[genomebuild]}/Hgnc.tsv",
-            f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/hgnc/{DV.hgnc_quarterly}+{DV.cdot}+{hgnc_gffs[genomebuild]}/Hgnc.release_info",
-            f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/hgnc/{DV.hgnc_quarterly}+{DV.cdot}+{hgnc_gffs[genomebuild]}/RefseqToHgnc.tsv",
-            f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/hgnc/{DV.hgnc_quarterly}+{DV.cdot}+{hgnc_gffs[genomebuild]}/RefseqToHgnc.release_info",
-            f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/clinvar/{DV.hgnc_quarterly}+{DV.clinvar_release}/Clinvar.tsv",
-            f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/clinvar/{DV.hgnc_quarterly}+{DV.clinvar_release}/Clinvar.release_info",
-            f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/HelixMtDb/{DV.helixmtdb}/HelixMtDb.tsv",
-            f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/HelixMtDb/{DV.helixmtdb}/HelixMtDb.release_info",
-            expand("output/pre-mehari/{genomebuild}/dbSNP/{dbsnp}/Dbsnp.{chrom}.{file_ext}", genomebuild=genomebuild_conventions[genomebuild], dbsnp=DV.dbsnp, chrom=CHROMS, file_ext=["tsv", "release_info"]),
-            f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/ensembltogenesymbol/{DV.ensembl}/EnsemblToGeneSymbol.tsv",
-            f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/ensembltogenesymbol/{DV.ensembl}/EnsemblToGeneSymbol.release_info",
-            f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/MITOMAP/{DV.today}/Mitomap.tsv",
-            f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/MITOMAP/{DV.today}/Mitomap.release_info",
-            f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/mtDB/{DV.mtdb}/MtDb.tsv",
-            f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/mtDB/{DV.mtdb}/MtDb.release_info",
-            f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/extra_annos/{DV.today}/ExtraAnno.tsv",
-            f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/extra_annos/{DV.today}/ExtraAnno.release_info",
-            f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/extra_annos/{DV.today}/ExtraAnnoField.tsv",
-            f"output/pre-mehari/{genomebuild_conventions[genomebuild]}/extra_annos/{DV.today}/ExtraAnnoField.release_info",
+            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/hgnc/{DV.hgnc_quarterly}+{DV.cdot}+{refseq_versions[genomebuild]}/Hgnc.tsv",
+            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/hgnc/{DV.hgnc_quarterly}+{DV.cdot}+{refseq_versions[genomebuild]}/Hgnc.release_info",
+            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/hgnc/{DV.hgnc_quarterly}+{DV.cdot}+{refseq_versions[genomebuild]}/RefseqToHgnc.tsv",
+            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/hgnc/{DV.hgnc_quarterly}+{DV.cdot}+{refseq_versions[genomebuild]}/RefseqToHgnc.release_info",
+            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/clinvar/{DV.hgnc_quarterly}+{DV.clinvar_release}/Clinvar.tsv",
+            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/clinvar/{DV.hgnc_quarterly}+{DV.clinvar_release}/Clinvar.release_info",
+            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/HelixMtDb/{DV.helixmtdb}/HelixMtDb.tsv",
+            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/HelixMtDb/{DV.helixmtdb}/HelixMtDb.release_info",
+            expand("output/pre-mehari/{genomebuild}/dbSNP/{dbsnp}/Dbsnp.{chrom}.{file_ext}", genomebuild=genomebuild_cap[genomebuild], dbsnp=DV.dbsnp, chrom=CHROMS, file_ext=["tsv", "release_info"]),
+            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/ensembltogenesymbol/{ensembl_versions[genomebuild]}/EnsemblToGeneSymbol.tsv",
+            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/ensembltogenesymbol/{ensembl_versions[genomebuild]}/EnsemblToGeneSymbol.release_info",
+            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/MITOMAP/{DV.today}/Mitomap.tsv",
+            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/MITOMAP/{DV.today}/Mitomap.release_info",
+            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/mtDB/{DV.mtdb}/MtDb.tsv",
+            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/mtDB/{DV.mtdb}/MtDb.release_info",
+            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/extra_annos/{DV.today}/ExtraAnno.tsv",
+            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/extra_annos/{DV.today}/ExtraAnno.release_info",
+            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/extra_annos/{DV.today}/ExtraAnnoField.tsv",
+            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/extra_annos/{DV.today}/ExtraAnnoField.release_info",
         ]
     # Files independent of genomebuild (or serving both)
     input_files += [
@@ -333,10 +329,10 @@ def generate_input_files():
         # -- genes
         f"work/genes/dbnsfp/{DV.dbnsfp}/genes.tsv.gz",
         "work/genes/decipher/v3/decipher_hi_prediction.tsv",
-        f"work/genes/ensembl/{DV.ensembl}/ensembl_xlink.tsv",
+        f"work/genes/ensembl/{DV.ensembl_38}/ensembl_xlink.tsv",
         f"work/genes/entrez/{DV.today}/gene_info.jsonl",
         f"work/genes/gnomad/{DV.gnomad_constraints}/gnomad_constraints.tsv",
-        f"work/genes/hgnc/{DV.today}/hgnc_info.jsonl",
+        f"work/genes/hgnc/{DV.hgnc_quarterly}/hgnc_info.jsonl",
         f"work/genes/omim/{DV.hpo}+{DV.today}/omim_diseases.tsv",
         f"work/genes/orphadata/{DV.orphadata}/orphadata.jsonl",
         f"work/genes/mondo/{DV.today}/mondo.obo",
@@ -370,8 +366,9 @@ def generate_input_files():
         f"output/pre-mehari/noref/hpo/{DV.hpo}/Hpo.release_info",
         f"output/pre-mehari/noref/hpo/{DV.hpo}/HpoName.tsv",
         f"output/pre-mehari/noref/hpo/{DV.hpo}/HpoName.release_info",
-        f"output/pre-mehari/noref/refseqtoensembl/{DV.ensembl}/RefseqToEnsembl.tsv",
-        f"output/pre-mehari/noref/refseqtoensembl/{DV.ensembl}/RefseqToEnsembl.release_info",
+        # TODO double check the versionen of ensembl
+        f"output/pre-mehari/noref/refseqtoensembl/{DV.ensembl_38}/RefseqToEnsembl.tsv",
+        f"output/pre-mehari/noref/refseqtoensembl/{DV.ensembl_38}/RefseqToEnsembl.release_info",
         f"output/pre-mehari/noref/acmg/{DV.acmg_sf}/Acmg.tsv",  # ATTN! source file is placed manually in the data directory
         f"output/pre-mehari/noref/acmg/{DV.acmg_sf}/Acmg.release_info",
         f"output/pre-mehari/noref/mim2gene/{DV.today}/Mim2geneMedgen.tsv",

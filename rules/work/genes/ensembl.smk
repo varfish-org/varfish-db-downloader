@@ -1,7 +1,6 @@
 ## Rules related to ENSEMBL gene information.
 
 
-# TODO fix this genombuild mess!
 rule genes_ensembl_create_xlink:  # -- create ENSEMBL gene information xlink table
     output:
         tsv="work/genes/ensembl/{ensembl}/ensembl_xlink.tsv",
@@ -27,28 +26,44 @@ rule genes_ensembl_create_xlink:  # -- create ENSEMBL gene information xlink tab
         """
 
 
-rule genes_ensembl_download_maps_grch37:  # -- download files for ENST-ENSG mapping (GRCh37)
+rule genes_ensembl_download_maps_grch3X:  # -- download files for ENST-ENSG mapping
     output:
-        download_txt="work/genes/ensembl/grch37/87/download/knowntoEnsembl.txt.gz",
-        download_gtf="work/genes/ensembl/grch37/87/download/GCF_000001405.25_GRCh37.p13_genomic.gtf.gz",
+        download_gtf="work/genes/ensembl/{genomebuild}/{ensembl_version}/download/ensembl.{cdot_ensembl_gtf}.gz",
+    params:
+        cdot=DV.cdot
     shell:
         r"""
         wget --no-check-certificate \
             -O {output.download_gtf} \
-            'https://ftp.ensembl.org/pub/grch37/current/gtf/homo_sapiens/Homo_sapiens.GRCh37.87.gtf.gz'
+            https://github.com/SACGF/cdot/releases/download/data_v{params.cdot}/cdot-{params.cdot}.ensembl.{wildcards.cdot_ensembl_gtf}.gz
+        """
+
+
+rule genes_ensembl_download_maps_grch37_knowngene:  # -- download files for ENST-ENSG mapping (GRCh37)
+    output:
+        download_txt="work/genes/ensembl/grch37/{ensembl_version}/download/knowntoEnsembl.txt.gz",
+    shell:
+        r"""
         wget --no-check-certificate \
             -O {output.download_txt} \
             'https://hgdownload.soe.ucsc.edu/goldenPath/hg19/database/knownToEnsembl.txt.gz'
+        # knownToEnsembl.txt.gz is frozen for hg19
         """
+
+
+def input_genes_ensembl_process_maps_grch37(wildcards):
+    return {
+        "download_txt": f"work/genes/ensembl/grch37/{wildcards.ensembl_version}/download/knowntoEnsembl.txt.gz",
+        "download_gtf": f"work/genes/ensembl/grch37/{wildcards.ensembl_version}/download/{DV.cdot_ensembl_gtf_37}.gz",
+    }
 
 
 rule genes_ensembl_process_maps_grch37:  # -- process ENST-ENSG mapping (GRCh37)
     input:
-        download_txt="work/genes/ensembl/grch37/87/download/knowntoEnsembl.txt.gz",
-        download_gtf="work/genes/ensembl/grch37/87/download/GCF_000001405.25_GRCh37.p13_genomic.gtf.gz",
+        unpack(input_genes_ensembl_process_maps_grch37)
     output:
-        tsv="work/genes/enst_ensg/grch37/87/enst_ensg.tsv",
-        tsv_md5="work/genes/enst_ensg/grch37/87/enst_ensg.tsv.md5",
+        tsv="work/genes/enst_ensg/grch37/{ensembl_version}/enst_ensg.tsv",
+        tsv_md5="work/genes/enst_ensg/grch37/{ensembl_version}/enst_ensg.tsv.md5",
     shell:
         r"""
         export TMPDIR=$(mktemp -d)
@@ -74,20 +89,15 @@ rule genes_ensembl_process_maps_grch37:  # -- process ENST-ENSG mapping (GRCh37)
         """
 
 
-rule genes_ensembl_download_maps_grch38:  # -- download files for ENST-ENSG mapping (GRCh38)
-    output:
-        download_gtf="work/genes/ensembl/grch38/{ensembl_version}/download/Homo_sapiens.GRCh38.{ensembl_version}.gtf.gz",
-    shell:
-        r"""
-        wget --no-check-certificate \
-            -O {output.download_gtf} \
-            https://ftp.ensembl.org/pub/release-{wildcards.ensembl_version}/gtf/homo_sapiens/Homo_sapiens.GRCh38.{wildcards.ensembl_version}.gtf.gz
-        """
+def input_genes_ensembl_process_maps_grch38(wildcards):
+    return {
+        "download_gtf": f"work/genes/ensembl/grch38/{wildcards.ensembl_version}/download/{DV.cdot_ensembl_gtf_38}.gz",
+    }
 
 
 rule genes_ensembl_process_maps_grch38:  # -- process ENST-ENSG mapping (GRCh38)
     input:
-        download_gtf="work/genes/ensembl/grch38/{ensembl_version}/download/Homo_sapiens.GRCh38.{ensembl_version}.gtf.gz",
+        unpack(input_genes_ensembl_process_maps_grch38)
     output:
         tsv="work/genes/enst_ensg/grch38/{ensembl_version}/enst_ensg.tsv",
         tsv_md5="work/genes/enst_ensg/grch38/{ensembl_version}/enst_ensg.tsv.md5",
