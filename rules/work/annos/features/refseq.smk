@@ -1,11 +1,29 @@
 ## Rules related to RefSeq features.
 
 
-rule annos_features_refseq_gene_regions_download_grch3x:
+rule annos_features_refseq_gene_regions_download_grch37:
     output:
-        report="work/download/annos/{genomebuild}/refseq/{version}/{assembly}_assembly_report.txt",
-        acc="work/download/annos/{genomebuild}/refseq/{version}/chr_accessions_{assembly}",
-        gtf="work/download/annos/{genomebuild}/refseq/{version}/{assembly}_genomic.gtf.gz",
+        acc="work/download/annos/grch37/refseq/{version}/chr_accessions_{assembly}",
+        gtf="work/download/annos/grch37/refseq/{version}/{assembly}_genomic.gtf.gz",
+    params:
+        version_stripped=lambda wildcards: wildcards.version.partition(".")[0]
+    shell:
+        r"""
+        wget --no-check-certificate \
+            -O {output.acc} \
+            'https://ftp.ncbi.nlm.nih.gov/genomes/archive/old_refseq/H_sapiens/ARCHIVE/ANNOTATION_RELEASE.{wildcards.version}/Assembled_chromosomes/chr_accessions_GRCh37.p13'
+
+        wget --no-check-certificate \
+            -O {output.gtf} \
+            '{DV.refseq_base_url}/{wildcards.version}/{wildcards.assembly}/{wildcards.assembly}_genomic.gtf.gz'
+        """
+
+
+rule annos_features_refseq_gene_regions_download_grch38:
+    output:
+        report="work/download/annos/grch38/refseq/{version}/{assembly}_assembly_report.txt",
+        acc="work/download/annos/grch38/refseq/{version}/chr_accessions_{assembly}",
+        gtf="work/download/annos/grch38/refseq/{version}/{assembly}_genomic.gtf.gz",
     shell:
         r"""
         wget --no-check-certificate \
