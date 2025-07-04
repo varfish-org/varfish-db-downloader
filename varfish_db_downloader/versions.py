@@ -218,6 +218,8 @@ DATA_VERSIONS = DataVersions(
     tracks="0",
     # refseq_37="105",
     # refseq_38="GCF_000001405.40+RS_2023_03",
+    # this url should be consisent with where cdot gets its data from
+    # https://github.com/SACGF/cdot/blob/main/generate_transcript_data/cdot_transcripts.yaml#L115
     refseq_base_url="https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/9606",
     # The lines/versions below the mehari_tx should be consistent with the mehari-data-tx release:
     # https://github.com/varfish-org/mehari-data-tx/blob/v{mehari_tx}/config/config.yaml
