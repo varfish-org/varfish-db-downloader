@@ -4,7 +4,7 @@
 rule work_conditions_integrate:  # integrate conditions file
     input:
         mim2gene_medgen="work/download/genes/ncbi/{date}/mim2gene_medgen",
-        genes_xlink="output/full/mehari/genes-xlink-{date}/genes-xlink.tsv",
+        genes_xlink="output/full/mehari/genes-xlink-{hgnc_quarterly_date}/genes-xlink.tsv",
         hpoa="work/download/hpo/{v_hpo}/phenotype.hpoa",
         orpha_jsonl="work/genes/orphadata/{date}/orphadata.jsonl",
         panelapp_jsonl="work/download/genes/panelapp/{date}/panelapp.jsonl",
@@ -15,7 +15,7 @@ rule work_conditions_integrate:  # integrate conditions file
         do_omim_indo="work/download/do/{date}/OMIMinDO.tsv",
         do_omim_import="work/download/do/{date}/omim_import.obo",
     output:
-        jsonl="work/genes/conditions/{v_hpo}+{date}/conditions.jsonl",
+        jsonl="work/genes/conditions/{v_hpo}+{date}+{hgnc_quarterly_date}/conditions.jsonl",
     shell:
         r"""
         if [[ "$(date +%Y%m%d)" != "{wildcards.date}" ]] && [[ "{FORCE_TODAY}" != "True" ]]; then

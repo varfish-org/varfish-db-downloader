@@ -4,7 +4,7 @@
 rule genes_shet:  # -- postprocess file for HGNC gene IDs
     input:
         tsv="bundled-data/weghorn_2019/Weghorn_2019_Supplementary_Table_1.txt.gz",
-        xlink=f"output/full/mehari/genes-xlink-{DV.today}/genes-xlink.tsv",
+        xlink=f"output/full/mehari/genes-xlink-{DV.hgnc_quarterly}/genes-xlink.tsv",
     output:
         tsv="work/genes/shet/2019/shet_weghorn_2019.tsv",
     shell:

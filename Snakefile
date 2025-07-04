@@ -333,7 +333,7 @@ def generate_input_files():
         f"work/genes/entrez/{DV.today}/gene_info.jsonl",
         f"work/genes/gnomad/{DV.gnomad_constraints}/gnomad_constraints.tsv",
         f"work/genes/hgnc/{DV.hgnc_quarterly}/hgnc_info.jsonl",
-        f"work/genes/omim/{DV.hpo}+{DV.today}/omim_diseases.tsv",
+        f"work/genes/omim/{DV.hpo}+{DV.today}+{DV.hgnc_quarterly}/omim_diseases.tsv",
         f"work/genes/orphadata/{DV.orphadata}/orphadata.jsonl",
         f"work/genes/mondo/{DV.today}/mondo.obo",
         "work/genes/rcnv/2022/rcnv_collins_2022.tsv",
@@ -342,10 +342,10 @@ def generate_input_files():
         # -- annonars
         f"output/full/annonars/genes-{DV.acmg_sf}+{DV.gnomad_constraints}+{DV.dbnsfp}+{DV.hpo}+{DV.today}+{DV.hgnc_quarterly}+{PV.annonars}/rocksdb/IDENTITY",
         # -- worker data
-        f"output/full/worker/genes-xlink-{DV.today}+{PV.worker}/genes-xlink.bin",
+        f"output/full/worker/genes-xlink-{DV.hgnc_quarterly}+{PV.worker}/genes-xlink.bin",
         f"output/full/worker/acmg-sf-{DV.acmg_sf}+{PV.worker}/acmg_sf.tsv",  # ATTN! source file is placed manually in the data directory
         f"output/full/worker/mim2gene-{DV.today}+{PV.worker}/mim2gene.tsv",
-        f"output/full/mehari/genes-xlink-{DV.today}/genes-xlink.tsv",
+        f"output/full/mehari/genes-xlink-{DV.hgnc_quarterly}/genes-xlink.tsv",
         # -- viguno
         f"output/full/viguno/hpo-{DV.hpo}+{PV.viguno}/hp.obo",
         f"output/full/viguno/hpo-{DV.hpo}+{PV.viguno}/phenotype.hpoa",
