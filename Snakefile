@@ -143,8 +143,8 @@ def generate_input_files():
         input_files += [
             f"work/genes/clingen/{DV.today}/ClinGen_gene_curation_list_GRCh38.tsv",
             "work/download/genes/alphamissense/1/AlphaMissense_gene_hg38.tsv.gz",
-            expand("work/download/annos/grch38/seqvars/cadd/{cadd}/whole_genome_SNVs_inclAnno.tsv.gz", cadd=[DV.cadd]),
-            expand("work/download/annos/grch38/seqvars/cadd/{cadd}/gnomad.genomes.r3.0.indel_inclAnno.tsv.gz", cadd=[DV.cadd]),
+            f"work/download/annos/grch38/seqvars/cadd/{DV.cadd}/whole_genome_SNVs_inclAnno.tsv.gz",
+            f"work/download/annos/grch38/seqvars/cadd/{DV.cadd}/gnomad.genomes.r3.0.indel_inclAnno.tsv.gz",
             f"work/annos/grch38/seqvars/helixmtdb/{DV.helixmtdb}/helixmtdb.vcf.gz",
             f"work/annos/grch38/seqvars/gnomad_mtdna/{DV.gnomad_mtdna}/gnomad_mtdna.vcf.gz",
             f"work/download/annos/grch38/seqvars/gnomad_exomes/{DV.gnomad_v4}/.done",
@@ -164,8 +164,8 @@ def generate_input_files():
         input_files += [
             f"work/genes/enst_ensg/grch37/{DV.ensembl_37}/enst_ensg.tsv",
             f"work/genes/clingen/{DV.today}/ClinGen_gene_curation_list_GRCh37.tsv",
-            expand("work/download/annos/grch37/seqvars/cadd/{cadd}/whole_genome_SNVs_inclAnno.tsv.gz", cadd=[DV.cadd]),
-            expand("work/download/annos/grch37/seqvars/cadd/{cadd}/InDels_inclAnno.tsv.gz", cadd=[DV.cadd]),
+            f"work/download/annos/grch37/seqvars/cadd/{DV.cadd}/whole_genome_SNVs_inclAnno.tsv.gz",
+            f"work/download/annos/grch37/seqvars/cadd/{DV.cadd}/InDels_inclAnno.tsv.gz",
             f"work/download/annos/grch37/seqvars/dbnsfp/{DV.dbnsfp}a/LICENSE.txt",
             f"work/download/annos/grch37/seqvars/dbnsfp/{DV.dbnsfp}c/LICENSE.txt",
             f"work/download/annos/grch37/seqvars/dbscsnv/{DV.dbscsnv}/dbscSNV{DV.dbscsnv}.chr1",

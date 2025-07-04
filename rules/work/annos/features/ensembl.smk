@@ -7,13 +7,13 @@ def input_annos_features_ensembl_gene_regions_process(wildcards):
         "grch37": DV.ensembl_37,
         "grch38": DV.ensembl_38,
     }[wildcards.genome_release]
-    cdot_ensembl_gtf = {
-        "grch37": DV.cdot_ensembl_gtf_37,
-        "grch38": DV.cdot_ensembl_gtf_38,
+    genomebuild = {
+        "grch37": "GRCh37",
+        "grch38": "GRCh38",
     }[wildcards.genome_release]
     return {
         "gtf": (
-            f"work/genes/ensembl/{wildcards.genome_release}/{ensembl_version}/download/{cdot_ensembl_gtf}.gz"
+            f"work/genes/ensembl/{wildcards.genome_release}/{ensembl_version}/download/Homo_sapiens.{genomebuild}.{wildcards.version}.gtf.gz"
         )
     }
 
