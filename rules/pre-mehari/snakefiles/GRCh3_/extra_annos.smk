@@ -86,7 +86,7 @@ rule result_GRChXX_extra_annos_release_info:
 rule result_GRChXX_extra_annos_tsv_step_1:
     input:
         bed="work/download/pre-mehari/{genomebuild}/exons/refseq_ensembl_exons.bed",
-        cadd_snvs="work/download/annos/{genomebuild}/seqvars/cadd/{cadd}/whole_genome_SNVs_inclAnno.tsv.gz"
+        cadd_snvs="work/download/annos/{genomebuild}/seqvars/cadd/{release_name}/whole_genome_SNVs_inclAnno.tsv.gz"
     output:
         tsv="work/pre-mehari/{genomebuild}/extra_annos/{release_name}/ExtraAnno.tsv",  # this is intentionally in work
         fields="output/pre-mehari/{genomebuild}/extra_annos/{release_name}/ExtraAnnoField.tsv",

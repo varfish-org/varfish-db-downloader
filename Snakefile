@@ -312,10 +312,10 @@ def generate_input_files():
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/MITOMAP/{DV.today}/Mitomap.release_info",
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/mtDB/{DV.mtdb}/MtDb.tsv",
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/mtDB/{DV.mtdb}/MtDb.release_info",
-            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/extra_annos/{DV.today}/ExtraAnno.tsv",
-            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/extra_annos/{DV.today}/ExtraAnno.release_info",
-            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/extra_annos/{DV.today}/ExtraAnnoField.tsv",
-            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/extra_annos/{DV.today}/ExtraAnnoField.release_info",
+            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/extra_annos/{DV.cadd}/ExtraAnno.tsv",
+            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/extra_annos/{DV.cadd}/ExtraAnno.release_info",
+            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/extra_annos/{DV.cadd}/ExtraAnnoField.tsv",
+            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/extra_annos/{DV.cadd}/ExtraAnnoField.release_info",
         ]
     # Files independent of genomebuild (or serving both)
     input_files += [
