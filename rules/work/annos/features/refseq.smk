@@ -11,7 +11,7 @@ rule annos_features_refseq_gene_regions_download_grch37:
         r"""
         wget --no-check-certificate \
             -O {output.acc} \
-            'https://ftp.ncbi.nlm.nih.gov/genomes/archive/old_refseq/H_sapiens/ARCHIVE/ANNOTATION_RELEASE.{wildcards.version}/Assembled_chromosomes/chr_accessions_GRCh37.p13'
+            'https://ftp.ncbi.nlm.nih.gov/genomes/archive/old_refseq/H_sapiens/ARCHIVE/ANNOTATION_RELEASE.{params.version_stripped}/Assembled_chromosomes/chr_accessions_GRCh37.p13'
 
         wget --no-check-certificate \
             -O {output.gtf} \
