@@ -140,13 +140,9 @@ class DataVersions:
     #: HGNC quarterly release date.
     hgnc_quarterly: str
     #: cdot refseq GFF for GRCh37.
-    cdot_refseq_gff_37: str
+    cdot_refseq_gff_json_37: str
     #: cdot refseq GFF for GRCh38.
-    cdot_refseq_gff_38: str
-    #: cdot ensembl GTF for GRCh37.
-    cdot_ensembl_gtf_37: str
-    #: cdot ensembl GTF for GRCh38.
-    cdot_ensembl_gtf_38: str
+    cdot_refseq_gff_json_38: str
     #: MtDb version
     mtdb: str
 
@@ -227,10 +223,8 @@ DATA_VERSIONS = DataVersions(
     # --- 
     cdot="0.2.27", # line #L30 and others
     hgnc_quarterly="2025-04-01", # line #L239
-    cdot_refseq_gff_37=f"{REFSEQ_REF_37}_{REFSEQ_REF_37_BUILD}_genomic.{REFSEQ_37}.gff", # line #L114
-    cdot_refseq_gff_38=f"{REFSEQ_REF_38}_{REFSEQ_REF_38_BUILD}_genomic.{REFSEQ_38}.gff", # line #L31
-    cdot_ensembl_gtf_37=f"ensembl.Homo_sapiens.GRCh37.{ENSEMBL_37}.gtf",
-    cdot_ensembl_gtf_38=f"ensembl.Homo_sapiens.GRCh38.{ENSEMBL_38}.gtf",
+    cdot_refseq_gff_json_37=f"{REFSEQ_REF_37}_{REFSEQ_REF_37_BUILD}_genomic.{REFSEQ_37}.gff", # line #L114
+    cdot_refseq_gff_json_38=f"{REFSEQ_REF_38}_{REFSEQ_REF_38_BUILD}_genomic.{REFSEQ_38}.gff", # line #L31
     hpo="v2025-05-06", # line #L250
     ensembl_37=ENSEMBL_37, # line #L217
     ensembl_38=ENSEMBL_38, # line #L155

@@ -49,8 +49,8 @@ rule result_grch3x_hgnc_to_tsv:
 
 def input_result_grch3x_refseq_to_hgnc_to_tsv(wildcards):
     hgnc_gffs = {
-        "GRCh37": DV.cdot_refseq_gff_37,
-        "GRCh38": DV.cdot_refseq_gff_38,
+        "GRCh37": DV.cdot_refseq_gff_json_37,
+        "GRCh38": DV.cdot_refseq_gff_json_38,
     }
     return {
         "header": "rules/pre-mehari/header/refseqtohgnc.txt",

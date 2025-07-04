@@ -28,14 +28,14 @@ rule genes_ensembl_create_xlink:  # -- create ENSEMBL gene information xlink tab
 
 rule genes_ensembl_download_maps_grch3X:  # -- download files for ENST-ENSG mapping
     output:
-        download_gtf="work/genes/ensembl/{genomebuild}/{ensembl_version}/download/ensembl.{cdot_ensembl_gtf}.gz",
+        download_gtf="work/genes/ensembl/{genomebuild}/{ensembl_version}/download/Homo_sapiens.{genomebuild_cap}.{ensembl_version}.gtf.gz",
     params:
-        cdot=DV.cdot
+        url_base=lambda wildcards: DV.ensembl_38_archive_ftp if wildcards.genomebuild == "grch38" else DV.ensembl_37_archive_ftp
     shell:
         r"""
         wget --no-check-certificate \
             -O {output.download_gtf} \
-            https://github.com/SACGF/cdot/releases/download/data_v{params.cdot}/cdot-{params.cdot}.ensembl.{wildcards.cdot_ensembl_gtf}.gz
+            '{params.url_base}/release-{wildcards.ensembl_version}/gtf/homo_sapiens/Homo_sapiens.{wildcards.genomebuild_cap}.{wildcards.ensembl_version}.gtf.gz'
         """
 
 
@@ -54,7 +54,7 @@ rule genes_ensembl_download_maps_grch37_knowngene:  # -- download files for ENST
 def input_genes_ensembl_process_maps_grch37(wildcards):
     return {
         "download_txt": f"work/genes/ensembl/grch37/{wildcards.ensembl_version}/download/knowntoEnsembl.txt.gz",
-        "download_gtf": f"work/genes/ensembl/grch37/{wildcards.ensembl_version}/download/{DV.cdot_ensembl_gtf_37}.gz",
+        "download_gtf": f"work/genes/ensembl/grch37/{wildcards.ensembl_version}/download/Homo_sapiens.GRCh37.{wildcards.ensembl_version}.gtf.gz",
     }
 
 
@@ -91,7 +91,7 @@ rule genes_ensembl_process_maps_grch37:  # -- process ENST-ENSG mapping (GRCh37)
 
 def input_genes_ensembl_process_maps_grch38(wildcards):
     return {
-        "download_gtf": f"work/genes/ensembl/grch38/{wildcards.ensembl_version}/download/{DV.cdot_ensembl_gtf_38}.gz",
+        "download_gtf": f"work/genes/ensembl/grch38/{wildcards.ensembl_version}/download/Homo_sapiens.GRCh38.{wildcards.ensembl_version}.gtf.gz",
     }
 
 
