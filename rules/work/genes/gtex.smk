@@ -49,7 +49,7 @@ rule genes_gtex_v8_map:  # -- map GTex v8 gene files for annonars
     input:
         attributes="work/download/genes/gtex/GTEx_Analysis_v8_Annotations_SampleAttributesDS.txt",
         genes_tpm="work/download/genes/gtex/GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_tpm.gct.gz",
-        genes_xlink=f"output/full/mehari/genes-xlink-{DV.today}/genes-xlink.tsv",
+        genes_xlink=f"output/full/mehari/genes-xlink-{DV.hgnc_quarterly}/genes-xlink.tsv",
     output:
         genes_tpm="work/genes/annonars/gtex_v8/genes_tpm.jsonl.gz",
     run:

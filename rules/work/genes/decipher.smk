@@ -17,7 +17,7 @@ rule genes_decipher_hi_download:  # -- download DECIPHER HI predictions
 
 rule genes_decipher_hi_convert:  # -- convert DECIPHER HI predictions to TSV
     input:
-        hgnc=f"output/full/mehari/genes-xlink-{DV.today}/genes-xlink.tsv",
+        hgnc=f"output/full/mehari/genes-xlink-{DV.hgnc_quarterly}/genes-xlink.tsv",
         bed="work/download/genes/decipher/v3/HI_Predictions_Version3.bed.gz",
     output:
         tsv="work/genes/decipher/v3/decipher_hi_prediction.tsv",
