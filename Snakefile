@@ -340,7 +340,7 @@ def generate_input_files():
         "work/genes/shet/2019/shet_weghorn_2019.tsv",
         "work/genes/domino/20190219/domino.tsv",
         # -- annonars
-        f"output/full/annonars/genes-{DV.acmg_sf}+{DV.gnomad_constraints}+{DV.dbnsfp}+{DV.hpo}+{DV.today}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/full/annonars/genes-{DV.acmg_sf}+{DV.gnomad_constraints}+{DV.dbnsfp}+{DV.hpo}+{DV.today}+{DV.hgnc_quarterly}+{PV.annonars}/rocksdb/IDENTITY",
         # -- worker data
         f"output/full/worker/genes-xlink-{DV.today}+{PV.worker}/genes-xlink.bin",
         f"output/full/worker/acmg-sf-{DV.acmg_sf}+{PV.worker}/acmg_sf.tsv",  # ATTN! source file is placed manually in the data directory
