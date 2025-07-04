@@ -21,15 +21,15 @@ rule output_annonars_genes:  # -- build annonars genes RocksDB file
         decipher_hi="work/genes/decipher/v3/decipher_hi_prediction.tsv",
     output:
         rocksdb_identity=(
-            "output/full/annonars/genes-{v_acmg_sf}+{v_gnomad_constraints}+{v_dbnsfp}+{v_hpo}+{date}+{quarterly_hgnc_date}+{v_annonars}/"
+            "output/full/annonars/genes-{v_acmg_sf}+{v_gnomad_constraints}+{v_dbnsfp}+{v_hpo}+{date}+{hgnc_quarterly_date}+{v_annonars}/"
             "rocksdb/IDENTITY"
         ),
         spec_yaml=(
-            "output/full/annonars/genes-{v_acmg_sf}+{v_gnomad_constraints}+{v_dbnsfp}+{v_hpo}+{date}+{quarterly_hgnc_date}+{v_annonars}/"
+            "output/full/annonars/genes-{v_acmg_sf}+{v_gnomad_constraints}+{v_dbnsfp}+{v_hpo}+{date}+{hgnc_quarterly_date}+{v_annonars}/"
             "spec.yaml"
         ),
         manifest=(
-            "output/full/annonars/genes-{v_acmg_sf}+{v_gnomad_constraints}+{v_dbnsfp}+{v_hpo}+{date}+{quarterly_hgnc_date}+{v_annonars}/"
+            "output/full/annonars/genes-{v_acmg_sf}+{v_gnomad_constraints}+{v_dbnsfp}+{v_hpo}+{date}+{hgnc_quarterly_date}+{v_annonars}/"
             "MANIFEST.txt"
         ),
     wildcard_constraints:
