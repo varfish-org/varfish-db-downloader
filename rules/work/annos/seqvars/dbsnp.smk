@@ -6,7 +6,7 @@ rule annos_dbsnp_download:  # -- download dbSNP data
         vcf="work/download/annos/{genome_release}/seqvars/dbsnp/{version}/dbsnp.vcf.gz",
         vcf_tbi="work/download/annos/{genome_release}/seqvars/dbsnp/{version}/dbsnp.vcf.gz.tbi",
     params:
-        reference=lambda wildcards: DV.refseq_ref_38 if wildcards.genome_release == "grch37" else DV.refseq_ref_37
+        reference=lambda wildcards: DV.refseq_ref_37 if wildcards.genome_release == "grch37" else DV.refseq_ref_38
     shell:
         r"""
         # Check the version.

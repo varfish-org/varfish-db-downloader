@@ -6,12 +6,14 @@ dependencies:
   # Python and Python packages.
   - python =3.10
   - setuptools-scm
+  - git-lfs
   - attrs
   - cattrs
   - click
   - hashdeep
   - loguru
   - numpy
+  - parallel
   - pydantic
   - pronto >=2.5,<3.0
   - pyyaml
