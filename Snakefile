@@ -169,7 +169,7 @@ def generate_input_files():
             f"work/download/annos/grch37/seqvars/dbnsfp/{DV.dbnsfp}a/LICENSE.txt",
             f"work/download/annos/grch37/seqvars/dbnsfp/{DV.dbnsfp}c/LICENSE.txt",
             f"work/download/annos/grch37/seqvars/dbscsnv/{DV.dbscsnv}/dbscSNV{DV.dbscsnv}.chr1",
-            f"work/download/annos/grch37/seqvars/dbsnp/{DV.dbsnp}/dbsnp.vcf.gz",
+            # f"work/download/annos/grch37/seqvars/dbsnp/{DV.dbsnp}/dbsnp.vcf.gz",
             f"work/annos/grch37/seqvars/helixmtdb/{DV.helixmtdb}/helixmtdb.vcf.gz",
             f"work/annos/grch37/seqvars/gnomad_mtdna/{DV.gnomad_mtdna}/gnomad_mtdna.vcf.gz",
             f"work/download/annos/grch37/seqvars/gnomad_exomes/{DV.gnomad_v2}/.done",
@@ -187,6 +187,7 @@ def generate_input_files():
         input_files += [
             # -- work
             f"work/annos/{genomebuild}/features/ensembl/{ensembl_versions[genomebuild]}/ensembl_genes.bed.gz",
+            f"work/download/annos/{genomebuild}/seqvars/dbsnp/{DV.dbsnp}/dbsnp.vcf.gz",
             # -- mehari data
             # ---- frequencies (via annonars)
             f"output/full/mehari/freqs-{genomebuild}-{gnomad_versions[genomebuild]}+{gnomad_versions[genomebuild]}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
@@ -325,7 +326,6 @@ def generate_input_files():
         f"work/download/do/{DV.today}/omim-unmapped.csv",
         # NB: dbNSFP is dual reference (for download)
         # NB: dbscSNV is dual reference (for download)
-        f"work/download/annos/grch37/seqvars/dbsnp/{DV.dbsnp}/dbsnp.vcf.gz",
         # -- genes
         f"work/genes/dbnsfp/{DV.dbnsfp}/genes.tsv.gz",
         "work/genes/decipher/v3/decipher_hi_prediction.tsv",
