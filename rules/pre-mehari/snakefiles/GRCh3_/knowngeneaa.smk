@@ -1,21 +1,20 @@
 # Obtain "knownGeneAA" track from ENSEMBL and convert into TSV via VCF.
 
+# rule grchxx_knowngeneaa_download:
+#     output:
+#         fa="{genome_build}/knowngeneaa/{download_date}/download/knownGene.exonAA.fa.gz",
+#     shell:
+#         r"""
+#         if [[ {wildcards.genome_build} == GRCh37 ]]; then
+#             ucsc_name=hg19
+#         else
+#             ucsc_name=hg38
+#         fi
 
-rule grchxx_knowngeneaa_download:
-    output:
-        fa="{genome_build}/knowngeneaa/{download_date}/download/knownGene.exonAA.fa.gz",
-    shell:
-        r"""
-        if [[ {wildcards.genome_build} == GRCh37 ]]; then
-            ucsc_name=hg19
-        else
-            ucsc_name=hg38
-        fi
-
-        wget --no-check-certificate \
-            -O {output.fa} \
-            "http://hgdownload.cse.ucsc.edu/goldenpath/${{ucsc_name}}/multiz100way/alignments/knownGene.exonAA.fa.gz"
-        """
+#         wget --no-check-certificate \
+#             -O {output.fa} \
+#             "http://hgdownload.cse.ucsc.edu/goldenpath/${{ucsc_name}}/multiz100way/alignments/knownGene.exonAA.fa.gz"
+#         """
 
 
 def input_grchxx_knowngeneaa_to_vcf(wildcards):
@@ -43,7 +42,7 @@ rule grchxx_knowngeneaa_to_vcf:
         tbi="{genome_build}/knowngeneaa/{download_date}/knownGeneAA.vcf.gz.tbi",
     shell:
         r"""
-        python tools/knowngeneaa.py \
+        python rules/pre-mehari/tools/knowngeneaa.py \
             {input.reference} \
             {input.fa} \
             --output /dev/stdout \
@@ -54,13 +53,27 @@ rule grchxx_knowngeneaa_to_vcf:
         """
 
 
+def input_result_grchxx_knowngeneaa_to_tsv(wildcards):
+    """Input function for ``rule result_grchxx_knowngeneaa_to_tsv``."""
+    return {
+        "header": "rules/pre-mehari/header/knowngeneaa.txt",
+        "vcf": (
+            f"work/download/annos/{wildcards.genome_build.lower()}/features/cons/"
+            f"{wildcards.version}/ucsc_conservation.vcf.gz"
+        ),
+        "tbi": (
+            f"work/download/annos/{wildcards.genome_build.lower()}/features/cons/"
+            f"{wildcards.version}/ucsc_conservation.vcf.gz.tbi"
+        ),
+    }
+
+
 rule result_grchxx_knowngeneaa_to_tsv:
     input:
-        header="header/knowngeneaa.txt",
-        vcf="{genome_build}/knowngeneaa/{download_date}/knownGeneAA.vcf.gz",
+        unpack(input_result_grchxx_knowngeneaa_to_tsv),
     output:
-        tsv="{genome_build}/knowngeneaa/{download_date}/KnowngeneAA.tsv",
-        release_info="{genome_build}/knowngeneaa/{download_date}/KnowngeneAA.release_info",
+        tsv="output/pre-mehari/{genome_build}/knowngeneaa/{version}/KnowngeneAA.tsv",
+        release_info="output/pre-mehari/{genome_build}/knowngeneaa/{version}/KnowngeneAA.release_info",
     shell:
         r"""
         (
@@ -75,8 +88,8 @@ rule result_grchxx_knowngeneaa_to_tsv:
                     print
                 }}'
         ) \
-        | python tools/ucsc_binning.py \
+        | python rules/pre-mehari/tools/ucsc_binning.py \
         > {output.tsv}
 
-        echo -e "table\tversion\tgenomebuild\tnull_value\nKnowngeneAA\t$(date +%Y/%m/%d)\t{wildcards.genome_build}\t" > {output.release_info}
+        echo -e "table\tversion\tgenomebuild\tnull_value\nKnowngeneAA\t{wildcards.version}\t{wildcards.genome_build}\t" > {output.release_info}
         """
