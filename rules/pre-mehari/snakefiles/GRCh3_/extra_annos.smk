@@ -92,6 +92,9 @@ rule result_GRChXX_extra_annos_tsv_step_1:
         fields="output/pre-mehari/{genomebuild}/extra_annos/{release_name}/ExtraAnnoField.tsv",
     wildcard_constraints:
         release_name="[^/]+",
+    resources:
+        runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
+        mem_mb=MEMORY,
     shell:
         r"""
         if [[ "{wildcards.genomebuild}" == "GRCh38" ]]; then
@@ -185,6 +188,9 @@ rule result_GRChXX_extra_annos_tsv_step_2:
         tsv="work/pre-mehari/{genomebuild}/extra_annos/{release_name}/ExtraAnno.tsv",  # this is intentionally in work
     output:
         tsv="output/pre-mehari/{genomebuild}/extra_annos/{release_name}/ExtraAnno.tsv",
+    resources:
+        runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
+        mem_mb=MEMORY,
     run:
         import json
         import csv
