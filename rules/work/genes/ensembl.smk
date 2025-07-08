@@ -39,21 +39,9 @@ rule genes_ensembl_download_maps_grch3X:  # -- download files for ENST-ENSG mapp
         """
 
 
-rule genes_ensembl_download_maps_grch37_knowngene:  # -- download files for ENST-ENSG mapping (GRCh37)
-    output:
-        download_txt="work/genes/ensembl/grch37/{ensembl_version}/download/knowntoEnsembl.txt.gz",
-    shell:
-        r"""
-        wget --no-check-certificate \
-            -O {output.download_txt} \
-            'https://hgdownload.soe.ucsc.edu/goldenPath/hg19/database/knownToEnsembl.txt.gz'
-        # knownToEnsembl.txt.gz is frozen for hg19
-        """
-
-
 def input_genes_ensembl_process_maps_grch37(wildcards):
     return {
-        "download_txt": f"work/genes/ensembl/grch37/{wildcards.ensembl_version}/download/knowntoEnsembl.txt.gz",
+        "download_txt": f"data/ucsc/hg19/knowntoEnsembl.txt.gz",
         "download_gtf": f"work/genes/ensembl/grch37/{wildcards.ensembl_version}/download/Homo_sapiens.GRCh37.{wildcards.ensembl_version}.gtf.gz",
     }
 

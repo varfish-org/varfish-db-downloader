@@ -149,7 +149,6 @@ def generate_input_files():
             f"work/annos/grch38/seqvars/gnomad_mtdna/{DV.gnomad_mtdna}/gnomad_mtdna.vcf.gz",
             f"work/download/annos/grch38/seqvars/gnomad_exomes/{DV.gnomad_v4}/.done",
             f"work/download/annos/grch38/seqvars/gnomad_genomes/{DV.gnomad_v4}/.done",
-            f"work/annos/grch38/features/cons/{DV.ucsc_cons_38}/ucsc_conservation.tsv",
             f"work/annos/grch38/features/refseq/{DV.refseq_38}/refseq_genes.bed.gz",
             f"output/full/worker/bgdb-gnomad-exomes-cnv-grch38-{DV.gnomad_sv4}+{PV.worker}/bgdb-gnomad-exomes-cnv-grch38.bin",
             f"output/full/worker/bgdb-gnomad-genomes-sv-grch38-{DV.gnomad_sv4}+{PV.worker}/bgdb-gnomad-genomes-sv-grch38.bin",
@@ -188,6 +187,7 @@ def generate_input_files():
             # -- work
             f"work/annos/{genomebuild}/features/ensembl/{ensembl_versions[genomebuild]}/ensembl_genes.bed.gz",
             f"work/download/annos/{genomebuild}/seqvars/dbsnp/{DV.dbsnp}/dbsnp.vcf.gz",
+            f"work/annos/{genomebuild}/features/cons/{cons_versions[genomebuild]}/ucsc_conservation.tsv",
             # -- mehari data
             # ---- frequencies (via annonars)
             f"output/full/mehari/freqs-{genomebuild}-{gnomad_versions[genomebuild]}+{gnomad_versions[genomebuild]}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
@@ -317,6 +317,8 @@ def generate_input_files():
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/extra_annos/{DV.cadd}/ExtraAnno.release_info",
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/extra_annos/{DV.cadd}/ExtraAnnoField.tsv",
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/extra_annos/{DV.cadd}/ExtraAnnoField.release_info",
+            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/knowngeneaa/{cons_versions[genomebuild]}/KnowngeneAA.tsv",
+            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/knowngeneaa/{cons_versions[genomebuild]}/KnowngeneAA.release_info",
         ]
     # Files independent of genomebuild (or serving both)
     input_files += [
@@ -489,6 +491,7 @@ include: "rules/pre-mehari/snakefiles/GRCh3_/ensembltogenesymbol.smk"
 include: "rules/pre-mehari/snakefiles/GRCh3_/mitomap.smk"
 include: "rules/pre-mehari/snakefiles/GRCh3_/mtdb.smk"
 include: "rules/pre-mehari/snakefiles/GRCh3_/extra_annos.smk"
+include: "rules/pre-mehari/snakefiles/GRCh3_/knowngeneaa.smk"
 # -- grch38
 include: "rules/pre-mehari/snakefiles/GRCh38/gnomad.smk"
 # -- noref
