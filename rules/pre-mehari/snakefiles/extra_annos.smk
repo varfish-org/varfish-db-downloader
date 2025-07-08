@@ -92,6 +92,7 @@ rule result_GRChXX_extra_annos_tsv_step_1:
         fields="output/pre-mehari/{genomebuild}/extra_annos/{release_name}/ExtraAnnoField.tsv",
     wildcard_constraints:
         release_name="[^/]+",
+    threads: THREADS
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
         mem_mb=MEMORY,
@@ -159,15 +160,15 @@ rule result_GRChXX_extra_annos_tsv_step_1:
             ) \
             | python rules/pre-mehari/tools/ucsc_binning.py \
             | tail -n +2 \
-            | sort -S 1G -k2,2g -k7,7n -o $output
+            | sort -S 1G -k2,2g -k7,7n --parallel={threads} -o $output
         }}
         export -f write-chunk
 
         echo -e "release\tchromosome\tstart\tend\tbin\treference\talternative\tanno_data" \
         > {output.tsv}
 
-        parallel -j 16 -t 'write-chunk {{}}' ::: $TMPDIR/split.d/*
-        sort -m -k2,2g -k7,7n $TMPDIR/out.d/* \
+        parallel -j {threads} -t 'write-chunk {{}}' ::: $TMPDIR/split.d/*
+        sort -S 1G --parallel={threads} -m -k2,2g -k7,7n $TMPDIR/out.d/* \
         >> {output.tsv}
         """
 
