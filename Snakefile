@@ -88,55 +88,57 @@ rule help:
 
 CHROMS = tuple(list(map(str, range(1, 23))) + ["X", "Y", "MT"])
 
+genomebuilds = GENOMEBUILDS
+gnomad_versions = {
+    "grch37": DV.gnomad_v2,
+    "grch38": DV.gnomad_v4,
+}
+gnomad_cnv_versions = {
+    "grch37": DV.exac_cnv,
+    "grch38": DV.gnomad_cnv4,
+}
+gnomad_sv_versions = {
+    "grch37": DV.gnomad_sv,
+    "grch38": DV.gnomad_sv4,
+}
+refseq_versions = {
+    "grch37": DV.refseq_37,
+    "grch38": DV.refseq_38,
+}
+ensembl_versions = {
+    "grch37": DV.ensembl_37,
+    "grch38": DV.ensembl_38,
+}
+cons_versions = {
+    "grch37": DV.ucsc_cons_37,
+    "grch38": DV.ucsc_cons_38,
+}
+rmask_versions = {
+    "grch37": DV.ucsc_rmsk_37,
+    "grch38": DV.ucsc_rmsk_38,
+}
+genomic_super_dups_versions = {
+    "grch37": DV.ucsc_genomic_super_dups_37,
+    "grch38": DV.ucsc_genomic_super_dups_38,
+}
+lift_over_versions = {
+    "grch37": DV.ucsc_alt_seq_liftover_37,
+    "grch38": DV.ucsc_alt_seq_liftover_38,
+}
+lift_over_fix_versions = {
+    "grch37": DV.ucsc_fix_seq_liftover_37,
+    "grch38": DV.ucsc_fix_seq_liftover_38,
+}
+genomebuild_cap = {
+    "grch37": "GRCh37",
+    "grch38": "GRCh38",
+}
+
+
 def generate_input_files():
     """
     Helper function to return the input files for the rules.
     """
-    genomebuilds = GENOMEBUILDS
-    gnomad_versions = {
-        "grch37": DV.gnomad_v2,
-        "grch38": DV.gnomad_v4,
-    }
-    gnomad_cnv_versions = {
-        "grch37": DV.exac_cnv,
-        "grch38": DV.gnomad_cnv4,
-    }
-    gnomad_sv_versions = {
-        "grch37": DV.gnomad_sv,
-        "grch38": DV.gnomad_sv4,
-    }
-    refseq_versions = {
-        "grch37": DV.refseq_37,
-        "grch38": DV.refseq_38,
-    }
-    ensembl_versions = {
-        "grch37": DV.ensembl_37,
-        "grch38": DV.ensembl_38,
-    }
-    cons_versions = {
-        "grch37": DV.ucsc_cons_37,
-        "grch38": DV.ucsc_cons_38,
-    }
-    rmask_versions = {
-        "grch37": DV.ucsc_rmsk_37,
-        "grch38": DV.ucsc_rmsk_38,
-    }
-    genomic_super_dups_versions = {
-        "grch37": DV.ucsc_genomic_super_dups_37,
-        "grch38": DV.ucsc_genomic_super_dups_38,
-    }
-    lift_over_versions = {
-        "grch37": DV.ucsc_alt_seq_liftover_37,
-        "grch38": DV.ucsc_alt_seq_liftover_38,
-    }
-    lift_over_fix_versions = {
-        "grch37": DV.ucsc_fix_seq_liftover_37,
-        "grch38": DV.ucsc_fix_seq_liftover_38,
-    }
-    genomebuild_cap = {
-        "grch37": "GRCh37",
-        "grch38": "GRCh38",
-    }
 
     input_files = []
     if "grch38" in genomebuilds:
@@ -155,9 +157,6 @@ def generate_input_files():
             # ----- background/population structural variants and annotations thereof
             f"output/full/tracks/track-strucvars-gnomad-sv-grch38-{DV.gnomad_sv4}+{DV.tracks}/gnomad-sv.bed.gz",
             f"output/full/tracks/track-strucvars-gnomad-cnv-grch38-{DV.gnomad_cnv4}+{DV.tracks}/gnomad-cnv.bed.gz",
-            # -- pre-mehari
-            "output/pre-mehari/GRCh38/gnomAD_constraints/v2.1.1/GnomadConstraints.tsv",
-            "output/pre-mehari/GRCh38/gnomAD_constraints/v2.1.1/GnomadConstraints.release_info",
         ]
     if "grch37" in genomebuilds:
         input_files += [
@@ -319,6 +318,9 @@ def generate_input_files():
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/extra_annos/{DV.cadd}/ExtraAnnoField.release_info",
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/knowngeneaa/{cons_versions[genomebuild]}/KnowngeneAA.tsv",
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/knowngeneaa/{cons_versions[genomebuild]}/KnowngeneAA.release_info",
+            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/gnomAD_constraints/v{gnomad_versions[genomebuild]}/GnomadConstraints.tsv",
+            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/gnomAD_constraints/v{gnomad_versions[genomebuild]}/GnomadConstraints.release_info",
+            f"output/pre-mehari/releases/{DV.pre_mehari_release}/varfish-postgres-db-{DV.pre_mehari_release}-{genomebuild}/.done"
         ]
     # Files independent of genomebuild (or serving both)
     input_files += [
@@ -368,7 +370,6 @@ def generate_input_files():
         f"output/pre-mehari/noref/hpo/{DV.hpo}/Hpo.release_info",
         f"output/pre-mehari/noref/hpo/{DV.hpo}/HpoName.tsv",
         f"output/pre-mehari/noref/hpo/{DV.hpo}/HpoName.release_info",
-        # TODO double check the versionen of ensembl
         f"output/pre-mehari/noref/refseqtoensembl/{DV.ensembl_38}/RefseqToEnsembl.tsv",
         f"output/pre-mehari/noref/refseqtoensembl/{DV.ensembl_38}/RefseqToEnsembl.release_info",
         f"output/pre-mehari/noref/acmg/{DV.acmg_sf}/Acmg.tsv",  # ATTN! source file is placed manually in the data directory
@@ -481,22 +482,20 @@ include: "rules/reduced/hpo.smk"
 include: "rules/reduced/targets.smk"
 include: "rules/reduced/mehari.smk"
 
-# pre-mehari rules for tsv output
-# -- both releases
-include: "rules/pre-mehari/snakefiles/GRCh3_/hgnc.smk"
-include: "rules/pre-mehari/snakefiles/GRCh3_/clinvar.smk"
-include: "rules/pre-mehari/snakefiles/GRCh3_/dbsnp.smk"
-include: "rules/pre-mehari/snakefiles/GRCh3_/helixdb.smk"
-include: "rules/pre-mehari/snakefiles/GRCh3_/ensembltogenesymbol.smk"
-include: "rules/pre-mehari/snakefiles/GRCh3_/mitomap.smk"
-include: "rules/pre-mehari/snakefiles/GRCh3_/mtdb.smk"
-include: "rules/pre-mehari/snakefiles/GRCh3_/extra_annos.smk"
-include: "rules/pre-mehari/snakefiles/GRCh3_/knowngeneaa.smk"
-# -- grch38
-include: "rules/pre-mehari/snakefiles/GRCh38/gnomad.smk"
-# -- noref
-include: "rules/pre-mehari/snakefiles/noref/hpo.smk"
-include: "rules/pre-mehari/snakefiles/noref/refseqtoensembl.smk"
-include: "rules/pre-mehari/snakefiles/noref/acmg.smk"
-include: "rules/pre-mehari/snakefiles/noref/mim2gene.smk"
-include: "rules/pre-mehari/snakefiles/noref/refseqtogenesymbol.smk"
+# -- pre-mehari rules for tsv output
+include: "rules/pre-mehari/snakefiles/acmg.smk"
+include: "rules/pre-mehari/snakefiles/clinvar.smk"
+include: "rules/pre-mehari/snakefiles/dbsnp.smk"
+include: "rules/pre-mehari/snakefiles/ensembltogenesymbol.smk"
+include: "rules/pre-mehari/snakefiles/extra_annos.smk"
+include: "rules/pre-mehari/snakefiles/gnomad_constraints.smk"
+include: "rules/pre-mehari/snakefiles/helixdb.smk"
+include: "rules/pre-mehari/snakefiles/hgnc.smk"
+include: "rules/pre-mehari/snakefiles/hpo.smk"
+include: "rules/pre-mehari/snakefiles/knowngeneaa.smk"
+include: "rules/pre-mehari/snakefiles/mim2gene.smk"
+include: "rules/pre-mehari/snakefiles/mitomap.smk"
+include: "rules/pre-mehari/snakefiles/mtdb.smk"
+include: "rules/pre-mehari/snakefiles/refseqtoensembl.smk"
+include: "rules/pre-mehari/snakefiles/refseqtogenesymbol.smk"
+include: "rules/pre-mehari/snakefiles/release.smk"

@@ -10,11 +10,29 @@ import attrs
 TODAY = os.environ.get("TODAY", datetime.today().strftime("%Y%m%d"))
 #: Allow to disable the today check.
 FORCE_TODAY = os.environ.get("FORCE_TODAY", "false").lower() == "true"
-#: The ClinVar release to use (includes annonars version used for building).
+#: The ClinVar release to use (weekly clinvar release data + clinvar-this).
 CLINVAR_RELEASE = os.environ.get("CLINVAR_RELEASE", "20250410+0.18.5")
 #: The ClinVar version to use (part of the tag and release name).
 CLINVAR_VERSION = CLINVAR_RELEASE.replace("-", "").split("+")[0]
-
+# The following should be consistent with the mehari-data-tx release:
+# https://github.com/varfish-org/mehari-data-tx/blob/main/config/config.yaml#L31
+# https://github.com/varfish-org/mehari-data-tx/blob/main/config/config.yaml#L114
+#: RefSeq release for GRCh37
+REFSEQ_37 = "105.20220307"
+#: RefSeq release for GRCh38
+REFSEQ_38 = "110"
+#:  RefSeq reference for GRCh37, corresponding to REFSEQ_37
+REFSEQ_REF_37 = "GCF_000001405.25"
+#:  RefSeq reference for GRCh38, corresponding to REFSEQ_38
+REFSEQ_REF_38 = "GCF_000001405.40"
+#: RefSeq reference build for GRCh37, corresponding to REFSEQ_REF_37
+REFSEQ_REF_37_BUILD = "GRCh37.p13"
+#: RefSeq reference build for GRCh38, corresponding to REFSEQ_REF_38
+REFSEQ_REF_38_BUILD = "GRCh38.p14"
+#: Ensembl release for GRCh37
+ENSEMBL_37 = "87"
+#: Ensembl release for GRCh38
+ENSEMBL_38 = "112"
 
 #: Wether we run in CI/test mode.
 RUNS_IN_CI = os.environ.get("CI", "false").lower() == "true"
@@ -55,8 +73,8 @@ class DataVersions:
     #: Version of gnomAD mtDNA.
     gnomad_mtdna: str
     #: Version of gnomAD v2.
-    gnomad_v2: str
     #: Version of gnomAD v3.
+    gnomad_v2: str
     gnomad_v3: str
     #: Version of gnomAD v4.
     gnomad_v4: str
@@ -145,28 +163,9 @@ class DataVersions:
     cdot_refseq_gff_json_38: str
     #: MtDb version
     mtdb: str
-
-
-# The following should be consistent with the mehari-data-tx release:
-# https://github.com/varfish-org/mehari-data-tx/blob/main/config/config.yaml#L31
-# https://github.com/varfish-org/mehari-data-tx/blob/main/config/config.yaml#L114
-#: RefSeq release for GRCh37
-REFSEQ_37 = "105.20220307"
-#: RefSeq release for GRCh38
-REFSEQ_38 = "110"
-#:  RefSeq reference for GRCh37, corresponding to REFSEQ_37
-REFSEQ_REF_37 = "GCF_000001405.25"
-#:  RefSeq reference for GRCh38, corresponding to REFSEQ_38
-REFSEQ_REF_38 = "GCF_000001405.40"
-#: RefSeq reference build for GRCh37, corresponding to REFSEQ_REF_37
-REFSEQ_REF_37_BUILD = "GRCh37.p13"
-#: RefSeq reference build for GRCh38, corresponding to REFSEQ_REF_38
-REFSEQ_REF_38_BUILD = "GRCh38.p14"
-#: Ensembl release for GRCh37
-ENSEMBL_37 = "87"
-#: Ensembl release for GRCh38
-ENSEMBL_38 = "112"
-
+    #: Pre-Mehari release date.
+    pre_mehari_release: str
+    
 
 #: The data versions to use.
 DATA_VERSIONS = DataVersions(
@@ -236,6 +235,7 @@ DATA_VERSIONS = DataVersions(
     refseq_ref_38_assembly=f"{REFSEQ_REF_38}_{REFSEQ_REF_38_BUILD}",
     # ---
     mtdb="20210728",  # Was manually downloaded at that date, database doesn't exist anymore
+    pre_mehari_release=TODAY,
 )
 
 
