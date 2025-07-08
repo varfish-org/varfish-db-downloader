@@ -18,7 +18,7 @@ JOBS=${JOBS-500}
 # Be relaxed with reruns.
 RELAXED_RERUNS=${RELAXED_RERUNS-true}
 # Whether to add --keep-going
-KEEP_GOING=${KEEP_GOING-false}
+KEEP_GOING=${KEEP_GOING-true}
 # Wait time for files to appear in seconds
 LATENCY_WAIT=${LATENCY_WAIT-60}
 
