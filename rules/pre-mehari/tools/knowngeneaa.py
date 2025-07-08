@@ -147,7 +147,7 @@ def read_blocks(fa_gz, have_chr):
         else:
             buf.append(line)
     if buf:
-        yield build_block(buf)
+        yield build_block(buf, have_chr)
 
 
 def pos_magic(exon_location, rel_start, rel_end):

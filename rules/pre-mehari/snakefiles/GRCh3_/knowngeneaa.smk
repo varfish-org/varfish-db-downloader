@@ -18,28 +18,19 @@
 
 
 def input_grchxx_knowngeneaa_to_vcf(wildcards):
-    if wildcards.genome_build == "GRCh37":
-        return {
-            "reference": "GRCh37/reference/hs37d5/hs37d5.fa",
-            "fa": "{genome_build}/knowngeneaa/{download_date}/download/knownGene.exonAA.fa.gz".format(
-                **wildcards
-            ),
-        }
-    else:
-        return {
-            "reference": "GRCh38/reference/hs38/hs38.fa",
-            "fa": "{genome_build}/knowngeneaa/{download_date}/download/knownGene.exonAA.fa.gz".format(
-                **wildcards
-            ),
-        }
+    genome_build = wildcards.genome_build.lower()
+    return {
+        "reference": f"work/reference/{genome_build}/reference.fa",
+        "fa": f"work/download/annos/{genome_build}/features/cons/{wildcards.version}/knownGene.exonAA.fa.gz"
+    }
 
 
 rule grchxx_knowngeneaa_to_vcf:
     input:
         unpack(input_grchxx_knowngeneaa_to_vcf),
     output:
-        vcf="{genome_build}/knowngeneaa/{download_date}/knownGeneAA.vcf.gz",
-        tbi="{genome_build}/knowngeneaa/{download_date}/knownGeneAA.vcf.gz.tbi",
+        vcf="work/download/pre-mehari/{genome_build}/knowngeneaa/{version}/knownGeneAA.vcf.gz",
+        tbi="work/download/pre-mehari/{genome_build}/knowngeneaa/{version}/knownGeneAA.vcf.gz.tbi",
     shell:
         r"""
         python rules/pre-mehari/tools/knowngeneaa.py \
@@ -53,24 +44,26 @@ rule grchxx_knowngeneaa_to_vcf:
         """
 
 
-def input_result_grchxx_knowngeneaa_to_tsv(wildcards):
-    """Input function for ``rule result_grchxx_knowngeneaa_to_tsv``."""
-    return {
-        "header": "rules/pre-mehari/header/knowngeneaa.txt",
-        "vcf": (
-            f"work/download/annos/{wildcards.genome_build.lower()}/features/cons/"
-            f"{wildcards.version}/ucsc_conservation.vcf.gz"
-        ),
-        "tbi": (
-            f"work/download/annos/{wildcards.genome_build.lower()}/features/cons/"
-            f"{wildcards.version}/ucsc_conservation.vcf.gz.tbi"
-        ),
-    }
+# def input_result_grchxx_knowngeneaa_to_tsv(wildcards):
+#     """Input function for ``rule result_grchxx_knowngeneaa_to_tsv``."""
+#     return {
+#         "header": "rules/pre-mehari/header/knowngeneaa.txt",
+#         "vcf": (
+#             f"work/download/annos/{wildcards.genome_build.lower()}/features/cons/"
+#             f"{wildcards.version}/ucsc_conservation.vcf.gz"
+#         ),
+#         "tbi": (
+#             f"work/download/annos/{wildcards.genome_build.lower()}/features/cons/"
+#             f"{wildcards.version}/ucsc_conservation.vcf.gz.tbi"
+#         ),
+#     }
 
 
 rule result_grchxx_knowngeneaa_to_tsv:
     input:
-        unpack(input_result_grchxx_knowngeneaa_to_tsv),
+        header="rules/pre-mehari/header/knowngeneaa.txt",
+        vcf="work/download/pre-mehari/{genome_build}/knowngeneaa/{version}/knownGeneAA.vcf.gz",
+        tbi="work/download/pre-mehari/{genome_build}/knowngeneaa/{version}/knownGeneAA.vcf.gz.tbi",
     output:
         tsv="output/pre-mehari/{genome_build}/knowngeneaa/{version}/KnowngeneAA.tsv",
         release_info="output/pre-mehari/{genome_build}/knowngeneaa/{version}/KnowngeneAA.release_info",
