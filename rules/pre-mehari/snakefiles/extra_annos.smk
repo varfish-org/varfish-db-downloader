@@ -143,7 +143,8 @@ rule result_GRChXX_extra_annos_tsv_step_1:
 
             (
                 echo -e "release\tchromosome\tstart\tend\tbin\treference\talternative\tanno_data";
-                tabix -R $input {input.cadd_snvs} \
+                awk 'BEGIN{{OFS="\t"}} {{$2=$2+1; print}}' $input \
+                | tabix -R - {input.cadd_snvs} \
                 | cut -f 1-4,$cut_expr \
                 | awk -v "prefix=$prefix" -F $'\t' 'BEGIN {{ OFS=FS }} {{
                     printf("{wildcards.genomebuild}\t%s\t%d\t%d\t-1\t%s\t%s\t[", prefix $1, $2, $2, $3, $4);
@@ -160,7 +161,7 @@ rule result_GRChXX_extra_annos_tsv_step_1:
             ) \
             | python rules/pre-mehari/tools/ucsc_binning.py \
             | tail -n +2 \
-            | sort -S 1G -k2,2g -k7,7n --parallel={threads} -o $output
+            | sort -S 1G -k2,2g -k7,7n -o $output
         }}
         export -f write-chunk
 
@@ -168,7 +169,7 @@ rule result_GRChXX_extra_annos_tsv_step_1:
         > {output.tsv}
 
         parallel -j {threads} -t 'write-chunk {{}}' ::: $TMPDIR/split.d/*
-        sort -S 1G --parallel={threads} -m -k2,2g -k7,7n $TMPDIR/out.d/* \
+        sort -m -k2,2g -k7,7n $TMPDIR/out.d/* \
         >> {output.tsv}
         """
 
