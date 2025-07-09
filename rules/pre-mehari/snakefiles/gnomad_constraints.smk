@@ -23,7 +23,7 @@ rule result_grch3X_gnomad_constraints_tsv:
         r"""
         (
             cat {input.header} | tr '\n' '\t' | sed -e 's/\t*$/\n/g';
-            zcat {input.txt} \
+            cat {input.txt} \
             | tail -n +2 \
             | sort -u \
             | awk -F $'\t' '
