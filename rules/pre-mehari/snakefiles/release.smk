@@ -39,15 +39,14 @@ rule result_grch3x_release_server_db:
         out_dir=$(dirname {output})
         mkdir -p $out_dir
 
-        import_versions=$out_dir/import_versions_{wildcards.genomebuild}.tsv
+        import_versions=$out_dir/import_versions.tsv
 
         echo -e "build\ttable_group\tversion" > $import_versions
 
         for path in {input}; do
-            genome=$(echo $path | cut -d / -f 1)
-            db=$(echo $path | cut -d / -f 2)
-            version=$(echo $path | cut -d / -f 3)
-            genome=$(echo $path | cut -d / -f 1)
+            genome=$(echo $path | cut -d / -f 3)
+            db=$(echo $path | cut -d / -f 4)
+            version=$(echo $path | cut -d / -f 5)
             abs=$(readlink -f $path)
 
             echo -e "${{genome}}\t${{db}}\t${{version}}" >> $TMPDIR/import_versions
