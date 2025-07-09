@@ -48,14 +48,17 @@ rule result_grch3x_release_server_db:
             db=$(echo $path | cut -d / -f 4)
             version=$(echo $path | cut -d / -f 5)
             abs=$(readlink -f $path)
+            dir=$genome/$db/$version
+            file=$(basename $path)
+            dirfile=$dir/$file
 
             echo -e "${{genome}}\t${{db}}\t${{version}}" >> $TMPDIR/import_versions
 
             ( \
                 cd $out_dir; \
-                mkdir -p $genome/$db/$version; \
-                test -e $path || ln -s $abs $path; \
-                test -e ${{path%.release_info}}.tsv || ln -s ${{abs%.release_info}}.tsv ${{path%.release_info}}.tsv \
+                mkdir -p $dir; \
+                test -e $dirfile || ln -s $abs $dirfile; \
+                test -e ${{dirfile%.release_info}}.tsv || ln -s ${{abs%.release_info}}.tsv ${{dirfile%.release_info}}.tsv \
             )
         done
 
