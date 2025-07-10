@@ -165,7 +165,7 @@ class DataVersions:
     mtdb: str
     #: Pre-Mehari release date.
     pre_mehari_release: str
-    
+
 
 #: The data versions to use.
 DATA_VERSIONS = DataVersions(
@@ -235,7 +235,7 @@ DATA_VERSIONS = DataVersions(
     refseq_ref_38_assembly=f"{REFSEQ_REF_38}_{REFSEQ_REF_38_BUILD}",
     # ---
     mtdb="20210728",  # Was manually downloaded at that date, database doesn't exist anymore
-    pre_mehari_release=TODAY,
+    pre_mehari_release="20250709",
 )
 
 
