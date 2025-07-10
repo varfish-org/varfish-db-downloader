@@ -70,10 +70,10 @@ rule result_grch3x_release_server_db:
 
 rule result_grch3x_release_server_db_tar:
     input:
-        "releases/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}/.done",
+        "output/pre-mehari/releases/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}/.done",
     output:
-        tar="releases/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}.tar.gz",
-        sha256="releases/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}.tar.gz.sha256",
+        tar="output/pre-mehari/releases/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}.tar.gz",
+        sha256="output/pre-mehari/releases/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}.tar.gz.sha256",
     shell:
         r"""
         in_dir=$(dirname {input})
