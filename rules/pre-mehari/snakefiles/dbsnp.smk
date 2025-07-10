@@ -36,13 +36,14 @@ rule grch38_dbsnp_map_chr:
         map=temp("work/download/annos/grch38/seqvars/dbsnp/{version}/dbsnp.map_chr"),
         vcf="work/download/annos/grch38/seqvars/dbsnp/{version}/dbsnp.map_chr.gz",
         tbi="work/download/annos/grch38/seqvars/dbsnp/{version}/dbsnp.map_chr.gz.tbi",
+    threads: THREADS,
     shell:
         r"""
         awk -v RS="(\r)?\n" 'BEGIN {{ FS="\t" }} !/^#/ {{ if ($10 != "na") print $7,$10; else print $7,$5 }}' \
             {input.report} \
         > {output.map}
 
-        bcftools annotate --threads 16 --rename-chrs {output.map} {input.vcf} -O z -o {output.vcf}
+        bcftools annotate --threads {threads} --rename-chrs {output.map} {input.vcf} -O z -o {output.vcf}
         tabix -f {output.vcf}
 
         pushd $(dirname {output.vcf})
@@ -58,12 +59,15 @@ rule grch3x_dbsnp_normalize:
     output:
         vcf="work/download/annos/{genomebuild}/seqvars/dbsnp/{version}/dbsnp.normalized.{chrom}.vcf.gz",
         tbi="work/download/annos/{genomebuild}/seqvars/dbsnp/{version}/dbsnp.normalized.{chrom}.vcf.gz.tbi",
+    params:
+        chrom=lambda wildcards: f"chr{wildcards.chrom}" if wildcards.genomebuild == "grch38" else wildcards.chrom,
+    threads: THREADS
     shell:
         r"""
         bcftools norm \
             --check-ref s \
-            --regions "{wildcards.chrom}" \
-            --threads 16 \
+            --regions "{params.chrom}" \
+            --threads {threads} \
             --multiallelics - \
             --fasta-ref {input.reference} \
             -O z \
@@ -90,14 +94,15 @@ rule result_grch3x_dbsnp_tsv:
     output:
         release_info="output/pre-mehari/{genomebuild}/dbSNP/{version}/Dbsnp.{chrom}.release_info",
         tsv="output/pre-mehari/{genomebuild}/dbSNP/{version}/Dbsnp.{chrom}.tsv",
+    threads: THREADS
     shell:
         r"""
         (
             cat {input.header} | tr '\n' '\t' | sed -e 's/\t*$/\n/g';
             bcftools query {input.vcf} \
-                -f 'GRCh37\t%CHROM\t%POS\t%END\t\t%REF\t%ALT\t%ID\n' \
+                -f '{wildcards.genomebuild}\t%CHROM\t%POS\t%END\t\t%REF\t%ALT\t%ID\n' \
             | awk -F $'\t' 'BEGIN {{ OFS=FS }} ((length($6) <= 512) && (length($7) <= 512)) {{ print }}' \
-            | sort -u -t $'\t' -k 2,2 -k 3,3 -k 6,6 -k 7,7
+            | sort -S 1G --parallel={threads} -u -t $'\t' -k 2,2 -k 3,3 -k 6,6 -k 7,7
         ) \
         | python rules/pre-mehari/tools/ucsc_binning.py \
         > {output.tsv}
