@@ -11,7 +11,7 @@ TODAY = os.environ.get("TODAY", datetime.today().strftime("%Y%m%d"))
 #: Allow to disable the today check.
 FORCE_TODAY = os.environ.get("FORCE_TODAY", "false").lower() == "true"
 #: The ClinVar release to use (weekly clinvar release data + clinvar-this).
-CLINVAR_RELEASE = os.environ.get("CLINVAR_RELEASE", "20250410+0.18.5")
+CLINVAR_RELEASE = os.environ.get("CLINVAR_RELEASE", "20250706+0.18.5")
 #: The ClinVar version to use (part of the tag and release name).
 CLINVAR_VERSION = CLINVAR_RELEASE.replace("-", "").split("+")[0]
 # The following should be consistent with the mehari-data-tx release:
