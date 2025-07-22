@@ -214,7 +214,7 @@ def generate_input_files():
             f"output/full/worker/masked-segdup-{genomebuild}-{genomic_super_dups_versions[genomebuild]}+{PV.worker}/masked-segdup.bin",
             f"output/full/worker/bgdb-dbvar-{genomebuild}-{DV.dbvar}+{PV.worker}/bgdb-dbvar.bin",
             f"output/full/worker/bgdb-dgv-{genomebuild}-{DV.dgv}+{PV.worker}/bgdb-dgv.bin",
-            f"output/full/worker/bgdb-dgv-gs-{genomebuild}-{DV.dgv}+{PV.worker}/bgdb-dgv-gs.bin",
+            f"output/full/worker/bgdb-dgv-gs-{genomebuild}-{DV.dgv_gs}+{PV.worker}/bgdb-dgv-gs.bin",
             f"output/full/worker/clinvar-strucvars-{genomebuild}-{DV.clinvar_version}+{PV.worker}/clinvar-strucvars.bin",
             f"output/full/worker/patho-mms-{genomebuild}-{DV.patho_mms}+{PV.worker}/patho-mms.bed",
             f"output/full/worker/tads-{genomebuild}-dixon2015/hesc.bed",
