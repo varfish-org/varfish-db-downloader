@@ -503,3 +503,5 @@ include: "rules/pre-mehari/snakefiles/mtdb.smk"
 include: "rules/pre-mehari/snakefiles/refseqtoensembl.smk"
 include: "rules/pre-mehari/snakefiles/refseqtogenesymbol.smk"
 include: "rules/pre-mehari/snakefiles/release.smk"
+# ---- reference
+include: "rules/output/reference/reference.smk"
