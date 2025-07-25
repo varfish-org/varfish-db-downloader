@@ -320,9 +320,11 @@ def generate_input_files():
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/knowngeneaa/{cons_versions[genomebuild]}/KnowngeneAA.release_info",
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/gnomAD_constraints/v{gnomad_versions[genomebuild]}/GnomadConstraints.tsv",
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/gnomAD_constraints/v{gnomad_versions[genomebuild]}/GnomadConstraints.release_info",
-            # f"output/pre-mehari/releases/{DV.pre_mehari_release}/varfish-postgres-db-{DV.pre_mehari_release}-{genomebuild}/.done",
-            f"output/pre-mehari/releases/{DV.pre_mehari_release}/varfish-postgres-db-{DV.pre_mehari_release}-{genomebuild}.tar.gz",
-            f"output/pre-mehari/releases/{DV.pre_mehari_release}/varfish-postgres-db-{DV.pre_mehari_release}-{genomebuild}.tar.gz.sha256",
+            f"output/pre-mehari/releases/{DV.pre_mehari_release}/varfish-postgres-db-{DV.pre_mehari_release}-{genomebuild}/.done",
+            # f"output/pre-mehari/releases/{DV.pre_mehari_release}/varfish-postgres-db-{DV.pre_mehari_release}-{genomebuild}.tar.gz",
+            # f"output/pre-mehari/releases/{DV.pre_mehari_release}/varfish-postgres-db-{DV.pre_mehari_release}-{genomebuild}.tar.gz.sha256",
+            f"output/full/reference/{genomebuild}/reference.fa",
+            f"output/full/reference/{genomebuild}/reference.fa.fai",
         ]
     # Files independent of genomebuild (or serving both)
     input_files += [
