@@ -164,8 +164,8 @@ rule result_GRChXX_helixmtdb_tsv:
     input:
         unpack(input_helixmtdb_tsv)
     output:
-        tsv="output/pre-mehari/{genome_build}/HelixMtDb/{helix_v}/HelixMtDb.tsv",
-        release_info="output/pre-mehari/{genome_build}/HelixMtDb/{helix_v}/HelixMtDb.release_info",
+        tsv="output/pre-mehari/{genome_build}/HelixMTdb/{helix_v}/HelixMtDb.tsv",
+        release_info="output/pre-mehari/{genome_build}/HelixMTdb/{helix_v}/HelixMtDb.release_info",
     shell:
         r"""
         (

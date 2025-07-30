@@ -37,7 +37,7 @@ rule result_grch3x_hgnc_to_tsv:
                     OFS = FS
                 }}
                 {{
-                    $NF = $NF "\t" substr($22, 1, length($22) - 2)
+                    $(NF+1) = substr($22, 1, length($22) - 2)
                     print
                 }}'
         ) \
