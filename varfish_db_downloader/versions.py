@@ -10,10 +10,19 @@ import attrs
 TODAY = os.environ.get("TODAY", datetime.today().strftime("%Y%m%d"))
 #: Allow to disable the today check.
 FORCE_TODAY = os.environ.get("FORCE_TODAY", "false").lower() == "true"
+
+# Clinvar source:
+# https://github.com/varfish-org/clinvar-data-jsonl/releases
+# https://github.com/varfish-org/clinvar-data-jsonl/releases/download/clinvar-weekly-20250706/clinvar-data-extract-vars-20250706+0.18.5.tar.gz
+# Used by:
+# - worker
+# - pre-mehari release
+CLINVAR_VERSION = "20250706"
+# Clinvar-this version
+CLINVAR_THIS = "0.18.5"
 #: The ClinVar release to use (weekly clinvar release data + clinvar-this).
-CLINVAR_RELEASE = os.environ.get("CLINVAR_RELEASE", "20250706+0.18.5")
-#: The ClinVar version to use (part of the tag and release name).
-CLINVAR_VERSION = CLINVAR_RELEASE.replace("-", "").split("+")[0]
+CLINVAR_RELEASE = os.environ.get("CLINVAR_RELEASE", f"{CLINVAR_VERSION}+{CLINVAR_THIS}")
+
 # The following should be consistent with the mehari-data-tx release:
 # https://github.com/varfish-org/mehari-data-tx/blob/main/config/config.yaml#L31
 # https://github.com/varfish-org/mehari-data-tx/blob/main/config/config.yaml#L114

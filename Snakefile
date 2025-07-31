@@ -86,7 +86,8 @@ rule help:
         """
         )
 
-CHROMS = tuple(list(map(str, range(1, 23))) + ["X", "Y", "MT"])
+CHROMS_37 = tuple(list(map(str, range(1, 23))) + ["X", "Y", "MT"])
+CHROMS_38 = tuple(list(map(str, range(1, 23))) + ["X", "Y", "M"])
 
 genomebuilds = GENOMEBUILDS
 gnomad_versions = {
@@ -132,6 +133,10 @@ lift_over_fix_versions = {
 genomebuild_cap = {
     "grch37": "GRCh37",
     "grch38": "GRCh38",
+}
+chroms = {
+    "grch37": CHROMS_37,
+    "grch38": CHROMS_38,
 }
 
 
@@ -305,7 +310,7 @@ def generate_input_files():
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/clinvar/{DV.hgnc_quarterly}+{DV.clinvar_release}/Clinvar.release_info",
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/HelixMtDb/{DV.helixmtdb}/HelixMtDb.tsv",
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/HelixMtDb/{DV.helixmtdb}/HelixMtDb.release_info",
-            expand("output/pre-mehari/{genomebuild}/dbSNP/{dbsnp}/Dbsnp.{chrom}.{file_ext}", genomebuild=genomebuild_cap[genomebuild], dbsnp=DV.dbsnp, chrom=CHROMS, file_ext=["tsv", "release_info"]),
+            expand("output/pre-mehari/{genomebuild}/dbSNP/{dbsnp}/Dbsnp.{chrom}.{file_ext}", genomebuild=genomebuild_cap[genomebuild], dbsnp=DV.dbsnp, chrom=chroms[genomebuild], file_ext=["tsv", "release_info"]),
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/ensembltogenesymbol/{ensembl_versions[genomebuild]}/EnsemblToGeneSymbol.tsv",
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/ensembltogenesymbol/{ensembl_versions[genomebuild]}/EnsemblToGeneSymbol.release_info",
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/MITOMAP/{DV.today}/Mitomap.tsv",
