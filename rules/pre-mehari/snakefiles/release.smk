@@ -10,7 +10,7 @@ NOREFS = [
 
 def input_result_grch3x_release_server_db(wildcards):
     genomebuild = wildcards.genomebuild
-    dbsnp = expand("output/pre-mehari/{genomebuild}/dbSNP/{dbsnp}/Dbsnp.{chrom}.release_info", genomebuild=genomebuild_cap[genomebuild], dbsnp=DV.dbsnp, chrom=CHROMS)
+    dbsnp = expand("output/pre-mehari/{genomebuild}/dbSNP/{dbsnp}/Dbsnp.{chrom}.release_info", genomebuild=genomebuild_cap[genomebuild], dbsnp=DV.dbsnp, chrom=chroms[genomebuild])
     return NOREFS + dbsnp + [
         f"output/pre-mehari/{genomebuild_cap[genomebuild]}/hgnc/{DV.hgnc_quarterly}+{DV.cdot}+{refseq_versions[genomebuild]}/Hgnc.release_info",
         f"output/pre-mehari/{genomebuild_cap[genomebuild]}/hgnc/{DV.hgnc_quarterly}+{DV.cdot}+{refseq_versions[genomebuild]}/RefseqToHgnc.release_info",

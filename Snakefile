@@ -486,10 +486,10 @@ include: "rules/output/worker/tads.smk"
 include: "rules/output/tracks/exome_probesets.smk"
 # -- reduced output directory (dev/exomes) ------------------------------------------------------
 # ---- bed file
-# include: "rules/reduced/annonars.smk"
-# include: "rules/reduced/hpo.smk"
-# include: "rules/reduced/targets.smk"
-# include: "rules/reduced/mehari.smk"
+include: "rules/reduced/annonars.smk"
+include: "rules/reduced/hpo.smk"
+include: "rules/reduced/targets.smk"
+include: "rules/reduced/mehari.smk"
 
 # -- pre-mehari rules for tsv output
 include: "rules/pre-mehari/snakefiles/acmg.smk"
