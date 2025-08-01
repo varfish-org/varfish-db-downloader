@@ -72,6 +72,8 @@ def input_result_grch3x_refseq_to_hgnc_to_tsv(wildcards):
 rule result_grch3x_refseq_to_hgnc_to_tsv:
     input:
         unpack(input_result_grch3x_refseq_to_hgnc_to_tsv)
+    params:
+        version=lambda wc: wc.quarterly_release_date,
     output:
         tsv="output/pre-mehari/{genomebuild}/hgnc/{quarterly_release_date}+{cdot_release}+{refseq_version}/RefseqToHgnc.tsv",
         release_info="output/pre-mehari/{genomebuild}/hgnc/{quarterly_release_date}+{cdot_release}+{refseq_version}/RefseqToHgnc.release_info",
