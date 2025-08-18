@@ -323,8 +323,6 @@ def generate_input_files():
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/extra_annos/{DV.cadd}/ExtraAnnoField.release_info",
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/knowngeneaa/{cons_versions[genomebuild]}/KnowngeneAA.tsv",
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/knowngeneaa/{cons_versions[genomebuild]}/KnowngeneAA.release_info",
-            # f"output/pre-mehari/{genomebuild_cap[genomebuild]}/gnomAD_constraints/v{gnomad_versions[genomebuild]}/GnomadConstraints.tsv",
-            # f"output/pre-mehari/{genomebuild_cap[genomebuild]}/gnomAD_constraints/v{gnomad_versions[genomebuild]}/GnomadConstraints.release_info",
             f"output/pre-mehari/releases/{DV.pre_mehari_release}/varfish-postgres-db-{DV.pre_mehari_release}-{genomebuild}/.done",
             f"output/pre-mehari/releases/{DV.pre_mehari_release}/varfish-postgres-db-{DV.pre_mehari_release}-{genomebuild}.tar.gz",
             f"output/pre-mehari/releases/{DV.pre_mehari_release}/varfish-postgres-db-{DV.pre_mehari_release}-{genomebuild}.tar.gz.sha256",
@@ -379,8 +377,6 @@ def generate_input_files():
         f"output/pre-mehari/noref/hpo/{DV.hpo}/Hpo.release_info",
         f"output/pre-mehari/noref/hpo/{DV.hpo}/HpoName.tsv",
         f"output/pre-mehari/noref/hpo/{DV.hpo}/HpoName.release_info",
-        f"output/pre-mehari/noref/refseqtoensembl/{DV.ensembl_38}/RefseqToEnsembl.tsv",
-        f"output/pre-mehari/noref/refseqtoensembl/{DV.ensembl_38}/RefseqToEnsembl.release_info",
         f"output/pre-mehari/noref/acmg/{DV.acmg_sf}/Acmg.tsv",  # ATTN! source file is placed manually in the data directory
         f"output/pre-mehari/noref/acmg/{DV.acmg_sf}/Acmg.release_info",
         f"output/pre-mehari/noref/mim2gene/{DV.today}/Mim2geneMedgen.tsv",
@@ -497,7 +493,6 @@ include: "rules/pre-mehari/snakefiles/clinvar.smk"
 include: "rules/pre-mehari/snakefiles/dbsnp.smk"
 include: "rules/pre-mehari/snakefiles/ensembltogenesymbol.smk"
 include: "rules/pre-mehari/snakefiles/extra_annos.smk"
-include: "rules/pre-mehari/snakefiles/gnomad_constraints.smk"
 include: "rules/pre-mehari/snakefiles/helixdb.smk"
 include: "rules/pre-mehari/snakefiles/hgnc.smk"
 include: "rules/pre-mehari/snakefiles/hpo.smk"
@@ -505,7 +500,6 @@ include: "rules/pre-mehari/snakefiles/knowngeneaa.smk"
 include: "rules/pre-mehari/snakefiles/mim2gene.smk"
 include: "rules/pre-mehari/snakefiles/mitomap.smk"
 include: "rules/pre-mehari/snakefiles/mtdb.smk"
-include: "rules/pre-mehari/snakefiles/refseqtoensembl.smk"
 include: "rules/pre-mehari/snakefiles/refseqtogenesymbol.smk"
 include: "rules/pre-mehari/snakefiles/release.smk"
 # ---- reference
