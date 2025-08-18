@@ -4,7 +4,9 @@ rule grchxx_ensembl_to_genesymbol_download:
         tsv="output/pre-mehari/{genomebuild}/ensembltogenesymbol/{ensembl}/EnsemblToGeneSymbol.tsv",
         release_info="output/pre-mehari/{genomebuild}/ensembltogenesymbol/{ensembl}/EnsemblToGeneSymbol.release_info",
     params:
-        ensembl_archive_url=lambda wildcards: DV.ensembl_38_archive_url if wildcards.genomebuild == "GRCh38" else DV.ensembl_37_archive_url,
+        ensembl_archive_url=lambda wildcards: DV.ensembl_38_archive_url
+        if wildcards.genomebuild == "GRCh38"
+        else DV.ensembl_37_archive_url,
     shell:
         r"""
         export TMPDIR=$(mktemp -d)

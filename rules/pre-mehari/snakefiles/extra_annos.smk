@@ -6,8 +6,12 @@ rule grch3x_refseq_exons_download:
     output:
         bed="work/download/pre-mehari/{genomebuild}/exons/refseq_exons.bed",
     params:
-        assembly=lambda wildcards: DV.refseq_ref_38_assembly if wildcards.genomebuild == "GRCh38" else DV.refseq_ref_37_assembly,
-        version=lambda wildcards: DV.refseq_38 if wildcards.genomebuild == "GRCh38" else DV.refseq_37,
+        assembly=lambda wildcards: DV.refseq_ref_38_assembly
+        if wildcards.genomebuild == "GRCh38"
+        else DV.refseq_ref_37_assembly,
+        version=lambda wildcards: DV.refseq_38
+        if wildcards.genomebuild == "GRCh38"
+        else DV.refseq_37,
     shell:
         r"""
         export TMPDIR=$(mktemp -d)
@@ -38,8 +42,12 @@ rule grch3x_ensembl_exons_download:
     output:
         bed="work/download/pre-mehari/{genomebuild}/exons/ensembl_exons.bed",
     params:
-        ensembl=lambda wildcards: DV.ensembl_38 if wildcards.genomebuild == "GRCh38" else DV.ensembl_37,
-        url=lambda wildcards: DV.ensembl_38_archive_ftp if wildcards.genomebuild == "GRCh38" else DV.ensembl_37_archive_ftp,
+        ensembl=lambda wildcards: DV.ensembl_38
+        if wildcards.genomebuild == "GRCh38"
+        else DV.ensembl_37,
+        url=lambda wildcards: DV.ensembl_38_archive_ftp
+        if wildcards.genomebuild == "GRCh38"
+        else DV.ensembl_37_archive_ftp,
     shell:
         r"""
         wget --no-check-certificate -O- \
@@ -86,7 +94,7 @@ rule result_GRChXX_extra_annos_release_info:
 rule result_GRChXX_extra_annos_tsv_step_1:
     input:
         bed="work/download/pre-mehari/{genomebuild}/exons/refseq_ensembl_exons.bed",
-        cadd_snvs="work/download/annos/{genomebuild}/seqvars/cadd/{release_name}/whole_genome_SNVs_inclAnno.tsv.gz"
+        cadd_snvs="work/download/annos/{genomebuild}/seqvars/cadd/{release_name}/whole_genome_SNVs_inclAnno.tsv.gz",
     output:
         tsv="work/pre-mehari/{genomebuild}/extra_annos/{release_name}/ExtraAnno.tsv",  # this is intentionally in work
         fields="output/pre-mehari/{genomebuild}/extra_annos/{release_name}/ExtraAnnoField.tsv",
@@ -198,6 +206,7 @@ rule result_GRChXX_extra_annos_tsv_step_2:
         import json
         import csv
 
+
         def merge_rows(rows):
             result = rows[0][:7] + [[]]
             try:
@@ -218,6 +227,7 @@ rule result_GRChXX_extra_annos_tsv_step_2:
             result[-1] = json.dumps(result[-1])
             # print("MERGED\n  %s\nTO\n  %s" % (rows, result), file=sys.stderr)
             return result
+
 
         header = [
             "release",

@@ -36,7 +36,7 @@ rule grch38_dbsnp_map_chr:
         map=temp("work/download/annos/grch38/seqvars/dbsnp/{version}/dbsnp.map_chr"),
         vcf="work/download/annos/grch38/seqvars/dbsnp/{version}/dbsnp.map_chr.gz",
         tbi="work/download/annos/grch38/seqvars/dbsnp/{version}/dbsnp.map_chr.gz.tbi",
-    threads: THREADS,
+    threads: THREADS
     shell:
         r"""
         awk -v RS="(\r)?\n" 'BEGIN {{ FS="\t" }} !/^#/ {{ if ($10 != "na") print $7,$10; else print $7,$5 }}' \
@@ -60,7 +60,9 @@ rule grch3x_dbsnp_normalize:
         vcf="work/download/annos/{genomebuild}/seqvars/dbsnp/{version}/dbsnp.normalized.{chrom}.vcf.gz",
         tbi="work/download/annos/{genomebuild}/seqvars/dbsnp/{version}/dbsnp.normalized.{chrom}.vcf.gz.tbi",
     params:
-        chrom=lambda wildcards: f"chr{wildcards.chrom}" if wildcards.genomebuild == "grch38" else wildcards.chrom,
+        chrom=lambda wildcards: f"chr{wildcards.chrom}"
+        if wildcards.genomebuild == "grch38"
+        else wildcards.chrom,
     threads: THREADS
     shell:
         r"""
@@ -85,12 +87,12 @@ def input_result_dbsnp_tsv(wildcards):
         "header": "rules/pre-mehari/header/dbsnp.txt",
         "vcf": f"work/download/annos/{wildcards.genomebuild.lower()}/seqvars/dbsnp/{wildcards.version}/dbsnp.normalized.{wildcards.chrom}.vcf.gz",
         "tbi": f"work/download/annos/{wildcards.genomebuild.lower()}/seqvars/dbsnp/{wildcards.version}/dbsnp.normalized.{wildcards.chrom}.vcf.gz.tbi",
-    }    
+    }
 
 
 rule result_grch3x_dbsnp_tsv:
     input:
-        unpack(input_result_dbsnp_tsv)
+        unpack(input_result_dbsnp_tsv),
     output:
         release_info="output/pre-mehari/{genomebuild}/dbSNP/{version}/Dbsnp.{chrom}.release_info",
         tsv="output/pre-mehari/{genomebuild}/dbSNP/{version}/Dbsnp.{chrom}.tsv",

@@ -21,7 +21,7 @@ def input_grchxx_knowngeneaa_to_vcf(wildcards):
     genome_build = wildcards.genome_build.lower()
     return {
         "reference": f"work/reference/{genome_build}/reference.fa",
-        "fa": f"work/download/annos/{genome_build}/features/cons/{wildcards.version}/knownGene.exonAA.fa.gz"
+        "fa": f"work/download/annos/{genome_build}/features/cons/{wildcards.version}/knownGene.exonAA.fa.gz",
     }
 
 

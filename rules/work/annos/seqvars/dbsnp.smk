@@ -6,7 +6,9 @@ rule annos_dbsnp_download:  # -- download dbSNP data
         vcf="work/download/annos/{genome_release}/seqvars/dbsnp/{version}/dbsnp.vcf.gz",
         vcf_tbi="work/download/annos/{genome_release}/seqvars/dbsnp/{version}/dbsnp.vcf.gz.tbi",
     params:
-        reference=lambda wildcards: DV.refseq_ref_37 if wildcards.genome_release == "grch37" else DV.refseq_ref_38
+        reference=lambda wildcards: DV.refseq_ref_37
+        if wildcards.genome_release == "grch37"
+        else DV.refseq_ref_38,
     shell:
         r"""
         # Check the version.
@@ -31,14 +33,16 @@ rule annos_dbsnp_assembly_release:
         txt="work/download/annos/{genome_release}/seqvars/dbsnp/{version}/assembly_report.txt",
     params:
         assembly=lambda wildcards: (
-            DV.refseq_ref_37_assembly if wildcards.genome_release == "grch37"
+            DV.refseq_ref_37_assembly
+            if wildcards.genome_release == "grch37"
             else DV.refseq_ref_38_assembly
         ),
-        version=lambda wildcards: DV.refseq_37 if wildcards.genome_release == "grch37" else DV.refseq_38
+        version=lambda wildcards: DV.refseq_37
+        if wildcards.genome_release == "grch37"
+        else DV.refseq_38,
     shell:
         r"""
         wget --no-check-certificate \
             -O {output.txt} \
             {DV.refseq_base_url}/{params.version}/{params.assembly}/{params.assembly}_assembly_report.txt
         """
-

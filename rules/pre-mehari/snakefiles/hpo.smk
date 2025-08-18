@@ -1,6 +1,6 @@
 rule result_noref_hpo_name_mapping:
     input:
-        obo="work/download/hpo/{v_hpo}/hp.obo"
+        obo="work/download/hpo/{v_hpo}/hp.obo",
     output:
         tsv="output/pre-mehari/noref/hpo/{v_hpo}/HpoName.tsv",
         release_info="output/pre-mehari/noref/hpo/{v_hpo}/HpoName.release_info",

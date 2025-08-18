@@ -15,9 +15,9 @@ rule grchXX_helixmtdb_vcf:
         else:
             chrom = "chrM"
 
-        # As stated in HelixMTdb paper by Bolze et al, 2019,
-        # "Selective constraints and pathogenicity of mitochondrial DNA variants
-        #  inferred from a novel database of 196,554 unrelated individuals."
+            # As stated in HelixMTdb paper by Bolze et al, 2019,
+            # "Selective constraints and pathogenicity of mitochondrial DNA variants
+            #  inferred from a novel database of 196,554 unrelated individuals."
         AN = 196_554
 
         #: Mitochondrial length
@@ -134,13 +134,12 @@ rule grchXX_helixmtdb_vcf:
             vcf_writer.close()
 
 
-
 rule GRChXX_helixmtdb_normalize:
     input:
         vcf="work/download/annos/{genome_release}/seqvars/helixmtdb/{helix_v}/helixmtdb.splitted.vcf",
         ref="work/reference/{genome_release}/reference.fa",
     output:
-        "work/download/annos/{genome_release}/seqvars/helixmtdb/{helix_v}/helixmtdb.splitted.normalized.vcf"
+        "work/download/annos/{genome_release}/seqvars/helixmtdb/{helix_v}/helixmtdb.splitted.normalized.vcf",
     shell:
         r"""
         bcftools norm \
@@ -152,17 +151,16 @@ rule GRChXX_helixmtdb_normalize:
         """
 
 
-
 def input_helixmtdb_tsv(wildcards):
     return {
         "txt": f"work/download/annos/{wildcards.genome_build.lower()}/seqvars/helixmtdb/{wildcards.helix_v}/helixmtdb.splitted.normalized.vcf",
         "header": "rules/pre-mehari/header/helixmtdb.txt",
-    }    
+    }
 
 
 rule result_GRChXX_helixmtdb_tsv:
     input:
-        unpack(input_helixmtdb_tsv)
+        unpack(input_helixmtdb_tsv),
     output:
         tsv="output/pre-mehari/{genome_build}/HelixMTdb/{helix_v}/HelixMtDb.tsv",
         release_info="output/pre-mehari/{genome_build}/HelixMTdb/{helix_v}/HelixMtDb.release_info",

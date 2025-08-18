@@ -18,7 +18,7 @@ rule grch3x_clinvar_extract:  # -- download/extract ClinVar files
     output:
         jsonl="work/pre-mehari/{genomebuild}/clinvar/{clinvar_version}+{annonars_version}/download/clinvar-variants.jsonl.gz",
     params:
-        genomebuild_sm=lambda wildcards: wildcards.genomebuild.lower()
+        genomebuild_sm=lambda wildcards: wildcards.genomebuild.lower(),
     shell:
         r"""
         export TMPDIR=$(mktemp -d)

@@ -40,6 +40,7 @@ rule grch3x_refseq_to_hgnc_download:
 #         echo -e "table\tversion\tgenomebuild\tnull_value\nHgnc\t{params.version}\t{wildcards.genomebuild}\t" > {output.release_info}
 #         """
 
+
 rule result_grch3x_hgnc_to_tsv:
     input:
         tsv="work/download/annos/hgnc/{quarterly_release_date}/hgnc_complete_set.tsv",
@@ -71,7 +72,7 @@ def input_result_grch3x_refseq_to_hgnc_to_tsv(wildcards):
 
 rule result_grch3x_refseq_to_hgnc_to_tsv:
     input:
-        unpack(input_result_grch3x_refseq_to_hgnc_to_tsv)
+        unpack(input_result_grch3x_refseq_to_hgnc_to_tsv),
     params:
         version=lambda wc: wc.quarterly_release_date,
     output:

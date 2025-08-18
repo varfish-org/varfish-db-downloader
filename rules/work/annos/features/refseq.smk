@@ -6,7 +6,7 @@ rule annos_features_refseq_gene_regions_download_grch37:
         acc="work/download/annos/grch37/refseq/{version}/chr_accessions_{assembly}",
         gtf="work/download/annos/grch37/refseq/{version}/{assembly}_genomic.gtf.gz",
     params:
-        version_stripped=lambda wildcards: wildcards.version.partition(".")[0]
+        version_stripped=lambda wildcards: wildcards.version.partition(".")[0],
     shell:
         r"""
         wget --no-check-certificate \
@@ -49,7 +49,7 @@ def input_annos_features_refseq_gene_regions_process(wildcards):
         assembly = DV.refseq_ref_37_assembly
     else:
         assembly = DV.refseq_ref_38_assembly
-    
+
     return {
         "acc": f"work/download/annos/{wildcards.genomebuild}/refseq/{wildcards.version}/chr_accessions_{assembly}",
         "gtf": f"work/download/annos/{wildcards.genomebuild}/refseq/{wildcards.version}/{assembly}_genomic.gtf.gz",

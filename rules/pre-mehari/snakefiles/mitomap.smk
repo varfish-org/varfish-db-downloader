@@ -17,10 +17,16 @@ rule GRChXX_mitomap_normalize:
     output:
         vcf="work/download/pre-mehari/{genomebuild}/MITOMAP/{download_date}/polymorphisms.normalized.annotated.vcf",
         tmp_vcf=temp("work/download/pre-mehari/{genomebuild}/MITOMAP/{download_date}/mt_tmp.vcf"),
-        norm=temp("work/download/pre-mehari/{genomebuild}/MITOMAP/{download_date}/polymorphisms.normalized.vcf"),
-        txt_tmp=temp("work/download/pre-mehari/{genomebuild}/MITOMAP/{download_date}/query-result.txt"),
+        norm=temp(
+            "work/download/pre-mehari/{genomebuild}/MITOMAP/{download_date}/polymorphisms.normalized.vcf"
+        ),
+        txt_tmp=temp(
+            "work/download/pre-mehari/{genomebuild}/MITOMAP/{download_date}/query-result.txt"
+        ),
         ann=temp("work/download/pre-mehari/{genomebuild}/MITOMAP/{download_date}/annotate.bed.gz"),
-        anntbi=temp("work/download/pre-mehari/{genomebuild}/MITOMAP/{download_date}/annotate.bed.gz.tbi"),
+        anntbi=temp(
+            "work/download/pre-mehari/{genomebuild}/MITOMAP/{download_date}/annotate.bed.gz.tbi"
+        ),
     shell:
         r"""
         if [[ "{wildcards.genomebuild}" == "grch38" ]]; then
@@ -59,7 +65,7 @@ def input_mitomap_tsv(wildcards):
 
 rule result_GRChXX_mitomap_tsv:
     input:
-        unpack(input_mitomap_tsv)
+        unpack(input_mitomap_tsv),
     output:
         tsv="output/pre-mehari/{genomebuild}/MITOMAP/{download_date}/Mitomap.tsv",
         release_info="output/pre-mehari/{genomebuild}/MITOMAP/{download_date}/Mitomap.release_info",

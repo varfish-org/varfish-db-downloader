@@ -13,9 +13,13 @@ rule work_annonars_functional_download:
 
 def output_annonars_functional_input(wildcards):
     if wildcards.genome_release == "grch37":
-        return f"work/download/refseq/grch37/{DV.refseq_37}/{DV.refseq_ref_37_assembly}_genomic.gff.gz"
+        return (
+            f"work/download/refseq/grch37/{DV.refseq_37}/{DV.refseq_ref_37_assembly}_genomic.gff.gz"
+        )
     else:
-        return f"work/download/refseq/grch38/{DV.refseq_38}/{DV.refseq_ref_38_assembly}_genomic.gff.gz"
+        return (
+            f"work/download/refseq/grch38/{DV.refseq_38}/{DV.refseq_ref_38_assembly}_genomic.gff.gz"
+        )
 
 
 rule output_annonars_functional:  # -- build annonars functional RocksDB file

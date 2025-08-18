@@ -214,7 +214,7 @@ DATA_VERSIONS = DataVersions(
     ucsc_fix_seq_liftover_37="20200609",
     ucsc_fix_seq_liftover_38="20221103",
     dbsnp="b157",
-    acmg_sf="3.1", # ATTN! source file is placed manually in the data directory
+    acmg_sf="3.1",  # ATTN! source file is placed manually in the data directory
     orphadata=TODAY,
     patho_mms="20220730",
     clinvar_release=CLINVAR_RELEASE,
@@ -228,14 +228,14 @@ DATA_VERSIONS = DataVersions(
     # The lines/versions below the mehari_tx should be consistent with the mehari-data-tx release:
     # https://github.com/varfish-org/mehari-data-tx/blob/v{mehari_tx}/config/config.yaml
     mehari_tx="0.10.4",  # ATTN! version to be consistent with
-    # --- 
-    cdot="0.2.27", # line #L30 and others
-    hgnc_quarterly="2025-04-01", # line #L239
-    cdot_refseq_gff_json_37=f"{REFSEQ_REF_37}_{REFSEQ_REF_37_BUILD}_genomic.{REFSEQ_37}.gff", # line #L114
-    cdot_refseq_gff_json_38=f"{REFSEQ_REF_38}_{REFSEQ_REF_38_BUILD}_genomic.{REFSEQ_38}.gff", # line #L31
-    hpo="v2025-05-06", # line #L250
-    ensembl_37=ENSEMBL_37, # line #L217
-    ensembl_38=ENSEMBL_38, # line #L155
+    # ---
+    cdot="0.2.27",  # line #L30 and others
+    hgnc_quarterly="2025-04-01",  # line #L239
+    cdot_refseq_gff_json_37=f"{REFSEQ_REF_37}_{REFSEQ_REF_37_BUILD}_genomic.{REFSEQ_37}.gff",  # line #L114
+    cdot_refseq_gff_json_38=f"{REFSEQ_REF_38}_{REFSEQ_REF_38_BUILD}_genomic.{REFSEQ_38}.gff",  # line #L31
+    hpo="v2025-05-06",  # line #L250
+    ensembl_37=ENSEMBL_37,  # line #L217
+    ensembl_38=ENSEMBL_38,  # line #L155
     refseq_37=REFSEQ_37,
     refseq_38=REFSEQ_38,
     refseq_ref_37=REFSEQ_REF_37,

@@ -30,7 +30,9 @@ rule genes_ensembl_download_maps_grch3X:  # -- download files for ENST-ENSG mapp
     output:
         download_gtf="work/genes/ensembl/{genomebuild}/{ensembl_version}/download/Homo_sapiens.{genomebuild_cap}.{ensembl_version}.gtf.gz",
     params:
-        url_base=lambda wildcards: DV.ensembl_38_archive_ftp if wildcards.genomebuild == "grch38" else DV.ensembl_37_archive_ftp
+        url_base=lambda wildcards: DV.ensembl_38_archive_ftp
+        if wildcards.genomebuild == "grch38"
+        else DV.ensembl_37_archive_ftp,
     shell:
         r"""
         wget --no-check-certificate \
@@ -48,7 +50,7 @@ def input_genes_ensembl_process_maps_grch37(wildcards):
 
 rule genes_ensembl_process_maps_grch37:  # -- process ENST-ENSG mapping (GRCh37)
     input:
-        unpack(input_genes_ensembl_process_maps_grch37)
+        unpack(input_genes_ensembl_process_maps_grch37),
     output:
         tsv="work/genes/enst_ensg/grch37/{ensembl_version}/enst_ensg.tsv",
         tsv_md5="work/genes/enst_ensg/grch37/{ensembl_version}/enst_ensg.tsv.md5",
@@ -85,7 +87,7 @@ def input_genes_ensembl_process_maps_grch38(wildcards):
 
 rule genes_ensembl_process_maps_grch38:  # -- process ENST-ENSG mapping (GRCh38)
     input:
-        unpack(input_genes_ensembl_process_maps_grch38)
+        unpack(input_genes_ensembl_process_maps_grch38),
     output:
         tsv="work/genes/enst_ensg/grch38/{ensembl_version}/enst_ensg.tsv",
         tsv_md5="work/genes/enst_ensg/grch38/{ensembl_version}/enst_ensg.tsv.md5",
