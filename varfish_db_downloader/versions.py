@@ -82,9 +82,7 @@ class DataVersions:
     #: Version of gnomAD mtDNA.
     gnomad_mtdna: str
     #: Version of gnomAD v2.
-    #: Version of gnomAD v3.
     gnomad_v2: str
-    gnomad_v3: str
     #: Version of gnomAD v4.
     gnomad_v4: str
     #: Version of gnomAD SV.
@@ -192,7 +190,6 @@ DATA_VERSIONS = DataVersions(
     gnomad_constraints="4.1",
     gnomad_mtdna="3.1",
     gnomad_v2="2.1.1",
-    gnomad_v3="3.1.2",
     gnomad_v4="4.1",
     gnomad_sv="2.1.1",
     gnomad_cnv4="4.1",
