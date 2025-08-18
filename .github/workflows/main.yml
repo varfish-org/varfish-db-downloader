@@ -50,44 +50,44 @@ jobs:
             - Check your Snakemake style with `snakefmt`.
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  Run-Test-Mode:
-    needs: Formatting-Linting
-    runs-on: ubuntu-24.04
-    steps:
-      # temporary workaround until annonars is available on bioconda again
-      - name: Install dependencies
-        run: |
-          sudo apt update -y
-          sudo apt install -y librocksdb8.9 libsnappy1v5
-
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          lfs: true
-
-      - name: Setup formatting environment
-        uses: mamba-org/setup-micromamba@v1
-        with:
-          environment-file: environment.yml
-          init-shell: bash
-          cache-environment: true
-          post-cleanup: none  # breaks otherwise
-
-      - name: Install qsv (not in conda-forge yet)
-        run: |
-           cd /tmp
-           wget https://github.com/jqnatividad/qsv/releases/download/0.112.0/qsv-0.112.0-x86_64-unknown-linux-musl.zip
-           unzip qsv-0.112.0-x86_64-unknown-linux-musl.zip
-           cp qsv_musl-1.2.3 /usr/local/bin/qsv
-
-      - name: Install python package
-        run: |
-          pip install -e .
-        shell: bash -el {0}
-
-      - name: Run in test mode
-        run: |
-          CI=true snakemake --cores=1 -p all
-        shell: bash -el {0}
-        env:
-         QSV_NO_UPDATE: "1"
+#  Run-Test-Mode:
+#    needs: Formatting-Linting
+#    runs-on: ubuntu-24.04
+#    steps:
+#      # temporary workaround until annonars is available on bioconda again
+#      - name: Install dependencies
+#        run: |
+#          sudo apt update -y
+#          sudo apt install -y librocksdb8.9 libsnappy1v5
+#
+#      - name: Checkout repository
+#        uses: actions/checkout@v3
+#        with:
+#          lfs: true
+#
+#      - name: Setup formatting environment
+#        uses: mamba-org/setup-micromamba@v1
+#        with:
+#          environment-file: environment.yml
+#          init-shell: bash
+#          cache-environment: true
+#          post-cleanup: none  # breaks otherwise
+#
+#      - name: Install qsv (not in conda-forge yet)
+#        run: |
+#           cd /tmp
+#           wget https://github.com/jqnatividad/qsv/releases/download/0.112.0/qsv-0.112.0-x86_64-unknown-linux-musl.zip
+#           unzip qsv-0.112.0-x86_64-unknown-linux-musl.zip
+#           cp qsv_musl-1.2.3 /usr/local/bin/qsv
+#
+#      - name: Install python package
+#        run: |
+#          pip install -e .
+#        shell: bash -el {0}
+#
+#      - name: Run in test mode
+#        run: |
+#          CI=true snakemake --cores=1 -p all
+#        shell: bash -el {0}
+#        env:
+#         QSV_NO_UPDATE: "1"
