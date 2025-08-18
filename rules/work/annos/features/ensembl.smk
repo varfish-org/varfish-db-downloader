@@ -1,38 +1,19 @@
 ## Rules related to ENSEMBL features.
 
 
-rule annos_features_ensembl_gene_regions_grch37_download:  # -- download ENSEMBL gene regions files (GRCh37)
-    output:
-        gtf="work/download/annos/grch37/ensembl_genes/{version}/Homo_sapiens.GRCh37.{version}.gtf.gz",
-    shell:
-        r"""
-        wget --no-check-certificate \
-            -O {output.gtf} \
-            'https://ftp.ensembl.org/pub/grch37/current/gtf/homo_sapiens/Homo_sapiens.GRCh37.{wildcards.version}.gtf.gz'
-        """
-
-
-rule annos_features_ensembl_gene_regions_grch38_download:  # -- download ENSEMBL gene regions files (GRCh38)
-    output:
-        gtf="work/download/annos/grch38/ensembl_genes/{version}/Homo_sapiens.GRCh38.{ensembl_version}.gtf.gz",
-    shell:
-        r"""
-        wget --no-check-certificate \
-            -O {output.gtf} \
-            'https://ftp.ensembl.org/pub/release-{wildcards.ensembl_version}/gtf/homo_sapiens/Homo_sapiens.GRCh38.{wildcards.ensembl_version}.gtf.gz'
-        """
-
-
 def input_annos_features_ensembl_gene_regions_process(wildcards):
     """Input function for ``rule annos_features_ensembl_gene_regions_process``."""
-    genome_release_nolower = {
+    ensembl_version = {
+        "grch37": DV.ensembl_37,
+        "grch38": DV.ensembl_38,
+    }[wildcards.genome_release]
+    genomebuild = {
         "grch37": "GRCh37",
         "grch38": "GRCh38",
     }[wildcards.genome_release]
     return {
         "gtf": (
-            f"work/download/annos/{wildcards.genome_release}/ensembl_genes/{wildcards.version}/"
-            f"Homo_sapiens.{genome_release_nolower}.{wildcards.version}.gtf.gz"
+            f"work/genes/ensembl/{wildcards.genome_release}/{ensembl_version}/download/Homo_sapiens.{genomebuild}.{wildcards.version}.gtf.gz"
         )
     }
 

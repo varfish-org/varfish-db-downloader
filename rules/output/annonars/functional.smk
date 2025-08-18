@@ -1,31 +1,25 @@
 ## Rules to create build annonars functional annotation database..
 
 
-rule work_annonars_functional_download_37:  # -- download functional data for GRCh37
+rule work_annonars_functional_download:
     output:
-        "work/download/refseq/grch37/{version}/{assembly}_genomic.gff.gz",
+        "work/download/refseq/{genomebuild}/{version}/{assembly}_genomic.gff.gz",
     shell:
         r"""
         wget -O {output} \
-            https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/9606/{wildcards.version}/{wildcards.assembly}/{wildcards.assembly}_genomic.gff.gz
-        """
-
-
-rule work_annonars_functional_download_38:  # -- download functional data for GRCh37
-    output:
-        "work/download/refseq/grch38/{version}/{assembly}_genomic.gff.gz",
-    shell:
-        r"""
-        wget -O {output} \
-            https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/9606/{wildcards.version}/{wildcards.assembly}/{wildcards.assembly}_genomic.gff.gz
+            {DV.refseq_base_url}/{wildcards.version}/{wildcards.assembly}/{wildcards.assembly}_genomic.gff.gz
         """
 
 
 def output_annonars_functional_input(wildcards):
     if wildcards.genome_release == "grch37":
-        return f"work/download/refseq/grch37/{DV.refseq_fe_37}/GCF_000001405.25_GRCh37.p13_genomic.gff.gz"
+        return (
+            f"work/download/refseq/grch37/{DV.refseq_37}/{DV.refseq_ref_37_assembly}_genomic.gff.gz"
+        )
     else:
-        return f"work/download/refseq/grch38/{DV.refseq_fe_38}/GCF_000001405.40_GRCh38.p14_genomic.gff.gz"
+        return (
+            f"work/download/refseq/grch38/{DV.refseq_38}/{DV.refseq_ref_38_assembly}_genomic.gff.gz"
+        )
 
 
 rule output_annonars_functional:  # -- build annonars functional RocksDB file

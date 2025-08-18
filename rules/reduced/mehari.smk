@@ -35,12 +35,11 @@ rule subset_mehari:  # -- create exomes subset
         manifest="output/reduced-{set_name}/mehari/freqs-{genome_release}-{version_multi}/MANIFEST.txt",
     wildcard_constraints:
         genome_release=RE_GENOME,
-        v_hpo=RE_VERSION,
         versions=RE_VERSION_MULTI,
-    threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
+    threads: THREADS
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
-        mem_mb_per_cpu=2000,
+        mem_mb=MEMORY,
     shell:
         r"""
         annonars db-utils copy \

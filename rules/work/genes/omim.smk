@@ -4,10 +4,10 @@
 rule genes_omim:  # -- prepare HGNC to OMIM disease mapping
     input:
         mim2gene="work/download/genes/ncbi/{date}/mim2gene_medgen",
-        xlink="output/full/mehari/genes-xlink-{date}/genes-xlink.tsv",
+        xlink="output/full/mehari/genes-xlink-{hgnc_quarterly_date}/genes-xlink.tsv",
         hpoa="work/download/hpo/{v_hpo}/phenotype.hpoa",
     output:
-        tsv="work/genes/omim/{v_hpo}+{date}/omim_diseases.tsv",
+        tsv="work/genes/omim/{v_hpo}+{date}+{hgnc_quarterly_date}/omim_diseases.tsv",
     shell:
         """
         set -x
@@ -41,6 +41,7 @@ rule genes_omim:  # -- prepare HGNC to OMIM disease mapping
         echo hgnc_id,omim_id,disease_name \
         > $TMPDIR/output.csv
 
+        QSV_SKIP_FORMAT_CHECK=1 \
         qsv join -d '\t' \
             omim_id $TMPDIR/mim2gene_hgnc.tsv \
             database_id $TMPDIR/phenotype.hpoa \

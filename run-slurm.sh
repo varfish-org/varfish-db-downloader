@@ -15,12 +15,15 @@ set -euo pipefail
 
 # Number of jobs to run at the same time.
 JOBS=${JOBS-500}
-# Default partition.
-PART=${PART-critical}
 # Be relaxed with reruns.
 RELAXED_RERUNS=${RELAXED_RERUNS-true}
 # Whether to add --keep-going
-KEEP_GOING=${KEEP_GOING-false}
+KEEP_GOING=${KEEP_GOING-true}
+# Wait time for files to appear in seconds
+LATENCY_WAIT=${LATENCY_WAIT-60}
+
+# Other --default-resource parameters:
+#   slurm_partition="$PART"
 
 snakemake \
     --rerun-incomplete \
@@ -34,8 +37,8 @@ snakemake \
     fi) \
     --jobs $JOBS \
     --slurm \
+    --latency-wait $LATENCY_WAIT \
     --default-resources \
-        slurm_partition="$PART" \
         'runtime="4h"' \
         mem_mb=4000 \
     -- \

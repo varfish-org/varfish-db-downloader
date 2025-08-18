@@ -8,12 +8,12 @@ rule output_annonars_genes:  # -- build annonars genes RocksDB file
         clingen_38="work/genes/clingen/{date}/ClinGen_gene_curation_list_GRCh38.tsv",
         gnomad_constraints="work/genes/gnomad/{v_gnomad_constraints}/gnomad_constraints.tsv",
         dbnsfp="work/genes/dbnsfp/{v_dbnsfp}/genes.tsv.gz",
-        hgnc="work/genes/hgnc/{date}/hgnc_info.jsonl",
+        hgnc="work/genes/hgnc/{hgnc_quarterly_date}/hgnc_info.jsonl",
         ncbi="work/genes/entrez/{date}/gene_info.jsonl",
-        omim="work/genes/omim/{v_hpo}+{date}/omim_diseases.tsv",
+        omim="work/genes/omim/{v_hpo}+{date}+{hgnc_quarterly_date}/omim_diseases.tsv",
         orpha="work/genes/orphadata/{date}/orpha_diseases.tsv",
         panelapp="work/download/genes/panelapp/{date}/panelapp.jsonl",
-        conditions="work/genes/conditions/{v_hpo}+{date}/conditions.jsonl",
+        conditions="work/genes/conditions/{v_hpo}+{date}+{hgnc_quarterly_date}/conditions.jsonl",
         rcnv="work/genes/rcnv/2022/rcnv_collins_2022.tsv",
         shet="work/genes/shet/2019/shet_weghorn_2019.tsv",
         gtex="work/genes/annonars/gtex_v8/genes_tpm.jsonl.gz",
@@ -21,15 +21,15 @@ rule output_annonars_genes:  # -- build annonars genes RocksDB file
         decipher_hi="work/genes/decipher/v3/decipher_hi_prediction.tsv",
     output:
         rocksdb_identity=(
-            "output/full/annonars/genes-{v_acmg_sf}+{v_gnomad_constraints}+{v_dbnsfp}+{v_hpo}+{date}+{v_annonars}/"
+            "output/full/annonars/genes-{v_acmg_sf}+{v_gnomad_constraints}+{v_dbnsfp}+{v_hpo}+{date}+{hgnc_quarterly_date}+{v_annonars}/"
             "rocksdb/IDENTITY"
         ),
         spec_yaml=(
-            "output/full/annonars/genes-{v_acmg_sf}+{v_gnomad_constraints}+{v_dbnsfp}+{v_hpo}+{date}+{v_annonars}/"
+            "output/full/annonars/genes-{v_acmg_sf}+{v_gnomad_constraints}+{v_dbnsfp}+{v_hpo}+{date}+{hgnc_quarterly_date}+{v_annonars}/"
             "spec.yaml"
         ),
         manifest=(
-            "output/full/annonars/genes-{v_acmg_sf}+{v_gnomad_constraints}+{v_dbnsfp}+{v_hpo}+{date}+{v_annonars}/"
+            "output/full/annonars/genes-{v_acmg_sf}+{v_gnomad_constraints}+{v_dbnsfp}+{v_hpo}+{date}+{hgnc_quarterly_date}+{v_annonars}/"
             "MANIFEST.txt"
         ),
     wildcard_constraints:
@@ -68,7 +68,7 @@ rule output_annonars_genes:  # -- build annonars genes RocksDB file
             --template rules/output/annonars/genes.spec.yaml \
             --value today={TODAY} \
             \
-            --value version={wildcards.v_acmg_sf}+{wildcards.v_gnomad_constraints}+{wildcards.v_dbnsfp}+{wildcards.date}+{wildcards.v_annonars} \
+            --value version={wildcards.v_acmg_sf}+{wildcards.v_gnomad_constraints}+{wildcards.v_dbnsfp}+{wildcards.date}+{wildcards.hgnc_quarterly_date}+{wildcards.v_annonars} \
             --value v_acmg_sf={wildcards.v_acmg_sf} \
             --value v_gnomad_constraints={wildcards.v_gnomad_constraints} \
             --value v_dbnsfp={wildcards.v_dbnsfp} \

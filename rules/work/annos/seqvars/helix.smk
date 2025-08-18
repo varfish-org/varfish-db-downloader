@@ -3,22 +3,22 @@
 
 rule annos_seqvars_helixmtdb_download:  # -- download HelixMtDb data
     output:
-        tsv="work/download/annos/{genome_release}/seqvars/helixmtdb/20200327/helixmtdb.tsv",
+        tsv="work/download/annos/{genome_release}/seqvars/helixmtdb/{helix_v}/helixmtdb.tsv",
     shell:
         r"""
         wget \
             --no-check-certificate \
             -O {output} \
-            https://helix-research-public.s3.amazonaws.com/mito/HelixMTdb_20200327.tsv
+            https://helix-research-public.s3.amazonaws.com/mito/HelixMTdb_{wildcards.helix_v}.tsv
         """
 
 
 rule annos_seqvars_helixmtdb_convert:  # -- process HelixMtDb data
     input:
-        tsv="work/download/annos/{genome_release}/seqvars/helixmtdb/20200327/helixmtdb.tsv",
+        tsv="work/download/annos/{genome_release}/seqvars/helixmtdb/{helix_v}/helixmtdb.tsv",
     output:
-        vcf="work/annos/{genome_release}/seqvars/helixmtdb/20200327/helixmtdb.vcf.gz",
-        vcf_tbi="work/annos/{genome_release}/seqvars/helixmtdb/20200327/helixmtdb.vcf.gz.tbi",
+        vcf="work/annos/{genome_release}/seqvars/helixmtdb/{helix_v}/helixmtdb.vcf.gz",
+        vcf_tbi="work/annos/{genome_release}/seqvars/helixmtdb/{helix_v}/helixmtdb.vcf.gz.tbi",
     shell:
         r"""
         cat {input.tsv} \

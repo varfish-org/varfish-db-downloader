@@ -15,10 +15,10 @@ rule output_annonars_gnomad_sv_grch37_exac:  # -- build gnomAD-SV RocksDB with a
         manifest=(
             "output/full/annonars/gnomad-sv-exomes-grch37-{v_gnomad}+{v_annonars}/MANIFEST.txt"
         ),
-    threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
+    threads: THREADS
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
-        mem_mb_per_cpu=2000,
+        mem_mb=MEMORY,
     wildcard_constraints:
         v_gnomad=RE_VERSION,
         v_annonars=RE_VERSION,
@@ -70,10 +70,10 @@ rule output_annonars_gnomad_sv_grch37_gnomad_sv2:  # -- build gnomAD-SV RocksDB 
         manifest=(
             "output/full/annonars/gnomad-sv-genomes-grch37-{v_gnomad}+{v_annonars}/MANIFEST.txt"
         ),
-    threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
+    threads: THREADS
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
-        mem_mb_per_cpu=2000,
+        mem_mb=MEMORY,
     wildcard_constraints:
         v_gnomad=RE_VERSION,
         v_annonars=RE_VERSION,
@@ -123,10 +123,10 @@ rule output_annonars_gnomad_sv_grch38_gnomad_cnv4:  # -- build gnomAD-SV RocksDB
         manifest=(
             "output/full/annonars/gnomad-sv-exomes-grch38-{v_gnomad}+{v_annonars}/MANIFEST.txt"
         ),
-    threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
+    threads: THREADS
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
-        mem_mb_per_cpu=2000,
+        mem_mb=MEMORY,
     wildcard_constraints:
         v_gnomad=RE_VERSION,
         v_annonars=RE_VERSION,
@@ -175,10 +175,10 @@ rule output_annonars_gnomad_sv_grch38_gnomad_sv4:  # -- build gnomAD-SV RocksDB 
         manifest=(
             "output/full/annonars/gnomad-sv-genomes-grch38-{v_gnomad}+{v_annonars}/MANIFEST.txt"
         ),
-    threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
+    threads: THREADS
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
-        mem_mb_per_cpu=2000,
+        mem_mb=MEMORY,
     wildcard_constraints:
         genome_release=RE_GENOME,
         v_gnomad=RE_VERSION,

@@ -36,7 +36,9 @@ async def main():
         async with limiter:
             async with httpx.AsyncClient() as client:
                 try:
-                    cross_references = (await client.get(URL_ORPHACODE_GET.format(orpha_id))).json()
+                    cross_references = (
+                        await client.get(URL_ORPHACODE_GET.format(orpha_id), timeout=60)
+                    ).json()
                     disease_genes = (
                         await client.get(URL_ORPHACODE_GET_GENE.format(orpha_id), timeout=60)
                     ).json()

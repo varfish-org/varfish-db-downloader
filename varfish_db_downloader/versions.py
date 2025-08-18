@@ -10,11 +10,38 @@ import attrs
 TODAY = os.environ.get("TODAY", datetime.today().strftime("%Y%m%d"))
 #: Allow to disable the today check.
 FORCE_TODAY = os.environ.get("FORCE_TODAY", "false").lower() == "true"
-#: The ClinVar release to use (includes annonars version used for building).
-CLINVAR_RELEASE = os.environ.get("CLINVAR_RELEASE", "20240612+0.17.0")
-#: The ClinVar version to use (part of the tag and release name).
-CLINVAR_VERSION = CLINVAR_RELEASE.replace("-", "").split("+")[0]
 
+# Clinvar source:
+# https://github.com/varfish-org/clinvar-data-jsonl/releases
+# https://github.com/varfish-org/clinvar-data-jsonl/releases/download/clinvar-weekly-20250706/clinvar-data-extract-vars-20250706+0.18.5.tar.gz
+# Used by:
+# - worker
+# - pre-mehari release
+CLINVAR_VERSION = "20250706"
+# Clinvar-this version
+CLINVAR_THIS = "0.18.5"
+#: The ClinVar release to use (weekly clinvar release data + clinvar-this).
+CLINVAR_RELEASE = os.environ.get("CLINVAR_RELEASE", f"{CLINVAR_VERSION}+{CLINVAR_THIS}")
+
+# The following should be consistent with the mehari-data-tx release:
+# https://github.com/varfish-org/mehari-data-tx/blob/main/config/config.yaml#L31
+# https://github.com/varfish-org/mehari-data-tx/blob/main/config/config.yaml#L114
+#: RefSeq release for GRCh37
+REFSEQ_37 = "105.20220307"
+#: RefSeq release for GRCh38
+REFSEQ_38 = "110"
+#:  RefSeq reference for GRCh37, corresponding to REFSEQ_37
+REFSEQ_REF_37 = "GCF_000001405.25"
+#:  RefSeq reference for GRCh38, corresponding to REFSEQ_38
+REFSEQ_REF_38 = "GCF_000001405.40"
+#: RefSeq reference build for GRCh37, corresponding to REFSEQ_REF_37
+REFSEQ_REF_37_BUILD = "GRCh37.p13"
+#: RefSeq reference build for GRCh38, corresponding to REFSEQ_REF_38
+REFSEQ_REF_38_BUILD = "GRCh38.p14"
+#: Ensembl release for GRCh37
+ENSEMBL_37 = "87"
+#: Ensembl release for GRCh38
+ENSEMBL_38 = "112"
 
 #: Wether we run in CI/test mode.
 RUNS_IN_CI = os.environ.get("CI", "false").lower() == "true"
@@ -34,8 +61,14 @@ class DataVersions:
     ensembl_37: str
     #: String to use for GRCh38 ENSEMBL version.
     ensembl_38: str
-    #: String to use for ENSEMBL version.
-    ensembl: str
+    #: URL to use for ENSEMBL archive.
+    ensembl_37_archive_url: str
+    #: URL to use for ENSEMBL archive.
+    ensembl_38_archive_url: str
+    #: URL to use for ENSEMBL archive FTP.
+    ensembl_37_archive_ftp: str
+    #: URL to use for ENSEMBL archive FTP.
+    ensembl_38_archive_ftp: str
     #: String to use for current date.
     today: str
     #: Version of dbNSFP.
@@ -50,8 +83,6 @@ class DataVersions:
     gnomad_mtdna: str
     #: Version of gnomAD v2.
     gnomad_v2: str
-    #: Version of gnomAD v3.
-    gnomad_v3: str
     #: Version of gnomAD v4.
     gnomad_v4: str
     #: Version of gnomAD SV.
@@ -98,6 +129,20 @@ class DataVersions:
     refseq_38: str
     #: dbSNP version.
     dbsnp: str
+    #: Base URL for RefSeq releases.
+    refseq_base_url: str
+    #: Refseq release (GRCh37).
+    refseq_37: str
+    #: Refseq release (GRCh38).
+    refseq_38: str
+    #: Refseq reference version (GRCh37).
+    refseq_ref_37: str
+    #: Refseq reference version (GRCh38).
+    refseq_ref_38: str
+    #: Refseq assembly (refseq reference + GRCh37 build with patch).
+    refseq_ref_37_assembly: str
+    #: Refseq assembly (refseq reference + GRCh38 build with patch).
+    refseq_ref_38_assembly: str
     #: ACMG secondary findings version.
     acmg_sf: str
     #: HPO
@@ -115,10 +160,18 @@ class DataVersions:
     #: Marker file for the tracks version.  This allows us to update the
     #: tracks BED files later on.
     tracks: str
-    #: RefSeq functional elements for GRCh37.
-    refseq_fe_37: str
-    #: RefSeq functional elements for GRCh38.
-    refseq_fe_38: str
+    #: CDOT version.
+    cdot: str
+    #: HGNC quarterly release date.
+    hgnc_quarterly: str
+    #: cdot refseq GFF for GRCh37.
+    cdot_refseq_gff_json_37: str
+    #: cdot refseq GFF for GRCh38.
+    cdot_refseq_gff_json_38: str
+    #: MtDb version
+    mtdb: str
+    #: Pre-Mehari release date.
+    pre_mehari_release: str
 
 
 #: The data versions to use.
@@ -126,17 +179,17 @@ DATA_VERSIONS = DataVersions(
     alphamissense="1",
     clingen_gene=TODAY,
     clingen_variant=TODAY,
-    ensembl_37="87",
-    ensembl_38="112",
-    ensembl="112",
+    ensembl_37_archive_url="https://grch37.archive.ensembl.org",  # not possible to tag a specific version but according to them they didn't update essential parts since release 75 (2014)
+    ensembl_38_archive_url="https://may2024.archive.ensembl.org",
+    ensembl_37_archive_ftp="https://ftp.ensembl.org/pub/grch37",
+    ensembl_38_archive_ftp="https://ftp.ensembl.org/pub",
     today=TODAY,
-    dbnsfp="4.5",
+    dbnsfp="4.5",  # update to 4.9 or 5.1 ?
     dbscsnv="1.1",
     cadd="1.6",
     gnomad_constraints="4.1",
     gnomad_mtdna="3.1",
     gnomad_v2="2.1.1",
-    gnomad_v3="3.1.2",
     gnomad_v4="4.1",
     gnomad_sv="2.1.1",
     gnomad_cnv4="4.1",
@@ -157,19 +210,38 @@ DATA_VERSIONS = DataVersions(
     ucsc_alt_seq_liftover_38="20221103",
     ucsc_fix_seq_liftover_37="20200609",
     ucsc_fix_seq_liftover_38="20221103",
-    refseq_37="105",
-    refseq_38="GCF_000001405.40+RS_2023_03",
-    dbsnp="b151",
-    acmg_sf="3.1",
-    hpo="20240116",
+    dbsnp="b157",
+    acmg_sf="3.1",  # ATTN! source file is placed manually in the data directory
     orphadata=TODAY,
     patho_mms="20220730",
-    mehari_tx="0.4.4",
     clinvar_release=CLINVAR_RELEASE,
     clinvar_version=CLINVAR_VERSION,
     tracks="0",
-    refseq_fe_37="105.20201022",
-    refseq_fe_38="110",
+    # refseq_37="105",
+    # refseq_38="GCF_000001405.40+RS_2023_03",
+    # this url should be consisent with where cdot gets its data from
+    # https://github.com/SACGF/cdot/blob/main/generate_transcript_data/cdot_transcripts.yaml#L115
+    refseq_base_url="https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/9606",
+    # The lines/versions below the mehari_tx should be consistent with the mehari-data-tx release:
+    # https://github.com/varfish-org/mehari-data-tx/blob/v{mehari_tx}/config/config.yaml
+    mehari_tx="0.10.4",  # ATTN! version to be consistent with
+    # ---
+    cdot="0.2.27",  # line #L30 and others
+    hgnc_quarterly="2025-04-01",  # line #L239
+    cdot_refseq_gff_json_37=f"{REFSEQ_REF_37}_{REFSEQ_REF_37_BUILD}_genomic.{REFSEQ_37}.gff",  # line #L114
+    cdot_refseq_gff_json_38=f"{REFSEQ_REF_38}_{REFSEQ_REF_38_BUILD}_genomic.{REFSEQ_38}.gff",  # line #L31
+    hpo="v2025-05-06",  # line #L250
+    ensembl_37=ENSEMBL_37,  # line #L217
+    ensembl_38=ENSEMBL_38,  # line #L155
+    refseq_37=REFSEQ_37,
+    refseq_38=REFSEQ_38,
+    refseq_ref_37=REFSEQ_REF_37,
+    refseq_ref_38=REFSEQ_REF_38,
+    refseq_ref_37_assembly=f"{REFSEQ_REF_37}_{REFSEQ_REF_37_BUILD}",
+    refseq_ref_38_assembly=f"{REFSEQ_REF_38}_{REFSEQ_REF_38_BUILD}",
+    # ---
+    mtdb="20210728",  # Was manually downloaded at that date, database doesn't exist anymore
+    pre_mehari_release=TODAY,
 )
 
 

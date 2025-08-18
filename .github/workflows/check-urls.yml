@@ -46,3 +46,4 @@ jobs:
         run: |
           varfish-db-downloader wget urls-check-upstream
         shell: bash -el {0}
+

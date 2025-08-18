@@ -13,7 +13,7 @@ rule clingen_gene_download:  # -- download files
         fi
 
         wget -O {output.tsv} \
-            ftp://ftp.clinicalgenome.org/ClinGen_gene_curation_list_{wildcards.genome_release}.tsv
+            https://ftp.clinicalgenome.org/ClinGen_gene_curation_list_{wildcards.genome_release}.tsv
 
         md5sum {output.tsv} > {output.tsv}.md5
         """

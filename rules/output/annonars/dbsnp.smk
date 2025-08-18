@@ -12,10 +12,10 @@ rule output_annonars_dbsnp:  # -- build dbSNP RocksDB with annonars
         ),
         spec_yaml=("output/full/annonars/dbsnp-{genome_release}-{v_dbsnp}+{v_annonars}/spec.yaml"),
         manifest=("output/full/annonars/dbsnp-{genome_release}-{v_dbsnp}+{v_annonars}/MANIFEST.txt"),
-    threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
+    threads: THREADS
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
-        mem_mb_per_cpu=2000,
+        mem_mb=MEMORY,
     wildcard_constraints:
         genome_release=RE_GENOME,
         v_dbsnp=RE_VERSION,

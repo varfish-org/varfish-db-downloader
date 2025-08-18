@@ -18,7 +18,6 @@ rule subset_viguno_pheno_exomes:  # -- create exomes subset
         spec_yaml="output/reduced-exomes/viguno/hpo-{v_hpo}+{v_viguno}/spec.yaml",
         manifest="output/reduced-exomes/viguno/hpo-{v_hpo}+{v_viguno}/MANIFEST.txt",
     wildcard_constraints:
-        v_hpo=RE_VERSION,
         v_viguno=RE_VERSION,
     shell:
         r"""
@@ -54,11 +53,10 @@ rule subset_worker_pheno_dev:  # -- create development subset
         spec_yaml="output/reduced-dev/viguno/hpo-{v_hpo}+{v_viguno}/spec.yaml",
         manifest="output/reduced-dev/viguno/hpo-{v_hpo}+{v_viguno}/MANIFEST.txt",
     wildcard_constraints:
-        v_hpo=RE_VERSION,
         v_viguno=RE_VERSION,
-    threads: VIGUNO_SIMULATE_THREADS
+    threads: THREADS
     resources:
-        mem_mb_per_cpu="2GB",
+        mem_mb=MEMORY,
     shell:
         r"""
         cp -a {input.obo} {output.obo}

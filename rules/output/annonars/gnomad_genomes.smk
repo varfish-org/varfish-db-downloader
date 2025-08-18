@@ -16,10 +16,10 @@ rule output_annonars_gnomad_genomes:  # -- build gnomAD-genomes RocksDB with ann
         manifest=(
             "output/full/annonars/gnomad-genomes-{genome_release}-{v_gnomad}+{v_annonars}/MANIFEST.txt"
         ),
-    threads: int(os.environ.get("THREADS_ANNONARS_IMPORT", "96"))
+    threads: THREADS
     resources:
         runtime=os.environ.get("RUNTIME_ANNONARS_IMPORT", "48h"),
-        mem_mb_per_cpu=2000,
+        mem_mb=MEMORY,
     wildcard_constraints:
         genome_release=RE_GENOME,
         v_gnomad=RE_VERSION,

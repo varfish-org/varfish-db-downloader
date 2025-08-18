@@ -77,7 +77,7 @@ def run_genes_gnomad_constraints_v2_1_1_to_tsv(input, output, wildcards):
 rule genes_gnomad_convert_v2_1_1:  # -- create gnomAD gene constraints TSV (v2.1.1)
     input:
         bgz="work/download/genes/gnomad/2.1.1/gnomad.v2.1.1.lof_metrics.by_gene.txt.bgz",
-        xlink_ensembl=f"work/genes/ensembl/{DV.ensembl}/ensembl_xlink.tsv",
+        xlink_ensembl=f"work/genes/ensembl/{DV.ensembl_38}/ensembl_xlink.tsv",
     output:
         tsv="work/genes/gnomad/2.1.1/gnomad_constraints.tsv",
         tsv_md5="work/genes/gnomad/2.1.1/gnomad_constraints.tsv.md5",
@@ -102,7 +102,7 @@ rule genes_gnomad_download_v4:  # -- download gnomAD gene constraints v4.1
 rule genes_gnomad_convert_v4:  # -- create gnomAD gene constraints TSV (v4.x)
     input:
         tsv="work/download/genes/gnomad/{v_gnomad_constraints}/gnomad.v{v_gnomad_constraints}.constraint_metrics.tsv",
-        xlink_ensembl=f"work/genes/ensembl/{DV.ensembl}/ensembl_xlink.tsv",
+        xlink_ensembl=f"work/genes/ensembl/{DV.ensembl_38}/ensembl_xlink.tsv",
     output:
         tsv="work/genes/gnomad/{v_gnomad_constraints}/gnomad_constraints.tsv",
         tsv_md5="work/genes/gnomad/{v_gnomad_constraints}/gnomad_constraints.tsv.md5",

@@ -3,10 +3,6 @@
 import os
 
 
-#: Number of threads to use for simulating in viguno.
-VIGUNO_SIMULATE_THREADS = int(os.environ.get("VIGUNO_SIMULATE_THREADS", 96))
-
-
 rule output_viguno_pheno:  # -- copy HPO
     input:
         obo="work/download/hpo/{v_hpo}/hp.obo",
@@ -17,11 +13,10 @@ rule output_viguno_pheno:  # -- copy HPO
         hpoa="output/full/viguno/hpo-{v_hpo}+{v_viguno}/phenotype.hpoa",
         phenotype_to_genes="output/full/viguno/hpo-{v_hpo}+{v_viguno}/phenotype_to_genes.txt",
     wildcard_constraints:
-        v_hpo=RE_VERSION,
         v_viguno=RE_VERSION,
-    threads: VIGUNO_SIMULATE_THREADS
+    threads: THREADS
     resources:
-        mem_mb_per_cpu="2GB",
+        mem_mb=MEMORY,
     shell:
         r"""
         cp -a {input.obo} {output.obo}
@@ -42,7 +37,6 @@ rule global_hpo_to_bin:  # -- convert to .bin
         bin="output/full/viguno/hpo-{v_hpo}+{v_viguno}/hpo.bin",
         spec_yaml=("output/full/viguno/hpo-{v_hpo}+{v_viguno}/spec.yaml"),
     wildcard_constraints:
-        v_hpo=RE_VERSION,
         v_viguno=RE_VERSION,
     shell:
         r"""

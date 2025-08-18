@@ -18,12 +18,13 @@ rule genes_rcnv_download:  # -- download pHaplo/pTriplo scores
 rule genes_rcnv_postproces:  # -- postprocess file for HGNC gene IDs
     input:
         tsv="work/download/genes/rcnv/2022/Collins_rCNV_2022.dosage_sensitivity_scores.tsv.gz",
-        xlink=f"output/full/mehari/genes-xlink-{DV.today}/genes-xlink.tsv",
+        xlink=f"output/full/mehari/genes-xlink-{DV.hgnc_quarterly}/genes-xlink.tsv",
     output:
         tsv="work/genes/rcnv/2022/rcnv_collins_2022.tsv",
         tsv_md5="work/genes/rcnv/2022/rcnv_collins_2022.tsv.md5",
     shell:
         """
+        QSV_SKIP_FORMAT_CHECK=1 \
         qsv join -d '\t' \
             '#gene' <(zcat {input.tsv}) \
             gene_symbol {input.xlink} \

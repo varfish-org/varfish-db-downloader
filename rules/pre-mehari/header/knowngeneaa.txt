@@ -1,0 +1,8 @@
+release
+chromosome
+start
+end
+bin
+transcript_id
+transcript_id_novers
+alignment
