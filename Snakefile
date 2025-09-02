@@ -196,6 +196,7 @@ def generate_input_files():
             # -- mehari data
             # ---- frequencies (via annonars)
             f"output/full/mehari/freqs-{genomebuild}-{gnomad_versions[genomebuild]}+{gnomad_versions[genomebuild]}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
+            f"output/full/mehari/setup_mehari_dbs.sh",
             f"output/full/annonars/alphamissense-{genomebuild}-{DV.alphamissense}+{PV.annonars}/rocksdb/IDENTITY",
             # -- annonars data
             # ----- sequence variant annotations
@@ -309,8 +310,8 @@ def generate_input_files():
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/hgnc/{DV.hgnc_quarterly}+{DV.cdot}+{refseq_versions[genomebuild]}/RefseqToHgnc.release_info",
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/clinvar/{DV.hgnc_quarterly}+{DV.clinvar_release}/Clinvar.tsv",
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/clinvar/{DV.hgnc_quarterly}+{DV.clinvar_release}/Clinvar.release_info",
-            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/HelixMtDb/{DV.helixmtdb}/HelixMtDb.tsv",
-            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/HelixMtDb/{DV.helixmtdb}/HelixMtDb.release_info",
+            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/HelixMTdb/{DV.helixmtdb}/HelixMtDb.tsv",
+            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/HelixMTdb/{DV.helixmtdb}/HelixMtDb.release_info",
             expand(
                 "output/pre-mehari/{genomebuild}/dbSNP/{dbsnp}/Dbsnp.{chrom}.{file_ext}",
                 genomebuild=genomebuild_cap[genomebuild],
@@ -510,3 +511,5 @@ include: "rules/pre-mehari/snakefiles/refseqtogenesymbol.smk"
 include: "rules/pre-mehari/snakefiles/release.smk"
 # ---- reference
 include: "rules/output/reference/reference.smk"
+# ---- mehari-cli
+include: "rules/output/mehari/setup_dbs.smk"
