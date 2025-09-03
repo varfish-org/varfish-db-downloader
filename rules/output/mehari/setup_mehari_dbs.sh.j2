@@ -26,8 +26,11 @@ fi
 CLINVAR_VERSION={{ DV.clinvar_version }}
 CLINVAR_RELEASE={{ DV.clinvar_release }}
 HGNC_QUARTERLY={{ DV.hgnc_quarterly }}
-MEHARI_DATA_TX={{ DV.mehari_tx }}
-FREQUENCY={{ DV.pre_mehari_release }}
+MEHARI_DATA_TX_VERSION={{ DV.mehari_tx }}
+MEHARI_DATA_TX_SOURCE={{ primary_tx_source }}
+FREQUENCY_VERION_37={{ freq_version_37 }}
+FREQUENCY_VERION_38={{ freq_version_38 }}
+
 
 echo "Installing database for releases:"
 echo "grch37={{ grch37 }}"
@@ -37,83 +40,22 @@ echo "Versions to be installed:"
 echo "CLINVAR_VERSION=${CLINVAR_VERSION}"
 echo "CLINVAR_RELEASE=${CLINVAR_RELEASE}"
 echo "HGNC_QUARTERLY=${HGNC_QUARTERLY}"
-echo "MEHARI_DATA_TX=${MEHARI_DATA_TX}"
-echo "FREQUENCY=${FREQUENCY}"
+echo "MEHARI_DATA_TX_VERSION=${MEHARI_DATA_TX_VERSION}"
+echo "MEHARI_DATA_TX_SOURCE=${MEHARI_DATA_TX_SOURCE}"
+echo "FREQUENCY_VERSION_37=${FREQUENCY}"
+echo "FREQUENCY_VERSION_38=${FREQUENCY}"
 echo "MEHARI_VERSION=${MEHARI_VERSION}"
 
-echo "Installing clinvar ..."
 
-DIR="clinvar_dbs/annonars-data-clinvar-${CLINVAR_VERSION}"
-mkdir -p "${DIR}"
-
-echo "Downloading clinvar release"
-filesets=(genes)
-{% if grch37 %}
-filesets+=(minimal-grch37 sv-grch37)
-{% endif %}
-{% if grch38 %}
-filesets+=(minimal-grch38 sv-grch38)
-{% endif %}
-
-for name in "${filesets[@]}"
-do
-  file="annonars-clinvar-${name}-${CLINVAR_RELEASE}"
-  wget "https://github.com/varfish-org/annonars-data-clinvar/releases/download/annonars-data-clinvar-${CLINVAR_VERSION}/${file}.tar.gz" -O "${DIR}/${file}.tar.gz"
-  wget "https://github.com/varfish-org/annonars-data-clinvar/releases/download/annonars-data-clinvar-${CLINVAR_VERSION}/${file}.tar.gz.sha256" -O "${DIR}/${file}.tar.gz.sha256"
-  sha256sum -c "${DIR}/${file}.tar.gz.sha256" --ignore-missing
-done
-
-echo "Unpacking 'minimal' filesets"
-{% if grch37 %}
-tar -xf "${DIR}/annonars-clinvar-minimal-grch37-${CLINVAR_RELEASE}.tar.gz" -C "$DIR"
-{% endif %}
-{% if grch38 %}
-tar -xf "${DIR}/annonars-clinvar-minimal-grch38-${CLINVAR_RELEASE}.tar.gz" -C "$DIR"
-{% endif %}
-
-if [ -L clinvar_dbs/clinvar_latest ]; then
-  echo "Updating link 'clinvar_latest' clinvar_db in 3sec"
-  sleep 3
-  unlink clinvar_dbs/clinvar_latest
-fi
-
-ln -s $(basename $DIR) clinvar_dbs/clinvar_latest
-
-echo "Link 'clinvar_latest' created"
-echo "Installing Mehari transcript databases ..."
-
-DIR="transcript_dbs/${MEHARI_DATA_TX}"
-mkdir -p "${DIR}"
-
-# only load combined data; old:  in ensembl refseq ...
-genomebuilds=()
-{% if grch37 %}
-genomebuilds+=(GRCh37)
-{% endif %}
-{% if grch38 %}
-genomebuilds+=(GRCh38)
-{% endif %}
-for alias in refseq ensembl-and-refseq; do
-  for assembly in "${genomebuilds[@]}"; do
-    name="mehari-data-txs-${assembly}-${alias}-${MEHARI_DATA_TX}"
-    wget "https://github.com/varfish-org/mehari-data-tx/releases/download/v${MEHARI_DATA_TX}/${name}.bin.zst" -O "${DIR}/${name}.bin.zst"
-    wget "https://github.com/varfish-org/mehari-data-tx/releases/download/v${MEHARI_DATA_TX}/${name}.bin.zst.sha256" -O "${DIR}/${name}.bin.zst.sha256"
-    sha256sum -c "${DIR}/${name}.bin.zst.sha256" --ignore-missing
-  done
-done
-
-echo "Installing HGNC ..."
-
-mkdir -p hgnc 2> /dev/null
-
-name="hgnc_complete_set_${HGNC_QUARTERLY}.tsv"
-wget "https://storage.googleapis.com/public-download-files/hgnc/archive/archive/quarterly/tsv/$name" -O "hgnc/$name"
-
-HGNC=${name}
 CLINVAR=annonars-data-clinvar-${CLINVAR_VERSION}
 DIR="${MEHARI_VERSION}"
-TRANSCRIPT_VERSION=${MEHARI_DATA_TX}
-FREQUENCY={{ downloader_base }}/output/full/mehari/
+OUTPUT_BASE={{ downloader_base }}/output/full/mehari/
+
+# copy / download HGNC tsv file
+echo "Installing HGNC ..."
+mkdir -p $DIR
+HGNC_NAME="hgnc_complete_set_${HGNC_QUARTERLY}.tsv"
+wget "https://storage.googleapis.com/public-download-files/hgnc/archive/archive/quarterly/tsv/${HGNC_NAME}" -O "$DIR/hgnc.tsv"
 
 for ASSEMBLY in "${genomebuilds[@]}"
 do
@@ -123,33 +65,25 @@ do
   mkdir -p $DIR/$assembly/seqvars/clinvar
   mkdir -p $DIR/$assembly/seqvars/frequencies
 
-  # find & link rocksdb path for clinvar
-  if [ $(ls -d clinvar_dbs/$CLINVAR/annonars-clinvar-minimal-$assembly-*/rocksdb | wc -l) -ge 2 ]; then
-    echo "Multiple database versions found for '$CLINVAR' and $assembly"
-    exit 1
-  fi
-  clinvar_path=$(ls -d clinvar_dbs/$CLINVAR/annonars-clinvar-minimal-$assembly-*/rocksdb)
-  ln -s ../../../../$clinvar_path $DIR/$assembly/seqvars/clinvar/rocksdb
+  echo "Copying ${ASSEMBLY} databases from workflow ..."
+  # Copy transcript db outputs
+  tx_path=$OUTPUT_BASE/genes-txs-$assembly-${MEHARI_DATA_TX_VERSION}
+  cp $tx_path/mehari-data-txs-$assembly-*-${MEHARI_DATA_TX_VERSION}.bin.zst $DIR/$assembly/seqvars/.
+  # Link primary transcript source to txs.bin.zst
+  ln -s mehari-data-txs-$assembly-${MEHARI_DATA_TX_SOURCE}-${MEHARI_DATA_TX_VERSION}.bin.zst $DIR/$assembly/seqvars/txs.bin.zst
 
-  if [ $(ls -d $FREQUENCY/freqs-$assembly-*/rocksdb | wc -l) -ge 2 ]; then
-    echo "Multiple database versions found for '$FREQUENCY' and $assembly"
-    exit 1
-  fi
-  freq_path=$(ls -d $FREQUENCY/freqs-$assembly-*/rocksdb)
-  ln -s $FREQUENCY $DIR/$assembly/seqvars/frequencies/rocksdb
+  # Copy frequency rocks db output
+  freq_path=$OUTPUT_BASE/freqs-$assembly-${FREQUENCY_VERION_37}/rockdb
+  cp -r $freq_path $DIR/$assembly/seqvars/frequencies/rocksdb
 
-  # Find & Link transcript db files
-  if [[ "${TRANSCRIPT_VERSION}" =~ "stable_freq_db/" ]]; then
-    if [ $(ls -d ${TRANSCRIPT_VERSION}/genes-txs-$assembly* | wc -l) -ge 2 ]; then
-      echo "Multiple database versions found for '${TRANSCRIPT_VERSION}' and $assembly"
-      exit 1
-    fi
-    # MedGen prefers to use refseq over ensembl!
-    tx_path=$(ls ${TRANSCRIPT_VERSION}/genes-txs-$assembly*/mehari-data-txs-$assembly-refseq*.bin.zst)
-    ln -s ../../../${tx_path} $DIR/$assembly/seqvars/txs.bin.zst
-  else
-    ln -s ../../../transcript_dbs/${TRANSCRIPT_VERSION}/mehari-data-txs-$ASSEMBLY-ensembl-and-refseq-${TRANSCRIPT_VERSION}.bin.zst $DIR/$assembly/seqvars/txs.bin.zst
-  fi
-done
-
-ln -s ../$HGNC $DIR/hgnc.tsv
+  echo "Installing clinvar ${ASSEMBLY} ..."
+  # Download and unpack clinvar minimal data
+  # Note: The other clinvar datasets (genes, sv) are currently not used by mehari annotate workflow
+  file="annonars-clinvar-minimal-$assembly-${CLINVAR_RELEASE}"
+  url_base="https://github.com/varfish-org/annonars-data-clinvar/releases/download"
+  wget "$url_base/annonars-data-clinvar-${CLINVAR_VERSION}/${file}.tar.gz" -O "$DIR/$assembly/seqvars/clinvar/${file}.tar.gz"
+  wget "$url_base/annonars-data-clinvar-${CLINVAR_VERSION}/${file}.tar.gz.sha256" -O "$DIR/$assembly/seqvars/clinvar/${file}.tar.gz.sha256"
+  sha256sum -c "$DIR/$assembly/seqvars/clinvar/${file}.tar.gz.sha256" --ignore-missing
+  tar -xf "$DIR/$assembly/seqvars/clinvar/${file}.tar.gz" -C "$DIR/$assembly/seqvars/clinvar"
+  # link rocksdb folder
+  ln -s $file/rocksdb $DIR/$assembly/seqvars/clinvar/rocksdb
