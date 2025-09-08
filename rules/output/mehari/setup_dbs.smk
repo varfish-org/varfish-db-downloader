@@ -6,6 +6,7 @@ rule generate_mehari_dbs_setup_script:
         primary_tx_source="refseq",  # Choice of: refseq, ensembl, ensembl-and-refseq
     run:
         from jinja2 import Template
+
         mehari_freq_versions = {
             genombuild: (
                 f"freqs-{genombuild}-"
@@ -29,7 +30,7 @@ rule generate_mehari_dbs_setup_script:
                     genomebuilds=GENOMEBUILDS,
                     primary_tx_source=params.primary_tx_source,
                     mehari_freq_versions=mehari_freq_versions,
-                    downloader_base=workflow.basedir
+                    downloader_base=workflow.basedir,
                 )
             )
         shell("chmod +x {output.script}")
