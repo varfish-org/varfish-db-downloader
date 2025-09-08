@@ -267,7 +267,7 @@
     strategy: head
     count: 10000
 
-- url: https://ftp.ensembl.org/pub/grch37/current/gtf/homo_sapiens/Homo_sapiens.GRCh37.87.gtf.gz
+- url: https://ftp.ensembl.org/pub/grch37/release-87/gtf/homo_sapiens/Homo_sapiens.GRCh37.87.gtf.gz
   excerpt_strategy:
     strategy: head
     count: 10000
