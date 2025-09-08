@@ -225,14 +225,15 @@
     count: 10000
 - url: https://hgdownload.cse.ucsc.edu/goldenpath/hg38/multiz100way/alignments/knownGene.exonAA.fa.gz
 
-- url: https://3dgenome.fsm.northwestern.edu/downloads/hg19.TADs.zip
-  excerpt_strategy:
-    strategy: no-excerpt
-    count: null
-- url: https://3dgenome.fsm.northwestern.edu/downloads/hg38.TADs.zip
-  excerpt_strategy:
-    strategy: no-excerpt
-    count: null
+# Dataset discontinued
+# - url: https://3dgenome.fsm.northwestern.edu/downloads/hg19.TADs.zip
+#   excerpt_strategy:
+#     strategy: no-excerpt
+#     count: null
+# - url: https://3dgenome.fsm.northwestern.edu/downloads/hg38.TADs.zip
+#   excerpt_strategy:
+#     strategy: no-excerpt
+#     count: null
 
 - url: https://helix-research-public.s3.amazonaws.com/mito/HelixMTdb_20200327.tsv
 

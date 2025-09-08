@@ -1,5 +1,6 @@
 ## Rules related to TAD.
 
+# TODO dataset discontinued. Provide from old downloads or remove.
 
 rule annos_features_tads_download:  # -- download TAD ZIP files from 3dgenome.org
     output:
@@ -12,9 +13,9 @@ rule annos_features_tads_download:  # -- download TAD ZIP files from 3dgenome.or
             name=hg38
         fi
 
-        wget --no-check-certificate \
-            -O {output.zip} \
-            https://3dgenome.fsm.northwestern.edu/downloads/$name.TADs.zip
+        # wget --no-check-certificate \
+        #     -O {output.zip} \
+        #     https://3dgenome.fsm.northwestern.edu/downloads/$name.TADs.zip
         """
 
 
