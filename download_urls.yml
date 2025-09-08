@@ -281,13 +281,13 @@
 - url: 'https://storage.googleapis.com/public-download-files/hgnc/archive/archive/quarterly/json/hgnc_complete_set_2025-04-01.json'
   skip_upstream_check: true  # does not work reliably in tests
   excerpt_strategy:
-    strategy: manual
-    count: null
+    strategy: head
+    count: 1000
 - url: 'https://storage.googleapis.com/public-download-files/hgnc/archive/archive/quarterly/json/hgnc_complete_set_2025-04-01.tsv'
   skip_upstream_check: true  # does not work reliably in tests
   excerpt_strategy:
-    strategy: manual
-    count: null
+    strategy: head
+    count: 1000
 
 - url: https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/constraint/gnomad.v4.1.constraint_metrics.tsv
 - url: https://ftp.ncbi.nih.gov/gene/DATA/mim2gene_medgen
