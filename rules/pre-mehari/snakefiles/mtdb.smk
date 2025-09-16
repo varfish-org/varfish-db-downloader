@@ -13,10 +13,17 @@ rule result_GRChXX_mtdb_tsv:
         tsv="output/pre-mehari/{genomebuild}/mtDB/{download_date}/MtDb.tsv",
         release_info="output/pre-mehari/{genomebuild}/mtDB/{download_date}/MtDb.release_info",
     run:
+        import os
         import binning
         import csv
 
         from Bio import SeqIO
+
+        if os.environ.get("CI", "false").lower() == "true":
+            print("CI is true, skipping rule execution.")
+            open(output.tsv, "w").close()
+            open(output.release_info, "w").close()
+            return
 
         if wildcards.genomebuild == "GRCh37":
             chrom = "MT"

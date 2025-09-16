@@ -224,7 +224,7 @@ def generate_input_files():
             f"output/full/worker/bgdb-dgv-gs-{genomebuild}-{DV.dgv_gs}+{PV.worker}/bgdb-dgv-gs.bin",
             f"output/full/worker/clinvar-strucvars-{genomebuild}-{DV.clinvar_version}+{PV.worker}/clinvar-strucvars.bin",
             f"output/full/worker/patho-mms-{genomebuild}-{DV.patho_mms}+{PV.worker}/patho-mms.bed",
-            f"output/full/worker/tads-{genomebuild}-dixon2015/hesc.bed",
+            # f"output/full/worker/tads-{genomebuild}-dixon2015/hesc.bed",
             # -- mehari data
             f"output/full/mehari/genes-txs-{genomebuild}-{DV.mehari_tx}/mehari-data-txs-{genomebuild}-ensembl-{DV.mehari_tx}.bin.zst",
             f"output/full/mehari/genes-txs-{genomebuild}-{DV.mehari_tx}/mehari-data-txs-{genomebuild}-refseq-{DV.mehari_tx}.bin.zst",
@@ -239,8 +239,8 @@ def generate_input_files():
             f"output/full/tracks/track-features-ucsc-rmsk-{genomebuild}-{rmask_versions[genomebuild]}+{DV.tracks}/rmsk.bed.gz",
             f"output/full/tracks/track-features-ucsc-altseqliftoverpsl-{genomebuild}-{lift_over_versions[genomebuild]}+{DV.tracks}/altSeqLiftOverPsl.bed.gz",
             f"output/full/tracks/track-features-ucsc-fixseqliftoverpsl-{genomebuild}-{lift_over_fix_versions[genomebuild]}+{DV.tracks}/fixSeqLiftOverPsl.bed.gz",
-            # ----- tads
-            f"output/full/tracks/track-tads-{genomebuild}-dixon2015+{DV.tracks}/hesc.bed",
+            # ----- tads - dataset discontinued
+            # f"output/full/tracks/track-tads-{genomebuild}-dixon2015+{DV.tracks}/hesc.bed",
             # ----- probesets
             f"output/full/tracks/track-enrichment-probesets-targets/agilent-all-exon-v4-{genomebuild}-{DV.tracks}.bed.gz",
             f"output/full/tracks/track-enrichment-probesets-targets/agilent-all-exon-v5-{genomebuild}-{DV.tracks}.bed.gz",

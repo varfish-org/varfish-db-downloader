@@ -8,7 +8,7 @@ rule annos_gnomad_mtdna_download:  # -- download gnomAD mtDNA
         r"""
         wget --no-check-certificate \
             -O {output.dl} \
-            https://datasetgnomad.blob.core.windows.net/dataset/release/{wildcards.version}/vcf/genomes/gnomad.genomes.v{wildcards.version}.sites.chrM.vcf.bgz
+            https://storage.googleapis.com/gcp-public-data--gnomad/release/3.1/vcf/genomes/gnomad.genomes.v{wildcards.version}.sites.chrM.vcf.bgz
         """
 
 
