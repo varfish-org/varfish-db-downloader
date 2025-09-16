@@ -1,5 +1,6 @@
 ## Rules related to TAD.
 
+# TODO dataset discontinued. Provide from old downloads or remove.
 
 rule annos_features_tads_download:  # -- download TAD ZIP files from 3dgenome.org
     output:

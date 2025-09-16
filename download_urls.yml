@@ -77,11 +77,25 @@
 - url: https://storage.googleapis.com/dm_alphamissense/AlphaMissense_hg38.tsv.gz
 - url: https://storage.googleapis.com/dm_alphamissense/AlphaMissense_gene_hg38.tsv.gz
 
-- url: https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/9606/105.20201022/GCF_000001405.25_GRCh37.p13/GCF_000001405.25_GRCh37.p13_genomic.gff.gz
+- url: https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/9606/105.20220307/GCF_000001405.25_GRCh37.p13/GCF_000001405.25_GRCh37.p13_genomic.gtf.gz
+  excerpt_strategy:
+    strategy: gz-head
+    count: 1000
+- url: https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/9606/105.20220307/GCF_000001405.25_GRCh37.p13/GCF_000001405.25_GRCh37.p13_genomic.gff.gz
   excerpt_strategy:
     strategy: gz-head
     count: 1000
 - url: https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/9606/110/GCF_000001405.40_GRCh38.p14/GCF_000001405.40_GRCh38.p14_genomic.gff.gz
+  excerpt_strategy:
+    strategy: gz-head
+    count: 1000
+
+- url: https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/9606/110/GCF_000001405.40_GRCh38.p14/GCF_000001405.40_GRCh38.p14_assembly_report.txt
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+
+- url: https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/9606/110/GCF_000001405.40_GRCh38.p14/GCF_000001405.40_GRCh38.p14_genomic.gtf.gz
   excerpt_strategy:
     strategy: gz-head
     count: 1000
@@ -142,7 +156,7 @@
   url: https://search.clinicalgenome.org/kb/reports/curation-activity-summary-report
   skip_upstream_check: true  # does not work reliably in tests
 
-- url: https://github.com/varfish-org/clinvar-data-jsonl/releases/download/clinvar-weekly-20250410/clinvar-data-extract-vars-20250410+0.18.5.tar.gz
+- url: https://github.com/varfish-org/clinvar-data-jsonl/releases/download/clinvar-weekly-20250706/clinvar-data-extract-vars-20250706+0.18.5.tar.gz
   excerpt_strategy:
     strategy: manual
     count: null
@@ -220,39 +234,37 @@
     strategy: no-excerpt
     count: null
 - url: https://hgdownload.cse.ucsc.edu/goldenpath/hg19/multiz100way/alignments/knownGene.exonAA.fa.gz
-  excerpt_strategy:
-    strategy: head
-    count: 10000
 - url: https://hgdownload.cse.ucsc.edu/goldenpath/hg38/multiz100way/alignments/knownGene.exonAA.fa.gz
 
-- url: https://3dgenome.fsm.northwestern.edu/downloads/hg19.TADs.zip
-  excerpt_strategy:
-    strategy: no-excerpt
-    count: null
-- url: https://3dgenome.fsm.northwestern.edu/downloads/hg38.TADs.zip
-  excerpt_strategy:
-    strategy: no-excerpt
-    count: null
+# Dataset discontinued
+# - url: https://3dgenome.fsm.northwestern.edu/downloads/hg19.TADs.zip
+#   excerpt_strategy:
+#     strategy: no-excerpt
+#     count: null
+# - url: https://3dgenome.fsm.northwestern.edu/downloads/hg38.TADs.zip
+#   excerpt_strategy:
+#     strategy: no-excerpt
+#     count: null
 
 - url: https://helix-research-public.s3.amazonaws.com/mito/HelixMTdb_20200327.tsv
 
 - url: https://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh37p13/VCF/00-All.vcf.gz
 - url: https://ftp.ncbi.nih.gov/snp/organisms/human_9606_b151_GRCh38p7/VCF/00-All.vcf.gz
 
-# - url: https://kircherlab.bihealth.org/download/CADD/v1.6/GRCh37/whole_genome_SNVs_inclAnno.tsv.gz
-# - url: https://kircherlab.bihealth.org/download/CADD/v1.6/GRCh37/whole_genome_SNVs_inclAnno.tsv.gz.tbi
-# - url: https://kircherlab.bihealth.org/download/CADD/v1.6/GRCh37/InDels_inclAnno.tsv.gz
-# - url: https://kircherlab.bihealth.org/download/CADD/v1.6/GRCh37/InDels_inclAnno.tsv.gz.tbi
-# - url: https://kircherlab.bihealth.org/download/CADD/v1.6/GRCh38/whole_genome_SNVs_inclAnno.tsv.gz
-# - url: https://kircherlab.bihealth.org/download/CADD/v1.6/GRCh38/whole_genome_SNVs_inclAnno.tsv.gz.tbi
-# - url: https://kircherlab.bihealth.org/download/CADD/v1.6/GRCh38/gnomad.genomes.r3.0.indel_inclAnno.tsv.gz
-# - url: https://kircherlab.bihealth.org/download/CADD/v1.6/GRCh38/gnomad.genomes.r3.0.indel_inclAnno.tsv.gz.tbi
+- url: https://kircherlab.bihealth.org/download/CADD/v1.6/GRCh37/whole_genome_SNVs_inclAnno.tsv.gz
+- url: https://kircherlab.bihealth.org/download/CADD/v1.6/GRCh37/whole_genome_SNVs_inclAnno.tsv.gz.tbi
+- url: https://kircherlab.bihealth.org/download/CADD/v1.6/GRCh37/InDels_inclAnno.tsv.gz
+- url: https://kircherlab.bihealth.org/download/CADD/v1.6/GRCh37/InDels_inclAnno.tsv.gz.tbi
+- url: https://kircherlab.bihealth.org/download/CADD/v1.6/GRCh38/whole_genome_SNVs_inclAnno.tsv.gz
+- url: https://kircherlab.bihealth.org/download/CADD/v1.6/GRCh38/whole_genome_SNVs_inclAnno.tsv.gz.tbi
+- url: https://kircherlab.bihealth.org/download/CADD/v1.6/GRCh38/gnomad.genomes.r3.0.indel_inclAnno.tsv.gz
+- url: https://kircherlab.bihealth.org/download/CADD/v1.6/GRCh38/gnomad.genomes.r3.0.indel_inclAnno.tsv.gz.tbi
 
 - url: https://ftp.ncbi.nlm.nih.gov/genomes/archive/old_refseq/H_sapiens/ARCHIVE/ANNOTATION_RELEASE.105/Assembled_chromosomes/chr_accessions_GRCh37.p13
   excerpt_strategy:
     strategy: no-excerpt
     count: null
-- url: https://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/annotation_releases/105.20220307/GCF_000001405.25_GRCh37.p13/GCF_000001405.25_GRCh37.p13_genomic.gtf.gz
+- url: https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/9606/105.20220307/GCF_000001405.25_GRCh37.p13/GCF_000001405.25_GRCh37.p13_assembly_report.txt
   excerpt_strategy:
     strategy: head
     count: 10000
@@ -266,7 +278,7 @@
     strategy: head
     count: 10000
 
-- url: https://ftp.ensembl.org/pub/grch37/current/gtf/homo_sapiens/Homo_sapiens.GRCh37.87.gtf.gz
+- url: https://ftp.ensembl.org/pub/grch37/release-87/gtf/homo_sapiens/Homo_sapiens.GRCh37.87.gtf.gz
   excerpt_strategy:
     strategy: head
     count: 10000
@@ -276,12 +288,25 @@
     strategy: head
     count: 10000
 
+- url: 'https://grch37.archive.ensembl.org/biomart/martservice?query=<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE Query><Query  virtualSchemaName = "default" formatter = "TSV" header = "0" uniqueRows = "0" count = "" datasetConfigVersion = "0.6" ><Dataset name = "hsapiens_gene_ensembl" interface = "default" ><Attribute name = "ensembl_gene_id" /><Attribute name = "external_gene_name" /></Dataset></Query>'
 - url: 'https://may2024.archive.ensembl.org/biomart/martservice?query=<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE Query><Query  virtualSchemaName = "default" formatter = "TSV" header = "0" uniqueRows = "0" count = "" datasetConfigVersion = "0.6" ><Dataset name = "hsapiens_gene_ensembl" interface = "default" ><Attribute name = "ensembl_gene_id" /><Attribute name = "ensembl_transcript_id" /><Attribute name = "entrezgene_id" /><Attribute name = "external_gene_name" /></Dataset></Query>'
-- url: 'https://storage.googleapis.com/public-download-files/hgnc/json/json/hgnc_complete_set.json'
+- url: 'https://may2024.archive.ensembl.org/biomart/martservice?query=<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE Query><Query  virtualSchemaName = "default" formatter = "TSV" header = "0" uniqueRows = "0" count = "" datasetConfigVersion = "0.6" ><Dataset name = "hsapiens_gene_ensembl" interface = "default" ><Attribute name = "ensembl_gene_id" /><Attribute name = "external_gene_name" /></Dataset></Query>'
+- url: 'https://storage.googleapis.com/public-download-files/hgnc/archive/archive/quarterly/json/hgnc_complete_set_2025-04-01.json'
   skip_upstream_check: true  # does not work reliably in tests
   excerpt_strategy:
     strategy: manual
     count: null
+
+- url: 'https://storage.googleapis.com/public-download-files/hgnc/archive/archive/quarterly/tsv/hgnc_complete_set_2025-04-01.tsv'
+  skip_upstream_check: true  # does not work reliably in tests
+  excerpt_strategy:
+    strategy: head
+    count: 1000
+- url: 'https://storage.googleapis.com/public-download-files/hgnc/archive/archive/quarterly/tsv/hgnc_complete_set_2025-04-01.tsv'
+  skip_upstream_check: true  # does not work reliably in tests
+  excerpt_strategy:
+    strategy: head
+    count: 1000
 
 - url: https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/constraint/gnomad.v4.1.constraint_metrics.tsv
 - url: https://ftp.ncbi.nih.gov/gene/DATA/mim2gene_medgen
@@ -576,3 +601,45 @@
 - url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/2.1.1/liftover_grch38/vcf/exomes/gnomad.exomes.r2.1.1.sites.22.liftover_grch38.vcf.bgz.tbi
 - url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/2.1.1/liftover_grch38/vcf/exomes/gnomad.exomes.r2.1.1.sites.X.liftover_grch38.vcf.bgz.tbi
 - url: https://gnomad-public-us-east-1.s3.amazonaws.com/release/2.1.1/liftover_grch38/vcf/exomes/gnomad.exomes.r2.1.1.sites.Y.liftover_grch38.vcf.bgz.tbi
+
+- url: http://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2accession.gz
+  excerpt_strategy:
+    strategy: gz-head
+    count: 1000
+
+- url: https://storage.googleapis.com/gcp-public-data--gnomad/release/3.1/vcf/genomes/gnomad.genomes.v3.1.sites.chrM.vcf.bgz
+
+- url: https://ftp.ncbi.nih.gov/snp/archive/b157/VCF/GCF_000001405.25.gz
+  excerpt_strategy:
+    strategy: gz-head
+    count: 1000
+
+- url: https://ftp.ncbi.nih.gov/snp/archive/b157/VCF/GCF_000001405.40.gz
+  excerpt_strategy:
+    strategy: gz-head
+    count: 1000
+
+- url: https://github.com/SACGF/cdot/releases/download/data_v0.2.27/cdot-0.2.27.GCF_000001405.40_GRCh38.p14_genomic.110.gff.json.gz
+  excerpt_strategy:
+    strategy: manual
+    count: null
+
+- url: https://github.com/SACGF/cdot/releases/download/data_v0.2.27/cdot-0.2.27.GCF_000001405.25_GRCh37.p13_genomic.105.20220307.gff.json.gz
+  excerpt_strategy:
+    strategy: manual
+    count: null
+
+- url: https://mitomap.org/cgi-bin/polymorphisms.cgi?format=vcf
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+
+- url: https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/9606/110/GCF_000001405.40_GRCh38.p14/GCF_000001405.40_GRCh38.p14_assembly_structure/Primary_Assembly/assembled_chromosomes/chr2acc
+  excerpt_strategy:
+    strategy: head
+    count: 1000
+
+- url: https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/9606/105.20220307/GCF_000001405.25_GRCh37.p13/GCF_000001405.25_GRCh37.p13_assembly_structure/Primary_Assembly/assembled_chromosomes/chr2acc
+  excerpt_strategy:
+    strategy: head
+    count: 1000

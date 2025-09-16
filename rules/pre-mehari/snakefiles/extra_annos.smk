@@ -17,13 +17,13 @@ rule grch3x_refseq_exons_download:
         export TMPDIR=$(mktemp -d)
         trap "rm -rf $TMPDIR" EXIT ERR
 
-        wget --no-check-certificate -O - '{DV.refseq_base_url}/{params.version}/{params.assembly}/{params.assembly}_assembly_structure/Primary_Assembly/assembled_chromosomes/chr2acc' \
-        | awk 'BEGIN {{ OFS="\t" }} !/^#/ {{ print $2, $1 }}' \
+        wget --no-check-certificate -O $TMPDIR/chr2acc '{DV.refseq_base_url}/{params.version}/{params.assembly}/{params.assembly}_assembly_structure/Primary_Assembly/assembled_chromosomes/chr2acc'
+        awk 'BEGIN {{ OFS="\t" }} !/^#/ {{ print $2, $1 }}' $TMPDIR/chr2acc \
         | LC_ALL=C sort -k1,1 \
         > $TMPDIR/names
 
-        wget --no-check-certificate -O - '{DV.refseq_base_url}/{params.version}/{params.assembly}/{params.assembly}_genomic.gff.gz' \
-        | zgrep -v '^#' \
+        wget --no-check-certificate -O $TMPDIR/genomic.gff.gz '{DV.refseq_base_url}/{params.version}/{params.assembly}/{params.assembly}_genomic.gff.gz'
+        zgrep -v '^#' $TMPDIR/genomic.gff.gz \
         | LC_ALL=C sort -k1,1 \
         > $TMPDIR/genes
 
@@ -50,9 +50,12 @@ rule grch3x_ensembl_exons_download:
         else DV.ensembl_37_archive_ftp,
     shell:
         r"""
-        wget --no-check-certificate -O- \
-            '{params.url}/release-{params.ensembl}/gtf/homo_sapiens/Homo_sapiens.{wildcards.genomebuild}.{params.ensembl}.gtf.gz' \
-        | zcat \
+        export TMPDIR=$(mktemp -d)
+        trap "rm -rf $TMPDIR" EXIT ERR
+
+        wget --no-check-certificate -O $TMPDIR/Homo_sapiens.{wildcards.genomebuild}.{params.ensembl}.gtf.gz \
+            '{params.url}/release-{params.ensembl}/gtf/homo_sapiens/Homo_sapiens.{wildcards.genomebuild}.{params.ensembl}.gtf.gz'
+        zcat $TMPDIR/Homo_sapiens.{wildcards.genomebuild}.{params.ensembl}.gtf.gz \
         | awk '
             BEGIN {{ OFS="\t" }}
             ($3 == "exon") {{ print $1, $4, $5 }}' \

@@ -196,6 +196,7 @@ def generate_input_files():
             # -- mehari data
             # ---- frequencies (via annonars)
             f"output/full/mehari/freqs-{genomebuild}-{gnomad_versions[genomebuild]}+{gnomad_versions[genomebuild]}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
+            f"output/full/mehari/setup_mehari_dbs.sh",
             f"output/full/annonars/alphamissense-{genomebuild}-{DV.alphamissense}+{PV.annonars}/rocksdb/IDENTITY",
             # -- annonars data
             # ----- sequence variant annotations
@@ -223,7 +224,7 @@ def generate_input_files():
             f"output/full/worker/bgdb-dgv-gs-{genomebuild}-{DV.dgv_gs}+{PV.worker}/bgdb-dgv-gs.bin",
             f"output/full/worker/clinvar-strucvars-{genomebuild}-{DV.clinvar_version}+{PV.worker}/clinvar-strucvars.bin",
             f"output/full/worker/patho-mms-{genomebuild}-{DV.patho_mms}+{PV.worker}/patho-mms.bed",
-            f"output/full/worker/tads-{genomebuild}-dixon2015/hesc.bed",
+            # f"output/full/worker/tads-{genomebuild}-dixon2015/hesc.bed",
             # -- mehari data
             f"output/full/mehari/genes-txs-{genomebuild}-{DV.mehari_tx}/mehari-data-txs-{genomebuild}-ensembl-{DV.mehari_tx}.bin.zst",
             f"output/full/mehari/genes-txs-{genomebuild}-{DV.mehari_tx}/mehari-data-txs-{genomebuild}-refseq-{DV.mehari_tx}.bin.zst",
@@ -238,8 +239,8 @@ def generate_input_files():
             f"output/full/tracks/track-features-ucsc-rmsk-{genomebuild}-{rmask_versions[genomebuild]}+{DV.tracks}/rmsk.bed.gz",
             f"output/full/tracks/track-features-ucsc-altseqliftoverpsl-{genomebuild}-{lift_over_versions[genomebuild]}+{DV.tracks}/altSeqLiftOverPsl.bed.gz",
             f"output/full/tracks/track-features-ucsc-fixseqliftoverpsl-{genomebuild}-{lift_over_fix_versions[genomebuild]}+{DV.tracks}/fixSeqLiftOverPsl.bed.gz",
-            # ----- tads
-            f"output/full/tracks/track-tads-{genomebuild}-dixon2015+{DV.tracks}/hesc.bed",
+            # ----- tads - dataset discontinued
+            # f"output/full/tracks/track-tads-{genomebuild}-dixon2015+{DV.tracks}/hesc.bed",
             # ----- probesets
             f"output/full/tracks/track-enrichment-probesets-targets/agilent-all-exon-v4-{genomebuild}-{DV.tracks}.bed.gz",
             f"output/full/tracks/track-enrichment-probesets-targets/agilent-all-exon-v5-{genomebuild}-{DV.tracks}.bed.gz",
@@ -309,8 +310,8 @@ def generate_input_files():
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/hgnc/{DV.hgnc_quarterly}+{DV.cdot}+{refseq_versions[genomebuild]}/RefseqToHgnc.release_info",
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/clinvar/{DV.hgnc_quarterly}+{DV.clinvar_release}/Clinvar.tsv",
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/clinvar/{DV.hgnc_quarterly}+{DV.clinvar_release}/Clinvar.release_info",
-            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/HelixMtDb/{DV.helixmtdb}/HelixMtDb.tsv",
-            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/HelixMtDb/{DV.helixmtdb}/HelixMtDb.release_info",
+            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/HelixMTdb/{DV.helixmtdb}/HelixMtDb.tsv",
+            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/HelixMTdb/{DV.helixmtdb}/HelixMtDb.release_info",
             expand(
                 "output/pre-mehari/{genomebuild}/dbSNP/{dbsnp}/Dbsnp.{chrom}.{file_ext}",
                 genomebuild=genomebuild_cap[genomebuild],
@@ -510,3 +511,5 @@ include: "rules/pre-mehari/snakefiles/refseqtogenesymbol.smk"
 include: "rules/pre-mehari/snakefiles/release.smk"
 # ---- reference
 include: "rules/output/reference/reference.smk"
+# ---- mehari-cli
+include: "rules/output/mehari/setup_dbs.smk"

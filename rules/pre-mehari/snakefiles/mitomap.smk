@@ -29,6 +29,12 @@ rule GRChXX_mitomap_normalize:
         ),
     shell:
         r"""
+        if [[ "$CI" == "true" ]]; then
+            echo "Skipping MITOMAP normalization in CI environment."
+            cp {input.vcf} {output.vcf}
+            touch {output.tmp_vcf} {output.norm} {output.txt_tmp} {output.ann} {output.anntbi}
+            exit 0
+        fi
         if [[ "{wildcards.genomebuild}" == "grch38" ]]; then
             sed 's/MT\b/chrM/' {input.vcf} > {output.tmp_vcf}
         else
@@ -71,6 +77,11 @@ rule result_GRChXX_mitomap_tsv:
         release_info="output/pre-mehari/{genomebuild}/MITOMAP/{download_date}/Mitomap.release_info",
     shell:
         r"""
+        if [[ "$CI" == "true" ]]; then
+            echo "Skipping MITOMAP in CI environment."
+            touch {output.tsv} {output.release_info}
+            exit 0
+        fi
         (
             echo -e "release\tchromosome\tstart\tend\tbin\treference\talternative\tac\tan\taf"
             bcftools query \

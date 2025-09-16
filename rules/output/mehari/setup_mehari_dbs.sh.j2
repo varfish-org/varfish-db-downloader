@@ -1,0 +1,119 @@
+#!/usr/bin/env bash
+
+# Function to display usage
+usage() {
+  echo "Usage: $0 -m MEHARI_VERSION"
+  exit 1
+}
+
+# Function to log messages with timestamp
+log() {
+  echo "$(date '+%Y-%m-%d %H:%M:%S') [INFO] $*"
+}
+
+# Parse command-line options
+while getopts "m:" opt; do
+  case ${opt} in
+    m )
+      MEHARI_VERSION="$OPTARG"
+      ;;
+    \? )
+      usage
+      ;;
+  esac
+done
+
+# Check if required variables are set
+if [ -z "${MEHARI_VERSION}" ] ; then
+  usage
+fi
+
+# Check if downloader_base exists
+if [ ! -d "{{ downloader_base }}" ]; then
+  echo "Error: VarFish DB Downloader directory '{{ downloader_base }}' does not exist or is not mounted."
+  exit 2
+fi
+
+CLINVAR_VERSION={{ DV.clinvar_version }}
+CLINVAR_RELEASE={{ DV.clinvar_release }}
+HGNC_QUARTERLY={{ DV.hgnc_quarterly }}
+MEHARI_DATA_TX_VERSION={{ DV.mehari_tx }}
+MEHARI_DATA_TX_SOURCE={{ primary_tx_source }}
+declare -A MEHARI_FREQUENCY_VERSIONS
+{% for k, v in mehari_freq_versions.items() %}
+MEHARI_FREQUENCY_VERSIONS[{{ k }}]="{{ v }}"
+{% endfor %}
+GENOMEBUILDS=({% for gb in genomebuilds %}{{ gb }} {% endfor %})
+
+log "Installing database for releases: ${GENOMEBUILDS[@]}"
+log "Versions to be installed:"
+log "- CLINVAR_VERSION=${CLINVAR_VERSION}"
+log "- CLINVAR_RELEASE=${CLINVAR_RELEASE}"
+log "- HGNC_QUARTERLY=${HGNC_QUARTERLY}"
+log "- MEHARI_DATA_TX_VERSION=${MEHARI_DATA_TX_VERSION}"
+log "- MEHARI_DATA_TX_SOURCE=${MEHARI_DATA_TX_SOURCE}"
+for key in "${!MEHARI_FREQUENCY_VERSIONS[@]}"; do
+  log "- MEHARI_FREQUENCY_VERSIONS[$key]=${MEHARI_FREQUENCY_VERSIONS[$key]}"
+done
+log "- MEHARI_VERSION=${MEHARI_VERSION}"
+
+CLINVAR=annonars-data-clinvar-${CLINVAR_VERSION}
+DIR="${MEHARI_VERSION}"
+OUTPUT_BASE={{ downloader_base }}/output/full/mehari
+
+log "Creating output directory $DIR ..."
+mkdir -p $DIR
+
+log "Downloading HGNC tsv file ..."
+HGNC_NAME="hgnc_complete_set_${HGNC_QUARTERLY}.tsv"
+wget "https://storage.googleapis.com/public-download-files/hgnc/archive/archive/quarterly/tsv/${HGNC_NAME}" -O "$DIR/hgnc.tsv"
+
+for assembly in "${GENOMEBUILDS[@]}"
+do
+  assembly=$(echo "$assembly" | tr '[:upper:]' '[:lower:]')
+
+  log "Setting up ${assembly} directory structure ..."
+  mkdir -p $DIR/$assembly/seqvars
+  mkdir -p $DIR/$assembly/seqvars/clinvar
+  mkdir -p $DIR/$assembly/seqvars/frequencies
+
+  log "Copying transcript database (${assembly}) ..."
+  tx_path=$OUTPUT_BASE/genes-txs-$assembly-${MEHARI_DATA_TX_VERSION}
+  cp \
+    $tx_path/mehari-data-txs-$assembly-*-${MEHARI_DATA_TX_VERSION}.bin.zst \
+    $DIR/$assembly/seqvars/.
+
+  log "Linking transcript database (${assembly}) -> ${assembly}/seqvars/txs.bin.zst"
+  ln -s \
+    mehari-data-txs-$assembly-${MEHARI_DATA_TX_SOURCE}-${MEHARI_DATA_TX_VERSION}.bin.zst \
+    $DIR/$assembly/seqvars/txs.bin.zst
+
+  log "Copying frequency database (${assembly}) ..."
+  freq_path=$OUTPUT_BASE/${MEHARI_FREQUENCY_VERSIONS[$assembly]}/rockdb
+  cp -r \
+    $freq_path \
+    $DIR/$assembly/seqvars/frequencies/rocksdb
+
+  # Note: The other clinvar datasets (genes, sv) are currently not used by mehari annotate workflow
+  log "Downloading clinvar database (${assembly}) ..."
+  file="annonars-clinvar-minimal-$assembly-${CLINVAR_RELEASE}"
+  url_base="https://github.com/varfish-org/annonars-data-clinvar/releases/download"
+  wget \
+    "$url_base/annonars-data-clinvar-${CLINVAR_VERSION}/${file}.tar.gz" \
+    -O "$DIR/$assembly/seqvars/clinvar/${file}.tar.gz"
+  wget \
+    "$url_base/annonars-data-clinvar-${CLINVAR_VERSION}/${file}.tar.gz.sha256" \
+    -O "$DIR/$assembly/seqvars/clinvar/${file}.tar.gz.sha256"
+  sha256sum -c \
+    "$DIR/$assembly/seqvars/clinvar/${file}.tar.gz.sha256" \
+    --ignore-missing
+
+  log "Unpacking clinvar database (${assembly}) ..."
+  tar -x \
+    -f "$DIR/$assembly/seqvars/clinvar/${file}.tar.gz" \
+    -C "$DIR/$assembly/seqvars/clinvar"
+
+  log "Linking clinvar database (${assembly}) -> ${assembly}/seqvars/clinvar/rocksdb"
+  ln -s \
+    $file/rocksdb \
+    $DIR/$assembly/seqvars/clinvar/rocksdb

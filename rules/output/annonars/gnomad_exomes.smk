@@ -26,6 +26,13 @@ rule output_annonars_gnomad_exomes:  # -- build gnomAD-exomes RocksDB with annon
         v_annonars=RE_VERSION,
     shell:
         r"""
+        if [[ "$CI" == "true" ]]; then
+            echo "Skipping gnomad in CI environment."
+            mkdir -p $(dirname {output.rocksdb_identity})
+            touch {output.rocksdb_identity} {output.spec_yaml} {output.manifest}
+            exit 0
+        fi
+
         annonars gnomad-nuclear import \
             $(for path in $(dirname {input.vcf})/*.bgz; do \
                 echo --path-in-vcf $path; \

@@ -33,14 +33,19 @@ rule grchxx_knowngeneaa_to_vcf:
         tbi="work/download/pre-mehari/{genome_build}/knowngeneaa/{version}/knownGeneAA.vcf.gz.tbi",
     shell:
         r"""
-        python rules/pre-mehari/tools/knowngeneaa.py \
-            {input.reference} \
-            {input.fa} \
-            --output /dev/stdout \
-        | bcftools sort \
-            -O z \
-            -o {output.vcf}
-        tabix -f {output.vcf}
+        if [ "${{CI:-false}}" = "true" ]; then
+            echo "Skipping rule grchxx_knowngeneaa_to_vcf in CI environment." > /dev/stderr
+            touch {output.vcf} {output.tbi}
+        else
+            python rules/pre-mehari/tools/knowngeneaa.py \
+                {input.reference} \
+                {input.fa} \
+                --output /dev/stdout \
+            | bcftools sort \
+                -O z \
+                -o {output.vcf}
+            tabix -f {output.vcf}
+        fi
         """
 
 
@@ -69,6 +74,12 @@ rule result_grchxx_knowngeneaa_to_tsv:
         release_info="output/pre-mehari/{genome_build}/knowngeneaa/{version}/KnowngeneAA.release_info",
     shell:
         r"""
+        if [ "${{CI:-false}}" = "true" ]; then
+            echo "Skipping rule grchxx_knowngeneaa_to_vcf in CI environment." > /dev/stderr
+            touch {output.tsv} {output.release_info}
+            exit 0
+        fi
+        
         (
             cat {input.header} | tr '\n' '\t' | sed -e 's/\t*$/\n/g';
             bcftools query \

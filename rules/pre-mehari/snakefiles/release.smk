@@ -1,7 +1,6 @@
 NOREFS = [
     f"output/pre-mehari/noref/hpo/{DV.hpo}/Hpo.release_info",
     f"output/pre-mehari/noref/hpo/{DV.hpo}/HpoName.release_info",
-    f"output/pre-mehari/noref/refseqtoensembl/{DV.ensembl_38}/RefseqToEnsembl.release_info",
     f"output/pre-mehari/noref/acmg/{DV.acmg_sf}/Acmg.release_info",
     f"output/pre-mehari/noref/mim2gene/{DV.today}/Mim2geneMedgen.release_info",
     f"output/pre-mehari/noref/refseqtogenesymbol/{DV.today}/RefseqToGeneSymbol.release_info",

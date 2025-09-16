@@ -119,6 +119,10 @@ def extracted_var_to_clinvar_record(
     germline_classification = record.classifications.germline_classification
 
     chromosome = clinvar_public.Chromosome.Name(record.sequence_location.chr)[len("CHROMOSOME_") :]
+    if release == "GRCh38":
+        if chromosome == "MT":
+            chromosome = "M"
+        chromosome = f"chr{chromosome}"
     end = (
         record.sequence_location.position_vcf
         + len(record.sequence_location.reference_allele_vcf)

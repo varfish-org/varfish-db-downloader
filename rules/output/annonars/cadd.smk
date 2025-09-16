@@ -64,6 +64,12 @@ rule output_annonars_cadd:  # -- build CADD RocksDB with annonars
         v_annonars=RE_VERSION,
     shell:
         r"""
+        if [ "${{CI:-false}}" = "true" ]; then
+            echo "Skipping annonars CADD import in CI environment."
+            mkdir -p $(dirname {output.rocksdb_identity})
+            touch {output.rocksdb_identity} {output.spec_yaml} {output.manifest}
+            exit 0
+        fi
         annonars tsv import \
             --path-in-tsv {input.indels} \
             --path-in-tsv {input.snvs} \

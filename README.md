@@ -82,6 +82,9 @@ The rationale is that this gene and its variants are heavily annotated as breast
 
 ### Running in Test Mode
 
+TODO: This part is currently disabled in CI (`Run-Test-Mode` in `.github/workflows/main.yml`).
+TODO: pre-mehari workflow files are missing.
+
 The download of files can be disabled to enable a test mode.
 Instead, the files in `excerpt-data` are used when `CI=true` is set in the environment.
 
@@ -95,6 +98,22 @@ The files can be updated by calling
 ```
 
 The known URLs are managed in `download_urls.yml`.
+
+#### Manually maintained excerpts
+
+Some files have to be put manually in the excerpt-data folder.
+Some need to be reduced in size.
+
+- dbNSFP(a): https://usf.box.com/shared/static/2hzcx5s6p1xui7oen16xqzndfrkt8l9l
+- dbNSFP(c): https://usf.box.com/shared/static/03xsrpna0nzgrytfo2pzk326t8jad4oc
+- dbscSNV: https://usf.box.com/shared/static/ffwlywsat3q5ijypvunno3rg6steqfs8
+- https://storage.googleapis.com/public-download-files/hgnc/archive/archive/quarterly/tsv/hgnc_complete_set_2025-04-01.tsv
+- https://storage.googleapis.com/public-download-files/hgnc/archive/archive/quarterly/tsv/hgnc_complete_set_2025-04-01.json
+- https://storage.googleapis.com/adult-gtex/bulk-gex/v8/rna-seq/GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_tpm.gct.gz
+- https://github.com/varfish-org/clinvar-data-jsonl/releases/download/clinvar-weekly-20250410/clinvar-data-extract-vars-20250410+0.18.5.tar.gz
+  - Extract the tar.gz, take the first 1000 lines of the containing files and zip them again.
+- https://ftp.ncbi.nlm.nih.gov/asn1-converters/by_program/gene2xml/linux64.gene2xml.gz
+- https://ftp.ncbi.nih.gov/gene/DATA/ASN_BINARY/Mammalia/Homo_sapiens.ags.gz 
 
 ### Managing GitHub Project with Terraform
 

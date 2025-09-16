@@ -35,6 +35,13 @@ rule output_mehari_freqs_build:  # -- build frequency tables for mehari
         v_annonars=RE_VERSION,
     shell:
         r"""
+        if [[ "${{CI:-false}}" == "true" ]]; then
+            echo "Skipping rule output_mehari_freqs_build because CI=true"
+            mkdir -p $(dirname {output.rocksdb_identity})
+            touch {output.rocksdb_identity} {output.spec_yaml} {output.manifest}
+            exit 0
+        fi
+        
         output_rocksdb=$(dirname {output.rocksdb_identity})
 
         build-args()
