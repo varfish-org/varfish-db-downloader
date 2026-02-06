@@ -197,19 +197,19 @@
     strategy: no-excerpt
     count: null
 
-- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2025-05-06/hp.obo
+- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2025-11-24/hp.obo
   excerpt_strategy:
     strategy: no-excerpt
     count: null
-- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2025-05-06/phenotype.hpoa
+- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2025-11-24/phenotype.hpoa
   excerpt_strategy:
     strategy: no-excerpt
     count: null
-- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2025-05-06/phenotype_to_genes.txt
+- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2025-11-24/phenotype_to_genes.txt
   excerpt_strategy:
     strategy: no-excerpt
     count: null
-- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2025-05-06/genes_to_phenotype.txt
+- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2025-11-24/genes_to_phenotype.txt
   excerpt_strategy:
     strategy: no-excerpt
     count: null
@@ -291,18 +291,18 @@
 - url: 'https://grch37.archive.ensembl.org/biomart/martservice?query=<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE Query><Query  virtualSchemaName = "default" formatter = "TSV" header = "0" uniqueRows = "0" count = "" datasetConfigVersion = "0.6" ><Dataset name = "hsapiens_gene_ensembl" interface = "default" ><Attribute name = "ensembl_gene_id" /><Attribute name = "external_gene_name" /></Dataset></Query>'
 - url: 'https://may2024.archive.ensembl.org/biomart/martservice?query=<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE Query><Query  virtualSchemaName = "default" formatter = "TSV" header = "0" uniqueRows = "0" count = "" datasetConfigVersion = "0.6" ><Dataset name = "hsapiens_gene_ensembl" interface = "default" ><Attribute name = "ensembl_gene_id" /><Attribute name = "ensembl_transcript_id" /><Attribute name = "entrezgene_id" /><Attribute name = "external_gene_name" /></Dataset></Query>'
 - url: 'https://may2024.archive.ensembl.org/biomart/martservice?query=<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE Query><Query  virtualSchemaName = "default" formatter = "TSV" header = "0" uniqueRows = "0" count = "" datasetConfigVersion = "0.6" ><Dataset name = "hsapiens_gene_ensembl" interface = "default" ><Attribute name = "ensembl_gene_id" /><Attribute name = "external_gene_name" /></Dataset></Query>'
-- url: 'https://storage.googleapis.com/public-download-files/hgnc/archive/archive/quarterly/json/hgnc_complete_set_2025-04-01.json'
+- url: 'https://storage.googleapis.com/public-download-files/hgnc/archive/archive/quarterly/json/hgnc_complete_set_2026-01-06.json'
   skip_upstream_check: true  # does not work reliably in tests
   excerpt_strategy:
     strategy: manual
     count: null
 
-- url: 'https://storage.googleapis.com/public-download-files/hgnc/archive/archive/quarterly/tsv/hgnc_complete_set_2025-04-01.tsv'
+- url: 'https://storage.googleapis.com/public-download-files/hgnc/archive/archive/quarterly/tsv/hgnc_complete_set_2026-01-06.tsv'
   skip_upstream_check: true  # does not work reliably in tests
   excerpt_strategy:
     strategy: head
     count: 1000
-- url: 'https://storage.googleapis.com/public-download-files/hgnc/archive/archive/quarterly/tsv/hgnc_complete_set_2025-04-01.tsv'
+- url: 'https://storage.googleapis.com/public-download-files/hgnc/archive/archive/quarterly/tsv/hgnc_complete_set_2026-01-06.tsv'
   skip_upstream_check: true  # does not work reliably in tests
   excerpt_strategy:
     strategy: head
@@ -619,12 +619,12 @@
     strategy: gz-head
     count: 1000
 
-- url: https://github.com/SACGF/cdot/releases/download/data_v0.2.27/cdot-0.2.27.GCF_000001405.40_GRCh38.p14_genomic.110.gff.json.gz
+- url: https://github.com/SACGF/cdot/releases/download/data_v0.2.32/cdot-0.2.32.Homo_sapiens_GRCh38_Ensembl_115.gtf.json.gz
   excerpt_strategy:
     strategy: manual
     count: null
 
-- url: https://github.com/SACGF/cdot/releases/download/data_v0.2.27/cdot-0.2.27.GCF_000001405.25_GRCh37.p13_genomic.105.20220307.gff.json.gz
+- url: https://github.com/SACGF/cdot/releases/download/data_v0.2.32/cdot-0.2.32.Homo_sapiens_GRCh37_RefSeq_105.20220307.gff.json.gz
   excerpt_strategy:
     strategy: manual
     count: null

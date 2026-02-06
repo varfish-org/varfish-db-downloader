@@ -13,11 +13,11 @@ FORCE_TODAY = os.environ.get("FORCE_TODAY", "false").lower() == "true"
 
 # Clinvar source:
 # https://github.com/varfish-org/clinvar-data-jsonl/releases
-# https://github.com/varfish-org/clinvar-data-jsonl/releases/download/clinvar-weekly-20250706/clinvar-data-extract-vars-20250706+0.18.5.tar.gz
+# https://github.com/varfish-org/clinvar-data-jsonl/releases/download/clinvar-weekly-20260104/clinvar-data-extract-vars-20260104+0.18.5.tar.gz
 # Used by:
 # - worker
 # - pre-mehari release
-CLINVAR_VERSION = "20250706"
+CLINVAR_VERSION = "20260104"
 # Clinvar-this version
 CLINVAR_THIS = "0.18.5"
 #: The ClinVar release to use (weekly clinvar release data + clinvar-this).
@@ -29,7 +29,7 @@ CLINVAR_RELEASE = os.environ.get("CLINVAR_RELEASE", f"{CLINVAR_VERSION}+{CLINVAR
 #: RefSeq release for GRCh37
 REFSEQ_37 = "105.20220307"
 #: RefSeq release for GRCh38
-REFSEQ_38 = "110"
+REFSEQ_38 = "RS_2025_08"
 #:  RefSeq reference for GRCh37, corresponding to REFSEQ_37
 REFSEQ_REF_37 = "GCF_000001405.25"
 #:  RefSeq reference for GRCh38, corresponding to REFSEQ_38
@@ -41,7 +41,7 @@ REFSEQ_REF_38_BUILD = "GRCh38.p14"
 #: Ensembl release for GRCh37
 ENSEMBL_37 = "87"
 #: Ensembl release for GRCh38
-ENSEMBL_38 = "112"
+ENSEMBL_38 = "115"
 
 #: Wether we run in CI/test mode.
 RUNS_IN_CI = os.environ.get("CI", "false").lower() == "true"
@@ -224,13 +224,13 @@ DATA_VERSIONS = DataVersions(
     refseq_base_url="https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/9606",
     # The lines/versions below the mehari_tx should be consistent with the mehari-data-tx release:
     # https://github.com/varfish-org/mehari-data-tx/blob/v{mehari_tx}/config/config.yaml
-    mehari_tx="0.10.4",  # ATTN! version to be consistent with
+    mehari_tx="0.12.0",  # ATTN! version to be consistent with
     # ---
-    cdot="0.2.27",  # line #L30 and others
-    hgnc_quarterly="2025-04-01",  # line #L239
-    cdot_refseq_gff_json_37=f"{REFSEQ_REF_37}_{REFSEQ_REF_37_BUILD}_genomic.{REFSEQ_37}.gff",  # line #L114
-    cdot_refseq_gff_json_38=f"{REFSEQ_REF_38}_{REFSEQ_REF_38_BUILD}_genomic.{REFSEQ_38}.gff",  # line #L31
-    hpo="v2025-05-06",  # line #L250
+    cdot="0.2.32",  # line #L30 and others
+    hgnc_quarterly="2026-01-06",  # line #L239
+    cdot_refseq_gff_json_37=f"Homo_sapiens_GRCh37_RefSeq_{REFSEQ_37}.gff",  # line #L114
+    cdot_refseq_gff_json_38=f"Homo_sapiens_GRCh38_RefSeq_{REFSEQ_38}.gff",  # line #L31
+    hpo="v2025-11-24",  # line #L250
     ensembl_37=ENSEMBL_37,  # line #L217
     ensembl_38=ENSEMBL_38,  # line #L155
     refseq_37=REFSEQ_37,
