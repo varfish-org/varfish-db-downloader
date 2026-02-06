@@ -634,18 +634,18 @@ DATABASES = {
         "release": "20200302",
         "converter": DgvGoldStandardConverter,
     },
-    "GRCh37_hg19_variants_2020-02-25.txt": {
+    "GRCh37_hg19_variants_2025-12-01.txt": {
         "genomebuild": "GRCh37",
         "name": "dgv-GRCh37",
         "table": "DgvSvs",
-        "release": "20200225",
+        "release": "20251201",
         "converter": DgvConverter,
     },
-    "GRCh38_hg38_variants_2020-02-25.txt": {
+    "GRCh38_hg38_variants_2025-12-01.txt": {
         "genomebuild": "GRCh38",
         "name": "dgv-GRCh38",
         "table": "DgvSvs",
-        "release": "20200225",
+        "release": "20251201",
         "converter": DgvConverter,
     },
     "exac-final.autosome-1pct-sq60-qc-prot-coding.cnv.bed": {
