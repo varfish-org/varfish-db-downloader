@@ -15,31 +15,32 @@ import csv
 import sys
 import time
 from typing import Dict, Optional
+
 import requests
 
 
 def fetch_gene_info_from_hgnc(gene_symbol: str) -> Optional[Dict[str, str]]:
     """
     Fetch gene information from HGNC REST API.
-    
+
     Args:
         gene_symbol: The HGNC gene symbol
-        
+
     Returns:
         Dictionary with hgnc_id, ensembl_gene_id, ncbi_gene_id, or None if not found
     """
     url = f"https://rest.genenames.org/fetch/symbol/{gene_symbol}"
     headers = {"Accept": "application/json"}
-    
+
     try:
         response = requests.get(url, headers=headers, timeout=10)
         response.raise_for_status()
-        
+
         data = response.json()
-        
+
         if "response" in data and "docs" in data["response"] and len(data["response"]["docs"]) > 0:
             doc = data["response"]["docs"][0]
-            
+
             return {
                 "hgnc_id": doc.get("hgnc_id", ""),
                 "ensembl_gene_id": doc.get("ensembl_gene_id", ""),
@@ -49,7 +50,7 @@ def fetch_gene_info_from_hgnc(gene_symbol: str) -> Optional[Dict[str, str]]:
         else:
             print(f"Warning: No data found for gene symbol: {gene_symbol}", file=sys.stderr)
             return None
-            
+
     except requests.exceptions.RequestException as e:
         print(f"Error fetching data for {gene_symbol}: {e}", file=sys.stderr)
         return None
@@ -78,7 +79,7 @@ def normalize_sf_version(version: str) -> str:
 def process_acmg_sf_file(input_file: str, output_file: str, delay: float = 0.2):
     """
     Process the raw ACMG SF file and enrich it with gene identifiers.
-    
+
     Args:
         input_file: Path to the raw TSV file
         output_file: Path to the output enriched TSV file
@@ -95,7 +96,7 @@ def process_acmg_sf_file(input_file: str, output_file: str, delay: float = 0.2):
         "SF List Version": "sf_list_version",
         "Variants to report": "variants_to_report",
     }
-    
+
     output_columns = [
         "hgnc_id",
         "ensembl_gene_id",
@@ -109,19 +110,19 @@ def process_acmg_sf_file(input_file: str, output_file: str, delay: float = 0.2):
         "sf_list_version",
         "variants_to_report",
     ]
-    
+
     # Cache for gene information to avoid redundant API calls
     gene_cache = {}
-    
+
     enriched_rows = []
-    
+
     print(f"Reading input file: {input_file}")
     with open(input_file, "r", encoding="utf-8") as infile:
         reader = csv.DictReader(infile, delimiter="\t")
-        
+
         for row in reader:
             gene_symbol = row["Gene"].strip()
-            
+
             # Fetch gene info from cache or API
             if gene_symbol not in gene_cache:
                 print(f"Fetching data for: {gene_symbol}")
@@ -137,9 +138,9 @@ def process_acmg_sf_file(input_file: str, output_file: str, delay: float = 0.2):
                         "ncbi_gene_id": "",
                         "gene_symbol": gene_symbol,
                     }
-            
+
             gene_info = gene_cache[gene_symbol]
-            
+
             # Build enriched row
             enriched_row = {
                 "hgnc_id": gene_info["hgnc_id"],
@@ -154,15 +155,15 @@ def process_acmg_sf_file(input_file: str, output_file: str, delay: float = 0.2):
                 "sf_list_version": normalize_sf_version(row["SF List Version"]),
                 "variants_to_report": row["Variants to report"],
             }
-            
+
             enriched_rows.append(enriched_row)
-    
+
     print(f"Writing output file: {output_file}")
     with open(output_file, "w", encoding="utf-8", newline="") as outfile:
         writer = csv.DictWriter(outfile, fieldnames=output_columns, delimiter="\t")
         writer.writeheader()
         writer.writerows(enriched_rows)
-    
+
     print(f"Done! Processed {len(enriched_rows)} rows.")
     print(f"Unique genes fetched: {len(gene_cache)}")
 
@@ -185,9 +186,9 @@ def main():
         default=0.2,
         help="Delay in seconds between API calls (default: 0.2)",
     )
-    
+
     args = parser.parse_args()
-    
+
     process_acmg_sf_file(args.input, args.output, args.delay)
 
 
