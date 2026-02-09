@@ -9,20 +9,28 @@ rule grch3x_refseq_exons_download:
         assembly=lambda wildcards: DV.refseq_ref_38_assembly
         if wildcards.genomebuild == "GRCh38"
         else DV.refseq_ref_37_assembly,
-        version=lambda wildcards: DV.refseq_38
+        version=lambda wildcards: (
+            f"{DV.refseq_ref_38}-{DV.refseq_38}"
+            if DV.refseq_38.startswith("RS_")
+            else f"{DV.refseq_38}/{DV.refseq_ref_38_assembly}"
+        )
         if wildcards.genomebuild == "GRCh38"
-        else DV.refseq_37,
+        else (
+            f"{DV.refseq_ref_37}-{DV.refseq_37}"
+            if DV.refseq_37.startswith("RS_")
+            else f"{DV.refseq_37}/{DV.refseq_ref_37_assembly}"
+        ),
     shell:
         r"""
         export TMPDIR=$(mktemp -d)
         trap "rm -rf $TMPDIR" EXIT ERR
 
-        wget --no-check-certificate -O $TMPDIR/chr2acc '{DV.refseq_base_url}/{params.version}/{params.assembly}/{params.assembly}_assembly_structure/Primary_Assembly/assembled_chromosomes/chr2acc'
+        wget --no-check-certificate -O $TMPDIR/chr2acc '{DV.refseq_base_url}/{params.version}/{params.assembly}_assembly_structure/Primary_Assembly/assembled_chromosomes/chr2acc'
         awk 'BEGIN {{ OFS="\t" }} !/^#/ {{ print $2, $1 }}' $TMPDIR/chr2acc \
         | LC_ALL=C sort -k1,1 \
         > $TMPDIR/names
 
-        wget --no-check-certificate -O $TMPDIR/genomic.gff.gz '{DV.refseq_base_url}/{params.version}/{params.assembly}/{params.assembly}_genomic.gff.gz'
+        wget --no-check-certificate -O $TMPDIR/genomic.gff.gz '{DV.refseq_base_url}/{params.version}/{params.assembly}_genomic.gff.gz'
         zgrep -v '^#' $TMPDIR/genomic.gff.gz \
         | LC_ALL=C sort -k1,1 \
         > $TMPDIR/genes

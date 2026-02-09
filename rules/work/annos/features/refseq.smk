@@ -24,11 +24,18 @@ rule annos_features_refseq_gene_regions_download_grch38:
         report="work/download/annos/grch38/refseq/{version}/{assembly}_assembly_report.txt",
         acc="work/download/annos/grch38/refseq/{version}/chr_accessions_{assembly}",
         gtf="work/download/annos/grch38/refseq/{version}/{assembly}_genomic.gtf.gz",
+    params:
+        assembly=DV.refseq_ref_38_assembly,
+        version=lambda wildcards: (
+            f"{DV.refseq_ref_38}-{DV.refseq_38}"
+            if DV.refseq_38.startswith("RS_")
+            else f"{DV.refseq_38}/{DV.refseq_ref_38_assembly}"
+        ),
     shell:
         r"""
         wget --no-check-certificate \
             -O {output.report} \
-            "{DV.refseq_base_url}/{wildcards.version}/{wildcards.assembly}/{wildcards.assembly}_assembly_report.txt"
+            "{DV.refseq_base_url}/{params.version}/{params.assembly}_assembly_report.txt"
 
         echo -e "#Chromosome\tRefSeq Accession.version\tRefSeq\tgi\tGenBank Accession.version\tGenBank gi" \
         > {output.acc}
@@ -39,7 +46,7 @@ rule annos_features_refseq_gene_regions_download_grch38:
 
         wget --no-check-certificate \
             -O {output.gtf} \
-            '{DV.refseq_base_url}/{wildcards.version}/{wildcards.assembly}/{wildcards.assembly}_genomic.gtf.gz'
+            '{DV.refseq_base_url}/{params.version}/{params.assembly}_genomic.gtf.gz'
         """
 
 

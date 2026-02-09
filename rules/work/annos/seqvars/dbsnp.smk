@@ -37,12 +37,20 @@ rule annos_dbsnp_assembly_release:
             if wildcards.genome_release == "grch37"
             else DV.refseq_ref_38_assembly
         ),
-        version=lambda wildcards: DV.refseq_37
+        version=lambda wildcards: (
+            f"{DV.refseq_ref_37}-{DV.refseq_37}"
+            if DV.refseq_37.startswith("RS_")
+            else f"{DV.refseq_37}/{DV.refseq_ref_37_assembly}"
+        )
         if wildcards.genome_release == "grch37"
-        else DV.refseq_38,
+        else (
+            f"{DV.refseq_ref_38}-{DV.refseq_38}"
+            if DV.refseq_38.startswith("RS_")
+            else f"{DV.refseq_38}/{DV.refseq_ref_38_assembly}"
+        ),
     shell:
         r"""
         wget --no-check-certificate \
             -O {output.txt} \
-            {DV.refseq_base_url}/{params.version}/{params.assembly}/{params.assembly}_assembly_report.txt
+            {DV.refseq_base_url}/{params.version}/{params.assembly}_assembly_report.txt
         """
