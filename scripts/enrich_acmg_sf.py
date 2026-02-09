@@ -85,18 +85,6 @@ def process_acmg_sf_file(input_file: str, output_file: str, delay: float = 0.2):
         output_file: Path to the output enriched TSV file
         delay: Delay in seconds between API calls (to be respectful to the API)
     """
-    # Column mapping from raw to final format
-    column_mapping = {
-        "Gene": "gene_symbol",
-        "Gene MIM": "mim_gene_id",
-        "Disease/Phentyope": "disease_phenotype",  # Note: typo in original
-        "Disorder MIM": "disorder_mim",
-        "Phenotype Category": "phenotype_category",
-        "Inheritance": "inheritance",
-        "SF List Version": "sf_list_version",
-        "Variants to report": "variants_to_report",
-    }
-
     output_columns = [
         "hgnc_id",
         "ensembl_gene_id",
