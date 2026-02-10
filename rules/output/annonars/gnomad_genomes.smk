@@ -26,7 +26,7 @@ rule output_annonars_gnomad_genomes:  # -- build gnomAD-genomes RocksDB with ann
         v_annonars=RE_VERSION,
     shell:
         r"""
-        if [[ "$CI" == "true" ]]; then
+        if [[ "${CI:-}" == "true" ]]; then
             echo "Skipping gnomad in CI environment."
             mkdir -p $(dirname {output.rocksdb_identity})
             touch {output.rocksdb_identity} {output.spec_yaml} {output.manifest}
