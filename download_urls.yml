@@ -85,19 +85,26 @@
   excerpt_strategy:
     strategy: gz-head
     count: 1000
-- url: https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/9606/110/GCF_000001405.40_GRCh38.p14/GCF_000001405.40_GRCh38.p14_genomic.gff.gz
+- url: https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/9606/105.20220307/GCF_000001405.25_GRCh37.p13/GCF_000001405.25_GRCh37.p13_assembly_structure/Primary_Assembly/assembled_chromosomes/chr2acc
+  excerpt_strategy:
+    strategy: head
+    count: 1000
+
+- url: https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/9606/GCF_000001405.40-RS_2025_08/GCF_000001405.40_GRCh38.p14_genomic.gff.gz
   excerpt_strategy:
     strategy: gz-head
     count: 1000
-
-- url: https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/9606/110/GCF_000001405.40_GRCh38.p14/GCF_000001405.40_GRCh38.p14_assembly_report.txt
+- url: https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/9606/GCF_000001405.40-RS_2025_08/GCF_000001405.40_GRCh38.p14_assembly_report.txt
   excerpt_strategy:
     strategy: no-excerpt
     count: null
-
-- url: https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/9606/110/GCF_000001405.40_GRCh38.p14/GCF_000001405.40_GRCh38.p14_genomic.gtf.gz
+- url: https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/9606/GCF_000001405.40-RS_2025_08/GCF_000001405.40_GRCh38.p14_genomic.gtf.gz
   excerpt_strategy:
     strategy: gz-head
+    count: 1000
+- url: https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/9606/GCF_000001405.40-RS_2025_08/GCF_000001405.40_GRCh38.p14_assembly_structure/Primary_Assembly/assembled_chromosomes/chr2acc
+  excerpt_strategy:
+    strategy: head
     count: 1000
 
 - url: https://storage.googleapis.com/gcp-public-data--gnomad/legacy/exac_browser/ExAC.r1.sites.vep.vcf.gz
@@ -156,7 +163,7 @@
   url: https://search.clinicalgenome.org/kb/reports/curation-activity-summary-report
   skip_upstream_check: true  # does not work reliably in tests
 
-- url: https://github.com/varfish-org/clinvar-data-jsonl/releases/download/clinvar-weekly-20250706/clinvar-data-extract-vars-20250706+0.18.5.tar.gz
+- url: https://github.com/varfish-org/clinvar-data-jsonl/releases/download/clinvar-weekly-20260104/clinvar-data-extract-vars-20260104+0.18.5.tar.gz
   excerpt_strategy:
     strategy: manual
     count: null
@@ -283,7 +290,7 @@
     strategy: head
     count: 10000
 
-- url: https://ftp.ensembl.org/pub/release-112/gtf/homo_sapiens/Homo_sapiens.GRCh38.112.gtf.gz
+- url: https://ftp.ensembl.org/pub/release-115/gtf/homo_sapiens/Homo_sapiens.GRCh38.115.gtf.gz
   excerpt_strategy:
     strategy: head
     count: 10000
@@ -297,11 +304,6 @@
     strategy: manual
     count: null
 
-- url: 'https://storage.googleapis.com/public-download-files/hgnc/archive/archive/quarterly/tsv/hgnc_complete_set_2026-01-06.tsv'
-  skip_upstream_check: true  # does not work reliably in tests
-  excerpt_strategy:
-    strategy: head
-    count: 1000
 - url: 'https://storage.googleapis.com/public-download-files/hgnc/archive/archive/quarterly/tsv/hgnc_complete_set_2026-01-06.tsv'
   skip_upstream_check: true  # does not work reliably in tests
   excerpt_strategy:
@@ -619,12 +621,12 @@
     strategy: gz-head
     count: 1000
 
-- url: https://github.com/SACGF/cdot/releases/download/data_v0.2.32/cdot-0.2.32.Homo_sapiens_GRCh38_Ensembl_115.gtf.json.gz
+- url: https://github.com/SACGF/cdot/releases/download/data_v0.2.32/cdot-0.2.32.Homo_sapiens_GRCh37_RefSeq_105.20220307.gff.json.gz
   excerpt_strategy:
     strategy: manual
     count: null
 
-- url: https://github.com/SACGF/cdot/releases/download/data_v0.2.32/cdot-0.2.32.Homo_sapiens_GRCh37_RefSeq_105.20220307.gff.json.gz
+- url: https://github.com/SACGF/cdot/releases/download/data_v0.2.32/cdot-0.2.32.Homo_sapiens_GRCh38_RefSeq_RS_2025_08.gff.json.gz
   excerpt_strategy:
     strategy: manual
     count: null
@@ -633,13 +635,3 @@
   excerpt_strategy:
     strategy: no-excerpt
     count: null
-
-- url: https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/9606/110/GCF_000001405.40_GRCh38.p14/GCF_000001405.40_GRCh38.p14_assembly_structure/Primary_Assembly/assembled_chromosomes/chr2acc
-  excerpt_strategy:
-    strategy: head
-    count: 1000
-
-- url: https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/9606/105.20220307/GCF_000001405.25_GRCh37.p13/GCF_000001405.25_GRCh37.p13_assembly_structure/Primary_Assembly/assembled_chromosomes/chr2acc
-  excerpt_strategy:
-    strategy: head
-    count: 1000

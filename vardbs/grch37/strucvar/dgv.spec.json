@@ -1,7 +1,7 @@
 {
   "dc:format": "text/tsv",
   "dc:identifier": "vardbs/GRCh37/strucvars/dgv.bed.gz:2025-12-01",
-  "dc:title": "DGV Structural Variants (2020-02-25)",
+  "dc:title": "DGV Structural Variants (2025-12-01)",
   "dc:description": "This TSV file contains the structural variants from DGV in the \"DGV Variants\" set from 2025-12-01.",
   "dc:created": "2026-02-06",
   "dc:creator": "",

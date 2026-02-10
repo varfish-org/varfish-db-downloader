@@ -107,13 +107,14 @@ Some need to be reduced in size.
 - dbNSFP(a): https://usf.box.com/shared/static/2hzcx5s6p1xui7oen16xqzndfrkt8l9l
 - dbNSFP(c): https://usf.box.com/shared/static/03xsrpna0nzgrytfo2pzk326t8jad4oc
 - dbscSNV: https://usf.box.com/shared/static/ffwlywsat3q5ijypvunno3rg6steqfs8
-- https://storage.googleapis.com/public-download-files/hgnc/archive/archive/quarterly/tsv/hgnc_complete_set_2026-01-06.tsv
-- https://storage.googleapis.com/public-download-files/hgnc/archive/archive/quarterly/tsv/hgnc_complete_set_2026-01-06.json
+- https://storage.googleapis.com/public-download-files/hgnc/archive/archive/quarterly/json/hgnc_complete_set_2026-01-06.json
 - https://storage.googleapis.com/adult-gtex/bulk-gex/v8/rna-seq/GTEx_Analysis_2017-06-05_v8_RNASeQCv1.1.9_gene_tpm.gct.gz
-- https://github.com/varfish-org/clinvar-data-jsonl/releases/download/clinvar-weekly-20250410/clinvar-data-extract-vars-20250410+0.18.5.tar.gz
+- https://github.com/varfish-org/clinvar-data-jsonl/releases/download/clinvar-weekly-20260104/clinvar-data-extract-vars-20260104+0.18.5.tar.gz
   - Extract the tar.gz, take the first 1000 lines of the containing files and zip them again.
 - https://ftp.ncbi.nlm.nih.gov/asn1-converters/by_program/gene2xml/linux64.gene2xml.gz
-- https://ftp.ncbi.nih.gov/gene/DATA/ASN_BINARY/Mammalia/Homo_sapiens.ags.gz 
+- https://ftp.ncbi.nih.gov/gene/DATA/ASN_BINARY/Mammalia/Homo_sapiens.ags.gz
+- https://github.com/SACGF/cdot/releases/download/data_v0.2.32/cdot-0.2.32.Homo_sapiens_GRCh37_RefSeq_105.20220307.gff.json.gz
+- https://github.com/SACGF/cdot/releases/download/data_v0.2.32/cdot-0.2.32.Homo_sapiens_GRCh38_RefSeq_RS_2025_08.gff.json.gz
 
 ### Managing GitHub Project with Terraform
 

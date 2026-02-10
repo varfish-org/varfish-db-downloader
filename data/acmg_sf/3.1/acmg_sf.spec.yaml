@@ -1,8 +1,8 @@
 dc.format: text/tsv
-dc.identifier: varfish-server-worker/acmg_sf:3.1
-dc.title: ACMG Secondary Findings (SF) Gene List (v3.1)
+dc.identifier: varfish-server-worker/acmg_sf:3.3
+dc.title: ACMG Secondary Findings (SF) Gene List (v3.3)
 dc.description: >
-  This is version 3.1 of the ACMG gene list for reporting incidental
+  This is version 3.3 of the ACMG gene list for reporting incidental
   findings.  The file was curated from PMID:35802134 as gene symbols
   and then translated to ENSEMBL and Entrez/NCBI gene ID with the
   HGNC BioMart
