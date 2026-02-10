@@ -4,10 +4,16 @@
 rule work_annonars_functional_download:
     output:
         "work/download/refseq/{genomebuild}/{version}/{assembly}_genomic.gff.gz",
+    params:
+        url_version=lambda wildcards: (
+            f"{wildcards.assembly}-{wildcards.version}"
+            if wildcards.version.startswith("RS_")
+            else f"{wildcards.version}/{wildcards.assembly}"
+        ),
     shell:
         r"""
         wget -O {output} \
-            {DV.refseq_base_url}/{wildcards.version}/{wildcards.assembly}/{wildcards.assembly}_genomic.gff.gz
+            {DV.refseq_base_url}/{params.url_version}/{wildcards.assembly}_genomic.gff.gz
         """
 
 
