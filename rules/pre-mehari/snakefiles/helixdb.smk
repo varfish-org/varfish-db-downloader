@@ -142,7 +142,7 @@ rule GRChXX_helixmtdb_normalize:
         "work/download/annos/{genome_release}/seqvars/helixmtdb/{helix_v}/helixmtdb.splitted.normalized.vcf",
     shell:
         r"""
-        if [ "$CI" = "true" ]; then
+        if [[ "${{CI:-false}}" == "true" ]]; then
             echo "Skipping normalization in CI environment."
             touch {output}
             exit 0
@@ -171,7 +171,7 @@ rule result_GRChXX_helixmtdb_tsv:
         release_info="output/pre-mehari/{genome_build}/HelixMTdb/{helix_v}/HelixMtDb.release_info",
     shell:
         r"""
-         if [ "$CI" = "true" ]; then
+        if [[ "${{CI:-false}}" == "true" ]]; then
             echo "Skipping normalization in CI environment."
             touch {output.tsv} {output.release_info}
             exit 0

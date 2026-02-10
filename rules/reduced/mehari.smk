@@ -42,7 +42,7 @@ rule subset_mehari:  # -- create exomes subset
         mem_mb=MEMORY,
     shell:
         r"""
-         if [ "${{CI:-false}}" = "true" ]; then
+        if [[ "${{CI:-false}}" == "true" ]]; then
             echo "Skipping subset mehari CI environment."
             mkdir -p $(dirname {output.rocksdb_identity})
             touch {output.rocksdb_identity} {output.spec_yaml} {output.manifest}

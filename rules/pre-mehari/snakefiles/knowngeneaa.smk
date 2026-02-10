@@ -33,7 +33,7 @@ rule grchxx_knowngeneaa_to_vcf:
         tbi="work/download/pre-mehari/{genome_build}/knowngeneaa/{version}/knownGeneAA.vcf.gz.tbi",
     shell:
         r"""
-        if [ "${{CI:-false}}" = "true" ]; then
+        if [[ "${{CI:-false}}" == "true" ]]; then
             echo "Skipping rule grchxx_knowngeneaa_to_vcf in CI environment." > /dev/stderr
             touch {output.vcf} {output.tbi}
         else
@@ -74,7 +74,7 @@ rule result_grchxx_knowngeneaa_to_tsv:
         release_info="output/pre-mehari/{genome_build}/knowngeneaa/{version}/KnowngeneAA.release_info",
     shell:
         r"""
-        if [ "${{CI:-false}}" = "true" ]; then
+        if [[ "${{CI:-false}}" == "true" ]]; then
             echo "Skipping rule grchxx_knowngeneaa_to_vcf in CI environment." > /dev/stderr
             touch {output.tsv} {output.release_info}
             exit 0
