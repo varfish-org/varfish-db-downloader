@@ -6,9 +6,15 @@ rule work_annonars_functional_download:
         "work/download/refseq/{genomebuild}/{version}/{assembly}_genomic.gff.gz",
     params:
         url_version=lambda wildcards: (
-            f"{wildcards.assembly}-{wildcards.version}"
-            if wildcards.version.startswith("RS_")
-            else f"{wildcards.version}/{wildcards.assembly}"
+            f"{DV.refseq_ref_38}-{DV.refseq_38}"
+            if DV.refseq_38.startswith("RS_")
+            else f"{DV.refseq_38}/{DV.refseq_ref_38_assembly}"
+        )
+        if wildcards.genomebuild == "GRCh38"
+        else (
+            f"{DV.refseq_ref_37}-{DV.refseq_37}"
+            if DV.refseq_37.startswith("RS_")
+            else f"{DV.refseq_37}/{DV.refseq_ref_37_assembly}"
         ),
     shell:
         r"""
