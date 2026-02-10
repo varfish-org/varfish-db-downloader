@@ -23,7 +23,7 @@ fi
 
 # Create a minimal binary file with some dummy data
 TMPFILE=$(mktemp)
-trap "rm -f $TMPFILE" EXIT
+trap 'rm -f "$TMPFILE"' EXIT
 
 # Write a simple binary structure (e.g., a header with magic bytes and some data)
 # This creates a 1KB file with dummy content
