@@ -29,7 +29,7 @@ rule GRChXX_mitomap_normalize:
         ),
     shell:
         r"""
-        if [[ "${CI:-}" == "true" ]]; then
+        if [[ "${{CI:-}}" == "true" ]]; then
             echo "Skipping MITOMAP normalization in CI environment."
             cp {input.vcf} {output.vcf}
             touch {output.tmp_vcf} {output.norm} {output.txt_tmp} {output.ann} {output.anntbi}
