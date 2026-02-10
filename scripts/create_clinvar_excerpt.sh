@@ -24,13 +24,13 @@ fi
 
 # Create temporary directory
 TMPDIR=$(mktemp -d)
-trap "rm -rf $TMPDIR" EXIT
+trap 'rm -rf "$TMPDIR"' EXIT
 
 echo "Extracting archive..."
 tar xzf "$INPUT_ARCHIVE" -C "$TMPDIR"
 
 # Get the directory name from the archive
-ARCHIVE_DIR=$(echo $INPUT_ARCHIVE | sed 's/\.tar\.gz$//')
+ARCHIVE_DIR="${INPUT_ARCHIVE//.tar.gz/}"
 WORK_DIR="$TMPDIR/$ARCHIVE_DIR"
 
 echo "Processing files in $ARCHIVE_DIR..."
@@ -40,7 +40,7 @@ for file in "$WORK_DIR"/*.jsonl.gz; do
     if [ -f "$file" ]; then
         filename=$(basename "$file")
         echo "  Processing $filename (taking first 1000 lines)..."
-        
+
         # Decompress, take first 1000 lines, and recompress
         zcat "$file" | head -n 1000 | gzip > "$WORK_DIR/${filename}.tmp"
         mv "$WORK_DIR/${filename}.tmp" "$file"
