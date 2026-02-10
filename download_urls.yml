@@ -168,38 +168,38 @@
     strategy: manual
     count: null
 
-- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.10.4/mehari-data-txs-grch37-ensembl-0.10.4.bin.zst
+- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.12.0/mehari-data-txs-grch37-ensembl-0.12.0.bin.zst
   excerpt_strategy:
     strategy: no-excerpt
     count: null
-- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.10.4/mehari-data-txs-grch38-ensembl-0.10.4.bin.zst
-  excerpt_strategy:
-    strategy: no-excerpt
-    count: null
-
-- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.10.4/mehari-data-txs-grch37-refseq-0.10.4.bin.zst
-  excerpt_strategy:
-    strategy: no-excerpt
-    count: null
-- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.10.4/mehari-data-txs-grch38-refseq-0.10.4.bin.zst
+- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.12.0/mehari-data-txs-grch38-ensembl-0.12.0.bin.zst
   excerpt_strategy:
     strategy: no-excerpt
     count: null
 
-- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.10.4/mehari-data-txs-grch37-ensembl-and-refseq-0.10.4.bin.zst
+- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.12.0/mehari-data-txs-grch37-refseq-0.12.0.bin.zst
   excerpt_strategy:
     strategy: no-excerpt
     count: null
-- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.10.4/mehari-data-txs-grch38-ensembl-and-refseq-0.10.4.bin.zst
+- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.12.0/mehari-data-txs-grch38-refseq-0.12.0.bin.zst
   excerpt_strategy:
     strategy: no-excerpt
     count: null
 
-- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.10.4/mehari-data-txs-grch37-ensembl-0.10.4.bin.zst
+- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.12.0/mehari-data-txs-grch37-ensembl-and-refseq-0.12.0.bin.zst
   excerpt_strategy:
     strategy: no-excerpt
     count: null
-- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.10.4/mehari-data-txs-grch38-ensembl-0.10.4.bin.zst
+- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.12.0/mehari-data-txs-grch38-ensembl-and-refseq-0.12.0.bin.zst
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+
+- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.12.0/mehari-data-txs-grch37-ensembl-0.12.0.bin.zst
+  excerpt_strategy:
+    strategy: no-excerpt
+    count: null
+- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.12.0/mehari-data-txs-grch38-ensembl-0.12.0.bin.zst
   excerpt_strategy:
     strategy: no-excerpt
     count: null
@@ -634,9 +634,4 @@
 - url: https://mitomap.org/cgi-bin/polymorphisms.cgi?format=vcf
   excerpt_strategy:
     strategy: no-excerpt
-    count: null
-
-- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.12.0/mehari-data-txs-grch38-ensembl-0.12.0.bin.zst
-  excerpt_strategy:
-    strategy: manual
     count: null
