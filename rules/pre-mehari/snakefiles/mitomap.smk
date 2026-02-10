@@ -77,7 +77,7 @@ rule result_GRChXX_mitomap_tsv:
         release_info="output/pre-mehari/{genomebuild}/MITOMAP/{download_date}/Mitomap.release_info",
     shell:
         r"""
-        if [[ "${CI:-}" == "true" ]]; then
+        if [[ "${{CI:-}}" == "true" ]]; then
             echo "Skipping MITOMAP in CI environment."
             touch {output.tsv} {output.release_info}
             exit 0
