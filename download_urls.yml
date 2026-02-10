@@ -170,38 +170,38 @@
 
 - url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.12.0/mehari-data-txs-grch37-ensembl-0.12.0.bin.zst
   excerpt_strategy:
-    strategy: no-excerpt
+    strategy: manual
     count: null
 - url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.12.0/mehari-data-txs-grch38-ensembl-0.12.0.bin.zst
   excerpt_strategy:
-    strategy: no-excerpt
+    strategy: manual
     count: null
 
 - url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.12.0/mehari-data-txs-grch37-refseq-0.12.0.bin.zst
   excerpt_strategy:
-    strategy: no-excerpt
+    strategy: manual
     count: null
 - url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.12.0/mehari-data-txs-grch38-refseq-0.12.0.bin.zst
   excerpt_strategy:
-    strategy: no-excerpt
+    strategy: manual
     count: null
 
 - url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.12.0/mehari-data-txs-grch37-ensembl-and-refseq-0.12.0.bin.zst
   excerpt_strategy:
-    strategy: no-excerpt
+    strategy: manual
     count: null
 - url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.12.0/mehari-data-txs-grch38-ensembl-and-refseq-0.12.0.bin.zst
   excerpt_strategy:
-    strategy: no-excerpt
+    strategy: manual
     count: null
 
 - url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.12.0/mehari-data-txs-grch37-ensembl-0.12.0.bin.zst
   excerpt_strategy:
-    strategy: no-excerpt
+    strategy: manual
     count: null
 - url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.12.0/mehari-data-txs-grch38-ensembl-0.12.0.bin.zst
   excerpt_strategy:
-    strategy: no-excerpt
+    strategy: manual
     count: null
 
 - url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2025-11-24/hp.obo
