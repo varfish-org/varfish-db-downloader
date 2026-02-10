@@ -635,3 +635,8 @@
   excerpt_strategy:
     strategy: no-excerpt
     count: null
+
+- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.12.0/mehari-data-txs-grch38-ensembl-0.12.0.bin.zst
+  excerpt_strategy:
+    strategy: manual
+    count: null
