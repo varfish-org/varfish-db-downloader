@@ -7,7 +7,7 @@ dc.description: >
   and then translated to ENSEMBL and Entrez/NCBI gene ID with the
   HGNC BioMart
 dc.date: 2026-02-09
-dc.creator: American Collect of Medical Genetics
+dc.creator: American College of Medical Genetics
 dc.contributor:
   - VarFish Developer Team
 dc.source:
@@ -30,7 +30,7 @@ tsv.columns:
   - name: disease_phenotype
     description: Name of the relevant disorder(s).
   - name: disorder_mim
-    description: MIM code of the relevant disorder(s).s
+    description: MIM code of the relevant disorder(s).
   - name: phenotype_category
     description: Phenotype category.
   - name: inheritance
@@ -38,4 +38,4 @@ tsv.columns:
   - name: sf_list_version
     description: ACMG SF list version that this gene first appeared in.
   - name: variants_to_report
-    description: comment on which variants are to be reported.
+    description: Comment on which variants are to be reported.

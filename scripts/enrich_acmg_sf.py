@@ -44,7 +44,7 @@ def fetch_gene_info_from_hgnc(gene_symbol: str) -> Optional[Dict[str, str]]:
             return {
                 "hgnc_id": doc.get("hgnc_id", ""),
                 "ensembl_gene_id": doc.get("ensembl_gene_id", ""),
-                "ncbi_gene_id": doc.get("entrez_id", ""),
+                "ncbi_gene_id": str(doc.get("entrez_id", "")),
                 "gene_symbol": doc.get("symbol", gene_symbol),
             }
         else:
@@ -117,7 +117,6 @@ def process_acmg_sf_file(input_file: str, output_file: str, delay: float = 0.2):
                 gene_info = fetch_gene_info_from_hgnc(gene_symbol)
                 if gene_info:
                     gene_cache[gene_symbol] = gene_info
-                    time.sleep(delay)  # Be respectful to the API
                 else:
                     # Create empty entry if not found
                     gene_cache[gene_symbol] = {
@@ -126,6 +125,7 @@ def process_acmg_sf_file(input_file: str, output_file: str, delay: float = 0.2):
                         "ncbi_gene_id": "",
                         "gene_symbol": gene_symbol,
                     }
+                time.sleep(delay)  # Be respectful to the API
 
             gene_info = gene_cache[gene_symbol]
 
