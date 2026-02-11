@@ -85,7 +85,7 @@ PATHOGENICITIES: dict[str, 1] = {
 }
 PATHOGENICITIES_INV = {v: k for k, v in PATHOGENICITIES.items()}
 REVIEW_STATUS_LABELS: dict[clinvar_public.AggregateGermlineReviewStatus.ValueType, str] = {
-    clinvar_public.AggregateGermlineReviewStatus.AGGREGATE_GERMLINE_REVIEW_STATUS_CRITERIA_PROVIDED_CONFLICTING_CLASSIFICATIONS: "criteria provided, conflicting classifications	",
+    clinvar_public.AggregateGermlineReviewStatus.AGGREGATE_GERMLINE_REVIEW_STATUS_CRITERIA_PROVIDED_CONFLICTING_CLASSIFICATIONS: "criteria provided, conflicting classifications",
     clinvar_public.AggregateGermlineReviewStatus.AGGREGATE_GERMLINE_REVIEW_STATUS_CRITERIA_PROVIDED_MULTIPLE_SUBMITTERS_NO_CONFLICTS: "criteria provided, multiple submitters, no conflicts",
     clinvar_public.AggregateGermlineReviewStatus.AGGREGATE_GERMLINE_REVIEW_STATUS_CRITERIA_PROVIDED_SINGLE_SUBMITTER: "criteria provided, single submitter",
     clinvar_public.AggregateGermlineReviewStatus.AGGREGATE_GERMLINE_REVIEW_STATUS_NO_ASSERTION_CRITERIA_PROVIDED: "no assertion criteria provided",
@@ -137,46 +137,26 @@ def extracted_var_to_clinvar_record(
         variation_type = "indel"
     symbols = list(filter(lambda x: bool(x), map(hgnc_map.get, record.hgnc_ids)))
 
-    if "conflicting" in germline_classification.description.lower():
-        summary_clinvar_pathogenicity = ["uncertain significance"]
-        summary_clinvar_pathogenicity_label = "conflicting interpretations of pathogenicity"
-        summary_clinvar_review_status_label = "criteria provided, conflicting classifications"
-        summary_clinvar_gold_stars = 0
-    else:
-        description_tokens = (
-            token.strip().lower()
-            for token in re.split(r"[/,;]", germline_classification.description)
-        )
-        summary_clinvar_pathogenicity = []
-        summary_clinvar_pathogenicity_label = "uncertain significance"
-        for token in description_tokens:
-            for key in PATHOGENICITIES.keys():
-                if key == token:
-                    summary_clinvar_pathogenicity.append(key)
-        if summary_clinvar_pathogenicity:
-            summary_clinvar_pathogenicity_label = "/".join(summary_clinvar_pathogenicity)
-        else:
-            summary_clinvar_pathogenicity = ["uncertain significance"]
-            summary_clinvar_pathogenicity_label = "uncertain significance"
-        summary_clinvar_review_status_label = REVIEW_STATUS_LABELS[
-            germline_classification.review_status
-        ]
-        summary_clinvar_gold_stars = REVIEW_STATUS_STARS[germline_classification.review_status]
+    # Summary ClinVar fields are discontinued
+    summary_clinvar_pathogenicity = []
+    summary_clinvar_pathogenicity_label = ""
+    summary_clinvar_review_status_label = ""
+    summary_clinvar_gold_stars = 0
 
-    summary_paranoid_review_status_label = summary_clinvar_review_status_label
-    summary_paranoid_pathogenicity_label = summary_clinvar_pathogenicity_label
-    summary_paranoid_pathogenicity = summary_clinvar_pathogenicity
-    summary_paranoid_gold_stars = summary_clinvar_gold_stars
-    if "conflicting" in summary_clinvar_pathogenicity_label:
-        # look through the SCVs
-        worst = None
+    # Process paranoid fields from actual ClinVar data
+    if "conflicting" in germline_classification.description.lower():
+        # look through the SCVs to collect all contributing pathogenicity values
+        contributing_pathogenicities = set()
         for clinical_assertion in record.clinical_assertions:
             if clinical_assertion.HasField(
                 "classifications"
             ) and clinical_assertion.classifications.HasField("germline_classification"):
                 if clinical_assertion.classifications.review_status not in (
-                    clinvar_public.AggregateGermlineReviewStatus.AGGREGATE_GERMLINE_REVIEW_STATUS_NO_CLASSIFICATION_PROVIDED,
-                    # clinvar_public.AggregateGermlineReviewStatus.AGGREGATE_GERMLINE_REVIEW_STATUS_NO_ASSERTION_CRITERIA_PROVIDED,
+                    clinvar_public.SubmitterReviewStatus.SUBMITTER_REVIEW_STATUS_UNSPECIFIED,
+                    clinvar_public.SubmitterReviewStatus.SUBMITTER_REVIEW_STATUS_NO_CLASSIFICATION_PROVIDED,
+                    clinvar_public.SubmitterReviewStatus.SUBMITTER_REVIEW_STATUS_NO_ASSERTION_CRITERIA_PROVIDED,
+                    clinvar_public.SubmitterReviewStatus.SUBMITTER_REVIEW_STATUS_FLAGGED_SUBMISSION,
+                    clinvar_public.SubmitterReviewStatus.SUBMITTER_REVIEW_STATUS_NOT_CLASSIFIED_BY_SUBMITTER,
                 ):
                     description_tokens = [
                         token.strip().lower()
@@ -186,15 +166,47 @@ def extracted_var_to_clinvar_record(
                     ]
                     for token in description_tokens:
                         for key in PATHOGENICITIES.keys():
-                            if PATHOGENICITIES[key] is not None and (
-                                worst is None or PATHOGENICITIES[key] > worst
-                            ):
-                                worst = PATHOGENICITIES[key]
-        if worst is not None and PATHOGENICITIES.get(summary_clinvar_pathogenicity[0], 0) < worst:
-            # override paranoid
-            summary_paranoid_pathogenicity_label = PATHOGENICITIES_INV[worst]
-            summary_paranoid_pathogenicity = [PATHOGENICITIES_INV[worst]]
-            summary_paranoid_gold_stars = 0
+                            if key == token:
+                                contributing_pathogenicities.add(key)
+        
+        if contributing_pathogenicities:
+            # Sort by pathogenicity value (most pathogenic first)
+            sorted_pathogenicities = sorted(
+                contributing_pathogenicities,
+                key=lambda x: PATHOGENICITIES.get(x, 0),
+                reverse=True
+            )
+            summary_paranoid_pathogenicity = sorted_pathogenicities
+            summary_paranoid_pathogenicity_label = "/".join(sorted_pathogenicities)
+        else:
+            # No valid contributing pathogenicities found, fall back to uncertain significance
+            summary_paranoid_pathogenicity = ["uncertain significance"]
+            summary_paranoid_pathogenicity_label = "uncertain significance"
+        summary_paranoid_review_status_label = REVIEW_STATUS_LABELS[
+            germline_classification.review_status
+        ]
+        summary_paranoid_gold_stars = REVIEW_STATUS_STARS[germline_classification.review_status]
+    else:
+        # Non-conflicting case: parse the germline classification description
+        description_tokens = (
+            token.strip().lower()
+            for token in re.split(r"[/,;]", germline_classification.description)
+        )
+        summary_paranoid_pathogenicity = []
+        summary_paranoid_pathogenicity_label = "uncertain significance"
+        for token in description_tokens:
+            for key in PATHOGENICITIES.keys():
+                if key == token:
+                    summary_paranoid_pathogenicity.append(key)
+        if summary_paranoid_pathogenicity:
+            summary_paranoid_pathogenicity_label = "/".join(summary_paranoid_pathogenicity)
+        else:
+            summary_paranoid_pathogenicity = ["uncertain significance"]
+            summary_paranoid_pathogenicity_label = "uncertain significance"
+        summary_paranoid_review_status_label = REVIEW_STATUS_LABELS[
+            germline_classification.review_status
+        ]
+        summary_paranoid_gold_stars = REVIEW_STATUS_STARS[germline_classification.review_status]
 
     return Clinvar(
         release=release,
