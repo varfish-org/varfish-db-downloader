@@ -102,10 +102,40 @@ rule result_GRChXX_extra_annos_release_info:
         """
 
 
+def input_extra_annos_cadd(wildcards):
+    """Input function for ``rule output_annonars_cadd``."""
+    files = {
+        "bed": "work/download/pre-mehari/{genomebuild}/exons/refseq_ensembl_exons.bed",
+    }
+    if wildcards.genomebuild == "GRCh37":
+        return {
+            **files,
+            "cadd_snvs": (
+                f"work/download/annos/{wildcards.genomebuild.lower()}/seqvars/cadd/{wildcards.release_name}/"
+                "whole_genome_SNVs_inclAnno.tsv.gz"
+            ),
+            "cadd_snvs_tbi": (
+                f"work/download/annos/{wildcards.genomebuild.lower()}/seqvars/cadd/{wildcards.release_name}/"
+                "whole_genome_SNVs_inclAnno.tsv.gz.tbi"
+            ),
+        }
+    else:
+        return {
+            **files,
+            "cadd_snvs": (
+                f"work/download/annos/{wildcards.genomebuild.lower()}/seqvars/cadd/{wildcards.release_name}/"
+                "whole_genome_SNVs_inclAnno.tsv.gz"
+            ),
+            "cadd_snvs_tbi": (
+                f"work/download/annos/{wildcards.genomebuild.lower()}/seqvars/cadd/{wildcards.release_name}/"
+                "whole_genome_SNVs_inclAnno.tsv.gz.tbi"
+            ),
+        }
+
+
 rule result_GRChXX_extra_annos_tsv_step_1:
     input:
-        bed="work/download/pre-mehari/{genomebuild}/exons/refseq_ensembl_exons.bed",
-        cadd_snvs="work/download/annos/{genomebuild}/seqvars/cadd/{release_name}/whole_genome_SNVs_inclAnno.tsv.gz",
+        unpack(input_extra_annos_cadd),
     output:
         tsv="work/pre-mehari/{genomebuild}/extra_annos/{release_name}/ExtraAnno.tsv",  # this is intentionally in work
         fields="output/pre-mehari/{genomebuild}/extra_annos/{release_name}/ExtraAnnoField.tsv",
