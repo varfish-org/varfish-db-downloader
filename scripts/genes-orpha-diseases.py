@@ -26,21 +26,21 @@ RUNS_IN_CI = os.environ.get("CI", "false") == "true"
 
 
 async def main():
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(timeout=120.0) as client:
         logger.info("Fetching ORPHAcode list...")
-        lst = await client.get(URL_ORPHACODE_LIST)
+        lst = await client.get(URL_ORPHACODE_LIST, timeout=120.0)
         logger.info("...done")
         disease_ids = {disease["ORPHAcode"] for disease in lst.json()["data"]["results"]}
 
     async def work(no: int, orpha_id: int, limiter: trio.CapacityLimiter):
         async with limiter:
-            async with httpx.AsyncClient() as client:
+            async with httpx.AsyncClient(timeout=120.0) as client:
                 try:
                     cross_references = (
-                        await client.get(URL_ORPHACODE_GET.format(orpha_id), timeout=60)
+                        await client.get(URL_ORPHACODE_GET.format(orpha_id), timeout=120.0)
                     ).json()
                     disease_genes = (
-                        await client.get(URL_ORPHACODE_GET_GENE.format(orpha_id), timeout=60)
+                        await client.get(URL_ORPHACODE_GET_GENE.format(orpha_id), timeout=120.0)
                     ).json()
                 except Exception as e:
                     logger.error(f"Error fetching {orpha_id}: {e}")
