@@ -10,6 +10,14 @@ rule annos_seqvars_cadd_download:  # -- download CADD data
         tsv_tbi="work/download/annos/{genome_release}/seqvars/cadd/{version}/{filename}.tsv.gz.tbi",
     shell:
         r"""
+        # Remove .bihealth.org from no_proxy variables to allow direct access
+        if [ -n "${{no_proxy:-}}" ]; then
+            export no_proxy=$(echo "$no_proxy" | sed -E 's/(^|,|;)\.?bihealth\.org(,|;|$)/\1/g; s/(^|,|;)(,|;)/\1/g; s/^,//; s/,$//; s/^;//; s/;$//')
+        fi
+        if [ -n "${{NO_PROXY:-}}" ]; then
+            export NO_PROXY=$(echo "$NO_PROXY" | sed -E 's/(^|,|;)\.?bihealth\.org(,|;|$)/\1/g; s/(^|,|;)(,|;)/\1/g; s/^,//; s/,$//; s/^;//; s/;$//')
+        fi
+
         for path in {output};
         do
             aria2c \

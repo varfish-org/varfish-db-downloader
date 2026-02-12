@@ -8,7 +8,7 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=2
 #SBATCH --time=2-00:00:00
-#SBATCH --memory=2G
+#SBATCH --mem=2G
 
 set -x
 set -euo pipefail
