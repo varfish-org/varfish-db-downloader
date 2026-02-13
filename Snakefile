@@ -14,6 +14,13 @@ from varfish_db_downloader.versions import (
     RUNS_IN_CI,
 )
 
+# Unset conflicting SLURM environment variables to prevent srun conflicts
+# These can be set by parent SLURM jobs and conflict with Snakemake's resource management
+import os
+
+os.environ.pop("SLURM_CPUS_PER_TASK", None)
+os.environ.pop("SLURM_TRES_PER_TASK", None)
+
 # The prefix to use for all shell commands.
 SHELL_PREFIX = "export LC_ALL=C; set -x -euo pipefail;"
 # Setup the shell prefix by default.
