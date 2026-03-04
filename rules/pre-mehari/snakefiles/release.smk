@@ -73,12 +73,12 @@ rule result_grch3x_release_server_db:
 
 rule result_grch3x_release_manifest:
     input:
-        done="output/pre-mehari/releases/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}/import_versions.tsv",
+        import_versions="output/pre-mehari/releases/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}/import_versions.tsv",
     output:
-        manifest="output/full/pre-mehari/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}/manifest-postgres.json",
+        manifest="output/pre-mehari/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}/manifest-postgres.json",
     shell:
         r"""
-        release_dir=$(dirname {input.done})
+        release_dir=$(dirname {input.import_versions})
 
         mkdir -p $(dirname {output.manifest})
 
@@ -90,14 +90,14 @@ rule result_grch3x_release_manifest:
 
 rule result_grch3x_release_server_db_tar:
     input:
-        "output/pre-mehari/releases/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}/import_versions.tsv",
-        "output/full/pre-mehari/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}/manifest-postgres.json",
+        import_versions="output/pre-mehari/releases/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}/import_versions.tsv",
+        manifest="output/pre-mehari/releases/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}/manifest-postgres.json",
     output:
         tar="output/pre-mehari/releases/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}.tar.gz",
         sha256="output/pre-mehari/releases/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}.tar.gz.sha256",
     shell:
         r"""
-        in_dir=$(dirname {input})
+        in_dir=$(dirname {input.import_versions})
 
         tar \
             --owner=0 \
