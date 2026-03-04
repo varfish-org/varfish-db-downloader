@@ -77,7 +77,7 @@ rule result_grch3x_release_manifest:
     input:
         import_versions="output/pre-mehari/releases/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}/import_versions.tsv",
     output:
-        manifest="output/pre-mehari/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}/manifest-postgres.json",
+        manifest="output/pre-mehari/releases/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}/manifest-postgres.json",
     shell:
         r"""
         release_dir=$(dirname {input.import_versions})
