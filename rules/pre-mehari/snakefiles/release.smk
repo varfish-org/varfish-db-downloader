@@ -38,7 +38,9 @@ rule result_grch3x_release_server_db:
     input:
         input_result_grch3x_release_server_db,
     output:
-        tmp_import_versions=temp("output/pre-mehari/releases/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}/.import_versions.tsv"),
+        tmp_import_versions=temp(
+            "output/pre-mehari/releases/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}/.import_versions.tsv"
+        ),
         import_versions="output/pre-mehari/releases/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}/import_versions.tsv",
     shell:
         r"""
