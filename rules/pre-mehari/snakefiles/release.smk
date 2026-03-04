@@ -91,6 +91,7 @@ rule result_grch3x_release_manifest:
 rule result_grch3x_release_server_db_tar:
     input:
         "output/pre-mehari/releases/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}/import_versions.tsv",
+        "output/full/pre-mehari/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}/manifest-postgres.json",
     output:
         tar="output/pre-mehari/releases/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}.tar.gz",
         sha256="output/pre-mehari/releases/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}.tar.gz.sha256",
