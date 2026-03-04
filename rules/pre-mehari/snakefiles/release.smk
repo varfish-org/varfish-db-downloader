@@ -97,3 +97,20 @@ rule result_grch3x_release_server_db_tar:
         pushd $(dirname {output.tar})
         sha256sum $(basename {output.tar}) >$(basename {output.tar}).sha256
         """
+
+
+rule result_grch3x_release_manifest:
+    input:
+        done="output/pre-mehari/releases/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}/.done",
+    output:
+        manifest="output/full/pre-mehari/{release_name}/manifest-postgres-{genomebuild}.json",
+    shell:
+        r"""
+        release_dir=$(dirname {input.done})
+
+        mkdir -p $(dirname {output.manifest})
+
+        python rules/pre-mehari/snakefiles/scripts/generate_manifest.py \
+            $release_dir \
+            {output.manifest}
+        """

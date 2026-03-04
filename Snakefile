@@ -334,6 +334,7 @@ def generate_input_files():
             f"output/pre-mehari/releases/{DV.pre_mehari_release}/varfish-postgres-db-{DV.pre_mehari_release}-{genomebuild}/.done",
             f"output/pre-mehari/releases/{DV.pre_mehari_release}/varfish-postgres-db-{DV.pre_mehari_release}-{genomebuild}.tar.gz",
             f"output/pre-mehari/releases/{DV.pre_mehari_release}/varfish-postgres-db-{DV.pre_mehari_release}-{genomebuild}.tar.gz.sha256",
+            f"output/full/pre-mehari/{DV.pre_mehari_release}/manifest-postgres-{genomebuild}.json",
             f"output/full/reference/{genomebuild}/reference.fa",
             f"output/full/reference/{genomebuild}/reference.fa.fai",
         ]
