@@ -32,7 +32,7 @@ rule genes_panelapp_download:  # -- download AlphaMissense per-gene scores
                 page_no += 1
                 # Rate limiting: wait before next request
                 if url:
-                    time.sleep(1.5)
+                    time.sleep(5)
                 if not page_count:
                     per_page = len(page.get("results", [None]))
                     page_count = (page.get("count") + per_page - 1) // per_page
