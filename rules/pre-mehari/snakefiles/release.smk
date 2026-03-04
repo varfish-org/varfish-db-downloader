@@ -38,18 +38,12 @@ rule result_grch3x_release_server_db:
     input:
         input_result_grch3x_release_server_db,
     output:
-        "output/pre-mehari/releases/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}/.done",
+        tmp_import_versions=temp("output/pre-mehari/releases/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}/.import_versions.tsv"),
+        import_versions="output/pre-mehari/releases/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}/import_versions.tsv",
     shell:
         r"""
-        export TMPDIR=$(mktemp -d)
-        trap "rm -rf $TMPDIR" EXIT ERR
-
-        out_dir=$(dirname {output})
+        out_dir=$(dirname {output.import_versions})
         mkdir -p $out_dir
-
-        import_versions=$out_dir/import_versions.tsv
-
-        echo -e "build\ttable_group\tversion" > $import_versions
 
         for path in {input}; do
             genome=$(echo $path | cut -d / -f 3)
@@ -60,7 +54,7 @@ rule result_grch3x_release_server_db:
             file=$(basename $path)
             dirfile=$dir/$file
 
-            echo -e "${{genome}}\t${{db}}\t${{version}}" >> $TMPDIR/import_versions
+            echo -e "${{genome}}\t${{db}}\t${{version}}" >> {output.tmp_import_versions}
 
             ( \
                 cd $out_dir; \
@@ -70,15 +64,33 @@ rule result_grch3x_release_server_db:
             )
         done
 
-        sort -u $TMPDIR/import_versions >> $import_versions
+        (
+            echo -e "build\ttable_group\tversion"
+            sort -u {output.tmp_import_versions}
+        ) > {output.import_versions}
+        """
 
-        touch "{output}"
+
+rule result_grch3x_release_manifest:
+    input:
+        done="output/pre-mehari/releases/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}/import_versions.tsv",
+    output:
+        manifest="output/full/pre-mehari/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}/manifest-postgres.json",
+    shell:
+        r"""
+        release_dir=$(dirname {input.done})
+
+        mkdir -p $(dirname {output.manifest})
+
+        python rules/pre-mehari/snakefiles/scripts/generate_manifest.py \
+            $release_dir \
+            {output.manifest}
         """
 
 
 rule result_grch3x_release_server_db_tar:
     input:
-        "output/pre-mehari/releases/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}/.done",
+        "output/pre-mehari/releases/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}/import_versions.tsv",
     output:
         tar="output/pre-mehari/releases/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}.tar.gz",
         sha256="output/pre-mehari/releases/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}.tar.gz.sha256",
@@ -96,21 +108,4 @@ rule result_grch3x_release_server_db_tar:
         > $(readlink -f {output.tar})
         pushd $(dirname {output.tar})
         sha256sum $(basename {output.tar}) >$(basename {output.tar}).sha256
-        """
-
-
-rule result_grch3x_release_manifest:
-    input:
-        done="output/pre-mehari/releases/{release_name}/varfish-postgres-db-{release_name}-{genomebuild}/.done",
-    output:
-        manifest="output/full/pre-mehari/{release_name}/manifest-postgres-{genomebuild}.json",
-    shell:
-        r"""
-        release_dir=$(dirname {input.done})
-
-        mkdir -p $(dirname {output.manifest})
-
-        python rules/pre-mehari/snakefiles/scripts/generate_manifest.py \
-            $release_dir \
-            {output.manifest}
         """
