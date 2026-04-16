@@ -89,7 +89,7 @@ do
     $DIR/$assembly/seqvars/txs.bin.zst
 
   log "Copying frequency database (${assembly}) ..."
-  freq_path=$OUTPUT_BASE/${MEHARI_FREQUENCY_VERSIONS[$assembly]}/rockdb
+  freq_path=$OUTPUT_BASE/${MEHARI_FREQUENCY_VERSIONS[$assembly]}/rocksdb
   cp -r \
     $freq_path \
     $DIR/$assembly/seqvars/frequencies/rocksdb
@@ -117,3 +117,4 @@ do
   ln -s \
     $file/rocksdb \
     $DIR/$assembly/seqvars/clinvar/rocksdb
+done
