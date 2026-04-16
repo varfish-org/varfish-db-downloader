@@ -35,7 +35,7 @@ if [ ! -d "{{ downloader_base }}" ]; then
 fi
 
 CLINVAR_VERSION={{ DV.clinvar_version }}
-CLINVAR_RELEASE={{ DV.clinvar_release }}
+CLINVAR_RELEASE="$CLINVAR_VERSION+{{ PV.annonars }}"
 HGNC_QUARTERLY={{ DV.hgnc_quarterly }}
 MEHARI_DATA_TX_VERSION={{ DV.mehari_tx }}
 MEHARI_DATA_TX_SOURCE={{ primary_tx_source }}
