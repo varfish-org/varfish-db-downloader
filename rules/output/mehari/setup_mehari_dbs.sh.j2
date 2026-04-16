@@ -35,7 +35,7 @@ if [ ! -d "{{ downloader_base }}" ]; then
 fi
 
 CLINVAR_VERSION={{ DV.clinvar_version }}
-CLINVAR_RELEASE={{ DV.clinvar_release }}
+ANNONARS_VERSION={{ PV.annonars }}
 HGNC_QUARTERLY={{ DV.hgnc_quarterly }}
 MEHARI_DATA_TX_VERSION={{ DV.mehari_tx }}
 MEHARI_DATA_TX_SOURCE={{ primary_tx_source }}
@@ -48,7 +48,7 @@ GENOMEBUILDS=({% for gb in genomebuilds %}{{ gb }} {% endfor %})
 log "Installing database for releases: ${GENOMEBUILDS[@]}"
 log "Versions to be installed:"
 log "- CLINVAR_VERSION=${CLINVAR_VERSION}"
-log "- CLINVAR_RELEASE=${CLINVAR_RELEASE}"
+log "- ANNONARS_VERSION=${ANNONARS_VERSION}"
 log "- HGNC_QUARTERLY=${HGNC_QUARTERLY}"
 log "- MEHARI_DATA_TX_VERSION=${MEHARI_DATA_TX_VERSION}"
 log "- MEHARI_DATA_TX_SOURCE=${MEHARI_DATA_TX_SOURCE}"
@@ -89,14 +89,14 @@ do
     $DIR/$assembly/seqvars/txs.bin.zst
 
   log "Copying frequency database (${assembly}) ..."
-  freq_path=$OUTPUT_BASE/${MEHARI_FREQUENCY_VERSIONS[$assembly]}/rockdb
+  freq_path=$OUTPUT_BASE/${MEHARI_FREQUENCY_VERSIONS[$assembly]}/rocksdb
   cp -r \
     $freq_path \
     $DIR/$assembly/seqvars/frequencies/rocksdb
 
   # Note: The other clinvar datasets (genes, sv) are currently not used by mehari annotate workflow
   log "Downloading clinvar database (${assembly}) ..."
-  file="annonars-clinvar-minimal-$assembly-${CLINVAR_RELEASE}"
+  file="annonars-clinvar-minimal-$assembly-${CLINVAR_VERSION}+${ANNONARS_VERSION}"
   url_base="https://github.com/varfish-org/annonars-data-clinvar/releases/download"
   wget \
     "$url_base/annonars-data-clinvar-${CLINVAR_VERSION}/${file}.tar.gz" \
@@ -117,3 +117,4 @@ do
   ln -s \
     $file/rocksdb \
     $DIR/$assembly/seqvars/clinvar/rocksdb
+done
