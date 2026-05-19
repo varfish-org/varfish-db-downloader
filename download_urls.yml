@@ -163,60 +163,60 @@
   url: https://search.clinicalgenome.org/kb/reports/curation-activity-summary-report
   skip_upstream_check: true  # does not work reliably in tests
 
-- url: https://github.com/varfish-org/clinvar-data-jsonl/releases/download/clinvar-weekly-20260104/clinvar-data-extract-vars-20260104+0.18.5.tar.gz
+- url: https://github.com/varfish-org/clinvar-data-jsonl/releases/download/clinvar-weekly-20260226/clinvar-data-extract-vars-20260226+0.18.5.tar.gz
   excerpt_strategy:
     strategy: manual
     count: null
 
-- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.12.0/mehari-data-txs-grch37-ensembl-0.12.0.bin.zst
+- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.13.0/mehari-data-txs-GRCh37-ensembl-0.13.0.bin.zst
   excerpt_strategy:
     strategy: manual
     count: null
-- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.12.0/mehari-data-txs-grch38-ensembl-0.12.0.bin.zst
-  excerpt_strategy:
-    strategy: manual
-    count: null
-
-- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.12.0/mehari-data-txs-grch37-refseq-0.12.0.bin.zst
-  excerpt_strategy:
-    strategy: manual
-    count: null
-- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.12.0/mehari-data-txs-grch38-refseq-0.12.0.bin.zst
+- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.13.0/mehari-data-txs-GRCh38-ensembl-0.13.0.bin.zst
   excerpt_strategy:
     strategy: manual
     count: null
 
-- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.12.0/mehari-data-txs-grch37-ensembl-and-refseq-0.12.0.bin.zst
+- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.13.0/mehari-data-txs-GRCh37-refseq-0.13.0.bin.zst
   excerpt_strategy:
     strategy: manual
     count: null
-- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.12.0/mehari-data-txs-grch38-ensembl-and-refseq-0.12.0.bin.zst
-  excerpt_strategy:
-    strategy: manual
-    count: null
-
-- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.12.0/mehari-data-txs-grch37-ensembl-0.12.0.bin.zst
-  excerpt_strategy:
-    strategy: manual
-    count: null
-- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.12.0/mehari-data-txs-grch38-ensembl-0.12.0.bin.zst
+- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.13.0/mehari-data-txs-GRCh38-refseq-0.13.0.bin.zst
   excerpt_strategy:
     strategy: manual
     count: null
 
-- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2025-11-24/hp.obo
+- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.13.0/mehari-data-txs-GRCh37-ensembl-and-refseq-0.13.0.bin.zst
+  excerpt_strategy:
+    strategy: manual
+    count: null
+- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.13.0/mehari-data-txs-GRCh38-ensembl-and-refseq-0.13.0.bin.zst
+  excerpt_strategy:
+    strategy: manual
+    count: null
+
+- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.13.0/mehari-data-txs-GRCh37-ensembl-0.13.0.bin.zst
+  excerpt_strategy:
+    strategy: manual
+    count: null
+- url: https://github.com/bihealth/mehari-data-tx/releases/download/v0.13.0/mehari-data-txs-GRCh38-ensembl-0.13.0.bin.zst
+  excerpt_strategy:
+    strategy: manual
+    count: null
+
+- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2026-02-16/hp.obo
   excerpt_strategy:
     strategy: no-excerpt
     count: null
-- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2025-11-24/phenotype.hpoa
+- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2026-02-16/phenotype.hpoa
   excerpt_strategy:
     strategy: no-excerpt
     count: null
-- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2025-11-24/phenotype_to_genes.txt
+- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2026-02-16/phenotype_to_genes.txt
   excerpt_strategy:
     strategy: no-excerpt
     count: null
-- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2025-11-24/genes_to_phenotype.txt
+- url: https://github.com/obophenotype/human-phenotype-ontology/releases/download/v2026-02-16/genes_to_phenotype.txt
   excerpt_strategy:
     strategy: no-excerpt
     count: null
