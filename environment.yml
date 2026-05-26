@@ -46,10 +46,10 @@ dependencies:
   # Parallel (de)compression.
   - pigz
   # Varfish related
-  - annonars =0.44.0
+  - annonars =0.44.2
   - viguno =0.4.0
-  - mehari =0.35.1
-  - varfish-server-worker =0.17.2
+  - mehari =0.43.2
+  - varfish-server-worker =0.17.3
   # S3 uploads
   - s5cmd =2.1.0
   # async HTTP requests

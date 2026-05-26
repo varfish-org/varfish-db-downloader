@@ -13,11 +13,11 @@ FORCE_TODAY = os.environ.get("FORCE_TODAY", "false").lower() == "true"
 
 # Clinvar source:
 # https://github.com/varfish-org/clinvar-data-jsonl/releases
-# https://github.com/varfish-org/clinvar-data-jsonl/releases/download/clinvar-weekly-20260104/clinvar-data-extract-vars-20260104+0.18.5.tar.gz
+# https://github.com/varfish-org/clinvar-data-jsonl/releases/download/clinvar-weekly-20260226/clinvar-data-extract-vars-20260226+0.18.5.tar.gz
 # Used by:
 # - worker
 # - pre-mehari release
-CLINVAR_VERSION = "20260104"
+CLINVAR_VERSION = "20260226"
 # Clinvar-this version
 CLINVAR_THIS = "0.18.5"
 #: The ClinVar release to use (weekly clinvar release data + clinvar-this).
@@ -224,13 +224,13 @@ DATA_VERSIONS = DataVersions(
     refseq_base_url="https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/9606",
     # The lines/versions below the mehari_tx should be consistent with the mehari-data-tx release:
     # https://github.com/varfish-org/mehari-data-tx/blob/v{mehari_tx}/config/config.yaml
-    mehari_tx="0.12.0",  # ATTN! version to be consistent with
+    mehari_tx="0.13.0",  # ATTN! version to be consistent with
     # ---
     cdot="0.2.32",  # line #L30 and others
     hgnc_quarterly="2026-01-06",  # line #L239
-    cdot_refseq_gff_json_37=f"Homo_sapiens_GRCh37_RefSeq_{REFSEQ_37}.gff",  # line #L114
+    cdot_refseq_gff_json_37=f"Homo_sapiens_GRCh37_RefSeq_{REFSEQ_37}.gff",  # line #L120
     cdot_refseq_gff_json_38=f"Homo_sapiens_GRCh38_RefSeq_{REFSEQ_38}.gff",  # line #L31
-    hpo="v2025-11-24",  # line #L250
+    hpo="v2026-02-16",  # line #L250
     ensembl_37=ENSEMBL_37,  # line #L217
     ensembl_38=ENSEMBL_38,  # line #L155
     refseq_37=REFSEQ_37,

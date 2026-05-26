@@ -233,9 +233,9 @@ def generate_input_files():
             f"output/full/worker/patho-mms-{genomebuild}-{DV.patho_mms}+{PV.worker}/patho-mms.bed",
             # f"output/full/worker/tads-{genomebuild}-dixon2015/hesc.bed",
             # -- mehari data
-            f"output/full/mehari/genes-txs-{genomebuild}-{DV.mehari_tx}/mehari-data-txs-{genomebuild}-ensembl-{DV.mehari_tx}.bin.zst",
-            f"output/full/mehari/genes-txs-{genomebuild}-{DV.mehari_tx}/mehari-data-txs-{genomebuild}-refseq-{DV.mehari_tx}.bin.zst",
-            f"output/full/mehari/genes-txs-{genomebuild}-{DV.mehari_tx}/mehari-data-txs-{genomebuild}-ensembl-and-refseq-{DV.mehari_tx}.bin.zst",
+            f"output/full/mehari/genes-txs-{genomebuild}-{DV.mehari_tx}/mehari-data-txs-{genomebuild_cap[genomebuild]}-ensembl-{DV.mehari_tx}.bin.zst",
+            f"output/full/mehari/genes-txs-{genomebuild}-{DV.mehari_tx}/mehari-data-txs-{genomebuild_cap[genomebuild]}-refseq-{DV.mehari_tx}.bin.zst",
+            f"output/full/mehari/genes-txs-{genomebuild}-{DV.mehari_tx}/mehari-data-txs-{genomebuild_cap[genomebuild]}-ensembl-and-refseq-{DV.mehari_tx}.bin.zst",
             f"output/full/tracks/track-strucvars-dbvar-{genomebuild}-{DV.dbvar}+{DV.tracks}/dbvar.bed.gz",
             f"output/full/tracks/track-strucvars-dgv-{genomebuild}-{DV.dgv}+{DV.tracks}/dgv.bed.gz",
             f"output/full/tracks/track-strucvars-dgv-gs-{genomebuild}-{DV.dgv_gs}+{DV.tracks}/dgv-gs.bed.gz",
