@@ -50,7 +50,7 @@ rule subset_mehari:  # -- create exomes subset
         fi
 
         output_rocksdb=$(dirname {output.rocksdb_identity})
-        source utils/rocksdb_cleanup.sh
+        source scripts/rocksdb_cleanup.sh
         trap 'cleanup_partial_rocksdb "$output_rocksdb"' ERR
 
         annonars db-utils copy \
@@ -58,7 +58,7 @@ rule subset_mehari:  # -- create exomes subset
             --path-out "$output_rocksdb" \
             --path-beds {input.bed}
 
-        bash utils/validate_rocksdb.sh "$output_rocksdb"
+        bash scripts/validate_rocksdb.sh "$output_rocksdb"
         trap - ERR
 
         cp {input.spec_yaml} {output.spec_yaml}

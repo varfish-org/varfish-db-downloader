@@ -37,7 +37,7 @@ rule output_annonars_regions:  # -- build annonars regions RocksDB file
         fi
 
         output_rocksdb=$(dirname {output.rocksdb_identity})
-        source utils/rocksdb_cleanup.sh
+        source scripts/rocksdb_cleanup.sh
         trap 'cleanup_partial_rocksdb "$output_rocksdb"' ERR
 
         annonars regions import -vvv \
@@ -45,7 +45,7 @@ rule output_annonars_regions:  # -- build annonars regions RocksDB file
             --path-in-clingen {input} \
             --path-out-rocksdb "$output_rocksdb"
 
-        bash utils/validate_rocksdb.sh "$output_rocksdb"
+        bash scripts/validate_rocksdb.sh "$output_rocksdb"
         trap - ERR
 
         varfish-db-downloader tpl \

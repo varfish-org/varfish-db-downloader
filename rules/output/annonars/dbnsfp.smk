@@ -30,7 +30,7 @@ rule output_annonars_dbnsfp:  # -- build dbNSFP RocksDB with annonars
     shell:
         r"""
         output_rocksdb=$(dirname {output.rocksdb_identity})
-        source utils/rocksdb_cleanup.sh
+        source scripts/rocksdb_cleanup.sh
         trap 'cleanup_partial_rocksdb "$output_rocksdb"' ERR
 
         annonars tsv import \
@@ -55,7 +55,7 @@ rule output_annonars_dbnsfp:  # -- build dbNSFP RocksDB with annonars
             \
             $(for path in {input}; do echo --path-in-tsv $path; done)
 
-        bash utils/validate_rocksdb.sh "$output_rocksdb"
+        bash scripts/validate_rocksdb.sh "$output_rocksdb"
         trap - ERR
 
         varfish-db-downloader tpl \

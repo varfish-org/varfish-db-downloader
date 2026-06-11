@@ -25,7 +25,7 @@ rule output_annonars_gnomad_sv_grch37_exac:  # -- build gnomAD-SV RocksDB with a
     shell:
         r"""
         output_rocksdb=$(dirname {output.rocksdb_identity})
-        source utils/rocksdb_cleanup.sh
+        source scripts/rocksdb_cleanup.sh
         trap 'cleanup_partial_rocksdb "$output_rocksdb"' ERR
 
         annonars gnomad-sv import \
@@ -35,7 +35,7 @@ rule output_annonars_gnomad_sv_grch37_exac:  # -- build gnomAD-SV RocksDB with a
             --path-out-rocksdb "$output_rocksdb" \
             --gnomad-version 1.0
 
-        bash utils/validate_rocksdb.sh "$output_rocksdb"
+        bash scripts/validate_rocksdb.sh "$output_rocksdb"
         trap - ERR
 
         varfish-db-downloader tpl \
@@ -87,7 +87,7 @@ rule output_annonars_gnomad_sv_grch37_gnomad_sv2:  # -- build gnomAD-SV RocksDB 
     shell:
         r"""
         output_rocksdb=$(dirname {output.rocksdb_identity})
-        source utils/rocksdb_cleanup.sh
+        source scripts/rocksdb_cleanup.sh
         trap 'cleanup_partial_rocksdb "$output_rocksdb"' ERR
 
         annonars gnomad-sv import \
@@ -97,7 +97,7 @@ rule output_annonars_gnomad_sv_grch37_gnomad_sv2:  # -- build gnomAD-SV RocksDB 
             --path-out-rocksdb "$output_rocksdb" \
             --gnomad-version {wildcards.v_gnomad}
 
-        bash utils/validate_rocksdb.sh "$output_rocksdb"
+        bash scripts/validate_rocksdb.sh "$output_rocksdb"
         trap - ERR
 
         varfish-db-downloader tpl \
@@ -147,7 +147,7 @@ rule output_annonars_gnomad_sv_grch38_gnomad_cnv4:  # -- build gnomAD-SV RocksDB
     shell:
         r"""
         output_rocksdb=$(dirname {output.rocksdb_identity})
-        source utils/rocksdb_cleanup.sh
+        source scripts/rocksdb_cleanup.sh
         trap 'cleanup_partial_rocksdb "$output_rocksdb"' ERR
 
         annonars gnomad-sv import \
@@ -157,7 +157,7 @@ rule output_annonars_gnomad_sv_grch38_gnomad_cnv4:  # -- build gnomAD-SV RocksDB
             --path-out-rocksdb "$output_rocksdb" \
             --gnomad-version {wildcards.v_gnomad}
 
-        bash utils/validate_rocksdb.sh "$output_rocksdb"
+        bash scripts/validate_rocksdb.sh "$output_rocksdb"
         trap - ERR
 
         varfish-db-downloader tpl \
@@ -207,7 +207,7 @@ rule output_annonars_gnomad_sv_grch38_gnomad_sv4:  # -- build gnomAD-SV RocksDB 
     shell:
         r"""
         output_rocksdb=$(dirname {output.rocksdb_identity})
-        source utils/rocksdb_cleanup.sh
+        source scripts/rocksdb_cleanup.sh
         trap 'cleanup_partial_rocksdb "$output_rocksdb"' ERR
 
         annonars gnomad-sv import \
@@ -217,7 +217,7 @@ rule output_annonars_gnomad_sv_grch38_gnomad_sv4:  # -- build gnomAD-SV RocksDB 
             --path-out-rocksdb "$output_rocksdb" \
             --gnomad-version {wildcards.v_gnomad}
 
-        bash utils/validate_rocksdb.sh "$output_rocksdb"
+        bash scripts/validate_rocksdb.sh "$output_rocksdb"
         trap - ERR
 
         varfish-db-downloader tpl \

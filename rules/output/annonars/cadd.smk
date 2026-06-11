@@ -71,7 +71,7 @@ rule output_annonars_cadd:  # -- build CADD RocksDB with annonars
             exit 0
         fi
         output_rocksdb=$(dirname {output.rocksdb_identity})
-        source utils/rocksdb_cleanup.sh
+        source scripts/rocksdb_cleanup.sh
         trap 'cleanup_partial_rocksdb "$output_rocksdb"' ERR
 
         annonars tsv import \
@@ -93,7 +93,7 @@ rule output_annonars_cadd:  # -- build CADD RocksDB with annonars
             --add-default-null-values \
             --path-schema-json rules/output/annonars/cadd-schema-{wildcards.genome_release}.json
 
-        bash utils/validate_rocksdb.sh "$output_rocksdb"
+        bash scripts/validate_rocksdb.sh "$output_rocksdb"
         trap - ERR
 
         varfish-db-downloader tpl \

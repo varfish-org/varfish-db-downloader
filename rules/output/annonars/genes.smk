@@ -46,7 +46,7 @@ rule output_annonars_genes:  # -- build annonars genes RocksDB file
         fi
 
         output_rocksdb=$(dirname {output.rocksdb_identity})
-        source utils/rocksdb_cleanup.sh
+        source scripts/rocksdb_cleanup.sh
         trap 'cleanup_partial_rocksdb "$output_rocksdb"' ERR
 
         annonars gene import \
@@ -68,7 +68,7 @@ rule output_annonars_genes:  # -- build annonars genes RocksDB file
             --path-in-domino {input.domino} \
             --path-in-decipher-hi {input.decipher_hi}
 
-        bash utils/validate_rocksdb.sh "$output_rocksdb"
+        bash scripts/validate_rocksdb.sh "$output_rocksdb"
         trap - ERR
 
         varfish-db-downloader tpl \
