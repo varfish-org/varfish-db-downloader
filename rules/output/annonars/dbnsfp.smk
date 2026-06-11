@@ -11,7 +11,9 @@ def input_output_annonars_dbnsfp(wildcards):
 rule output_annonars_dbnsfp:  # -- build dbNSFP RocksDB with annonars
     input:
         input_output_annonars_dbnsfp,
+        validate_script="scripts/validate_rocksdb.sh",
     output:
+        rocksdb_dir=directory("output/full/annonars/dbnsfp-{genome_release}-{v_dbnsfp}+{v_annonars}/rocksdb"),
         rocksdb_identity=(
             "output/full/annonars/dbnsfp-{genome_release}-{v_dbnsfp}+{v_annonars}/rocksdb/IDENTITY"
         ),
@@ -29,10 +31,6 @@ rule output_annonars_dbnsfp:  # -- build dbNSFP RocksDB with annonars
         v_annonars=RE_VERSION,
     shell:
         r"""
-        output_rocksdb=$(dirname {output.rocksdb_identity})
-        source scripts/rocksdb_cleanup.sh
-        trap 'cleanup_partial_rocksdb "$output_rocksdb"' ERR
-
         annonars tsv import \
             --db-name dbNSFP \
             --db-version {wildcards.v_dbnsfp} \
@@ -40,7 +38,7 @@ rule output_annonars_dbnsfp:  # -- build dbNSFP RocksDB with annonars
             --null-values=. \
             --inference-row-count 100000 \
             \
-            --path-out-rocksdb "$output_rocksdb" \
+            --path-out-rocksdb {output.rocksdb_dir} \
             --path-schema-json rules/output/annonars/dbnsfp-schema-{wildcards.v_dbnsfp}.json \
             \
             $(if [[ "{wildcards.genome_release}" == "grch37" ]]; then \
@@ -55,8 +53,7 @@ rule output_annonars_dbnsfp:  # -- build dbNSFP RocksDB with annonars
             \
             $(for path in {input}; do echo --path-in-tsv $path; done)
 
-        bash scripts/validate_rocksdb.sh "$output_rocksdb"
-        trap - ERR
+        bash {input.validate_script} "{output.rocksdb_dir}"
 
         varfish-db-downloader tpl \
             --template rules/output/annonars/dbnsfp.spec.yaml \

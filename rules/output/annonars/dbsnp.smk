@@ -6,7 +6,9 @@ import os
 rule output_annonars_dbsnp:  # -- build dbSNP RocksDB with annonars
     input:
         vcf="work/download/annos/{genome_release}/seqvars/dbsnp/{v_dbsnp}/dbsnp.vcf.gz",
+        validate_script="scripts/validate_rocksdb.sh",
     output:
+        rocksdb_dir=directory("output/full/annonars/dbsnp-{genome_release}-{v_dbsnp}+{v_annonars}/rocksdb"),
         rocksdb_identity=(
             "output/full/annonars/dbsnp-{genome_release}-{v_dbsnp}+{v_annonars}/rocksdb/IDENTITY"
         ),
@@ -22,17 +24,12 @@ rule output_annonars_dbsnp:  # -- build dbSNP RocksDB with annonars
         v_annonars=RE_VERSION,
     shell:
         r"""
-        output_rocksdb=$(dirname {output.rocksdb_identity})
-        source scripts/rocksdb_cleanup.sh
-        trap 'cleanup_partial_rocksdb "$output_rocksdb"' ERR
-
         annonars dbsnp import \
             --path-in-vcf {input.vcf} \
-            --path-out-rocksdb "$output_rocksdb" \
+            --path-out-rocksdb {output.rocksdb_dir} \
             --genome-release {wildcards.genome_release}
 
-        bash scripts/validate_rocksdb.sh "$output_rocksdb"
-        trap - ERR
+        bash {input.validate_script} "{output.rocksdb_dir}"
 
         varfish-db-downloader tpl \
             --template rules/output/annonars/dbsnp.spec.yaml \

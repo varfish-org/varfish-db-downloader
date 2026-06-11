@@ -48,7 +48,9 @@ def input_output_annonars_cadd(wildcards):
 rule output_annonars_cadd:  # -- build CADD RocksDB with annonars
     input:
         unpack(input_output_annonars_cadd),
+        validate_script="scripts/validate_rocksdb.sh",
     output:
+        rocksdb_dir=directory("output/full/annonars/cadd-{genome_release}-{v_cadd}+{v_annonars}/rocksdb"),
         rocksdb_identity=(
             "output/full/annonars/cadd-{genome_release}-{v_cadd}+{v_annonars}/rocksdb/IDENTITY"
         ),
@@ -66,18 +68,15 @@ rule output_annonars_cadd:  # -- build CADD RocksDB with annonars
         r"""
         if [[ "${{CI:-false}}" == "true" ]]; then
             echo "Skipping annonars CADD import in CI environment."
-            mkdir -p $(dirname {output.rocksdb_identity})
+            mkdir -p {output.rocksdb_dir}
             touch {output.rocksdb_identity} {output.spec_yaml} {output.manifest}
             exit 0
         fi
-        output_rocksdb=$(dirname {output.rocksdb_identity})
-        source scripts/rocksdb_cleanup.sh
-        trap 'cleanup_partial_rocksdb "$output_rocksdb"' ERR
 
         annonars tsv import \
             --path-in-tsv {input.indels} \
             --path-in-tsv {input.snvs} \
-            --path-out-rocksdb "$output_rocksdb" \
+            --path-out-rocksdb {output.rocksdb_dir} \
             \
             --col-chrom Chrom \
             --col-start Pos \
@@ -93,8 +92,7 @@ rule output_annonars_cadd:  # -- build CADD RocksDB with annonars
             --add-default-null-values \
             --path-schema-json rules/output/annonars/cadd-schema-{wildcards.genome_release}.json
 
-        bash scripts/validate_rocksdb.sh "$output_rocksdb"
-        trap - ERR
+        bash {input.validate_script} "{output.rocksdb_dir}"
 
         varfish-db-downloader tpl \
             --template rules/output/annonars/cadd.spec.yaml \

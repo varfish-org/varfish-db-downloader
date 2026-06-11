@@ -93,7 +93,9 @@ rule help:
         """
         )
 
-
+CHROMS_AUTO = tuple(list(map(str, range(1, 23))))
+CHROMS_GONO = tuple(["X", "Y"])
+CHROMS = CHROMS_AUTO + CHROMS_GONO
 CHROMS_37 = tuple(list(map(str, range(1, 23))) + ["X", "Y", "MT"])
 CHROMS_38 = tuple(list(map(str, range(1, 23))) + ["X", "Y", "M"])
 
@@ -162,8 +164,7 @@ def generate_input_files():
             f"work/download/annos/grch38/seqvars/cadd/{DV.cadd}/gnomad.genomes.r3.0.indel_inclAnno.tsv.gz",
             f"work/annos/grch38/seqvars/helixmtdb/{DV.helixmtdb}/helixmtdb.vcf.gz",
             f"work/annos/grch38/seqvars/gnomad_mtdna/{DV.gnomad_mtdna}/gnomad_mtdna.vcf.gz",
-            f"work/download/annos/grch38/seqvars/gnomad_exomes/{DV.gnomad_v4}/.done",
-            f"work/download/annos/grch38/seqvars/gnomad_genomes/{DV.gnomad_v4}/.done",
+            expand("work/download/annos/grch38/seqvars/gnomad_{eg}/{v}/gnomad.{eg}.v{v}.sites.chr{c}.vcf.bgz{i}", v=DV.gnomad_v4, eg=["exomes", "genomes"], c=CHROMS_38, i=[".tbi", ""]),
             f"work/annos/grch38/features/refseq/{DV.refseq_38}/refseq_genes.bed.gz",
             f"output/full/worker/bgdb-gnomad-exomes-cnv-grch38-{DV.gnomad_sv4}+{PV.worker}/bgdb-gnomad-exomes-cnv-grch38.bin",
             f"output/full/worker/bgdb-gnomad-genomes-sv-grch38-{DV.gnomad_sv4}+{PV.worker}/bgdb-gnomad-genomes-sv-grch38.bin",
@@ -183,8 +184,7 @@ def generate_input_files():
             # f"work/download/annos/grch37/seqvars/dbsnp/{DV.dbsnp}/dbsnp.vcf.gz",
             f"work/annos/grch37/seqvars/helixmtdb/{DV.helixmtdb}/helixmtdb.vcf.gz",
             f"work/annos/grch37/seqvars/gnomad_mtdna/{DV.gnomad_mtdna}/gnomad_mtdna.vcf.gz",
-            f"work/download/annos/grch37/seqvars/gnomad_exomes/{DV.gnomad_v2}/.done",
-            f"work/download/annos/grch37/seqvars/gnomad_genomes/{DV.gnomad_v2}/.done",
+            expand("work/download/annos/grch37/seqvars/gnomad_{eg}/{v}/gnomad.{eg}.v{v}.sites.chr{c}.vcf.bgz{i}", v=DV.gnomad_v2, eg=["exomes", "genomes"], c=CHROMS_37, i=[".tbi", ""]),
             f"work/annos/grch37/features/cons/{DV.ucsc_cons_37}/ucsc_conservation.tsv",
             f"work/annos/grch37/features/refseq/{DV.refseq_37}/refseq_genes.bed.gz",
             f"output/full/worker/bgdb-gnomad-grch37-{DV.gnomad_sv}+{PV.worker}/bgdb-gnomad.bin",

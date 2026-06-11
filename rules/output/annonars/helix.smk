@@ -6,7 +6,9 @@ import os
 rule output_annonars_helixmtdb:  # -- build HelixMtDb RocksDB with annonars
     input:
         vcf="work/annos/{genome_release}/seqvars/helixmtdb/{v_helixmtdb}/helixmtdb.vcf.gz",
+        validate_script="scripts/validate_rocksdb.sh",
     output:
+        rocksdb_dir=directory("output/full/annonars/helixmtdb-{genome_release}-{v_helixmtdb}+{v_annonars}/rocksdb"),
         rocksdb_identity=(
             "output/full/annonars/helixmtdb-{genome_release}-{v_helixmtdb}+{v_annonars}/rocksdb/IDENTITY",
         ),
@@ -26,17 +28,12 @@ rule output_annonars_helixmtdb:  # -- build HelixMtDb RocksDB with annonars
         v_annonars=RE_VERSION,
     shell:
         r"""
-        output_rocksdb=$(dirname {output.rocksdb_identity})
-        source scripts/rocksdb_cleanup.sh
-        trap 'cleanup_partial_rocksdb "$output_rocksdb"' ERR
-
         annonars helixmtdb import \
             --path-in-vcf {input.vcf} \
-            --path-out-rocksdb "$output_rocksdb" \
+            --path-out-rocksdb {output.rocksdb_dir} \
             --genome-release {wildcards.genome_release}
 
-        bash scripts/validate_rocksdb.sh "$output_rocksdb"
-        trap - ERR
+        bash {input.validate_script} "{output.rocksdb_dir}"
 
         varfish-db-downloader tpl \
             --template rules/output/annonars/helix.spec.yaml \

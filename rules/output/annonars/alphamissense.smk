@@ -13,7 +13,9 @@ def input_output_annonars_alphamissense(wildcards):
 rule output_annonars_alphamissense:  # -- build AlphaMissense RocksDB with annonars
     input:
         input_output_annonars_alphamissense,
+        validate_script="scripts/validate_rocksdb.sh",
     output:
+        rocksdb_dir=directory("output/full/annonars/alphamissense-{genome_release}-{v_alphamissense}+{v_annonars}/rocksdb"),
         rocksdb_identity=(
             "output/full/annonars/alphamissense-{genome_release}-{v_alphamissense}+{v_annonars}/rocksdb/IDENTITY"
         ),
@@ -33,13 +35,9 @@ rule output_annonars_alphamissense:  # -- build AlphaMissense RocksDB with annon
         v_annonars=RE_VERSION,
     shell:
         r"""
-        output_rocksdb=$(dirname {output.rocksdb_identity})
-        source scripts/rocksdb_cleanup.sh
-        trap 'cleanup_partial_rocksdb "$output_rocksdb"' ERR
-
         annonars tsv import \
             --path-in-tsv {input} \
-            --path-out-rocksdb "$output_rocksdb" \
+            --path-out-rocksdb {output.rocksdb_dir} \
             \
             --col-chrom Chrom \
             --col-start Pos \
@@ -54,8 +52,7 @@ rule output_annonars_alphamissense:  # -- build AlphaMissense RocksDB with annon
             --skip-row-count 3 \
             --add-default-null-values
 
-        bash scripts/validate_rocksdb.sh "$output_rocksdb"
-        trap - ERR
+        bash {input.validate_script} "{output.rocksdb_dir}"
 
         varfish-db-downloader tpl \
             --template rules/output/annonars/alphamissense.spec.yaml \

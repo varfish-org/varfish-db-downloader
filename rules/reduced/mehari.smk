@@ -29,7 +29,9 @@ def input_subset_mehari(wildcards):
 rule subset_mehari:  # -- create exomes subset
     input:
         unpack(input_subset_mehari),
+        validate_script="scripts/validate_rocksdb.sh",
     output:
+        rocksdb_dir=directory("output/reduced-{set_name}/mehari/freqs-{genome_release}-{version_multi}/rocksdb"),
         rocksdb_identity="output/reduced-{set_name}/mehari/freqs-{genome_release}-{version_multi}/rocksdb/IDENTITY",
         spec_yaml="output/reduced-{set_name}/mehari/freqs-{genome_release}-{version_multi}/spec.yaml",
         manifest="output/reduced-{set_name}/mehari/freqs-{genome_release}-{version_multi}/MANIFEST.txt",
@@ -49,17 +51,12 @@ rule subset_mehari:  # -- create exomes subset
             exit 0
         fi
 
-        output_rocksdb=$(dirname {output.rocksdb_identity})
-        source scripts/rocksdb_cleanup.sh
-        trap 'cleanup_partial_rocksdb "$output_rocksdb"' ERR
-
         annonars db-utils copy \
             --path-in $(dirname {input.rocksdb_identity}) \
-            --path-out "$output_rocksdb" \
+            --path-out {output.rocksdb_dir} \
             --path-beds {input.bed}
 
-        bash scripts/validate_rocksdb.sh "$output_rocksdb"
-        trap - ERR
+        bash {input.validate_script} "{output.rocksdb_dir}"
 
         cp {input.spec_yaml} {output.spec_yaml}
 

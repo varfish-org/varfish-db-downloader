@@ -20,7 +20,9 @@ rule work_annonars_regions_download:  # -- download clingen regions
 rule output_annonars_regions:  # -- build annonars regions RocksDB file
     input:
         "work/download/clingen/{genome_release}/{date}/ClinGen_region_curation_list_{genome_release}.tsv",
+        validate_script="scripts/validate_rocksdb.sh",
     output:
+        rocksdb_dir=directory("output/full/annonars/regions-{genome_release}-{date}+{v_annonars}/rocksdb"),
         rocksdb_identity=(
             "output/full/annonars/regions-{genome_release}-{date}+{v_annonars}/" "rocksdb/IDENTITY"
         ),
@@ -36,17 +38,12 @@ rule output_annonars_regions:  # -- build annonars regions RocksDB file
             exit 1
         fi
 
-        output_rocksdb=$(dirname {output.rocksdb_identity})
-        source scripts/rocksdb_cleanup.sh
-        trap 'cleanup_partial_rocksdb "$output_rocksdb"' ERR
-
         annonars regions import -vvv \
             --genome-release {wildcards.genome_release} \
             --path-in-clingen {input} \
-            --path-out-rocksdb "$output_rocksdb"
+            --path-out-rocksdb {output.rocksdb_dir}
 
-        bash scripts/validate_rocksdb.sh "$output_rocksdb"
-        trap - ERR
+        bash {input.validate_script} "{output.rocksdb_dir}"
 
         varfish-db-downloader tpl \
             --template rules/output/annonars/regions.spec.yaml \

@@ -3,10 +3,29 @@
 import os
 
 
+def input_gnomad_genomes(wildcards):
+    return expand(
+        "work/download/annos/{genome_release}/seqvars/gnomad_genomes/{v}/gnomad.genomes.v{v}.sites.chr{c}.vcf.bgz",
+        v=gnomad_versions[wildcards.genome_release],
+        c=CHROMS,
+    )
+
+
+def input_gnomad_genomes_tbi(wildcards):
+    return expand(
+        "work/download/annos/{genome_release}/seqvars/gnomad_genomes/{v}/gnomad.genomes.v{v}.sites.chr{c}.vcf.bgz.tbi",
+        v=gnomad_versions[wildcards.genome_release],
+        c=CHROMS,
+    )
+
+
 rule output_annonars_gnomad_genomes:  # -- build gnomAD-genomes RocksDB with annonars
     input:
-        vcf="work/download/annos/{genome_release}/seqvars/gnomad_genomes/{v_gnomad}/.done",
+        vcf=input_gnomad_genomes,
+        tbi=input_gnomad_genomes_tbi,
+        validate_script="scripts/validate_rocksdb.sh",
     output:
+        rocksdb_dir=directory("output/full/annonars/gnomad-genomes-{genome_release}-{v_gnomad}+{v_annonars}/rocksdb"),
         rocksdb_identity=(
             "output/full/annonars/gnomad-genomes-{genome_release}-{v_gnomad}+{v_annonars}/rocksdb/IDENTITY"
         ),
@@ -28,19 +47,13 @@ rule output_annonars_gnomad_genomes:  # -- build gnomAD-genomes RocksDB with ann
         r"""
         if [[ "${{CI:-false}}" == "true" ]]; then
             echo "Skipping gnomad in CI environment."
-            mkdir -p $(dirname {output.rocksdb_identity})
+            mkdir -p {output.rocksdb_dir}
             touch {output.rocksdb_identity} {output.spec_yaml} {output.manifest}
             exit 0
         fi
 
-        output_rocksdb=$(dirname {output.rocksdb_identity})
-        source scripts/rocksdb_cleanup.sh
-        trap 'cleanup_partial_rocksdb "$output_rocksdb"' ERR
-
         annonars gnomad-nuclear import \
-            $(for path in $(dirname {input.vcf})/*.bgz; do \
-                echo --path-in-vcf $path; \
-            done) \
+            $(for file in {input.vcf}; do echo --path-in-vcf $file; done) \
             --import-fields-json '{{
                 "vep": true,
                 "var_info": true,
@@ -53,13 +66,12 @@ rule output_annonars_gnomad_genomes:  # -- build gnomAD-genomes RocksDB with ann
                 "depth_details": false,
                 "liftover": false
             }}' \
-            --path-out-rocksdb "$output_rocksdb" \
+            --path-out-rocksdb {output.rocksdb_dir} \
             --gnomad-kind genomes \
             --genome-release {wildcards.genome_release} \
             --gnomad-version {wildcards.v_gnomad}
 
-        bash scripts/validate_rocksdb.sh "$output_rocksdb"
-        trap - ERR
+        bash {input.validate_script} "{output.rocksdb_dir}"
 
         varfish-db-downloader tpl \
             --template rules/output/annonars/gnomad_genomes.spec.yaml \
