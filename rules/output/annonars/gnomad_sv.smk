@@ -179,6 +179,7 @@ rule output_annonars_gnomad_sv_grch38_gnomad_sv4:  # -- build gnomAD-SV RocksDB 
         vcf="work/download/annos/grch38/strucvars/gnomad_sv/{v_gnomad}/gnomad.v{v_gnomad}.sv.sites.vcf.gz",
         validate_script="scripts/validate_rocksdb.sh",
     output:
+        rocksdb_dir=directory("output/full/annonars/gnomad-sv-genomes-grch38-{v_gnomad}+{v_annonars}/rocksdb"),
         rocksdb_identity=(
             "output/full/annonars/gnomad-sv-genomes-grch38-{v_gnomad}+{v_annonars}/rocksdb/IDENTITY",
         ),
@@ -198,18 +199,14 @@ rule output_annonars_gnomad_sv_grch38_gnomad_sv4:  # -- build gnomAD-SV RocksDB 
         v_annonars=RE_VERSION,
     shell:
         r"""
-        output_rocksdb=$(dirname {output.rocksdb_identity})
-        source scripts/rocksdb_cleanup.sh
-        trap 'cleanup_partial_rocksdb "$output_rocksdb"' ERR
-
         annonars gnomad-sv import \
             --gnomad-kind genomes \
             --genome-release grch38 \
             --path-in-vcf {input.vcf} \
-            --path-out-rocksdb "$output_rocksdb" \
+            --path-out-rocksdb {output.rocksdb_dir} \
             --gnomad-version {wildcards.v_gnomad}
 
-        bash {input.validate_script} "$output_rocksdb"
+        bash {input.validate_script} "{output.rocksdb_dir}"
 
         varfish-db-downloader tpl \
             --template rules/output/annonars/gnomad_sv_genomes_grch38.spec.yml \
