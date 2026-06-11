@@ -60,7 +60,6 @@ rule subset_annonars:  # -- create exomes subset
             --path-beds {input.bed}
 
         bash {input.validate_script} "{output.rocksdb_dir}"
-        trap - ERR
 
         cp {input.spec_yaml} {output.spec_yaml}
 
