@@ -33,6 +33,10 @@ rule output_annonars_gnomad_exomes:  # -- build gnomAD-exomes RocksDB with annon
             exit 0
         fi
 
+        output_rocksdb=$(dirname {output.rocksdb_identity})
+        source utils/rocksdb_cleanup.sh
+        trap 'cleanup_partial_rocksdb "$output_rocksdb"' ERR
+
         annonars gnomad-nuclear import \
             $(for path in $(dirname {input.vcf})/*.bgz; do \
                 echo --path-in-vcf $path; \
@@ -49,10 +53,13 @@ rule output_annonars_gnomad_exomes:  # -- build gnomAD-exomes RocksDB with annon
                 "depth_details": false,
                 "liftover": false
             }}' \
-            --path-out-rocksdb $(dirname {output.rocksdb_identity}) \
+            --path-out-rocksdb "$output_rocksdb" \
             --gnomad-kind exomes \
             --genome-release {wildcards.genome_release} \
             --gnomad-version {wildcards.v_gnomad}
+
+        bash utils/validate_rocksdb.sh "$output_rocksdb"
+        trap - ERR
 
         varfish-db-downloader tpl \
             --template rules/output/annonars/gnomad_exomes.spec.yaml \

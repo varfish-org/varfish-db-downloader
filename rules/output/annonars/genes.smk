@@ -45,8 +45,12 @@ rule output_annonars_genes:  # -- build annonars genes RocksDB file
             exit 1
         fi
 
+        output_rocksdb=$(dirname {output.rocksdb_identity})
+        source utils/rocksdb_cleanup.sh
+        trap 'cleanup_partial_rocksdb "$output_rocksdb"' ERR
+
         annonars gene import \
-            --path-out-rocksdb $(dirname {output.rocksdb_identity}) \
+            --path-out-rocksdb "$output_rocksdb" \
             --path-in-acmg {input.acmg_sf} \
             --path-in-clingen-37 {input.clingen_37} \
             --path-in-clingen-38 {input.clingen_38} \
@@ -63,6 +67,9 @@ rule output_annonars_genes:  # -- build annonars genes RocksDB file
             --path-in-gtex {input.gtex} \
             --path-in-domino {input.domino} \
             --path-in-decipher-hi {input.decipher_hi}
+
+        bash utils/validate_rocksdb.sh "$output_rocksdb"
+        trap - ERR
 
         varfish-db-downloader tpl \
             --template rules/output/annonars/genes.spec.yaml \

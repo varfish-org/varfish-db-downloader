@@ -36,10 +36,17 @@ rule output_annonars_regions:  # -- build annonars regions RocksDB file
             exit 1
         fi
 
+        output_rocksdb=$(dirname {output.rocksdb_identity})
+        source utils/rocksdb_cleanup.sh
+        trap 'cleanup_partial_rocksdb "$output_rocksdb"' ERR
+
         annonars regions import -vvv \
             --genome-release {wildcards.genome_release} \
             --path-in-clingen {input} \
-            --path-out-rocksdb $(dirname {output.rocksdb_identity})
+            --path-out-rocksdb "$output_rocksdb"
+
+        bash utils/validate_rocksdb.sh "$output_rocksdb"
+        trap - ERR
 
         varfish-db-downloader tpl \
             --template rules/output/annonars/regions.spec.yaml \

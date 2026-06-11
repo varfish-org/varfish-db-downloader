@@ -22,10 +22,17 @@ rule output_annonars_dbsnp:  # -- build dbSNP RocksDB with annonars
         v_annonars=RE_VERSION,
     shell:
         r"""
+        output_rocksdb=$(dirname {output.rocksdb_identity})
+        source utils/rocksdb_cleanup.sh
+        trap 'cleanup_partial_rocksdb "$output_rocksdb"' ERR
+
         annonars dbsnp import \
             --path-in-vcf {input.vcf} \
-            --path-out-rocksdb $(dirname {output.rocksdb_identity}) \
+            --path-out-rocksdb "$output_rocksdb" \
             --genome-release {wildcards.genome_release}
+
+        bash utils/validate_rocksdb.sh "$output_rocksdb"
+        trap - ERR
 
         varfish-db-downloader tpl \
             --template rules/output/annonars/dbsnp.spec.yaml \

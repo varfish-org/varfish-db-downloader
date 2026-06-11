@@ -70,10 +70,14 @@ rule output_annonars_cadd:  # -- build CADD RocksDB with annonars
             touch {output.rocksdb_identity} {output.spec_yaml} {output.manifest}
             exit 0
         fi
+        output_rocksdb=$(dirname {output.rocksdb_identity})
+        source utils/rocksdb_cleanup.sh
+        trap 'cleanup_partial_rocksdb "$output_rocksdb"' ERR
+
         annonars tsv import \
             --path-in-tsv {input.indels} \
             --path-in-tsv {input.snvs} \
-            --path-out-rocksdb $(dirname {output.rocksdb_identity}) \
+            --path-out-rocksdb "$output_rocksdb" \
             \
             --col-chrom Chrom \
             --col-start Pos \
@@ -88,6 +92,9 @@ rule output_annonars_cadd:  # -- build CADD RocksDB with annonars
             --skip-row-count 1 \
             --add-default-null-values \
             --path-schema-json rules/output/annonars/cadd-schema-{wildcards.genome_release}.json
+
+        bash utils/validate_rocksdb.sh "$output_rocksdb"
+        trap - ERR
 
         varfish-db-downloader tpl \
             --template rules/output/annonars/cadd.spec.yaml \

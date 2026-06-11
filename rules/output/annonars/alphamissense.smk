@@ -33,9 +33,13 @@ rule output_annonars_alphamissense:  # -- build AlphaMissense RocksDB with annon
         v_annonars=RE_VERSION,
     shell:
         r"""
+        output_rocksdb=$(dirname {output.rocksdb_identity})
+        source utils/rocksdb_cleanup.sh
+        trap 'cleanup_partial_rocksdb "$output_rocksdb"' ERR
+
         annonars tsv import \
             --path-in-tsv {input} \
-            --path-out-rocksdb $(dirname {output.rocksdb_identity}) \
+            --path-out-rocksdb "$output_rocksdb" \
             \
             --col-chrom Chrom \
             --col-start Pos \
@@ -49,6 +53,9 @@ rule output_annonars_alphamissense:  # -- build AlphaMissense RocksDB with annon
             --inference-row-count 100000 \
             --skip-row-count 3 \
             --add-default-null-values
+
+        bash utils/validate_rocksdb.sh "$output_rocksdb"
+        trap - ERR
 
         varfish-db-downloader tpl \
             --template rules/output/annonars/alphamissense.spec.yaml \

@@ -22,10 +22,17 @@ rule output_annonars_cons:  # -- build UCSC conservation track RocksDB with anno
         v_annonars=RE_VERSION,
     shell:
         r"""
+        output_rocksdb=$(dirname {output.rocksdb_identity})
+        source utils/rocksdb_cleanup.sh
+        trap 'cleanup_partial_rocksdb "$output_rocksdb"' ERR
+
         annonars cons import \
             --path-in-tsv {input.tsv} \
-            --path-out-rocksdb $(dirname {output.rocksdb_identity}) \
+            --path-out-rocksdb "$output_rocksdb" \
             --genome-release {wildcards.genome_release}
+
+        bash utils/validate_rocksdb.sh "$output_rocksdb"
+        trap - ERR
 
         varfish-db-downloader tpl \
             --template rules/output/annonars/cons.spec.yaml \

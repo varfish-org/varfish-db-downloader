@@ -43,6 +43,8 @@ rule output_mehari_freqs_build:  # -- build frequency tables for mehari
         fi
         
         output_rocksdb=$(dirname {output.rocksdb_identity})
+        source utils/rocksdb_cleanup.sh
+        trap 'cleanup_partial_rocksdb "$output_rocksdb"' ERR
 
         build-args()
         {{
@@ -75,6 +77,9 @@ rule output_mehari_freqs_build:  # -- build frequency tables for mehari
             \
             $(build-args $(dirname {input.gnomad_exomes})  --path-gnomad-exomes-auto  "sites\.(chr)?[0-9]+\.") \
             $(build-args $(dirname {input.gnomad_exomes})  --path-gnomad-exomes-xy    "sites\.(chr)?[XY]\.")
+
+        bash utils/validate_rocksdb.sh "$output_rocksdb"
+        trap - ERR
 
         varfish-db-downloader tpl \
             --template rules/output/mehari/freqs.spec.yaml \
