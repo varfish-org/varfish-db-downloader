@@ -39,7 +39,9 @@ rule output_annonars_functional:  # -- build annonars functional RocksDB file
         output_annonars_functional_input,
         validate_script="scripts/validate_rocksdb.sh",
     output:
-        rocksdb_dir=directory("output/full/annonars/functional-{genome_release}-{v_refseq}+{v_annonars}/rocksdb"),
+        rocksdb_dir=directory(
+            "output/full/annonars/functional-{genome_release}-{v_refseq}+{v_annonars}/rocksdb"
+        ),
         rocksdb_identity=(
             "output/full/annonars/functional-{genome_release}-{v_refseq}+{v_annonars}/"
             "rocksdb/IDENTITY"

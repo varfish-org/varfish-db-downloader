@@ -22,7 +22,9 @@ rule output_annonars_regions:  # -- build annonars regions RocksDB file
         "work/download/clingen/{genome_release}/{date}/ClinGen_region_curation_list_{genome_release}.tsv",
         validate_script="scripts/validate_rocksdb.sh",
     output:
-        rocksdb_dir=directory("output/full/annonars/regions-{genome_release}-{date}+{v_annonars}/rocksdb"),
+        rocksdb_dir=directory(
+            "output/full/annonars/regions-{genome_release}-{date}+{v_annonars}/rocksdb"
+        ),
         rocksdb_identity=(
             "output/full/annonars/regions-{genome_release}-{date}+{v_annonars}/" "rocksdb/IDENTITY"
         ),

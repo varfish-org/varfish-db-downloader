@@ -21,7 +21,9 @@ rule output_annonars_genes:  # -- build annonars genes RocksDB file
         decipher_hi="work/genes/decipher/v3/decipher_hi_prediction.tsv",
         validate_script="scripts/validate_rocksdb.sh",
     output:
-        rocksdb_dir=directory("output/full/annonars/genes-{v_acmg_sf}+{v_gnomad_constraints}+{v_dbnsfp}+{v_hpo}+{date}+{hgnc_quarterly_date}+{v_annonars}/rocksdb"),
+        rocksdb_dir=directory(
+            "output/full/annonars/genes-{v_acmg_sf}+{v_gnomad_constraints}+{v_dbnsfp}+{v_hpo}+{date}+{hgnc_quarterly_date}+{v_annonars}/rocksdb"
+        ),
         rocksdb_identity=(
             "output/full/annonars/genes-{v_acmg_sf}+{v_gnomad_constraints}+{v_dbnsfp}+{v_hpo}+{date}+{hgnc_quarterly_date}+{v_annonars}/"
             "rocksdb/IDENTITY"

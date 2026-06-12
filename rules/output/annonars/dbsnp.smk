@@ -8,7 +8,9 @@ rule output_annonars_dbsnp:  # -- build dbSNP RocksDB with annonars
         vcf="work/download/annos/{genome_release}/seqvars/dbsnp/{v_dbsnp}/dbsnp.vcf.gz",
         validate_script="scripts/validate_rocksdb.sh",
     output:
-        rocksdb_dir=directory("output/full/annonars/dbsnp-{genome_release}-{v_dbsnp}+{v_annonars}/rocksdb"),
+        rocksdb_dir=directory(
+            "output/full/annonars/dbsnp-{genome_release}-{v_dbsnp}+{v_annonars}/rocksdb"
+        ),
         rocksdb_identity=(
             "output/full/annonars/dbsnp-{genome_release}-{v_dbsnp}+{v_annonars}/rocksdb/IDENTITY"
         ),

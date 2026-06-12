@@ -8,7 +8,9 @@ rule output_annonars_cons:  # -- build UCSC conservation track RocksDB with anno
         tsv="work/annos/{genome_release}/features/cons/{v_cons}/ucsc_conservation.tsv",
         validate_script="scripts/validate_rocksdb.sh",
     output:
-        rocksdb_dir=directory("output/full/annonars/cons-{genome_release}-{v_cons}+{v_annonars}/rocksdb"),
+        rocksdb_dir=directory(
+            "output/full/annonars/cons-{genome_release}-{v_cons}+{v_annonars}/rocksdb"
+        ),
         rocksdb_identity=(
             "output/full/annonars/cons-{genome_release}-{v_cons}+{v_annonars}/rocksdb/IDENTITY"
         ),

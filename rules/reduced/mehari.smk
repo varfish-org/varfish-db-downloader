@@ -31,7 +31,9 @@ rule subset_mehari:  # -- create exomes subset
         unpack(input_subset_mehari),
         validate_script="scripts/validate_rocksdb.sh",
     output:
-        rocksdb_dir=directory("output/reduced-{set_name}/mehari/freqs-{genome_release}-{version_multi}/rocksdb"),
+        rocksdb_dir=directory(
+            "output/reduced-{set_name}/mehari/freqs-{genome_release}-{version_multi}/rocksdb"
+        ),
         rocksdb_identity="output/reduced-{set_name}/mehari/freqs-{genome_release}-{version_multi}/rocksdb/IDENTITY",
         spec_yaml="output/reduced-{set_name}/mehari/freqs-{genome_release}-{version_multi}/spec.yaml",
         manifest="output/reduced-{set_name}/mehari/freqs-{genome_release}-{version_multi}/MANIFEST.txt",

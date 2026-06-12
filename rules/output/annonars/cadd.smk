@@ -50,7 +50,9 @@ rule output_annonars_cadd:  # -- build CADD RocksDB with annonars
         unpack(input_output_annonars_cadd),
         validate_script="scripts/validate_rocksdb.sh",
     output:
-        rocksdb_dir=directory("output/full/annonars/cadd-{genome_release}-{v_cadd}+{v_annonars}/rocksdb"),
+        rocksdb_dir=directory(
+            "output/full/annonars/cadd-{genome_release}-{v_cadd}+{v_annonars}/rocksdb"
+        ),
         rocksdb_identity=(
             "output/full/annonars/cadd-{genome_release}-{v_cadd}+{v_annonars}/rocksdb/IDENTITY"
         ),

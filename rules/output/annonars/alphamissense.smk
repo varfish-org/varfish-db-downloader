@@ -15,7 +15,9 @@ rule output_annonars_alphamissense:  # -- build AlphaMissense RocksDB with annon
         input_output_annonars_alphamissense,
         validate_script="scripts/validate_rocksdb.sh",
     output:
-        rocksdb_dir=directory("output/full/annonars/alphamissense-{genome_release}-{v_alphamissense}+{v_annonars}/rocksdb"),
+        rocksdb_dir=directory(
+            "output/full/annonars/alphamissense-{genome_release}-{v_alphamissense}+{v_annonars}/rocksdb"
+        ),
         rocksdb_identity=(
             "output/full/annonars/alphamissense-{genome_release}-{v_alphamissense}+{v_annonars}/rocksdb/IDENTITY"
         ),

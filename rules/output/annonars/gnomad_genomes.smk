@@ -25,7 +25,9 @@ rule output_annonars_gnomad_genomes:  # -- build gnomAD-genomes RocksDB with ann
         tbi=input_gnomad_genomes_tbi,
         validate_script="scripts/validate_rocksdb.sh",
     output:
-        rocksdb_dir=directory("output/full/annonars/gnomad-genomes-{genome_release}-{v_gnomad}+{v_annonars}/rocksdb"),
+        rocksdb_dir=directory(
+            "output/full/annonars/gnomad-genomes-{genome_release}-{v_gnomad}+{v_annonars}/rocksdb"
+        ),
         rocksdb_identity=(
             "output/full/annonars/gnomad-genomes-{genome_release}-{v_gnomad}+{v_annonars}/rocksdb/IDENTITY"
         ),

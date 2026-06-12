@@ -9,7 +9,9 @@ rule output_annonars_gnomad_sv_grch37_exac:  # -- build gnomAD-SV RocksDB with a
         bed="work/download/annos/grch37/strucvars/exac/0.3.1/exac-final.autosome-1pct-sq60-qc-prot-coding.cnv.bed",
         validate_script="scripts/validate_rocksdb.sh",
     output:
-        rocksdb_dir=directory("output/full/annonars/gnomad-sv-exomes-grch37-{v_gnomad}+{v_annonars}/rocksdb"),
+        rocksdb_dir=directory(
+            "output/full/annonars/gnomad-sv-exomes-grch37-{v_gnomad}+{v_annonars}/rocksdb"
+        ),
         rocksdb_identity=(
             "output/full/annonars/gnomad-sv-exomes-grch37-{v_gnomad}+{v_annonars}/rocksdb/IDENTITY",
         ),
@@ -66,7 +68,9 @@ rule output_annonars_gnomad_sv_grch37_gnomad_sv2:  # -- build gnomAD-SV RocksDB 
         ],
         validate_script="scripts/validate_rocksdb.sh",
     output:
-        rocksdb_dir=directory("output/full/annonars/gnomad-sv-genomes-grch37-{v_gnomad}+{v_annonars}/rocksdb"),
+        rocksdb_dir=directory(
+            "output/full/annonars/gnomad-sv-genomes-grch37-{v_gnomad}+{v_annonars}/rocksdb"
+        ),
         rocksdb_identity=(
             "output/full/annonars/gnomad-sv-genomes-grch37-{v_gnomad}+{v_annonars}/rocksdb/IDENTITY",
         ),
@@ -125,7 +129,9 @@ rule output_annonars_gnomad_sv_grch38_gnomad_cnv4:  # -- build gnomAD-SV RocksDB
         ],
         validate_script="scripts/validate_rocksdb.sh",
     output:
-        rocksdb_dir=directory("output/full/annonars/gnomad-sv-exomes-grch38-{v_gnomad}+{v_annonars}/rocksdb"),
+        rocksdb_dir=directory(
+            "output/full/annonars/gnomad-sv-exomes-grch38-{v_gnomad}+{v_annonars}/rocksdb"
+        ),
         rocksdb_identity=(
             "output/full/annonars/gnomad-sv-exomes-grch38-{v_gnomad}+{v_annonars}/rocksdb/IDENTITY",
         ),
@@ -179,7 +185,9 @@ rule output_annonars_gnomad_sv_grch38_gnomad_sv4:  # -- build gnomAD-SV RocksDB 
         vcf="work/download/annos/grch38/strucvars/gnomad_sv/{v_gnomad}/gnomad.v{v_gnomad}.sv.sites.vcf.gz",
         validate_script="scripts/validate_rocksdb.sh",
     output:
-        rocksdb_dir=directory("output/full/annonars/gnomad-sv-genomes-grch38-{v_gnomad}+{v_annonars}/rocksdb"),
+        rocksdb_dir=directory(
+            "output/full/annonars/gnomad-sv-genomes-grch38-{v_gnomad}+{v_annonars}/rocksdb"
+        ),
         rocksdb_identity=(
             "output/full/annonars/gnomad-sv-genomes-grch38-{v_gnomad}+{v_annonars}/rocksdb/IDENTITY",
         ),

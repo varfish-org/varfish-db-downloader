@@ -8,7 +8,9 @@ rule output_annonars_helixmtdb:  # -- build HelixMtDb RocksDB with annonars
         vcf="work/annos/{genome_release}/seqvars/helixmtdb/{v_helixmtdb}/helixmtdb.vcf.gz",
         validate_script="scripts/validate_rocksdb.sh",
     output:
-        rocksdb_dir=directory("output/full/annonars/helixmtdb-{genome_release}-{v_helixmtdb}+{v_annonars}/rocksdb"),
+        rocksdb_dir=directory(
+            "output/full/annonars/helixmtdb-{genome_release}-{v_helixmtdb}+{v_annonars}/rocksdb"
+        ),
         rocksdb_identity=(
             "output/full/annonars/helixmtdb-{genome_release}-{v_helixmtdb}+{v_annonars}/rocksdb/IDENTITY",
         ),

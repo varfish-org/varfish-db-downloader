@@ -8,7 +8,9 @@ rule output_annonars_gnomad_mtdna:  # -- build gnomAD-mtDNA RocksDB with annonar
         vcf="work/annos/{genome_release}/seqvars/gnomad_mtdna/{v_gnomad}/gnomad_mtdna.vcf.gz",
         validate_script="scripts/validate_rocksdb.sh",
     output:
-        rocksdb_dir=directory("output/full/annonars/gnomad-mtdna-{genome_release}-{v_gnomad}+{v_annonars}/rocksdb"),
+        rocksdb_dir=directory(
+            "output/full/annonars/gnomad-mtdna-{genome_release}-{v_gnomad}+{v_annonars}/rocksdb"
+        ),
         rocksdb_identity=(
             "output/full/annonars/gnomad-mtdna-{genome_release}-{v_gnomad}+{v_annonars}/rocksdb/IDENTITY"
         ),

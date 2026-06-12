@@ -13,7 +13,9 @@ rule output_annonars_dbnsfp:  # -- build dbNSFP RocksDB with annonars
         input_output_annonars_dbnsfp,
         validate_script="scripts/validate_rocksdb.sh",
     output:
-        rocksdb_dir=directory("output/full/annonars/dbnsfp-{genome_release}-{v_dbnsfp}+{v_annonars}/rocksdb"),
+        rocksdb_dir=directory(
+            "output/full/annonars/dbnsfp-{genome_release}-{v_dbnsfp}+{v_annonars}/rocksdb"
+        ),
         rocksdb_identity=(
             "output/full/annonars/dbnsfp-{genome_release}-{v_dbnsfp}+{v_annonars}/rocksdb/IDENTITY"
         ),

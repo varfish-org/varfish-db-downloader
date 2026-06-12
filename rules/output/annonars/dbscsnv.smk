@@ -13,7 +13,9 @@ rule output_annonars_dbscsnv:  # -- build dbscSNV RocksDB with annonars
         input_output_annonars_dbscsnv,
         validate_script="scripts/validate_rocksdb.sh",
     output:
-        rocksdb_dir=directory("output/full/annonars/dbscsnv-{genome_release}-{v_dbscsnv}+{v_annonars}/rocksdb"),
+        rocksdb_dir=directory(
+            "output/full/annonars/dbscsnv-{genome_release}-{v_dbscsnv}+{v_annonars}/rocksdb"
+        ),
         rocksdb_identity=(
             "output/full/annonars/dbscsnv-{genome_release}-{v_dbscsnv}+{v_annonars}/rocksdb/IDENTITY"
         ),

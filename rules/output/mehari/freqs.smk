@@ -10,6 +10,7 @@ def input_gnomad_genomes_auto(wildcards):
         c=CHROMS_AUTO,
     )
 
+
 def input_gnomad_genomes_gono(wildcards):
     return expand(
         "work/download/annos/{genome_release}/seqvars/gnomad_genomes/{v}/gnomad.genomes.v{v}.sites.chr{c}.vcf.bgz",
