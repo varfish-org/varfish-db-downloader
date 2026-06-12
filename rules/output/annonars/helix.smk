@@ -11,9 +11,6 @@ rule output_annonars_helixmtdb:  # -- build HelixMtDb RocksDB with annonars
         rocksdb_dir=directory(
             "output/full/annonars/helixmtdb-{genome_release}-{v_helixmtdb}+{v_annonars}/rocksdb"
         ),
-        rocksdb_identity=(
-            "output/full/annonars/helixmtdb-{genome_release}-{v_helixmtdb}+{v_annonars}/rocksdb/IDENTITY",
-        ),
         spec_yaml=(
             "output/full/annonars/helixmtdb-{genome_release}-{v_helixmtdb}+{v_annonars}/spec.yaml",
         ),

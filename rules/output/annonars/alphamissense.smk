@@ -18,9 +18,6 @@ rule output_annonars_alphamissense:  # -- build AlphaMissense RocksDB with annon
         rocksdb_dir=directory(
             "output/full/annonars/alphamissense-{genome_release}-{v_alphamissense}+{v_annonars}/rocksdb"
         ),
-        rocksdb_identity=(
-            "output/full/annonars/alphamissense-{genome_release}-{v_alphamissense}+{v_annonars}/rocksdb/IDENTITY"
-        ),
         spec_yaml=(
             "output/full/annonars/alphamissense-{genome_release}-{v_alphamissense}+{v_annonars}/spec.yaml"
         ),

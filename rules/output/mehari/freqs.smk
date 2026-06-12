@@ -5,54 +5,74 @@ import os
 
 def input_gnomad_genomes_auto(wildcards):
     return expand(
-        "work/download/annos/{genome_release}/seqvars/gnomad_genomes/{v}/gnomad.genomes.v{v}.sites.chr{c}.vcf.bgz",
+        "work/download/annos/{g}/seqvars/gnomad_genomes/{v}/gnomad.genomes.{t}{v}.sites.chr{c}.vcf.bgz",
+        g=wildcards.genome_release,
         v=gnomad_versions[wildcards.genome_release],
+        t="r" if wildcards.genome_release == "grch37" else "v",
         c=CHROMS_AUTO,
     )
 
 
 def input_gnomad_genomes_gono(wildcards):
+    chroms = CHROMS_AUTO + ("X",)
+    if wildcards.genome_release == "grch38":
+        chroms += ("Y",)
     return expand(
-        "work/download/annos/{genome_release}/seqvars/gnomad_genomes/{v}/gnomad.genomes.v{v}.sites.chr{c}.vcf.bgz",
+        "work/download/annos/{g}/seqvars/gnomad_genomes/{v}/gnomad.genomes.{t}{v}.sites.chr{c}.vcf.bgz",
+        g=wildcards.genome_release,
         v=gnomad_versions[wildcards.genome_release],
-        c=CHROMS_GONO,
+        t="r" if wildcards.genome_release == "grch37" else "v",
+        c=chroms,
     )
 
 
 def input_gnomad_genomes_tbi(wildcards):
+    chroms = CHROMS_AUTO + ("X",)
+    if wildcards.genome_release == "grch38":
+        chroms += ("Y",)
     return expand(
-        "work/download/annos/{genome_release}/seqvars/gnomad_genomes/{v}/gnomad.genomes.v{v}.sites.chr{c}.vcf.bgz.tbi",
+        "work/download/annos/{g}/seqvars/gnomad_genomes/{v}/gnomad.genomes.{t}{v}.sites.chr{c}.vcf.bgz.tbi",
+        g=wildcards.genome_release,
         v=gnomad_versions[wildcards.genome_release],
-        c=CHROMS,
+        t="r" if wildcards.genome_release == "grch37" else "v",
+        c=chroms,
     )
 
 
 def input_gnomad_exomes_auto(wildcards):
     return expand(
-        "work/download/annos/{genome_release}/seqvars/gnomad_exomes/{v}/gnomad.exomes.v{v}.sites.chr{c}.vcf.bgz",
+        "work/download/annos/{g}/seqvars/gnomad_exomes/{v}/gnomad.exomes.{t}{v}.sites.chr{c}.vcf.bgz",
+        g=wildcards.genome_release,
         v=gnomad_versions[wildcards.genome_release],
+        t="r" if wildcards.genome_release == "grch37" else "v",
         c=CHROMS_AUTO,
     )
 
 
 def input_gnomad_exomes_gono(wildcards):
     return expand(
-        "work/download/annos/{genome_release}/seqvars/gnomad_exomes/{v}/gnomad.exomes.v{v}.sites.chr{c}.vcf.bgz",
+        "work/download/annos/{g}/seqvars/gnomad_exomes/{v}/gnomad.exomes.{t}{v}.sites.chr{c}.vcf.bgz",
+        g=wildcards.genome_release,
         v=gnomad_versions[wildcards.genome_release],
-        c=CHROMS_GONO,
+        t="r" if wildcards.genome_release == "grch37" else "v",
+        c=["X", "Y"],
     )
 
 
 def input_gnomad_exomes_tbi(wildcards):
     return expand(
-        "work/download/annos/{genome_release}/seqvars/gnomad_exomes/{v}/gnomad.exomes.v{v}.sites.chr{c}.vcf.bgz.tbi",
+        "work/download/annos/{g}/seqvars/gnomad_exomes/{v}/gnomad.exomes.{t}{v}.sites.chr{c}.vcf.bgz.tbi",
+        g=wildcards.genome_release,
         v=gnomad_versions[wildcards.genome_release],
+        t="r" if wildcards.genome_release == "grch37" else "v",
         c=CHROMS,
     )
 
 
 rule output_mehari_freqs_build:  # -- build frequency tables for mehari
     input:
+        "work/download/annos/{genome_release}/seqvars/gnomad_genomes/{v_gnomad_genomes}/.done",
+        "work/download/annos/{genome_release}/seqvars/gnomad_exomes/{v_gnomad_exomes}/.done",
         gnomad_genomes_auto=input_gnomad_genomes_auto,
         gnomad_genomes_gono=input_gnomad_genomes_gono,
         gnomad_genomes_tbi=input_gnomad_genomes_tbi,
@@ -66,10 +86,6 @@ rule output_mehari_freqs_build:  # -- build frequency tables for mehari
         rocksdb_dir=directory(
             "output/full/mehari/freqs-{genome_release}-{v_gnomad_genomes}+{v_gnomad_exomes}+"
             "{v_gnomad_mtdna}+{v_helixmtdb}+{v_annonars}/rocksdb"
-        ),
-        rocksdb_identity=(
-            "output/full/mehari/freqs-{genome_release}-{v_gnomad_genomes}+{v_gnomad_exomes}+"
-            "{v_gnomad_mtdna}+{v_helixmtdb}+{v_annonars}/rocksdb/IDENTITY"
         ),
         spec_yaml=(
             "output/full/mehari/freqs-{genome_release}-{v_gnomad_genomes}+{v_gnomad_exomes}+"
@@ -95,7 +111,7 @@ rule output_mehari_freqs_build:  # -- build frequency tables for mehari
         if [[ "${{CI:-false}}" == "true" ]]; then
             echo "Skipping rule output_mehari_freqs_build because CI=true"
             mkdir -p {output.rocksdb_dir}
-            touch {output.rocksdb_identity} {output.spec_yaml} {output.manifest}
+            touch {output.spec_yaml} {output.manifest}
             exit 0
         fi
         

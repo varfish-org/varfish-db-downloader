@@ -4,32 +4,40 @@ import os
 
 
 def input_gnomad_genomes(wildcards):
+    chroms = CHROMS_AUTO + ("X",)
+    if wildcards.genome_release == "grch38":
+        chroms += ("Y",)
     return expand(
-        "work/download/annos/{genome_release}/seqvars/gnomad_genomes/{v}/gnomad.genomes.v{v}.sites.chr{c}.vcf.bgz",
+        "work/download/annos/{g}/seqvars/gnomad_genomes/{v}/gnomad.genomes.{t}{v}.sites.chr{c}.vcf.bgz",
+        g=wildcards.genome_release,
         v=gnomad_versions[wildcards.genome_release],
-        c=CHROMS,
+        t="r" if wildcards.genome_release == "grch37" else "v",
+        c=chroms,
     )
 
 
 def input_gnomad_genomes_tbi(wildcards):
+    chroms = CHROMS_AUTO + ("X",)
+    if wildcards.genome_release == "grch38":
+        chroms += ("Y",)
     return expand(
-        "work/download/annos/{genome_release}/seqvars/gnomad_genomes/{v}/gnomad.genomes.v{v}.sites.chr{c}.vcf.bgz.tbi",
+        "work/download/annos/{g}/seqvars/gnomad_genomes/{v}/gnomad.genomes.{t}{v}.sites.chr{c}.vcf.bgz.tbi",
+        g=wildcards.genome_release,
         v=gnomad_versions[wildcards.genome_release],
-        c=CHROMS,
+        t="r" if wildcards.genome_release == "grch37" else "v",
+        c=chroms,
     )
 
 
 rule output_annonars_gnomad_genomes:  # -- build gnomAD-genomes RocksDB with annonars
     input:
+        "work/download/annos/{genome_release}/seqvars/gnomad_genomes/{v_gnomad}/.done",
         vcf=input_gnomad_genomes,
         tbi=input_gnomad_genomes_tbi,
         validate_script="scripts/validate_rocksdb.sh",
     output:
         rocksdb_dir=directory(
             "output/full/annonars/gnomad-genomes-{genome_release}-{v_gnomad}+{v_annonars}/rocksdb"
-        ),
-        rocksdb_identity=(
-            "output/full/annonars/gnomad-genomes-{genome_release}-{v_gnomad}+{v_annonars}/rocksdb/IDENTITY"
         ),
         spec_yaml=(
             "output/full/annonars/gnomad-genomes-{genome_release}-{v_gnomad}+{v_annonars}/spec.yaml"
@@ -50,7 +58,7 @@ rule output_annonars_gnomad_genomes:  # -- build gnomAD-genomes RocksDB with ann
         if [[ "${{CI:-false}}" == "true" ]]; then
             echo "Skipping gnomad in CI environment."
             mkdir -p {output.rocksdb_dir}
-            touch {output.rocksdb_identity} {output.spec_yaml} {output.manifest}
+            touch {output.spec_yaml} {output.manifest}
             exit 0
         fi
 

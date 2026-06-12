@@ -11,9 +11,6 @@ rule output_annonars_cons:  # -- build UCSC conservation track RocksDB with anno
         rocksdb_dir=directory(
             "output/full/annonars/cons-{genome_release}-{v_cons}+{v_annonars}/rocksdb"
         ),
-        rocksdb_identity=(
-            "output/full/annonars/cons-{genome_release}-{v_cons}+{v_annonars}/rocksdb/IDENTITY"
-        ),
         spec_yaml=("output/full/annonars/cons-{genome_release}-{v_cons}+{v_annonars}/spec.yaml"),
         manifest=("output/full/annonars/cons-{genome_release}-{v_cons}+{v_annonars}/MANIFEST.txt"),
     threads: THREADS

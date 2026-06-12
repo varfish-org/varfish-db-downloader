@@ -42,10 +42,6 @@ rule output_annonars_functional:  # -- build annonars functional RocksDB file
         rocksdb_dir=directory(
             "output/full/annonars/functional-{genome_release}-{v_refseq}+{v_annonars}/rocksdb"
         ),
-        rocksdb_identity=(
-            "output/full/annonars/functional-{genome_release}-{v_refseq}+{v_annonars}/"
-            "rocksdb/IDENTITY"
-        ),
         spec_yaml=(
             "output/full/annonars/functional-{genome_release}-{v_refseq}+{v_annonars}/spec.yaml"
         ),

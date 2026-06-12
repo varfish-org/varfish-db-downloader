@@ -16,9 +16,6 @@ rule output_annonars_dbnsfp:  # -- build dbNSFP RocksDB with annonars
         rocksdb_dir=directory(
             "output/full/annonars/dbnsfp-{genome_release}-{v_dbnsfp}+{v_annonars}/rocksdb"
         ),
-        rocksdb_identity=(
-            "output/full/annonars/dbnsfp-{genome_release}-{v_dbnsfp}+{v_annonars}/rocksdb/IDENTITY"
-        ),
         spec_yaml=("output/full/annonars/dbnsfp-{genome_release}-{v_dbnsfp}+{v_annonars}/spec.yaml"),
         manifest=(
             "output/full/annonars/dbnsfp-{genome_release}-{v_dbnsfp}+{v_annonars}/MANIFEST.txt"

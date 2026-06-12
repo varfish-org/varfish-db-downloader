@@ -11,9 +11,6 @@ rule output_annonars_dbsnp:  # -- build dbSNP RocksDB with annonars
         rocksdb_dir=directory(
             "output/full/annonars/dbsnp-{genome_release}-{v_dbsnp}+{v_annonars}/rocksdb"
         ),
-        rocksdb_identity=(
-            "output/full/annonars/dbsnp-{genome_release}-{v_dbsnp}+{v_annonars}/rocksdb/IDENTITY"
-        ),
         spec_yaml=("output/full/annonars/dbsnp-{genome_release}-{v_dbsnp}+{v_annonars}/spec.yaml"),
         manifest=("output/full/annonars/dbsnp-{genome_release}-{v_dbsnp}+{v_annonars}/MANIFEST.txt"),
     threads: THREADS

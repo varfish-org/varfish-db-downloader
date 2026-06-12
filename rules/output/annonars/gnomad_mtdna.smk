@@ -11,9 +11,6 @@ rule output_annonars_gnomad_mtdna:  # -- build gnomAD-mtDNA RocksDB with annonar
         rocksdb_dir=directory(
             "output/full/annonars/gnomad-mtdna-{genome_release}-{v_gnomad}+{v_annonars}/rocksdb"
         ),
-        rocksdb_identity=(
-            "output/full/annonars/gnomad-mtdna-{genome_release}-{v_gnomad}+{v_annonars}/rocksdb/IDENTITY"
-        ),
         spec_yaml=(
             "output/full/annonars/gnomad-mtdna-{genome_release}-{v_gnomad}+{v_annonars}/spec.yaml"
         ),

@@ -53,9 +53,6 @@ rule output_annonars_cadd:  # -- build CADD RocksDB with annonars
         rocksdb_dir=directory(
             "output/full/annonars/cadd-{genome_release}-{v_cadd}+{v_annonars}/rocksdb"
         ),
-        rocksdb_identity=(
-            "output/full/annonars/cadd-{genome_release}-{v_cadd}+{v_annonars}/rocksdb/IDENTITY"
-        ),
         spec_yaml=("output/full/annonars/cadd-{genome_release}-{v_cadd}+{v_annonars}/spec.yaml"),
         manifest=("output/full/annonars/cadd-{genome_release}-{v_cadd}+{v_annonars}/MANIFEST.txt"),
     threads: THREADS
@@ -71,7 +68,7 @@ rule output_annonars_cadd:  # -- build CADD RocksDB with annonars
         if [[ "${{CI:-false}}" == "true" ]]; then
             echo "Skipping annonars CADD import in CI environment."
             mkdir -p {output.rocksdb_dir}
-            touch {output.rocksdb_identity} {output.spec_yaml} {output.manifest}
+            touch {output.spec_yaml} {output.manifest}
             exit 0
         fi
 

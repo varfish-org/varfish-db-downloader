@@ -12,9 +12,6 @@ rule output_annonars_gnomad_sv_grch37_exac:  # -- build gnomAD-SV RocksDB with a
         rocksdb_dir=directory(
             "output/full/annonars/gnomad-sv-exomes-grch37-{v_gnomad}+{v_annonars}/rocksdb"
         ),
-        rocksdb_identity=(
-            "output/full/annonars/gnomad-sv-exomes-grch37-{v_gnomad}+{v_annonars}/rocksdb/IDENTITY",
-        ),
         spec_yaml=("output/full/annonars/gnomad-sv-exomes-grch37-{v_gnomad}+{v_annonars}/spec.yaml"),
         manifest=(
             "output/full/annonars/gnomad-sv-exomes-grch37-{v_gnomad}+{v_annonars}/MANIFEST.txt"
@@ -70,9 +67,6 @@ rule output_annonars_gnomad_sv_grch37_gnomad_sv2:  # -- build gnomAD-SV RocksDB 
     output:
         rocksdb_dir=directory(
             "output/full/annonars/gnomad-sv-genomes-grch37-{v_gnomad}+{v_annonars}/rocksdb"
-        ),
-        rocksdb_identity=(
-            "output/full/annonars/gnomad-sv-genomes-grch37-{v_gnomad}+{v_annonars}/rocksdb/IDENTITY",
         ),
         spec_yaml=(
             "output/full/annonars/gnomad-sv-genomes-grch37-{v_gnomad}+{v_annonars}/spec.yaml"
@@ -132,9 +126,6 @@ rule output_annonars_gnomad_sv_grch38_gnomad_cnv4:  # -- build gnomAD-SV RocksDB
         rocksdb_dir=directory(
             "output/full/annonars/gnomad-sv-exomes-grch38-{v_gnomad}+{v_annonars}/rocksdb"
         ),
-        rocksdb_identity=(
-            "output/full/annonars/gnomad-sv-exomes-grch38-{v_gnomad}+{v_annonars}/rocksdb/IDENTITY",
-        ),
         spec_yaml=("output/full/annonars/gnomad-sv-exomes-grch38-{v_gnomad}+{v_annonars}/spec.yaml"),
         manifest=(
             "output/full/annonars/gnomad-sv-exomes-grch38-{v_gnomad}+{v_annonars}/MANIFEST.txt"
@@ -187,9 +178,6 @@ rule output_annonars_gnomad_sv_grch38_gnomad_sv4:  # -- build gnomAD-SV RocksDB 
     output:
         rocksdb_dir=directory(
             "output/full/annonars/gnomad-sv-genomes-grch38-{v_gnomad}+{v_annonars}/rocksdb"
-        ),
-        rocksdb_identity=(
-            "output/full/annonars/gnomad-sv-genomes-grch38-{v_gnomad}+{v_annonars}/rocksdb/IDENTITY",
         ),
         spec_yaml=(
             "output/full/annonars/gnomad-sv-genomes-grch38-{v_gnomad}+{v_annonars}/spec.yaml"

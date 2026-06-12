@@ -16,9 +16,6 @@ rule output_annonars_dbscsnv:  # -- build dbscSNV RocksDB with annonars
         rocksdb_dir=directory(
             "output/full/annonars/dbscsnv-{genome_release}-{v_dbscsnv}+{v_annonars}/rocksdb"
         ),
-        rocksdb_identity=(
-            "output/full/annonars/dbscsnv-{genome_release}-{v_dbscsnv}+{v_annonars}/rocksdb/IDENTITY"
-        ),
         spec_yaml=(
             "output/full/annonars/dbscsnv-{genome_release}-{v_dbscsnv}+{v_annonars}/spec.yaml"
         ),

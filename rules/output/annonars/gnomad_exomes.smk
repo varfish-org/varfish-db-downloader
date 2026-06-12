@@ -5,31 +5,33 @@ import os
 
 def input_gnomad_exomes(wildcards):
     return expand(
-        "work/download/annos/{genome_release}/seqvars/gnomad_exomes/{v}/gnomad.exomes.v{v}.sites.chr{c}.vcf.bgz",
+        "work/download/annos/{g}/seqvars/gnomad_exomes/{v}/gnomad.exomes.{t}{v}.sites.chr{c}.vcf.bgz",
+        g=wildcards.genome_release,
         v=gnomad_versions[wildcards.genome_release],
+        t="r" if wildcards.genome_release == "grch37" else "v",
         c=CHROMS,
     )
 
 
 def input_gnomad_exomes_tbi(wildcards):
     return expand(
-        "work/download/annos/{genome_release}/seqvars/gnomad_exomes/{v}/gnomad.exomes.v{v}.sites.chr{c}.vcf.bgz.tbi",
+        "work/download/annos/{g}/seqvars/gnomad_exomes/{v}/gnomad.exomes.{t}{v}.sites.chr{c}.vcf.bgz.tbi",
+        g=wildcards.genome_release,
         v=gnomad_versions[wildcards.genome_release],
+        t="r" if wildcards.genome_release == "grch37" else "v",
         c=CHROMS,
     )
 
 
 rule output_annonars_gnomad_exomes:  # -- build gnomAD-exomes RocksDB with annonars
     input:
+        "work/download/annos/{genome_release}/seqvars/gnomad_exomes/{v_gnomad}/.done",
         vcf=input_gnomad_exomes,
         tbi=input_gnomad_exomes_tbi,
         validate_script="scripts/validate_rocksdb.sh",
     output:
         rocksdb_dir=directory(
             "output/full/annonars/gnomad-exomes-{genome_release}-{v_gnomad}+{v_annonars}/rocksdb"
-        ),
-        rocksdb_identity=(
-            "output/full/annonars/gnomad-exomes-{genome_release}-{v_gnomad}+{v_annonars}/rocksdb/IDENTITY"
         ),
         spec_yaml=(
             "output/full/annonars/gnomad-exomes-{genome_release}-{v_gnomad}+{v_annonars}/spec.yaml"
@@ -50,7 +52,7 @@ rule output_annonars_gnomad_exomes:  # -- build gnomAD-exomes RocksDB with annon
         if [[ "${{CI:-false}}" == "true" ]]; then
             echo "Skipping gnomad in CI environment."
             mkdir -p {output.rocksdb_dir}
-            touch {output.rocksdb_identity} {output.spec_yaml} {output.manifest}
+            touch {output.spec_yaml} {output.manifest}
             exit 0
         fi
 
