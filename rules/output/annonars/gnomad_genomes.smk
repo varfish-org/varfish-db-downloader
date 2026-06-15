@@ -8,11 +8,11 @@ def input_gnomad_genomes(wildcards):
     if wildcards.genome_release == "grch38":
         chroms += ("Y",)
     return expand(
-        "work/download/annos/{g}/seqvars/gnomad_genomes/{v}/gnomad.genomes.{t}{v}.sites.chr{c}.vcf.bgz",
+        "work/download/annos/{g}/seqvars/gnomad_genomes/{v}/gnomad.genomes.{t}{v}.sites.{c}.vcf.bgz",
         g=wildcards.genome_release,
         v=gnomad_versions[wildcards.genome_release],
         t="r" if wildcards.genome_release == "grch37" else "v",
-        c=chroms,
+        c=[x if wildcards.genome_release == "grch37" else f"chr{x}" for x in chroms],
     )
 
 
@@ -21,11 +21,11 @@ def input_gnomad_genomes_tbi(wildcards):
     if wildcards.genome_release == "grch38":
         chroms += ("Y",)
     return expand(
-        "work/download/annos/{g}/seqvars/gnomad_genomes/{v}/gnomad.genomes.{t}{v}.sites.chr{c}.vcf.bgz.tbi",
+        "work/download/annos/{g}/seqvars/gnomad_genomes/{v}/gnomad.genomes.{t}{v}.sites.{c}.vcf.bgz.tbi",
         g=wildcards.genome_release,
         v=gnomad_versions[wildcards.genome_release],
         t="r" if wildcards.genome_release == "grch37" else "v",
-        c=chroms,
+        c=[x if wildcards.genome_release == "grch37" else f"chr{x}" for x in chroms],
     )
 
 
