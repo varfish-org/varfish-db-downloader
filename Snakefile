@@ -198,14 +198,14 @@ def generate_input_files():
             f"work/annos/grch37/seqvars/helixmtdb/{DV.helixmtdb}/helixmtdb.vcf.gz",
             f"work/annos/grch37/seqvars/gnomad_mtdna/{DV.gnomad_mtdna}/gnomad_mtdna.vcf.gz",
             expand(
-                "work/download/annos/grch37/seqvars/gnomad_exomes/{v}/gnomad.exomes.r{v}.sites.chr{c}.vcf.bgz{i}",
+                "work/download/annos/grch37/seqvars/gnomad_exomes/{v}/gnomad.exomes.r{v}.sites.{c}.vcf.bgz{i}",
                 v=DV.gnomad_v2,
                 c=CHROMS,
                 i=[".tbi", ""],
             ),
             f"work/download/annos/grch37/seqvars/gnomad_exomes/{DV.gnomad_v2}/.done",
             expand(
-                "work/download/annos/grch37/seqvars/gnomad_genomes/{v}/gnomad.genomes.r{v}.sites.chr{c}.vcf.bgz{i}",
+                "work/download/annos/grch37/seqvars/gnomad_genomes/{v}/gnomad.genomes.r{v}.sites.{c}.vcf.bgz{i}",
                 v=DV.gnomad_v2,
                 c=CHROMS_AUTO + ("X",),  # Y is only available for exomes in GRCh37
                 i=[".tbi", ""],
