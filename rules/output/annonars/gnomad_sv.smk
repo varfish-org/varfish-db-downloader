@@ -7,9 +7,10 @@ import os
 rule output_annonars_gnomad_sv_grch37_exac:  # -- build gnomAD-SV RocksDB with annonars; ExAC CNV variant
     input:
         bed="work/download/annos/grch37/strucvars/exac/0.3.1/exac-final.autosome-1pct-sq60-qc-prot-coding.cnv.bed",
+        validate_script="scripts/validate_rocksdb.sh",
     output:
-        rocksdb_identity=(
-            "output/full/annonars/gnomad-sv-exomes-grch37-{v_gnomad}+{v_annonars}/rocksdb/IDENTITY",
+        rocksdb_dir=directory(
+            "output/full/annonars/gnomad-sv-exomes-grch37-{v_gnomad}+{v_annonars}/rocksdb"
         ),
         spec_yaml=("output/full/annonars/gnomad-sv-exomes-grch37-{v_gnomad}+{v_annonars}/spec.yaml"),
         manifest=(
@@ -28,8 +29,10 @@ rule output_annonars_gnomad_sv_grch37_exac:  # -- build gnomAD-SV RocksDB with a
             --gnomad-kind exomes \
             --genome-release grch37 \
             --path-in-vcf {input.bed} \
-            --path-out-rocksdb $(dirname {output.rocksdb_identity}) \
+            --path-out-rocksdb {output.rocksdb_dir} \
             --gnomad-version 1.0
+
+        bash {input.validate_script} "{output.rocksdb_dir}"
 
         varfish-db-downloader tpl \
             --template rules/output/annonars/gnomad_sv_exomes_grch37.spec.yml \
@@ -60,9 +63,10 @@ rule output_annonars_gnomad_sv_grch37_gnomad_sv2:  # -- build gnomAD-SV RocksDB 
             f"work/download/annos/grch37/strucvars/gnomad/2.1.1/gnomad_v2.1_sv.{token}.vcf.gz"
             for token in ("sites", "controls_only.sites", "nonneuro.sites")
         ],
+        validate_script="scripts/validate_rocksdb.sh",
     output:
-        rocksdb_identity=(
-            "output/full/annonars/gnomad-sv-genomes-grch37-{v_gnomad}+{v_annonars}/rocksdb/IDENTITY",
+        rocksdb_dir=directory(
+            "output/full/annonars/gnomad-sv-genomes-grch37-{v_gnomad}+{v_annonars}/rocksdb"
         ),
         spec_yaml=(
             "output/full/annonars/gnomad-sv-genomes-grch37-{v_gnomad}+{v_annonars}/spec.yaml"
@@ -83,8 +87,10 @@ rule output_annonars_gnomad_sv_grch37_gnomad_sv2:  # -- build gnomAD-SV RocksDB 
             --gnomad-kind genomes \
             --genome-release grch37 \
             $(for vcf in {input.vcf}; do echo --path-in-vcf $vcf; done) \
-            --path-out-rocksdb $(dirname {output.rocksdb_identity}) \
+            --path-out-rocksdb {output.rocksdb_dir} \
             --gnomad-version {wildcards.v_gnomad}
+
+        bash {input.validate_script} "{output.rocksdb_dir}"
 
         varfish-db-downloader tpl \
             --template rules/output/annonars/gnomad_sv_genomes_grch37.spec.yml \
@@ -115,9 +121,10 @@ rule output_annonars_gnomad_sv_grch38_gnomad_cnv4:  # -- build gnomAD-SV RocksDB
             f"work/download/annos/grch38/strucvars/gnomad_cnv/{{v_gnomad}}/gnomad.v{{v_gnomad}}.cnv.{token}.vcf.gz"
             for token in ("all", "non_neuro", "non_neuro_controls")
         ],
+        validate_script="scripts/validate_rocksdb.sh",
     output:
-        rocksdb_identity=(
-            "output/full/annonars/gnomad-sv-exomes-grch38-{v_gnomad}+{v_annonars}/rocksdb/IDENTITY",
+        rocksdb_dir=directory(
+            "output/full/annonars/gnomad-sv-exomes-grch38-{v_gnomad}+{v_annonars}/rocksdb"
         ),
         spec_yaml=("output/full/annonars/gnomad-sv-exomes-grch38-{v_gnomad}+{v_annonars}/spec.yaml"),
         manifest=(
@@ -136,8 +143,10 @@ rule output_annonars_gnomad_sv_grch38_gnomad_cnv4:  # -- build gnomAD-SV RocksDB
             --gnomad-kind exomes \
             --genome-release grch38 \
             $(for vcf in {input.vcf}; do echo --path-in-vcf $vcf; done) \
-            --path-out-rocksdb $(dirname {output.rocksdb_identity}) \
+            --path-out-rocksdb {output.rocksdb_dir} \
             --gnomad-version {wildcards.v_gnomad}
+
+        bash {input.validate_script} "{output.rocksdb_dir}"
 
         varfish-db-downloader tpl \
             --template rules/output/annonars/gnomad_sv_exomes_grch38.spec.yml \
@@ -165,9 +174,10 @@ rule output_annonars_gnomad_sv_grch38_gnomad_cnv4:  # -- build gnomAD-SV RocksDB
 rule output_annonars_gnomad_sv_grch38_gnomad_sv4:  # -- build gnomAD-SV RocksDB with annonars; gnomAD-SV v4 variant
     input:
         vcf="work/download/annos/grch38/strucvars/gnomad_sv/{v_gnomad}/gnomad.v{v_gnomad}.sv.sites.vcf.gz",
+        validate_script="scripts/validate_rocksdb.sh",
     output:
-        rocksdb_identity=(
-            "output/full/annonars/gnomad-sv-genomes-grch38-{v_gnomad}+{v_annonars}/rocksdb/IDENTITY",
+        rocksdb_dir=directory(
+            "output/full/annonars/gnomad-sv-genomes-grch38-{v_gnomad}+{v_annonars}/rocksdb"
         ),
         spec_yaml=(
             "output/full/annonars/gnomad-sv-genomes-grch38-{v_gnomad}+{v_annonars}/spec.yaml"
@@ -189,8 +199,10 @@ rule output_annonars_gnomad_sv_grch38_gnomad_sv4:  # -- build gnomAD-SV RocksDB 
             --gnomad-kind genomes \
             --genome-release grch38 \
             --path-in-vcf {input.vcf} \
-            --path-out-rocksdb $(dirname {output.rocksdb_identity}) \
+            --path-out-rocksdb {output.rocksdb_dir} \
             --gnomad-version {wildcards.v_gnomad}
+
+        bash {input.validate_script} "{output.rocksdb_dir}"
 
         varfish-db-downloader tpl \
             --template rules/output/annonars/gnomad_sv_genomes_grch38.spec.yml \

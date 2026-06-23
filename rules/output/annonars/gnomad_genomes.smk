@@ -3,12 +3,41 @@
 import os
 
 
+def input_gnomad_genomes(wildcards):
+    chroms = CHROMS_AUTO + ("X",)
+    if wildcards.genome_release == "grch38":
+        chroms += ("Y",)
+    return expand(
+        "work/download/annos/{g}/seqvars/gnomad_genomes/{v}/gnomad.genomes.{t}{v}.sites.{c}.vcf.bgz",
+        g=wildcards.genome_release,
+        v=gnomad_versions[wildcards.genome_release],
+        t="r" if wildcards.genome_release == "grch37" else "v",
+        c=[x if wildcards.genome_release == "grch37" else f"chr{x}" for x in chroms],
+    )
+
+
+def input_gnomad_genomes_tbi(wildcards):
+    chroms = CHROMS_AUTO + ("X",)
+    if wildcards.genome_release == "grch38":
+        chroms += ("Y",)
+    return expand(
+        "work/download/annos/{g}/seqvars/gnomad_genomes/{v}/gnomad.genomes.{t}{v}.sites.{c}.vcf.bgz.tbi",
+        g=wildcards.genome_release,
+        v=gnomad_versions[wildcards.genome_release],
+        t="r" if wildcards.genome_release == "grch37" else "v",
+        c=[x if wildcards.genome_release == "grch37" else f"chr{x}" for x in chroms],
+    )
+
+
 rule output_annonars_gnomad_genomes:  # -- build gnomAD-genomes RocksDB with annonars
     input:
-        vcf="work/download/annos/{genome_release}/seqvars/gnomad_genomes/{v_gnomad}/.done",
+        "work/download/annos/{genome_release}/seqvars/gnomad_genomes/{v_gnomad}/.done",
+        vcf=input_gnomad_genomes,
+        tbi=input_gnomad_genomes_tbi,
+        validate_script="scripts/validate_rocksdb.sh",
     output:
-        rocksdb_identity=(
-            "output/full/annonars/gnomad-genomes-{genome_release}-{v_gnomad}+{v_annonars}/rocksdb/IDENTITY"
+        rocksdb_dir=directory(
+            "output/full/annonars/gnomad-genomes-{genome_release}-{v_gnomad}+{v_annonars}/rocksdb"
         ),
         spec_yaml=(
             "output/full/annonars/gnomad-genomes-{genome_release}-{v_gnomad}+{v_annonars}/spec.yaml"
@@ -28,15 +57,13 @@ rule output_annonars_gnomad_genomes:  # -- build gnomAD-genomes RocksDB with ann
         r"""
         if [[ "${{CI:-false}}" == "true" ]]; then
             echo "Skipping gnomad in CI environment."
-            mkdir -p $(dirname {output.rocksdb_identity})
-            touch {output.rocksdb_identity} {output.spec_yaml} {output.manifest}
+            mkdir -p {output.rocksdb_dir}
+            touch {output.spec_yaml} {output.manifest}
             exit 0
         fi
 
         annonars gnomad-nuclear import \
-            $(for path in $(dirname {input.vcf})/*.bgz; do \
-                echo --path-in-vcf $path; \
-            done) \
+            $(for file in {input.vcf}; do echo --path-in-vcf $file; done) \
             --import-fields-json '{{
                 "vep": true,
                 "var_info": true,
@@ -49,10 +76,12 @@ rule output_annonars_gnomad_genomes:  # -- build gnomAD-genomes RocksDB with ann
                 "depth_details": false,
                 "liftover": false
             }}' \
-            --path-out-rocksdb $(dirname {output.rocksdb_identity}) \
+            --path-out-rocksdb {output.rocksdb_dir} \
             --gnomad-kind genomes \
             --genome-release {wildcards.genome_release} \
             --gnomad-version {wildcards.v_gnomad}
+
+        bash {input.validate_script} "{output.rocksdb_dir}"
 
         varfish-db-downloader tpl \
             --template rules/output/annonars/gnomad_genomes.spec.yaml \

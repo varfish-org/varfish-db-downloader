@@ -6,9 +6,10 @@ import os
 rule output_annonars_cons:  # -- build UCSC conservation track RocksDB with annonars
     input:
         tsv="work/annos/{genome_release}/features/cons/{v_cons}/ucsc_conservation.tsv",
+        validate_script="scripts/validate_rocksdb.sh",
     output:
-        rocksdb_identity=(
-            "output/full/annonars/cons-{genome_release}-{v_cons}+{v_annonars}/rocksdb/IDENTITY"
+        rocksdb_dir=directory(
+            "output/full/annonars/cons-{genome_release}-{v_cons}+{v_annonars}/rocksdb"
         ),
         spec_yaml=("output/full/annonars/cons-{genome_release}-{v_cons}+{v_annonars}/spec.yaml"),
         manifest=("output/full/annonars/cons-{genome_release}-{v_cons}+{v_annonars}/MANIFEST.txt"),
@@ -24,8 +25,10 @@ rule output_annonars_cons:  # -- build UCSC conservation track RocksDB with anno
         r"""
         annonars cons import \
             --path-in-tsv {input.tsv} \
-            --path-out-rocksdb $(dirname {output.rocksdb_identity}) \
+            --path-out-rocksdb {output.rocksdb_dir} \
             --genome-release {wildcards.genome_release}
+
+        bash {input.validate_script} "{output.rocksdb_dir}"
 
         varfish-db-downloader tpl \
             --template rules/output/annonars/cons.spec.yaml \

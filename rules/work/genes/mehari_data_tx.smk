@@ -20,7 +20,6 @@ rule genes_mehari_data_tx_copy:  # -- Copy data to output
         zstd_md5="output/full/mehari/genes-txs-{genome_release}-{version}/mehari-data-txs-{genome_release_cap}-{refseq_or_ensembl}-{version}.bin.zst.md5",
     shell:
         r"""
-        cp {input.zstd} {output.zstd}
-
+        mehari db subset --path-in {input.zstd} --path-out {output.zstd} --exclude-transcripts "^X[MRP]_.*$"
         md5sum {output.zstd} > {output.zstd_md5}
         """
