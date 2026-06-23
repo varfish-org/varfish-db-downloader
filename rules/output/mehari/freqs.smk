@@ -61,7 +61,7 @@ def input_gnomad_exomes_gono(wildcards):
 
 def input_gnomad_exomes_tbi(wildcards):
     return expand(
-        "work/download/annos/{g}/seqvars/gnomad_exomes/{v}/gnomad.exomes.{t}{v}.sites.chr{c}.vcf.bgz.tbi",
+        "work/download/annos/{g}/seqvars/gnomad_exomes/{v}/gnomad.exomes.{t}{v}.sites.{c}.vcf.bgz.tbi",
         g=wildcards.genome_release,
         v=gnomad_versions[wildcards.genome_release],
         t="r" if wildcards.genome_release == "grch37" else "v",
