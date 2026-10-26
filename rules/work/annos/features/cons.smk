@@ -17,7 +17,7 @@ rule annos_features_cons_download:  # -- download UCSC conservation track
         trap "rm -rf $TMPDIR" EXIT
 
         wget -O $TMPDIR/alignments.html \
-            https://hgdownload.cse.ucsc.edu/goldenpath/$ucsc_name/multiz100way/alignments
+            https://hgdownload.soe.ucsc.edu/goldenpath/$ucsc_name/multiz100way/alignments
         version=$(grep knownGene.exonAA.fa.gz $TMPDIR/alignments.html | awk '{{ gsub(/-/, "", $3); print $3 }}')
         if [[ "$version" != "{wildcards.version}" ]]; then
             >&2 echo "Version mismatch for knownGene.exonAA.fa.gz: expected {wildcards.version}, got $version"
@@ -32,7 +32,7 @@ rule annos_features_cons_download:  # -- download UCSC conservation track
             --split=8 \
             --max-concurrent-downloads=8 \
             --max-connection-per-server=8 \
-            "https://hgdownload.cse.ucsc.edu/goldenpath/$ucsc_name/multiz100way/alignments/knownGene.exonAA.fa.gz"
+            "https://hgdownload.soe.ucsc.edu/goldenpath/$ucsc_name/multiz100way/alignments/knownGene.exonAA.fa.gz"
         """
 
 

@@ -222,26 +222,26 @@
     count: null
 
 - comment: The UCSC listing is used for checking the versions for GRCh37.
-  url: https://hgdownload.cse.ucsc.edu/goldenpath/hg19/database
+  url: https://hgdownload.soe.ucsc.edu/goldenpath/hg19/database
   excerpt_strategy:
     strategy: no-excerpt
     count: null
 - comment: The UCSC listing is used for checking the versions for GRCh38.
-  url: https://hgdownload.cse.ucsc.edu/goldenpath/hg38/database
+  url: https://hgdownload.soe.ucsc.edu/goldenpath/hg38/database
   excerpt_strategy:
     strategy: no-excerpt
     count: null
 
-- url: https://hgdownload.cse.ucsc.edu/goldenpath/hg19/multiz100way/alignments
+- url: https://hgdownload.soe.ucsc.edu/goldenpath/hg19/multiz100way/alignments
   excerpt_strategy:
     strategy: no-excerpt
     count: null
-- url: https://hgdownload.cse.ucsc.edu/goldenpath/hg38/multiz100way/alignments
+- url: https://hgdownload.soe.ucsc.edu/goldenpath/hg38/multiz100way/alignments
   excerpt_strategy:
     strategy: no-excerpt
     count: null
-- url: https://hgdownload.cse.ucsc.edu/goldenpath/hg19/multiz100way/alignments/knownGene.exonAA.fa.gz
-- url: https://hgdownload.cse.ucsc.edu/goldenpath/hg38/multiz100way/alignments/knownGene.exonAA.fa.gz
+- url: https://hgdownload.soe.ucsc.edu/goldenpath/hg19/multiz100way/alignments/knownGene.exonAA.fa.gz
+- url: https://hgdownload.soe.ucsc.edu/goldenpath/hg38/multiz100way/alignments/knownGene.exonAA.fa.gz
 
 # Dataset discontinued
 # - url: https://3dgenome.fsm.northwestern.edu/downloads/hg19.TADs.zip
@@ -329,14 +329,14 @@
 - url: https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/reference/phase2_reference_assembly_sequence/hs37d5.fa.gz
 - url: https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/001/405/GCA_000001405.15_GRCh38/seqs_for_alignment_pipelines.ucsc_ids/GCA_000001405.15_GRCh38_full_analysis_set.fna.gz
 
-- url: https://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/genomicSuperDups.txt.gz
-- url: https://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/rmsk.txt.gz
-- url: https://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/altSeqLiftOverPsl.txt.gz
-- url: https://hgdownload.cse.ucsc.edu/goldenpath/hg19/database/fixSeqLiftOverPsl.txt.gz
-- url: https://hgdownload.cse.ucsc.edu/goldenpath/hg38/database/genomicSuperDups.txt.gz
-- url: https://hgdownload.cse.ucsc.edu/goldenpath/hg38/database/rmsk.txt.gz
-- url: https://hgdownload.cse.ucsc.edu/goldenpath/hg38/database/altSeqLiftOverPsl.txt.gz
-- url: https://hgdownload.cse.ucsc.edu/goldenpath/hg38/database/fixSeqLiftOverPsl.txt.gz
+- url: https://hgdownload.soe.ucsc.edu/goldenpath/hg19/database/genomicSuperDups.txt.gz
+- url: https://hgdownload.soe.ucsc.edu/goldenpath/hg19/database/rmsk.txt.gz
+- url: https://hgdownload.soe.ucsc.edu/goldenpath/hg19/database/altSeqLiftOverPsl.txt.gz
+- url: https://hgdownload.soe.ucsc.edu/goldenpath/hg19/database/fixSeqLiftOverPsl.txt.gz
+- url: https://hgdownload.soe.ucsc.edu/goldenpath/hg38/database/genomicSuperDups.txt.gz
+- url: https://hgdownload.soe.ucsc.edu/goldenpath/hg38/database/rmsk.txt.gz
+- url: https://hgdownload.soe.ucsc.edu/goldenpath/hg38/database/altSeqLiftOverPsl.txt.gz
+- url: https://hgdownload.soe.ucsc.edu/goldenpath/hg38/database/fixSeqLiftOverPsl.txt.gz
 
 - comment: The dbVar release notes index is pulled for checking for latest release.
   url: https://ftp.ncbi.nlm.nih.gov/pub/dbVar/sandbox/sv_datasets/nonredundant/release_notes

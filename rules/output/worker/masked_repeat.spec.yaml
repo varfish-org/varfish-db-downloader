@@ -10,7 +10,7 @@ x-genome-release: {{ genome_release }}
 dc.description: |
   Protobuf file with UCSC genome browser goldenPath repeat masker output file.
 dc.source:
-  - https://hgdownload.cse.ucsc.edu/goldenpath
+  - https://hgdownload.soe.ucsc.edu/goldenpath
 x-created-from:
   - name: UCSC Genome Browser goldenPath "rmsk" file
     version: {{ version }}
