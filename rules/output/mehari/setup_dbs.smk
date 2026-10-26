@@ -19,6 +19,15 @@ rule generate_mehari_dbs_setup_script:
             for genombuild in GENOMEBUILDS
         }
 
+        mehari_tx_files = {
+            genombuild: (
+                f"mehari-data-txs-{genomebuild_cap[genombuild]}-"
+                f"{mehari_tx_sources[genombuild][params.primary_tx_source]}-"
+                f"{DV.mehari_tx}.bin.zst"
+            )
+            for genombuild in GENOMEBUILDS
+        }
+
         with open(params.template) as tfh:
             template_content = tfh.read()
 
@@ -28,7 +37,7 @@ rule generate_mehari_dbs_setup_script:
                     DV=DV,
                     PV=PV,
                     genomebuilds=GENOMEBUILDS,
-                    primary_tx_source=params.primary_tx_source,
+                    mehari_tx_files=mehari_tx_files,
                     mehari_freq_versions=mehari_freq_versions,
                     downloader_base=workflow.basedir,
                 )
