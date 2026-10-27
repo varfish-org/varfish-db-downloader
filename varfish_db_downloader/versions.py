@@ -153,6 +153,8 @@ class DataVersions:
     clinvar_release: str
     #: ClinVar version.
     clinvar_version: str
+    #: annonars version that annonars-data-clinvar built the ClinVar RocksDBs with.
+    annonars_clinvar: str
     #: Marker file for the tracks version.  This allows us to update the
     #: tracks BED files later on.
     tracks: str
@@ -212,6 +214,7 @@ DATA_VERSIONS = DataVersions(
     patho_mms="20220730",
     clinvar_release=CLINVAR_RELEASE,
     clinvar_version=CLINVAR_VERSION,
+    annonars_clinvar="0.44.0",  # see ANNONARS_VERSION in varfish-org/annonars-data-clinvar
     tracks="0",
     # refseq_37="105",
     # refseq_38="GCF_000001405.40+RS_2023_03",
