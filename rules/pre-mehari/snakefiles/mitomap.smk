@@ -1,5 +1,7 @@
 rule GRChXX_mitomap_normalize:
     input:
+        # ATTN! downloaded manually from https://mitomap.org/cgi-bin/polymorphisms.cgi?format=vcf,
+        # see "Manually downloaded data" in README.md
         vcf="data/mitomap/{download_date}/polymorphisms.vcf",
         ref="work/reference/{genomebuild}/reference.fa",
     output:
