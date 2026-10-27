@@ -14,9 +14,9 @@ def input_subset_annonars(wildcards):
             f"output/reduced-{wildcards.set_name}/targets/{wildcards.genome_release}/"
             f"refseq/{refseq_version}/refseq_target_exons.bed"
         ),
-        "rocksdb_identity": (
+        "rocksdb_dir": (
             f"output/full/annonars/{wildcards.name}-{wildcards.genome_release}-"
-            f"{wildcards.version_multi}/rocksdb/IDENTITY"
+            f"{wildcards.version_multi}/rocksdb"
         ),
         "spec_yaml": (
             f"output/full/annonars/{wildcards.name}-{wildcards.genome_release}-"
@@ -29,8 +29,11 @@ def input_subset_annonars(wildcards):
 rule subset_annonars:  # -- create exomes subset
     input:
         unpack(input_subset_annonars),
+        validate_script="scripts/validate_rocksdb.sh",
     output:
-        rocksdb_identity="output/reduced-{set_name}/annonars/{name}-{genome_release}-{version_multi}/rocksdb/IDENTITY",
+        rocksdb_dir=directory(
+            "output/reduced-{set_name}/annonars/{name}-{genome_release}-{version_multi}/rocksdb"
+        ),
         spec_yaml="output/reduced-{set_name}/annonars/{name}-{genome_release}-{version_multi}/spec.yaml",
         manifest="output/reduced-{set_name}/annonars/{name}-{genome_release}-{version_multi}/MANIFEST.txt",
     wildcard_constraints:
@@ -45,17 +48,19 @@ rule subset_annonars:  # -- create exomes subset
         r"""
         if [[ "${{CI:-false}}" == "true" ]]; then
             echo "Skipping subset annonars CI environment."
-            mkdir -p $(dirname {output.rocksdb_identity})
-            touch {output.rocksdb_identity} {output.spec_yaml} {output.manifest}
+            mkdir -p {output.rocksdb_dir}
+            touch {output.spec_yaml} {output.manifest}
             exit 0
         fi
- 
+
         annonars db-utils copy \
             --skip-cfs dbsnp_by_rsid \
             --skip-cfs clinvar_by_accession \
-            --path-in $(dirname {input.rocksdb_identity}) \
-            --path-out $(dirname {output.rocksdb_identity}) \
+            --path-in {input.rocksdb_dir} \
+            --path-out {output.rocksdb_dir} \
             --path-beds {input.bed}
+
+        bash {input.validate_script} "{output.rocksdb_dir}"
 
         cp {input.spec_yaml} {output.spec_yaml}
 

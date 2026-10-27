@@ -11,9 +11,10 @@ def input_output_annonars_dbscsnv(wildcards):
 rule output_annonars_dbscsnv:  # -- build dbscSNV RocksDB with annonars
     input:
         input_output_annonars_dbscsnv,
+        validate_script="scripts/validate_rocksdb.sh",
     output:
-        rocksdb_identity=(
-            "output/full/annonars/dbscsnv-{genome_release}-{v_dbscsnv}+{v_annonars}/rocksdb/IDENTITY"
+        rocksdb_dir=directory(
+            "output/full/annonars/dbscsnv-{genome_release}-{v_dbscsnv}+{v_annonars}/rocksdb"
         ),
         spec_yaml=(
             "output/full/annonars/dbscsnv-{genome_release}-{v_dbscsnv}+{v_annonars}/spec.yaml"
@@ -39,7 +40,7 @@ rule output_annonars_dbscsnv:  # -- build dbscSNV RocksDB with annonars
             --inference-row-count 100000 \
             --path-schema-json rules/output/annonars/dbscsnv-schema.json \
             \
-            --path-out-rocksdb $(dirname {output.rocksdb_identity}) \
+            --path-out-rocksdb {output.rocksdb_dir} \
             \
             $(if [[ "{wildcards.genome_release}" == "grch37" ]]; then \
                 echo --col-chrom 'chr'; \
@@ -52,6 +53,8 @@ rule output_annonars_dbscsnv:  # -- build dbscSNV RocksDB with annonars
             --col-alt 'alt' \
             \
             $(for path in {input}; do echo --path-in-tsv $path; done)
+
+        bash {input.validate_script} "{output.rocksdb_dir}"
 
         varfish-db-downloader tpl \
             --template rules/output/annonars/dbscsnv.spec.yaml \

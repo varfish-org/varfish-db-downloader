@@ -3,16 +3,89 @@
 import os
 
 
+def input_gnomad_genomes_auto(wildcards):
+    return expand(
+        "work/download/annos/{g}/seqvars/gnomad_genomes/{v}/gnomad.genomes.{t}{v}.sites.{c}.vcf.bgz",
+        g=wildcards.genome_release,
+        v=gnomad_versions[wildcards.genome_release],
+        t="r" if wildcards.genome_release == "grch37" else "v",
+        c=[x if wildcards.genome_release == "grch37" else f"chr{x}" for x in CHROMS_AUTO],
+    )
+
+
+def input_gnomad_genomes_gono(wildcards):
+    chroms = ("X",)
+    if wildcards.genome_release == "grch38":
+        chroms += ("Y",)
+    return expand(
+        "work/download/annos/{g}/seqvars/gnomad_genomes/{v}/gnomad.genomes.{t}{v}.sites.{c}.vcf.bgz",
+        g=wildcards.genome_release,
+        v=gnomad_versions[wildcards.genome_release],
+        t="r" if wildcards.genome_release == "grch37" else "v",
+        c=[x if wildcards.genome_release == "grch37" else f"chr{x}" for x in chroms],
+    )
+
+
+def input_gnomad_genomes_tbi(wildcards):
+    chroms = CHROMS_AUTO + ("X",)
+    if wildcards.genome_release == "grch38":
+        chroms += ("Y",)
+    return expand(
+        "work/download/annos/{g}/seqvars/gnomad_genomes/{v}/gnomad.genomes.{t}{v}.sites.{c}.vcf.bgz.tbi",
+        g=wildcards.genome_release,
+        v=gnomad_versions[wildcards.genome_release],
+        t="r" if wildcards.genome_release == "grch37" else "v",
+        c=[x if wildcards.genome_release == "grch37" else f"chr{x}" for x in chroms],
+    )
+
+
+def input_gnomad_exomes_auto(wildcards):
+    return expand(
+        "work/download/annos/{g}/seqvars/gnomad_exomes/{v}/gnomad.exomes.{t}{v}.sites.{c}.vcf.bgz",
+        g=wildcards.genome_release,
+        v=gnomad_versions[wildcards.genome_release],
+        t="r" if wildcards.genome_release == "grch37" else "v",
+        c=[x if wildcards.genome_release == "grch37" else f"chr{x}" for x in CHROMS_AUTO],
+    )
+
+
+def input_gnomad_exomes_gono(wildcards):
+    return expand(
+        "work/download/annos/{g}/seqvars/gnomad_exomes/{v}/gnomad.exomes.{t}{v}.sites.{c}.vcf.bgz",
+        g=wildcards.genome_release,
+        v=gnomad_versions[wildcards.genome_release],
+        t="r" if wildcards.genome_release == "grch37" else "v",
+        c=[x if wildcards.genome_release == "grch37" else f"chr{x}" for x in ["X", "Y"]],
+    )
+
+
+def input_gnomad_exomes_tbi(wildcards):
+    return expand(
+        "work/download/annos/{g}/seqvars/gnomad_exomes/{v}/gnomad.exomes.{t}{v}.sites.{c}.vcf.bgz.tbi",
+        g=wildcards.genome_release,
+        v=gnomad_versions[wildcards.genome_release],
+        t="r" if wildcards.genome_release == "grch37" else "v",
+        c=[x if wildcards.genome_release == "grch37" else f"chr{x}" for x in CHROMS],
+    )
+
+
 rule output_mehari_freqs_build:  # -- build frequency tables for mehari
     input:
-        gnomad_genomes="work/download/annos/{genome_release}/seqvars/gnomad_genomes/{v_gnomad_genomes}/.done",
-        gnomad_exomes="work/download/annos/{genome_release}/seqvars/gnomad_exomes/{v_gnomad_exomes}/.done",
+        "work/download/annos/{genome_release}/seqvars/gnomad_genomes/{v_gnomad_genomes}/.done",
+        "work/download/annos/{genome_release}/seqvars/gnomad_exomes/{v_gnomad_exomes}/.done",
+        gnomad_genomes_auto=input_gnomad_genomes_auto,
+        gnomad_genomes_gono=input_gnomad_genomes_gono,
+        gnomad_genomes_tbi=input_gnomad_genomes_tbi,
+        gnomad_exomes_auto=input_gnomad_exomes_auto,
+        gnomad_exomes_gono=input_gnomad_exomes_gono,
+        gnomad_exomes_tbi=input_gnomad_exomes_tbi,
         gnomad_mtdna="work/annos/{genome_release}/seqvars/gnomad_mtdna/{v_gnomad_mtdna}/gnomad_mtdna.vcf.gz",
         helixmtdb="work/annos/{genome_release}/seqvars/helixmtdb/{v_helixmtdb}/helixmtdb.vcf.gz",
+        validate_script="scripts/validate_rocksdb.sh",
     output:
-        rocksdb_identity=(
+        rocksdb_dir=directory(
             "output/full/mehari/freqs-{genome_release}-{v_gnomad_genomes}+{v_gnomad_exomes}+"
-            "{v_gnomad_mtdna}+{v_helixmtdb}+{v_annonars}/rocksdb/IDENTITY"
+            "{v_gnomad_mtdna}+{v_helixmtdb}+{v_annonars}/rocksdb"
         ),
         spec_yaml=(
             "output/full/mehari/freqs-{genome_release}-{v_gnomad_genomes}+{v_gnomad_exomes}+"
@@ -37,22 +110,17 @@ rule output_mehari_freqs_build:  # -- build frequency tables for mehari
         r"""
         if [[ "${{CI:-false}}" == "true" ]]; then
             echo "Skipping rule output_mehari_freqs_build because CI=true"
-            mkdir -p $(dirname {output.rocksdb_identity})
-            touch {output.rocksdb_identity} {output.spec_yaml} {output.manifest}
+            mkdir -p {output.rocksdb_dir}
+            touch {output.spec_yaml} {output.manifest}
             exit 0
         fi
         
-        output_rocksdb=$(dirname {output.rocksdb_identity})
-
         build-args()
         {{
-            path=$1
-            arg=$2
-            regex=$3
+            arg=$1
+            files=$2
 
-            for file in $(find $path -type f -and -name "*.vcf.bgz" \
-                    | sort \
-                    | egrep -i "$regex"); do
+            for file in $files; do
                 echo $arg $file
             done
         }}
@@ -65,16 +133,18 @@ rule output_mehari_freqs_build:  # -- build frequency tables for mehari
             --gnomad-mtdna-version "{wildcards.v_gnomad_mtdna}" \
             --helixmtdb-version "{wildcards.v_helixmtdb}" \
             \
-            --path-out-rocksdb "$output_rocksdb" \
+            --path-out-rocksdb {output.rocksdb_dir} \
             \
             --path-gnomad-mtdna {input.gnomad_mtdna} \
             --path-helixmtdb {input.helixmtdb} \
             \
-            $(build-args $(dirname {input.gnomad_genomes}) --path-gnomad-genomes-auto "sites\.(chr)?[0-9]+\.") \
-            $(build-args $(dirname {input.gnomad_genomes}) --path-gnomad-genomes-xy   "sites\.(chr)?[XY]\.") \
+            build-args "--path-gnomad-genomes-auto" "{input.gnomad_genomes_auto}" \
+            build-args "--path-gnomad-genomes-xy" "{input.gnomad_genomes_gono}" \
             \
-            $(build-args $(dirname {input.gnomad_exomes})  --path-gnomad-exomes-auto  "sites\.(chr)?[0-9]+\.") \
-            $(build-args $(dirname {input.gnomad_exomes})  --path-gnomad-exomes-xy    "sites\.(chr)?[XY]\.")
+            build-args "--path-gnomad-exomes-auto" "{input.gnomad_exomes_auto}" \
+            build-args "--path-gnomad-exomes-xy" "{input.gnomad_exomes_gono}"
+
+        bash {input.validate_script} "{output.rocksdb_dir}"
 
         varfish-db-downloader tpl \
             --template rules/output/mehari/freqs.spec.yaml \

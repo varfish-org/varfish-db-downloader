@@ -37,10 +37,10 @@ def output_annonars_functional_input(wildcards):
 rule output_annonars_functional:  # -- build annonars functional RocksDB file
     input:
         output_annonars_functional_input,
+        validate_script="scripts/validate_rocksdb.sh",
     output:
-        rocksdb_identity=(
-            "output/full/annonars/functional-{genome_release}-{v_refseq}+{v_annonars}/"
-            "rocksdb/IDENTITY"
+        rocksdb_dir=directory(
+            "output/full/annonars/functional-{genome_release}-{v_refseq}+{v_annonars}/rocksdb"
         ),
         spec_yaml=(
             "output/full/annonars/functional-{genome_release}-{v_refseq}+{v_annonars}/spec.yaml"
@@ -61,7 +61,9 @@ rule output_annonars_functional:  # -- build annonars functional RocksDB file
         annonars functional import -vvv \
             --genome-release {wildcards.genome_release} \
             --path-in-gff $TMPDIR/tmp.gff \
-            --path-out-rocksdb $(dirname {output.rocksdb_identity})
+            --path-out-rocksdb {output.rocksdb_dir}
+
+        bash {input.validate_script} "{output.rocksdb_dir}"
 
         varfish-db-downloader tpl \
             --template rules/output/annonars/functional.spec.yaml \

@@ -6,9 +6,10 @@ import os
 rule output_annonars_gnomad_mtdna:  # -- build gnomAD-mtDNA RocksDB with annonars
     input:
         vcf="work/annos/{genome_release}/seqvars/gnomad_mtdna/{v_gnomad}/gnomad_mtdna.vcf.gz",
+        validate_script="scripts/validate_rocksdb.sh",
     output:
-        rocksdb_identity=(
-            "output/full/annonars/gnomad-mtdna-{genome_release}-{v_gnomad}+{v_annonars}/rocksdb/IDENTITY"
+        rocksdb_dir=directory(
+            "output/full/annonars/gnomad-mtdna-{genome_release}-{v_gnomad}+{v_annonars}/rocksdb"
         ),
         spec_yaml=(
             "output/full/annonars/gnomad-mtdna-{genome_release}-{v_gnomad}+{v_annonars}/spec.yaml"
@@ -28,9 +29,11 @@ rule output_annonars_gnomad_mtdna:  # -- build gnomAD-mtDNA RocksDB with annonar
         r"""
         annonars gnomad-mtdna import \
             --path-in-vcf {input.vcf} \
-            --path-out-rocksdb $(dirname {output.rocksdb_identity}) \
+            --path-out-rocksdb {output.rocksdb_dir} \
             --genome-release {wildcards.genome_release} \
             --gnomad-version {wildcards.v_gnomad}
+
+        bash {input.validate_script} "{output.rocksdb_dir}"
 
         varfish-db-downloader tpl \
             --template rules/output/annonars/gnomad_mtdna.spec.yaml \

@@ -94,6 +94,8 @@ rule help:
         )
 
 
+CHROMS_AUTO = tuple(list(map(str, range(1, 23))))
+CHROMS = CHROMS_AUTO + ("X", "Y")
 CHROMS_37 = tuple(list(map(str, range(1, 23))) + ["X", "Y", "MT"])
 CHROMS_38 = tuple(list(map(str, range(1, 23))) + ["X", "Y", "M"])
 
@@ -162,7 +164,19 @@ def generate_input_files():
             f"work/download/annos/grch38/seqvars/cadd/{DV.cadd}/gnomad.genomes.r3.0.indel_inclAnno.tsv.gz",
             f"work/annos/grch38/seqvars/helixmtdb/{DV.helixmtdb}/helixmtdb.vcf.gz",
             f"work/annos/grch38/seqvars/gnomad_mtdna/{DV.gnomad_mtdna}/gnomad_mtdna.vcf.gz",
+            expand(
+                "work/download/annos/grch38/seqvars/gnomad_exomes/{v}/gnomad.exomes.v{v}.sites.chr{c}.vcf.bgz{i}",
+                v=DV.gnomad_v4,
+                c=CHROMS,
+                i=[".tbi", ""],
+            ),
             f"work/download/annos/grch38/seqvars/gnomad_exomes/{DV.gnomad_v4}/.done",
+            expand(
+                "work/download/annos/grch38/seqvars/gnomad_genomes/{v}/gnomad.genomes.v{v}.sites.chr{c}.vcf.bgz{i}",
+                v=DV.gnomad_v4,
+                c=CHROMS,
+                i=[".tbi", ""],
+            ),
             f"work/download/annos/grch38/seqvars/gnomad_genomes/{DV.gnomad_v4}/.done",
             f"work/annos/grch38/features/refseq/{DV.refseq_38}/refseq_genes.bed.gz",
             f"output/full/worker/bgdb-gnomad-exomes-cnv-grch38-{DV.gnomad_sv4}+{PV.worker}/bgdb-gnomad-exomes-cnv-grch38.bin",
@@ -183,7 +197,19 @@ def generate_input_files():
             # f"work/download/annos/grch37/seqvars/dbsnp/{DV.dbsnp}/dbsnp.vcf.gz",
             f"work/annos/grch37/seqvars/helixmtdb/{DV.helixmtdb}/helixmtdb.vcf.gz",
             f"work/annos/grch37/seqvars/gnomad_mtdna/{DV.gnomad_mtdna}/gnomad_mtdna.vcf.gz",
+            expand(
+                "work/download/annos/grch37/seqvars/gnomad_exomes/{v}/gnomad.exomes.r{v}.sites.{c}.vcf.bgz{i}",
+                v=DV.gnomad_v2,
+                c=CHROMS,
+                i=[".tbi", ""],
+            ),
             f"work/download/annos/grch37/seqvars/gnomad_exomes/{DV.gnomad_v2}/.done",
+            expand(
+                "work/download/annos/grch37/seqvars/gnomad_genomes/{v}/gnomad.genomes.r{v}.sites.{c}.vcf.bgz{i}",
+                v=DV.gnomad_v2,
+                c=CHROMS_AUTO + ("X",),  # Y is only available for exomes in GRCh37
+                i=[".tbi", ""],
+            ),
             f"work/download/annos/grch37/seqvars/gnomad_genomes/{DV.gnomad_v2}/.done",
             f"work/annos/grch37/features/cons/{DV.ucsc_cons_37}/ucsc_conservation.tsv",
             f"work/annos/grch37/features/refseq/{DV.refseq_37}/refseq_genes.bed.gz",
@@ -202,27 +228,27 @@ def generate_input_files():
             f"work/annos/{genomebuild}/features/cons/{cons_versions[genomebuild]}/ucsc_conservation.tsv",
             # -- mehari data
             # ---- frequencies (via annonars)
-            f"output/full/mehari/freqs-{genomebuild}-{gnomad_versions[genomebuild]}+{gnomad_versions[genomebuild]}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
+            f"output/full/mehari/freqs-{genomebuild}-{gnomad_versions[genomebuild]}+{gnomad_versions[genomebuild]}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb",
             f"output/full/mehari/setup_mehari_dbs.sh",
-            f"output/full/annonars/alphamissense-{genomebuild}-{DV.alphamissense}+{PV.annonars}/rocksdb/IDENTITY",
+            f"output/full/annonars/alphamissense-{genomebuild}-{DV.alphamissense}+{PV.annonars}/rocksdb",
             # -- annonars data
             # ----- sequence variant annotations
-            f"output/full/annonars/cadd-{genomebuild}-{DV.cadd}+{PV.annonars}/rocksdb/IDENTITY",
-            f"output/full/annonars/dbsnp-{genomebuild}-{DV.dbsnp}+{PV.annonars}/rocksdb/IDENTITY",
-            f"output/full/annonars/dbnsfp-{genomebuild}-{DV.dbnsfp}a+{PV.annonars}/rocksdb/IDENTITY",
-            f"output/full/annonars/dbnsfp-{genomebuild}-{DV.dbnsfp}c+{PV.annonars}/rocksdb/IDENTITY",
-            f"output/full/annonars/dbscsnv-{genomebuild}-{DV.dbscsnv}+{PV.annonars}/rocksdb/IDENTITY",
-            f"output/full/annonars/gnomad-mtdna-{genomebuild}-{DV.gnomad_mtdna}+{PV.annonars}/rocksdb/IDENTITY",
-            f"output/full/annonars/gnomad-exomes-{genomebuild}-{gnomad_versions[genomebuild]}+{PV.annonars}/rocksdb/IDENTITY",
-            f"output/full/annonars/gnomad-genomes-{genomebuild}-{gnomad_versions[genomebuild]}+{PV.annonars}/rocksdb/IDENTITY",
-            f"output/full/annonars/helixmtdb-{genomebuild}-{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
-            f"output/full/annonars/gnomad-sv-exomes-{genomebuild}-{gnomad_cnv_versions[genomebuild]}+{PV.annonars}/rocksdb/IDENTITY",
-            f"output/full/annonars/gnomad-sv-genomes-{genomebuild}-{gnomad_sv_versions[genomebuild]}+{PV.annonars}/rocksdb/IDENTITY",
+            f"output/full/annonars/cadd-{genomebuild}-{DV.cadd}+{PV.annonars}/rocksdb",
+            f"output/full/annonars/dbsnp-{genomebuild}-{DV.dbsnp}+{PV.annonars}/rocksdb",
+            f"output/full/annonars/dbnsfp-{genomebuild}-{DV.dbnsfp}a+{PV.annonars}/rocksdb",
+            f"output/full/annonars/dbnsfp-{genomebuild}-{DV.dbnsfp}c+{PV.annonars}/rocksdb",
+            f"output/full/annonars/dbscsnv-{genomebuild}-{DV.dbscsnv}+{PV.annonars}/rocksdb",
+            f"output/full/annonars/gnomad-mtdna-{genomebuild}-{DV.gnomad_mtdna}+{PV.annonars}/rocksdb",
+            f"output/full/annonars/gnomad-exomes-{genomebuild}-{gnomad_versions[genomebuild]}+{PV.annonars}/rocksdb",
+            f"output/full/annonars/gnomad-genomes-{genomebuild}-{gnomad_versions[genomebuild]}+{PV.annonars}/rocksdb",
+            f"output/full/annonars/helixmtdb-{genomebuild}-{DV.helixmtdb}+{PV.annonars}/rocksdb",
+            f"output/full/annonars/gnomad-sv-exomes-{genomebuild}-{gnomad_cnv_versions[genomebuild]}+{PV.annonars}/rocksdb",
+            f"output/full/annonars/gnomad-sv-genomes-{genomebuild}-{gnomad_sv_versions[genomebuild]}+{PV.annonars}/rocksdb",
             # ----- sequence annotation
-            f"output/full/annonars/functional-{genomebuild}-{refseq_versions[genomebuild]}+{PV.annonars}/rocksdb/IDENTITY",
-            f"output/full/annonars/regions-{genomebuild}-{DV.today}+{PV.annonars}/rocksdb/IDENTITY",
+            f"output/full/annonars/functional-{genomebuild}-{refseq_versions[genomebuild]}+{PV.annonars}/rocksdb",
+            f"output/full/annonars/regions-{genomebuild}-{DV.today}+{PV.annonars}/rocksdb",
             # ----- conservation
-            f"output/full/annonars/cons-{genomebuild}-{cons_versions[genomebuild]}+{PV.annonars}/rocksdb/IDENTITY",
+            f"output/full/annonars/cons-{genomebuild}-{cons_versions[genomebuild]}+{PV.annonars}/rocksdb",
             # ----- worker
             f"output/full/worker/masked-repeat-{genomebuild}-{rmask_versions[genomebuild]}+{PV.worker}/masked-repeat.bin",
             f"output/full/worker/masked-segdup-{genomebuild}-{genomic_super_dups_versions[genomebuild]}+{PV.worker}/masked-segdup.bin",
@@ -266,24 +292,24 @@ def generate_input_files():
             # == development (reduced data) directories =============================================
             #
             # # -- annonars
-            # f"output/reduced-dev/annonars/cadd-{genomebuild}-{DV.cadd}+{PV.annonars}/rocksdb/IDENTITY",
+            # f"output/reduced-dev/annonars/cadd-{genomebuild}-{DV.cadd}+{PV.annonars}/rocksdb",
             # f"output/reduced-dev/annonars/cadd-{genomebuild}-{DV.cadd}+{PV.annonars}/spec.yaml",
-            # f"output/reduced-dev/annonars/cons-{genomebuild}-{cons_versions[genomebuild]}+{PV.annonars}/rocksdb/IDENTITY",
+            # f"output/reduced-dev/annonars/cons-{genomebuild}-{cons_versions[genomebuild]}+{PV.annonars}/rocksdb",
             # f"output/reduced-dev/annonars/cons-{genomebuild}-{cons_versions[genomebuild]}+{PV.annonars}/spec.yaml",
-            # f"output/reduced-dev/annonars/dbnsfp-{genomebuild}-{DV.dbnsfp}a+{PV.annonars}/rocksdb/IDENTITY",
+            # f"output/reduced-dev/annonars/dbnsfp-{genomebuild}-{DV.dbnsfp}a+{PV.annonars}/rocksdb",
             # f"output/reduced-dev/annonars/dbnsfp-{genomebuild}-{DV.dbnsfp}a+{PV.annonars}/spec.yaml",
-            # f"output/reduced-dev/annonars/dbnsfp-{genomebuild}-{DV.dbnsfp}c+{PV.annonars}/rocksdb/IDENTITY",
+            # f"output/reduced-dev/annonars/dbnsfp-{genomebuild}-{DV.dbnsfp}c+{PV.annonars}/rocksdb",
             # f"output/reduced-dev/annonars/dbnsfp-{genomebuild}-{DV.dbnsfp}c+{PV.annonars}/spec.yaml",
-            # f"output/reduced-dev/annonars/dbscsnv-{genomebuild}-{DV.dbscsnv}+{PV.annonars}/rocksdb/IDENTITY",
+            # f"output/reduced-dev/annonars/dbscsnv-{genomebuild}-{DV.dbscsnv}+{PV.annonars}/rocksdb",
             # f"output/reduced-dev/annonars/dbscsnv-{genomebuild}-{DV.dbscsnv}+{PV.annonars}/spec.yaml",
-            # f"output/reduced-dev/annonars/dbsnp-{genomebuild}-{DV.dbsnp}+{PV.annonars}/rocksdb/IDENTITY",
+            # f"output/reduced-dev/annonars/dbsnp-{genomebuild}-{DV.dbsnp}+{PV.annonars}/rocksdb",
             # f"output/reduced-dev/annonars/dbsnp-{genomebuild}-{DV.dbsnp}+{PV.annonars}/spec.yaml",
-            # f"output/reduced-dev/annonars/gnomad-exomes-{genomebuild}-{gnomad_versions[genomebuild]}+{PV.annonars}/rocksdb/IDENTITY",
+            # f"output/reduced-dev/annonars/gnomad-exomes-{genomebuild}-{gnomad_versions[genomebuild]}+{PV.annonars}/rocksdb",
             # f"output/reduced-dev/annonars/gnomad-exomes-{genomebuild}-{gnomad_versions[genomebuild]}+{PV.annonars}/spec.yaml",
-            # f"output/reduced-dev/annonars/gnomad-genomes-{genomebuild}-{gnomad_versions[genomebuild]}+{PV.annonars}/rocksdb/IDENTITY",
+            # f"output/reduced-dev/annonars/gnomad-genomes-{genomebuild}-{gnomad_versions[genomebuild]}+{PV.annonars}/rocksdb",
             # f"output/reduced-dev/annonars/gnomad-genomes-{genomebuild}-{gnomad_versions[genomebuild]}+{PV.annonars}/spec.yaml",
             # # # -- mehari
-            # f"output/reduced-dev/mehari/freqs-{genomebuild}-{gnomad_versions[genomebuild]}+{gnomad_versions[genomebuild]}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
+            # f"output/reduced-dev/mehari/freqs-{genomebuild}-{gnomad_versions[genomebuild]}+{gnomad_versions[genomebuild]}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb",
             # f"output/reduced-dev/mehari/freqs-{genomebuild}-{gnomad_versions[genomebuild]}+{gnomad_versions[genomebuild]}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/spec.yaml",
             # #
             # # == exomes (reduced data) directories ==================================================
@@ -291,24 +317,24 @@ def generate_input_files():
             # # -- targets
             # f"output/reduced-exomes/targets/{genomebuild}/refseq/{refseq_versions[genomebuild]}/refseq_target_exons.bed.gz",
             # # # -- annonars
-            # f"output/reduced-exomes/annonars/cadd-{genomebuild}-{DV.cadd}+{PV.annonars}/rocksdb/IDENTITY",
+            # f"output/reduced-exomes/annonars/cadd-{genomebuild}-{DV.cadd}+{PV.annonars}/rocksdb",
             # f"output/reduced-exomes/annonars/cadd-{genomebuild}-{DV.cadd}+{PV.annonars}/spec.yaml",
-            # f"output/reduced-exomes/annonars/cons-{genomebuild}-{cons_versions[genomebuild]}+{PV.annonars}/rocksdb/IDENTITY",
+            # f"output/reduced-exomes/annonars/cons-{genomebuild}-{cons_versions[genomebuild]}+{PV.annonars}/rocksdb",
             # f"output/reduced-exomes/annonars/cons-{genomebuild}-{cons_versions[genomebuild]}+{PV.annonars}/spec.yaml",
-            # f"output/reduced-exomes/annonars/dbnsfp-{genomebuild}-{DV.dbnsfp}a+{PV.annonars}/rocksdb/IDENTITY",
+            # f"output/reduced-exomes/annonars/dbnsfp-{genomebuild}-{DV.dbnsfp}a+{PV.annonars}/rocksdb",
             # f"output/reduced-exomes/annonars/dbnsfp-{genomebuild}-{DV.dbnsfp}a+{PV.annonars}/spec.yaml",
-            # f"output/reduced-exomes/annonars/dbnsfp-{genomebuild}-{DV.dbnsfp}c+{PV.annonars}/rocksdb/IDENTITY",
+            # f"output/reduced-exomes/annonars/dbnsfp-{genomebuild}-{DV.dbnsfp}c+{PV.annonars}/rocksdb",
             # f"output/reduced-exomes/annonars/dbnsfp-{genomebuild}-{DV.dbnsfp}c+{PV.annonars}/spec.yaml",
-            # f"output/reduced-exomes/annonars/dbscsnv-{genomebuild}-{DV.dbscsnv}+{PV.annonars}/rocksdb/IDENTITY",
+            # f"output/reduced-exomes/annonars/dbscsnv-{genomebuild}-{DV.dbscsnv}+{PV.annonars}/rocksdb",
             # f"output/reduced-exomes/annonars/dbscsnv-{genomebuild}-{DV.dbscsnv}+{PV.annonars}/spec.yaml",
-            # f"output/reduced-exomes/annonars/dbsnp-{genomebuild}-{DV.dbsnp}+{PV.annonars}/rocksdb/IDENTITY",
+            # f"output/reduced-exomes/annonars/dbsnp-{genomebuild}-{DV.dbsnp}+{PV.annonars}/rocksdb",
             # f"output/reduced-exomes/annonars/dbsnp-{genomebuild}-{DV.dbsnp}+{PV.annonars}/spec.yaml",
-            # f"output/reduced-exomes/annonars/gnomad-exomes-{genomebuild}-{gnomad_versions[genomebuild]}+{PV.annonars}/rocksdb/IDENTITY",
+            # f"output/reduced-exomes/annonars/gnomad-exomes-{genomebuild}-{gnomad_versions[genomebuild]}+{PV.annonars}/rocksdb",
             # f"output/reduced-exomes/annonars/gnomad-exomes-{genomebuild}-{gnomad_versions[genomebuild]}+{PV.annonars}/spec.yaml",
-            # f"output/reduced-exomes/annonars/gnomad-genomes-{genomebuild}-{gnomad_versions[genomebuild]}+{PV.annonars}/rocksdb/IDENTITY",
+            # f"output/reduced-exomes/annonars/gnomad-genomes-{genomebuild}-{gnomad_versions[genomebuild]}+{PV.annonars}/rocksdb",
             # f"output/reduced-exomes/annonars/gnomad-genomes-{genomebuild}-{gnomad_versions[genomebuild]}+{PV.annonars}/spec.yaml",
             # # # -- mehari
-            # f"output/reduced-exomes/mehari/freqs-{genomebuild}-{gnomad_versions[genomebuild]}+{gnomad_versions[genomebuild]}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb/IDENTITY",
+            # f"output/reduced-exomes/mehari/freqs-{genomebuild}-{gnomad_versions[genomebuild]}+{gnomad_versions[genomebuild]}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/rocksdb",
             # f"output/reduced-exomes/mehari/freqs-{genomebuild}-{gnomad_versions[genomebuild]}+{gnomad_versions[genomebuild]}+{DV.gnomad_mtdna}+{DV.helixmtdb}+{PV.annonars}/spec.yaml",
             # -- pre-mehari
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/hgnc/{DV.hgnc_quarterly}+{DV.cdot}+{refseq_versions[genomebuild]}/Hgnc.tsv",
@@ -365,7 +391,7 @@ def generate_input_files():
         "work/genes/shet/2019/shet_weghorn_2019.tsv",
         "work/genes/domino/20190219/domino.tsv",
         # -- annonars
-        f"output/full/annonars/genes-{DV.acmg_sf}+{DV.gnomad_constraints}+{DV.dbnsfp}+{DV.hpo}+{DV.today}+{DV.hgnc_quarterly}+{PV.annonars}/rocksdb/IDENTITY",
+        f"output/full/annonars/genes-{DV.acmg_sf}+{DV.gnomad_constraints}+{DV.dbnsfp}+{DV.hpo}+{DV.today}+{DV.hgnc_quarterly}+{PV.annonars}/rocksdb",
         # -- worker data
         f"output/full/worker/genes-xlink-{DV.hgnc_quarterly}+{PV.worker}/genes-xlink.bin",
         f"output/full/worker/acmg-sf-{DV.acmg_sf}+{PV.worker}/acmg_sf.tsv",  # ATTN! source file is placed manually in the data directory

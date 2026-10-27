@@ -101,7 +101,7 @@ rule annos_gnomad_nuclear_download_grch38_v3_v4:  # -- download gnomAD genomes v
 def input_annos_gnomad_nuclear_grch37(wildcards):
     """Input files for gnomAD exomes/genomes GRCh37."""
     chroms = list(range(1, 23)) + ["X"]
-    # chrY is only available for GRCh37 genomes
+    # chrY is only available for GRCh37 exomes
     if wildcards.kind == "exomes":
         chroms.append("Y")
     tpl = "work/download/annos/grch37/seqvars/gnomad_{kind}/{version}/gnomad.{kind}.r{version}.sites.{chrom}.vcf.bgz"

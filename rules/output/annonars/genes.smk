@@ -19,10 +19,10 @@ rule output_annonars_genes:  # -- build annonars genes RocksDB file
         gtex="work/genes/annonars/gtex_v8/genes_tpm.jsonl.gz",
         domino="work/genes/domino/20190219/domino.tsv",
         decipher_hi="work/genes/decipher/v3/decipher_hi_prediction.tsv",
+        validate_script="scripts/validate_rocksdb.sh",
     output:
-        rocksdb_identity=(
-            "output/full/annonars/genes-{v_acmg_sf}+{v_gnomad_constraints}+{v_dbnsfp}+{v_hpo}+{date}+{hgnc_quarterly_date}+{v_annonars}/"
-            "rocksdb/IDENTITY"
+        rocksdb_dir=directory(
+            "output/full/annonars/genes-{v_acmg_sf}+{v_gnomad_constraints}+{v_dbnsfp}+{v_hpo}+{date}+{hgnc_quarterly_date}+{v_annonars}/rocksdb"
         ),
         spec_yaml=(
             "output/full/annonars/genes-{v_acmg_sf}+{v_gnomad_constraints}+{v_dbnsfp}+{v_hpo}+{date}+{hgnc_quarterly_date}+{v_annonars}/"
@@ -46,7 +46,7 @@ rule output_annonars_genes:  # -- build annonars genes RocksDB file
         fi
 
         annonars gene import \
-            --path-out-rocksdb $(dirname {output.rocksdb_identity}) \
+            --path-out-rocksdb {output.rocksdb_dir} \
             --path-in-acmg {input.acmg_sf} \
             --path-in-clingen-37 {input.clingen_37} \
             --path-in-clingen-38 {input.clingen_38} \
@@ -63,6 +63,8 @@ rule output_annonars_genes:  # -- build annonars genes RocksDB file
             --path-in-gtex {input.gtex} \
             --path-in-domino {input.domino} \
             --path-in-decipher-hi {input.decipher_hi}
+
+        bash {input.validate_script} "{output.rocksdb_dir}"
 
         varfish-db-downloader tpl \
             --template rules/output/annonars/genes.spec.yaml \

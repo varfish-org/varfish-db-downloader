@@ -1,10 +1,10 @@
 rule md5sum:
     input:
-        "{file}"
+        "{file}",
     output:
-        "{file}.md5"
+        "{file}.md5",
     log:
-        "logs/md5sum/{file}.log"
+        "logs/md5sum/{file}.log",
     shell:
         r"""
         md5sum {input} > {output} 2> {log}
