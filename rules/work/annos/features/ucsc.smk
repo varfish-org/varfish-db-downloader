@@ -19,7 +19,7 @@ rule features_ucsc_download:  # -- download of UCSC tracks
             ucsc_name=hg38
         fi
 
-        wget -O $TMPDIR/listing.html https://hgdownload.cse.ucsc.edu/goldenpath/$ucsc_name/database
+        wget -O $TMPDIR/listing.html https://hgdownload.soe.ucsc.edu/goldenpath/$ucsc_name/database
         version=$(grep {wildcards.filename} $TMPDIR/listing.html| awk '{{ gsub(/-/, "", $3); print $3 }}')
         if [[ "$version" != "{wildcards.version}" ]]; then
             >&2 echo "Version mismatch for {wildcards.filename}: expected {wildcards.version}, got $version"
@@ -27,7 +27,7 @@ rule features_ucsc_download:  # -- download of UCSC tracks
         fi
 
         # Actually perform the download.
-        wget -O {output.txt} https://hgdownload.cse.ucsc.edu/goldenpath/$ucsc_name/database/{wildcards.filename}
+        wget -O {output.txt} https://hgdownload.soe.ucsc.edu/goldenpath/$ucsc_name/database/{wildcards.filename}
         """
 
 
