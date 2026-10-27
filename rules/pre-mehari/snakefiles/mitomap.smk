@@ -1,18 +1,8 @@
-rule mitomap_download:
-    output:
-        "work/download/pre-mehari/grch37/MITOMAP/{download_date}/polymorphisms.vcf",
-    shell:
-        r"""
-        wget --no-check-certificate \
-            --no-check-certificate \
-            -O {output} \
-            https://mitomap.org/cgi-bin/polymorphisms.cgi?format=vcf
-        """
-
-
 rule GRChXX_mitomap_normalize:
     input:
-        vcf="work/download/pre-mehari/grch37/MITOMAP/{download_date}/polymorphisms.vcf",
+        # ATTN! downloaded manually from https://mitomap.org/cgi-bin/polymorphisms.cgi?format=vcf,
+        # see "Manually downloaded data" in README.md
+        vcf="data/mitomap/{download_date}/polymorphisms.vcf",
         ref="work/reference/{genomebuild}/reference.fa",
     output:
         vcf="work/download/pre-mehari/{genomebuild}/MITOMAP/{download_date}/polymorphisms.normalized.annotated.vcf",

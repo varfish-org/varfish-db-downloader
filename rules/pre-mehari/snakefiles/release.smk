@@ -24,7 +24,7 @@ def input_result_grch3x_release_server_db(wildcards):
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/clinvar/{DV.hgnc_quarterly}+{DV.clinvar_release}/Clinvar.release_info",
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/HelixMTdb/{DV.helixmtdb}/HelixMtDb.release_info",
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/ensembltogenesymbol/{ensembl_versions[genomebuild]}/EnsemblToGeneSymbol.release_info",
-            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/MITOMAP/{DV.today}/Mitomap.release_info",
+            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/MITOMAP/{DV.mitomap}/Mitomap.release_info",
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/mtDB/{DV.mtdb}/MtDb.release_info",
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/extra_annos/{DV.cadd}/ExtraAnno.release_info",
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/extra_annos/{DV.cadd}/ExtraAnnoField.release_info",
