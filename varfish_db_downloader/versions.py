@@ -170,6 +170,8 @@ class DataVersions:
     cdot_refseq_gff_json_38: str
     #: MtDb version
     mtdb: str
+    #: MITOMAP version (``##fileDate`` of the manually downloaded VCF).
+    mitomap: str
     #: Pre-Mehari release date.
     pre_mehari_release: str
 
@@ -241,6 +243,7 @@ DATA_VERSIONS = DataVersions(
     refseq_ref_38_assembly=f"{REFSEQ_REF_38}_{REFSEQ_REF_38_BUILD}",
     # ---
     mtdb="20210728",  # Was manually downloaded at that date, database doesn't exist anymore
+    mitomap="20261027",  # ATTN! source file is placed manually in the data directory
     pre_mehari_release=TODAY,
 )
 

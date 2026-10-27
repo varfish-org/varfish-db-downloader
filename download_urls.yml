@@ -630,8 +630,3 @@
   excerpt_strategy:
     strategy: manual
     count: null
-
-- url: https://mitomap.org/cgi-bin/polymorphisms.cgi?format=vcf
-  excerpt_strategy:
-    strategy: no-excerpt
-    count: null
