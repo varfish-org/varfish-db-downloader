@@ -61,10 +61,6 @@ class DataVersions:
     ensembl_37: str
     #: String to use for GRCh38 ENSEMBL version.
     ensembl_38: str
-    #: URL to use for ENSEMBL archive.
-    ensembl_37_archive_url: str
-    #: URL to use for ENSEMBL archive.
-    ensembl_38_archive_url: str
     #: URL to use for ENSEMBL archive FTP.
     ensembl_37_archive_ftp: str
     #: URL to use for ENSEMBL archive FTP.
@@ -181,8 +177,6 @@ DATA_VERSIONS = DataVersions(
     alphamissense="1",
     clingen_gene=TODAY,
     clingen_variant=TODAY,
-    ensembl_37_archive_url="https://grch37.ensembl.org",  # not possible to tag a specific version but according to them they didn't update essential parts since release 75 (2014)
-    ensembl_38_archive_url="https://may2024.archive.ensembl.org",
     ensembl_37_archive_ftp="https://ftp.ensembl.org/pub/grch37",
     ensembl_38_archive_ftp="https://ftp.ensembl.org/pub",
     today=TODAY,

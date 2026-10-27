@@ -1,25 +1,35 @@
 ## Rules related to ENSEMBL gene information.
 
 
+rule genes_ensembl_download_entrez_grch38:  # -- download ENSEMBL to Entrez mapping (GRCh38)
+    output:
+        download_tsv="work/genes/ensembl/grch38/{ensembl_version}/download/Homo_sapiens.GRCh38.{ensembl_version}.entrez.tsv.gz",
+    shell:
+        r"""
+        wget --no-check-certificate \
+            -O {output.download_tsv} \
+            '{DV.ensembl_38_archive_ftp}/release-{wildcards.ensembl_version}/tsv/homo_sapiens/Homo_sapiens.GRCh38.{wildcards.ensembl_version}.entrez.tsv.gz'
+        """
+
+
 rule genes_ensembl_create_xlink:  # -- create ENSEMBL gene information xlink table
+    input:
+        download_gtf="work/genes/ensembl/grch38/{ensembl}/download/Homo_sapiens.GRCh38.{ensembl}.gtf.gz",
+        download_entrez="work/genes/ensembl/grch38/{ensembl}/download/Homo_sapiens.GRCh38.{ensembl}.entrez.tsv.gz",
     output:
         tsv="work/genes/ensembl/{ensembl}/ensembl_xlink.tsv",
         tsv_md5="work/genes/ensembl/{ensembl}/ensembl_xlink.tsv.md5",
-    params:
-        ensembl_archive_url=DV.ensembl_38_archive_url,
     shell:
         r"""
-        # Check wehther ensembl version is correct.
-        export TMPDIR=$(mktemp -d)
-
         echo -e "ensembl_gene_id\tensembl_transcript_id\tentrez_id\tgene_symbol" \
         >{output.tsv}
 
-        wget --no-check-certificate \
-            -O $TMPDIR/tmp \
-            '{params.ensembl_archive_url}/biomart/martservice?query=<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE Query><Query  virtualSchemaName = "default" formatter = "TSV" header = "0" uniqueRows = "0" count = "" datasetConfigVersion = "0.6" ><Dataset name = "hsapiens_gene_ensembl" interface = "default" ><Attribute name = "ensembl_gene_id" /><Attribute name = "ensembl_transcript_id" /><Attribute name = "entrezgene_id" /><Attribute name = "external_gene_name" /></Dataset></Query>' \
-
-        sort -u $TMPDIR/tmp \
+        awk \
+            -F $'\t' \
+            -f scripts/genes-ensembl-xlink.awk \
+            <(zcat {input.download_entrez}) \
+            <(zcat {input.download_gtf}) \
+        | sort -u \
         >> {output.tsv}
 
         md5sum {output.tsv} >{output.tsv_md5}
