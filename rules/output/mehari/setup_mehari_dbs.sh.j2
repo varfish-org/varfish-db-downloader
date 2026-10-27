@@ -35,7 +35,7 @@ if [ ! -d "{{ downloader_base }}" ]; then
 fi
 
 CLINVAR_VERSION={{ DV.clinvar_version }}
-ANNONARS_VERSION={{ PV.annonars }}
+ANNONARS_CLINVAR_VERSION={{ DV.annonars_clinvar }}
 HGNC_QUARTERLY={{ DV.hgnc_quarterly }}
 MEHARI_DATA_TX_VERSION={{ DV.mehari_tx }}
 declare -A MEHARI_DATA_TX_FILES
@@ -51,7 +51,7 @@ GENOMEBUILDS=({% for gb in genomebuilds %}{{ gb }} {% endfor %})
 log "Installing database for releases: ${GENOMEBUILDS[@]}"
 log "Versions to be installed:"
 log "- CLINVAR_VERSION=${CLINVAR_VERSION}"
-log "- ANNONARS_VERSION=${ANNONARS_VERSION}"
+log "- ANNONARS_CLINVAR_VERSION=${ANNONARS_CLINVAR_VERSION}"
 log "- HGNC_QUARTERLY=${HGNC_QUARTERLY}"
 log "- MEHARI_DATA_TX_VERSION=${MEHARI_DATA_TX_VERSION}"
 for key in "${!MEHARI_DATA_TX_FILES[@]}"; do
@@ -101,7 +101,7 @@ do
 
   # Note: The other clinvar datasets (genes, sv) are currently not used by mehari annotate workflow
   log "Downloading clinvar database (${assembly}) ..."
-  file="annonars-clinvar-minimal-$assembly-${CLINVAR_VERSION}+${ANNONARS_VERSION}"
+  file="annonars-clinvar-minimal-$assembly-${CLINVAR_VERSION}+${ANNONARS_CLINVAR_VERSION}"
   url_base="https://github.com/varfish-org/annonars-data-clinvar/releases/download"
   wget \
     "$url_base/annonars-data-clinvar-${CLINVAR_VERSION}/${file}.tar.gz" \
