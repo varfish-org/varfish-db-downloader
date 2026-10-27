@@ -1,25 +1,35 @@
 ## Rules related to ENSEMBL gene information.
 
 
+rule genes_ensembl_download_entrez_grch38:  # -- download ENSEMBL to Entrez mapping (GRCh38)
+    output:
+        download_tsv="work/genes/ensembl/grch38/{ensembl_version}/download/Homo_sapiens.GRCh38.{ensembl_version}.entrez.tsv.gz",
+    shell:
+        r"""
+        wget --no-check-certificate \
+            -O {output.download_tsv} \
+            '{DV.ensembl_38_archive_ftp}/release-{wildcards.ensembl_version}/tsv/homo_sapiens/Homo_sapiens.GRCh38.{wildcards.ensembl_version}.entrez.tsv.gz'
+        """
+
+
 rule genes_ensembl_create_xlink:  # -- create ENSEMBL gene information xlink table
+    input:
+        download_gtf="work/genes/ensembl/grch38/{ensembl}/download/Homo_sapiens.GRCh38.{ensembl}.chr_patch_hapl_scaff.gtf.gz",
+        download_entrez="work/genes/ensembl/grch38/{ensembl}/download/Homo_sapiens.GRCh38.{ensembl}.entrez.tsv.gz",
     output:
         tsv="work/genes/ensembl/{ensembl}/ensembl_xlink.tsv",
         tsv_md5="work/genes/ensembl/{ensembl}/ensembl_xlink.tsv.md5",
-    params:
-        ensembl_archive_url=DV.ensembl_38_archive_url,
     shell:
         r"""
-        # Check wehther ensembl version is correct.
-        export TMPDIR=$(mktemp -d)
-
         echo -e "ensembl_gene_id\tensembl_transcript_id\tentrez_id\tgene_symbol" \
         >{output.tsv}
 
-        wget --no-check-certificate \
-            -O $TMPDIR/tmp \
-            '{params.ensembl_archive_url}/biomart/martservice?query=<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE Query><Query  virtualSchemaName = "default" formatter = "TSV" header = "0" uniqueRows = "0" count = "" datasetConfigVersion = "0.6" ><Dataset name = "hsapiens_gene_ensembl" interface = "default" ><Attribute name = "ensembl_gene_id" /><Attribute name = "ensembl_transcript_id" /><Attribute name = "entrezgene_id" /><Attribute name = "external_gene_name" /></Dataset></Query>' \
-
-        sort -u $TMPDIR/tmp \
+        awk \
+            -F $'\t' \
+            -f scripts/genes-ensembl-xlink.awk \
+            <(zcat {input.download_entrez}) \
+            <(zcat {input.download_gtf}) \
+        | sort -u \
         >> {output.tsv}
 
         md5sum {output.tsv} >{output.tsv_md5}
@@ -27,6 +37,8 @@ rule genes_ensembl_create_xlink:  # -- create ENSEMBL gene information xlink tab
 
 
 rule genes_ensembl_download_maps_grch3X:  # -- download files for ENST-ENSG mapping
+    wildcard_constraints:
+        ensembl_version=r"\d+",
     output:
         download_gtf="work/genes/ensembl/{genomebuild}/{ensembl_version}/download/Homo_sapiens.{genomebuild_cap}.{ensembl_version}.gtf.gz",
     params:
@@ -38,6 +50,22 @@ rule genes_ensembl_download_maps_grch3X:  # -- download files for ENST-ENSG mapp
         wget --no-check-certificate \
             -O {output.download_gtf} \
             '{params.url_base}/release-{wildcards.ensembl_version}/gtf/homo_sapiens/Homo_sapiens.{wildcards.genomebuild_cap}.{wildcards.ensembl_version}.gtf.gz'
+        """
+
+
+# The GTF including patches and haplotypes has all genes that the BioMart tables had.
+rule genes_ensembl_download_gtf_chr_patch_hapl_scaff_grch3X:  # -- download GTF incl. patches and haplotypes
+    output:
+        download_gtf="work/genes/ensembl/{genomebuild}/{ensembl_version}/download/Homo_sapiens.{genomebuild_cap}.{ensembl_version}.chr_patch_hapl_scaff.gtf.gz",
+    params:
+        url_base=lambda wildcards: DV.ensembl_38_archive_ftp
+        if wildcards.genomebuild == "grch38"
+        else DV.ensembl_37_archive_ftp,
+    shell:
+        r"""
+        wget --no-check-certificate \
+            -O {output.download_gtf} \
+            '{params.url_base}/release-{wildcards.ensembl_version}/gtf/homo_sapiens/Homo_sapiens.{wildcards.genomebuild_cap}.{wildcards.ensembl_version}.chr_patch_hapl_scaff.gtf.gz'
         """
 
 
