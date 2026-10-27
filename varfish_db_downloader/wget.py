@@ -309,7 +309,10 @@ def copy_excerpt(url: UrlEntry, data_dir: str, output_document: str):
     """Copy downloaded excerpt to output file."""
     logger.info("    copying excerpt for {} to {}", url.url, output_document)
     in_path = pathlib.Path(data_dir) / url.hash
-    basename = get_filename_from_url(url.url) or "__index__"
+    # Prefer the name from the URL path so that test mode does not depend on the server.
+    basename = os.path.basename(urllib.parse.urlparse(url.url).path)
+    if not basename or not (in_path / basename).exists():
+        basename = get_filename_from_url(url.url) or "__index__"
     excerpt_path = in_path / basename
     click.echo(err=True, message="copying {} => {}".format(excerpt_path, output_document))
     if os.path.isdir(excerpt_path):

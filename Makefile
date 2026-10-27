@@ -12,6 +12,7 @@ ci: \
 	check-black \
 	check-snakefmt \
 	flake8 \
+	test \
 
 # Alias lint to ci.
 .PHONY: lint
@@ -39,12 +40,12 @@ lint-awk:
 # Run Python import sort checking with isort.
 .PHONY: check-isort
 check-isort:
-	isort --profile=black --check-only scripts varfish_db_downloader
+	isort --profile=black --check-only scripts varfish_db_downloader tests
 
 # Run Python format checking with black.
 .PHONY: check-black
 check-black:
-	black --check --line-length 100 scripts varfish_db_downloader
+	black --check --line-length 100 scripts varfish_db_downloader tests
 
 # Run Snakemake format checking with snakefmt.
 .PHONY: check-snakefmt
@@ -55,7 +56,12 @@ check-snakefmt:
 # Run Python linting with flake8.
 .PHONY: flake8
 flake8:
-	flake8 --max-line-length 100 scripts varfish_db_downloader
+	flake8 --max-line-length 100 scripts varfish_db_downloader tests
+
+# Run Python unit tests.
+.PHONY: test
+test:
+	python -m unittest discover -s tests -t .
 
 # Run all automatic code formatting.
 .PHONY: format
@@ -75,12 +81,12 @@ format-bash:
 # Run Python import sorting with isort.
 .PHONY: isort
 isort:
-	isort --profile=black scripts varfish_db_downloader
+	isort --profile=black scripts varfish_db_downloader tests
 
 # Run Python formatting with black.
 .PHONY: black
 black:
-	black --line-length 100 scripts varfish_db_downloader
+	black --line-length 100 scripts varfish_db_downloader tests
 
 # Run Snakemake formatting with snakefmt.
 .PHONY: run-snakefmt
