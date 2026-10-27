@@ -339,8 +339,8 @@ def generate_input_files():
             ),
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/ensembltogenesymbol/{ensembl_versions[genomebuild]}/EnsemblToGeneSymbol.tsv",
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/ensembltogenesymbol/{ensembl_versions[genomebuild]}/EnsemblToGeneSymbol.release_info",
-            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/MITOMAP/{DV.today}/Mitomap.tsv",
-            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/MITOMAP/{DV.today}/Mitomap.release_info",
+            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/MITOMAP/{DV.mitomap}/Mitomap.tsv",  # ATTN! source file is placed manually in the data directory
+            f"output/pre-mehari/{genomebuild_cap[genomebuild]}/MITOMAP/{DV.mitomap}/Mitomap.release_info",
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/mtDB/{DV.mtdb}/MtDb.tsv",
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/mtDB/{DV.mtdb}/MtDb.release_info",
             f"output/pre-mehari/{genomebuild_cap[genomebuild]}/extra_annos/{DV.cadd}/ExtraAnno.tsv",

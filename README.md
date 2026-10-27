@@ -116,6 +116,15 @@ Some need to be reduced in size.
 - https://github.com/SACGF/cdot/releases/download/data_v0.2.36/cdot-0.2.36.Homo_sapiens_GRCh37_RefSeq_105.20220307.gff.json.gz
 - https://github.com/SACGF/cdot/releases/download/data_v0.2.36/cdot-0.2.36.Homo_sapiens_GRCh38_RefSeq_RS_2025_08.gff.json.gz
 
+#### Manually downloaded data
+
+Some source files can't be downloaded by the pipeline and have to be downloaded manually and committed to the `data` folder.
+
+- MITOMAP: https://mitomap.org/cgi-bin/polymorphisms.cgi?format=vcf
+  - The URL is behind a Cloudflare browser check, so `wget` gets `HTTP 403`. Download the file in a browser.
+  - Save it as `data/mitomap/<fileDate>/polymorphisms.vcf`, where `<fileDate>` is the `##fileDate` from the VCF header.
+  - Set `mitomap` in `varfish_db_downloader/versions.py` to the same `<fileDate>`.
+
 
 ### Managing GitHub Project with Terraform
 
