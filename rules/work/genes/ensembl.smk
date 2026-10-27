@@ -14,7 +14,7 @@ rule genes_ensembl_download_entrez_grch38:  # -- download ENSEMBL to Entrez mapp
 
 rule genes_ensembl_create_xlink:  # -- create ENSEMBL gene information xlink table
     input:
-        download_gtf="work/genes/ensembl/grch38/{ensembl}/download/Homo_sapiens.GRCh38.{ensembl}.gtf.gz",
+        download_gtf="work/genes/ensembl/grch38/{ensembl}/download/Homo_sapiens.GRCh38.{ensembl}.chr_patch_hapl_scaff.gtf.gz",
         download_entrez="work/genes/ensembl/grch38/{ensembl}/download/Homo_sapiens.GRCh38.{ensembl}.entrez.tsv.gz",
     output:
         tsv="work/genes/ensembl/{ensembl}/ensembl_xlink.tsv",
@@ -37,6 +37,8 @@ rule genes_ensembl_create_xlink:  # -- create ENSEMBL gene information xlink tab
 
 
 rule genes_ensembl_download_maps_grch3X:  # -- download files for ENST-ENSG mapping
+    wildcard_constraints:
+        ensembl_version=r"\d+",
     output:
         download_gtf="work/genes/ensembl/{genomebuild}/{ensembl_version}/download/Homo_sapiens.{genomebuild_cap}.{ensembl_version}.gtf.gz",
     params:
@@ -48,6 +50,22 @@ rule genes_ensembl_download_maps_grch3X:  # -- download files for ENST-ENSG mapp
         wget --no-check-certificate \
             -O {output.download_gtf} \
             '{params.url_base}/release-{wildcards.ensembl_version}/gtf/homo_sapiens/Homo_sapiens.{wildcards.genomebuild_cap}.{wildcards.ensembl_version}.gtf.gz'
+        """
+
+
+# The GTF including patches and haplotypes has all genes that the BioMart tables had.
+rule genes_ensembl_download_gtf_chr_patch_hapl_scaff_grch3X:  # -- download GTF incl. patches and haplotypes
+    output:
+        download_gtf="work/genes/ensembl/{genomebuild}/{ensembl_version}/download/Homo_sapiens.{genomebuild_cap}.{ensembl_version}.chr_patch_hapl_scaff.gtf.gz",
+    params:
+        url_base=lambda wildcards: DV.ensembl_38_archive_ftp
+        if wildcards.genomebuild == "grch38"
+        else DV.ensembl_37_archive_ftp,
+    shell:
+        r"""
+        wget --no-check-certificate \
+            -O {output.download_gtf} \
+            '{params.url_base}/release-{wildcards.ensembl_version}/gtf/homo_sapiens/Homo_sapiens.{wildcards.genomebuild_cap}.{wildcards.ensembl_version}.chr_patch_hapl_scaff.gtf.gz'
         """
 
 

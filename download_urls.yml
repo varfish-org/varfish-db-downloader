@@ -295,6 +295,16 @@
     strategy: head
     count: 10000
 
+- url: https://ftp.ensembl.org/pub/grch37/release-87/gtf/homo_sapiens/Homo_sapiens.GRCh37.87.chr_patch_hapl_scaff.gtf.gz
+  excerpt_strategy:
+    strategy: head
+    count: 10000
+
+- url: https://ftp.ensembl.org/pub/release-116/gtf/homo_sapiens/Homo_sapiens.GRCh38.116.chr_patch_hapl_scaff.gtf.gz
+  excerpt_strategy:
+    strategy: head
+    count: 10000
+
 - url: https://ftp.ensembl.org/pub/release-116/tsv/homo_sapiens/Homo_sapiens.GRCh38.116.entrez.tsv.gz
   excerpt_strategy:
     strategy: head

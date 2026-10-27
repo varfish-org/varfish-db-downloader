@@ -2,7 +2,7 @@ rule grchxx_ensembl_to_genesymbol_download:
     input:
         download_gtf=lambda wildcards: (
             f"work/genes/ensembl/{wildcards.genomebuild.lower()}/{wildcards.ensembl}/download/"
-            f"Homo_sapiens.{wildcards.genomebuild}.{wildcards.ensembl}.gtf.gz"
+            f"Homo_sapiens.{wildcards.genomebuild}.{wildcards.ensembl}.chr_patch_hapl_scaff.gtf.gz"
         ),
     output:
         tsv="output/pre-mehari/{genomebuild}/ensembltogenesymbol/{ensembl}/EnsemblToGeneSymbol.tsv",
