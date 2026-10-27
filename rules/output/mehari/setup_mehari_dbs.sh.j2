@@ -38,7 +38,10 @@ CLINVAR_VERSION={{ DV.clinvar_version }}
 ANNONARS_VERSION={{ PV.annonars }}
 HGNC_QUARTERLY={{ DV.hgnc_quarterly }}
 MEHARI_DATA_TX_VERSION={{ DV.mehari_tx }}
-MEHARI_DATA_TX_SOURCE={{ primary_tx_source }}
+declare -A MEHARI_DATA_TX_FILES
+{% for k, v in mehari_tx_files.items() %}
+MEHARI_DATA_TX_FILES[{{ k }}]="{{ v }}"
+{% endfor %}
 declare -A MEHARI_FREQUENCY_VERSIONS
 {% for k, v in mehari_freq_versions.items() %}
 MEHARI_FREQUENCY_VERSIONS[{{ k }}]="{{ v }}"
@@ -51,7 +54,9 @@ log "- CLINVAR_VERSION=${CLINVAR_VERSION}"
 log "- ANNONARS_VERSION=${ANNONARS_VERSION}"
 log "- HGNC_QUARTERLY=${HGNC_QUARTERLY}"
 log "- MEHARI_DATA_TX_VERSION=${MEHARI_DATA_TX_VERSION}"
-log "- MEHARI_DATA_TX_SOURCE=${MEHARI_DATA_TX_SOURCE}"
+for key in "${!MEHARI_DATA_TX_FILES[@]}"; do
+  log "- MEHARI_DATA_TX_FILES[$key]=${MEHARI_DATA_TX_FILES[$key]}"
+done
 for key in "${!MEHARI_FREQUENCY_VERSIONS[@]}"; do
   log "- MEHARI_FREQUENCY_VERSIONS[$key]=${MEHARI_FREQUENCY_VERSIONS[$key]}"
 done
@@ -80,12 +85,12 @@ do
   log "Copying transcript database (${assembly}) ..."
   tx_path=$OUTPUT_BASE/genes-txs-$assembly-${MEHARI_DATA_TX_VERSION}
   cp \
-    $tx_path/mehari-data-txs-$assembly-*-${MEHARI_DATA_TX_VERSION}.bin.zst \
+    $tx_path/mehari-data-txs-*-${MEHARI_DATA_TX_VERSION}.bin.zst \
     $DIR/$assembly/seqvars/.
 
   log "Linking transcript database (${assembly}) -> ${assembly}/seqvars/txs.bin.zst"
   ln -s \
-    mehari-data-txs-$assembly-${MEHARI_DATA_TX_SOURCE}-${MEHARI_DATA_TX_VERSION}.bin.zst \
+    ${MEHARI_DATA_TX_FILES[$assembly]} \
     $DIR/$assembly/seqvars/txs.bin.zst
 
   log "Copying frequency database (${assembly}) ..."

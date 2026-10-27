@@ -8,7 +8,7 @@ rule genes_mehari_data_tx_download:  # -- Download the HGNC data
         r"""
         wget \
             -O {output.zstd} \
-            https://github.com/bihealth/mehari-data-tx/releases/download/v{wildcards.version}/mehari-data-txs-{wildcards.genome_release_cap}-{wildcards.refseq_or_ensembl}-{wildcards.version}.bin.zst
+            https://github.com/varfish-org/mehari-data-tx/releases/download/v{wildcards.version}/mehari-data-txs-{wildcards.genome_release_cap}-{wildcards.refseq_or_ensembl}-{wildcards.version}.bin.zst
         """
 
 

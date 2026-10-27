@@ -41,7 +41,7 @@ REFSEQ_REF_38_BUILD = "GRCh38.p14"
 #: Ensembl release for GRCh37
 ENSEMBL_37 = "87"
 #: Ensembl release for GRCh38
-ENSEMBL_38 = "115"
+ENSEMBL_38 = "116"
 
 #: Wether we run in CI/test mode.
 RUNS_IN_CI = os.environ.get("CI", "false").lower() == "true"
@@ -226,15 +226,15 @@ DATA_VERSIONS = DataVersions(
     refseq_base_url="https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/9606",
     # The lines/versions below the mehari_tx should be consistent with the mehari-data-tx release:
     # https://github.com/varfish-org/mehari-data-tx/blob/v{mehari_tx}/config/config.yaml
-    mehari_tx="0.13.0",  # ATTN! version to be consistent with
+    mehari_tx="0.14.1",  # ATTN! version to be consistent with
     # ---
-    cdot="0.2.32",  # line #L30 and others
-    hgnc_quarterly="2026-01-06",  # line #L239
-    cdot_refseq_gff_json_37=f"Homo_sapiens_GRCh37_RefSeq_{REFSEQ_37}.gff",  # line #L120
-    cdot_refseq_gff_json_38=f"Homo_sapiens_GRCh38_RefSeq_{REFSEQ_38}.gff",  # line #L31
-    hpo="v2026-02-16",  # line #L250
-    ensembl_37=ENSEMBL_37,  # line #L217
-    ensembl_38=ENSEMBL_38,  # line #L155
+    cdot="0.2.36",  # line #L44 and others
+    hgnc_quarterly="2026-10-06",  # line #L288
+    cdot_refseq_gff_json_37=f"Homo_sapiens_GRCh37_RefSeq_{REFSEQ_37}.gff",  # line #L141
+    cdot_refseq_gff_json_38=f"Homo_sapiens_GRCh38_RefSeq_{REFSEQ_38}.gff",  # line #L45
+    hpo="v2026-02-16",  # line #L300
+    ensembl_37=ENSEMBL_37,  # line #L30
+    ensembl_38=ENSEMBL_38,  # line #L12 (highest release)
     refseq_37=REFSEQ_37,
     refseq_38=REFSEQ_38,
     refseq_ref_37=REFSEQ_REF_37,

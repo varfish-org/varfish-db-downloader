@@ -142,6 +142,17 @@ genomebuild_cap = {
     "grch37": "GRCh37",
     "grch38": "GRCh38",
 }
+#: Source part of the mehari-data-tx file names, by genome build and transcript source.
+mehari_tx_sources = {
+    genomebuild: {
+        "ensembl": f"ensembl-{ensembl_versions[genomebuild]}",
+        "refseq": f"refseq-{refseq_versions[genomebuild]}",
+        "ensembl-and-refseq": (
+            f"ensembl-{ensembl_versions[genomebuild]}-and-refseq-{refseq_versions[genomebuild]}"
+        ),
+    }
+    for genomebuild in ("grch37", "grch38")
+}
 chroms = {
     "grch37": CHROMS_37,
     "grch38": CHROMS_38,
@@ -233,9 +244,9 @@ def generate_input_files():
             f"output/full/worker/patho-mms-{genomebuild}-{DV.patho_mms}+{PV.worker}/patho-mms.bed",
             # f"output/full/worker/tads-{genomebuild}-dixon2015/hesc.bed",
             # -- mehari data
-            f"output/full/mehari/genes-txs-{genomebuild}-{DV.mehari_tx}/mehari-data-txs-{genomebuild_cap[genomebuild]}-ensembl-{DV.mehari_tx}.bin.zst",
-            f"output/full/mehari/genes-txs-{genomebuild}-{DV.mehari_tx}/mehari-data-txs-{genomebuild_cap[genomebuild]}-refseq-{DV.mehari_tx}.bin.zst",
-            f"output/full/mehari/genes-txs-{genomebuild}-{DV.mehari_tx}/mehari-data-txs-{genomebuild_cap[genomebuild]}-ensembl-and-refseq-{DV.mehari_tx}.bin.zst",
+            f"output/full/mehari/genes-txs-{genomebuild}-{DV.mehari_tx}/mehari-data-txs-{genomebuild_cap[genomebuild]}-{mehari_tx_sources[genomebuild]['ensembl']}-{DV.mehari_tx}.bin.zst",
+            f"output/full/mehari/genes-txs-{genomebuild}-{DV.mehari_tx}/mehari-data-txs-{genomebuild_cap[genomebuild]}-{mehari_tx_sources[genomebuild]['refseq']}-{DV.mehari_tx}.bin.zst",
+            f"output/full/mehari/genes-txs-{genomebuild}-{DV.mehari_tx}/mehari-data-txs-{genomebuild_cap[genomebuild]}-{mehari_tx_sources[genomebuild]['ensembl-and-refseq']}-{DV.mehari_tx}.bin.zst",
             f"output/full/tracks/track-strucvars-dbvar-{genomebuild}-{DV.dbvar}+{DV.tracks}/dbvar.bed.gz",
             f"output/full/tracks/track-strucvars-dgv-{genomebuild}-{DV.dgv}+{DV.tracks}/dgv.bed.gz",
             f"output/full/tracks/track-strucvars-dgv-gs-{genomebuild}-{DV.dgv_gs}+{DV.tracks}/dgv-gs.bed.gz",
