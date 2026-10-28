@@ -7,6 +7,8 @@ rule annos_features_refseq_gene_regions_download_grch37:
         gtf="work/download/annos/grch37/refseq/{version}/{assembly}_genomic.gtf.gz",
     params:
         version_stripped=lambda wildcards: wildcards.version.partition(".")[0],
+    resources:
+        ncbi_downloads=1,
     shell:
         r"""
         wget --no-check-certificate \
@@ -31,6 +33,8 @@ rule annos_features_refseq_gene_regions_download_grch38:
             if DV.refseq_38.startswith("RS_")
             else f"{DV.refseq_38}/{DV.refseq_ref_38_assembly}"
         ),
+    resources:
+        ncbi_downloads=1,
     shell:
         r"""
         wget --no-check-certificate \

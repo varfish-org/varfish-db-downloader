@@ -20,6 +20,8 @@ rule grch3x_refseq_exons_download:
             if DV.refseq_37.startswith("RS_")
             else f"{DV.refseq_37}/{DV.refseq_ref_37_assembly}"
         ),
+    resources:
+        ncbi_downloads=1,
     shell:
         r"""
         export TMPDIR=$(mktemp -d)

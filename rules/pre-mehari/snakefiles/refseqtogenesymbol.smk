@@ -1,6 +1,8 @@
 rule noref_refseq_to_genesymbol_dl:
     output:
         "work/download/pre-mehari/noref/refseqtogenesymbol/{download_date}/gene2accession.gz",
+    resources:
+        ncbi_downloads=1,
     shell:
         r"""
         wget --no-check-certificate -O {output} http://ftp.ncbi.nlm.nih.gov/gene/DATA/gene2accession.gz
