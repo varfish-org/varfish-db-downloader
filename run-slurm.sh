@@ -38,6 +38,7 @@ snakemake \
     --jobs $JOBS \
     --slurm \
     --latency-wait $LATENCY_WAIT \
+    --resources ncbi_downloads=1 \
     --default-resources \
         'runtime="4h"' \
         mem_mb=4000 \

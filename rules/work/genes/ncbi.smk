@@ -4,6 +4,8 @@
 rule genes_ncbi_download_mim2gene:  # -- download NCBI MedGen mim2gene
     output:
         download="work/download/genes/ncbi/{date}/mim2gene_medgen",
+    resources:
+        ncbi_downloads=1,
     shell:
         r"""
         if [[ "$(date +%Y%m%d)" != "{wildcards.date}" ]] && [[ "{FORCE_TODAY}" != "True" ]]; then
@@ -23,6 +25,8 @@ rule genes_ncbi_entrez_download:  # -- download NCBI Entrez files
         ags_md5="work/download/genes/ncbi/{date}/Homo_sapiens.ags.gz.md5",
         gene2xml="work/download/genes/ncbi/{date}/linux64.gene2xml",
         gene2xml_md5="work/download/genes/ncbi/{date}/linux64.gene2xml.md5",
+    resources:
+        ncbi_downloads=1,
     shell:
         r"""
         export TMPDIR=$(mktemp -d)

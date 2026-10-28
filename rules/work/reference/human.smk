@@ -16,6 +16,8 @@ REFERENCE_URLS = {
 rule reference_download:  # -- download reference genome sequence
     output:
         download="work/download/reference/{genome_build}/reference.fa.gz",
+    resources:
+        ncbi_downloads=1,
     run:
         ref_url = REFERENCE_URLS[wildcards.genome_build]
         shell(

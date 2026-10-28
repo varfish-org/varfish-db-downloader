@@ -4,6 +4,8 @@
 rule annos_strucvars_g1k_grch37_download:  # -- download Thousand Genomes SVs
     output:
         vcf="work/download/annos/grch37/strucvars/g1k/phase3v2/ALL.wgs.mergedSV.v8.20130502.svs.genotypes.vcf.gz",
+    resources:
+        ncbi_downloads=1,
     shell:
         r"""
         wget --no-check-certificate \

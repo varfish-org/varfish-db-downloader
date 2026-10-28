@@ -4,6 +4,8 @@
 rule annos_strucvars_dbvar_download:  # -- download dbVar files
     output:
         "work/download/annos/{genome_release}/strucvars/dbvar/{version}/{genome_release_nolower}.nr_{sv_type}.tsv.gz",
+    resources:
+        ncbi_downloads=1,
     shell:
         r"""
         # Ensure that the version is the latest in the release notes.

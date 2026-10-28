@@ -9,6 +9,8 @@ rule annos_dbsnp_download:  # -- download dbSNP data
         reference=lambda wildcards: DV.refseq_ref_37
         if wildcards.genome_release == "grch37"
         else DV.refseq_ref_38,
+    resources:
+        ncbi_downloads=1,
     shell:
         r"""
         # Check the version.
@@ -48,6 +50,8 @@ rule annos_dbsnp_assembly_release:
             if DV.refseq_38.startswith("RS_")
             else f"{DV.refseq_38}/{DV.refseq_ref_38_assembly}"
         ),
+    resources:
+        ncbi_downloads=1,
     shell:
         r"""
         wget --no-check-certificate \
