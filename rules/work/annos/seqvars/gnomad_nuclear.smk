@@ -14,6 +14,7 @@ rule annos_gnomad_nuclear_download_grch37_v2:  # -- download gnomAD v2 exomes/ge
     threads: 8
     resources:
         runtime="48h",
+        mem_mb=16000,
     shell:
         r"""
         aria2c \
@@ -45,6 +46,7 @@ rule annos_gnomad_nuclear_download_grch38_liftover_v2:  # -- download gnomAD v2 
     threads: 8
     resources:
         runtime="48h",
+        mem_mb=16000,
     shell:
         r"""
         aria2c \
@@ -76,6 +78,7 @@ rule annos_gnomad_nuclear_download_grch38_v3_v4:  # -- download gnomAD genomes v
     threads: 8
     resources:
         runtime="48h",
+        mem_mb=16000,
     shell:
         r"""
         aria2c \
