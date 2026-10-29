@@ -101,10 +101,15 @@ def no_excerpt(url: str, path_out: str, count: int):
 
 
 def decompress_stream(stream):
-    """Helper for decompressing data from a stream."""
+    """Helper for decompressing data from a stream of one or more gzip members (e.g., bgzip)."""
     o = zlib.decompressobj(16 + zlib.MAX_WBITS)
     for chunk in stream:
-        yield o.decompress(chunk)
+        while chunk:
+            yield o.decompress(chunk)
+            if not o.eof:
+                break
+            chunk = o.unused_data
+            o = zlib.decompressobj(16 + zlib.MAX_WBITS)
     yield o.flush()
 
 

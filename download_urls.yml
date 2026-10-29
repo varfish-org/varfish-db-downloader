@@ -322,7 +322,7 @@
     strategy: head
     count: 1000
 
-- url: https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1/constraint/gnomad.v4.1.constraint_metrics.tsv
+- url: https://storage.googleapis.com/gcp-public-data--gnomad/release/4.1.2/constraint/gnomad.v4.1.2.constraint_metrics.tsv.bgz
 - url: https://ftp.ncbi.nih.gov/gene/DATA/mim2gene_medgen
 
 - comment: We replace the linux64.gene2.xml binary with a wrapper to zcat...
