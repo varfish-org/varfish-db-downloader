@@ -85,15 +85,18 @@ rule genes_gnomad_convert_v2_1_1:  # -- create gnomAD gene constraints TSV (v2.1
         run_genes_gnomad_constraints_v2_1_1_to_tsv(input, output, wildcards)
 
 
-rule genes_gnomad_download_v4:  # -- download gnomAD gene constraints v4.1
+rule genes_gnomad_download_v4:  # -- download gnomAD gene constraints v4.1.x
     output:
         tsv="work/download/genes/gnomad/{version}/gnomad.v{version}.constraint_metrics.tsv",
         tsv_md5="work/download/genes/gnomad/{version}/gnomad.v{version}.constraint_metrics.tsv.md5",
     shell:
         r"""
+        # Since v4.1.1 the constraint metrics are only published bgzip-compressed.
         wget --no-check-certificate \
-            -O {output.tsv} \
-            https://storage.googleapis.com/gcp-public-data--gnomad/release/{wildcards.version}/constraint/gnomad.v{wildcards.version}.constraint_metrics.tsv
+            -O {output.tsv}.bgz \
+            https://storage.googleapis.com/gcp-public-data--gnomad/release/{wildcards.version}/constraint/gnomad.v{wildcards.version}.constraint_metrics.tsv.bgz
+        zcat {output.tsv}.bgz >{output.tsv}
+        rm {output.tsv}.bgz
 
         md5sum {output.tsv} >{output.tsv_md5}
         """

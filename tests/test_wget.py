@@ -1,9 +1,10 @@
+import gzip
 import pathlib
 import tempfile
 import unittest
 from unittest import mock
 
-from varfish_db_downloader.wget import UrlEntry, copy_excerpt
+from varfish_db_downloader.wget import UrlEntry, copy_excerpt, decompress_stream
 
 #: A BioMart query URL, whose excerpt is stored under the name from the URL path.
 BIOMART_URL = (
@@ -49,3 +50,12 @@ class CopyExcerptTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class DecompressStreamTest(unittest.TestCase):
+    def test_decompresses_all_members_of_a_bgzip_file(self):
+        # bgzip files are a series of gzip members; gnomAD puts the header line into its own one.
+        data = gzip.compress(b"header\n") + gzip.compress(b"row1\nrow2\n")
+        chunks = [data[i : i + 7] for i in range(0, len(data), 7)]
+
+        self.assertEqual(b"".join(decompress_stream(chunks)), b"header\nrow1\nrow2\n")
