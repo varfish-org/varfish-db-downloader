@@ -1,5 +1,4 @@
 import ast
-import gzip
 import pathlib
 import re
 import tempfile
@@ -12,6 +11,18 @@ from varfish_db_downloader import wget
 RULES = pathlib.Path("rules/work/genes/gnomad.smk")
 VERSIONS = pathlib.Path("varfish_db_downloader/versions.py")
 CONVERTER = pathlib.Path("rules/work/genes/scripts/gnomad_constraints_v4_to_tsv.py")
+
+#: The A1BG rows of gnomAD v4.1.2 ``constraint_metrics.tsv.bgz``, reduced to the columns the
+#: converter reads (inline, because CI's lint job checks out without Git LFS).
+CONSTRAINTS_TSV = "\n".join(
+    "\t".join(fields)
+    for fields in [
+        ["gene", "gene_id", "transcript", "canonical", "mane_select", "cds_length", "lof_hc_lc.exp", "mis.exp", "syn.exp", "mis.z_score", "lof_hc_lc.obs", "mis.obs", "syn.obs", "lof.oe", "lof.oe_ci.lower", "lof.oe_ci.upper", "mis.oe", "mis.oe_ci.lower", "mis.oe_ci.upper", "syn.oe", "syn.oe_ci.lower", "syn.oe_ci.upper", "lof.pLI", "syn.z_score"],
+        ["A1BG", "1", "NM_130786.4", "true", "true", "NA", "4.6940e+01", "6.8884e+02", "3.1470e+02", "-2.9516e-01", "45", "707", "316", "9.5603e-01", "7.5098e-01", "1.2292e+00", "1.0264e+00", "9.6512e-01", "1.0922e+00", "1.0041e+00", "9.1610e-01", "1.1021e+00", "6.7352e-15", "-4.3795e-02"],
+        ["A1BG", "ENSG00000121410", "ENST00000263100", "true", "true", "1485", "4.6940e+01", "6.8884e+02", "3.1470e+02", "-2.9516e-01", "45", "707", "316", "9.5603e-01", "7.5098e-01", "1.2292e+00", "1.0264e+00", "9.6512e-01", "1.0922e+00", "1.0041e+00", "9.1610e-01", "1.1021e+00", "6.7352e-15", "-4.3795e-02"],
+        ["A1BG", "ENSG00000121410", "ENST00000600966", "false", "false", "917", "2.8743e+01", "4.1368e+02", "1.8031e+02", "3.0779e-01", "24", "399", "166", "7.7585e-01", "5.5025e-01", "1.1172e+00", "9.6452e-01", "8.8881e-01", "1.0478e+00", "9.2063e-01", "8.1153e-01", "1.0471e+00", "2.1620e-06", "6.3588e-01"],
+    ]
+) + "\n"  # fmt: skip
 
 
 def pinned_version(name: str) -> str:
@@ -43,16 +54,11 @@ class GnomadConstraintsDownloadTest(unittest.TestCase):
 
 
 class GnomadConstraintsConverterTest(unittest.TestCase):
-    def test_converts_the_test_mode_excerpt(self):
-        url = constraints_download_url()
-        entry = {e.url: e for e in wget.load_urls_yaml("download_urls.yml")}[url]
-        excerpt = pathlib.Path("excerpt-data") / entry.hash / url.split("/")[-1]
-
+    def test_keeps_the_mane_transcript_of_v4_1_2(self):
         with tempfile.TemporaryDirectory() as tmp_dir:
             tmp = pathlib.Path(tmp_dir)
             constraints_tsv = tmp / "constraints.tsv"
-            constraints_tsv.write_bytes(gzip.decompress(excerpt.read_bytes()))
-            # A1BG: MANE/canonical ENST00000263100 (see the excerpt).
+            constraints_tsv.write_text(CONSTRAINTS_TSV)
             xlink = tmp / "xlink.tsv"
             xlink.write_text(
                 "ensembl_gene_id\tensembl_transcript_id\tentrez_id\tgene_symbol\n"
@@ -68,8 +74,8 @@ class GnomadConstraintsConverterTest(unittest.TestCase):
             self.assertEqual(df.get_column("ensembl_gene_id").to_list(), ["ENSG00000121410"])
             row = df.row(0, named=True)
             self.assertEqual(row["gene_symbol"], "A1BG")
-            self.assertNotEqual(row["oe_lof_upper"], "NA")
-            self.assertNotEqual(row["pLI"], "NA")
+            self.assertEqual(row["oe_lof_upper"], "1.2292")
+            self.assertEqual(row["pLI"], "6.7352e-15")
 
 
 if __name__ == "__main__":
