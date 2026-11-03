@@ -13,11 +13,11 @@ FORCE_TODAY = os.environ.get("FORCE_TODAY", "false").lower() == "true"
 
 # Clinvar source:
 # https://github.com/varfish-org/clinvar-data-jsonl/releases
-# https://github.com/varfish-org/clinvar-data-jsonl/releases/download/clinvar-weekly-20261001/clinvar-data-extract-vars-20261001+0.18.5.tar.gz
+# https://github.com/varfish-org/clinvar-data-jsonl/releases/download/clinvar-weekly-20261102/clinvar-data-extract-vars-20261102+0.18.5.tar.gz
 # Used by:
 # - worker
 # - pre-mehari release
-CLINVAR_VERSION = "20261001"
+CLINVAR_VERSION = "20261102"
 # Clinvar-this version
 CLINVAR_THIS = "0.18.5"
 #: The ClinVar release to use (weekly clinvar release data + clinvar-this).
@@ -214,7 +214,7 @@ DATA_VERSIONS = DataVersions(
     patho_mms="20220730",
     clinvar_release=CLINVAR_RELEASE,
     clinvar_version=CLINVAR_VERSION,
-    annonars_clinvar="0.44.0",  # see ANNONARS_VERSION in varfish-org/annonars-data-clinvar
+    annonars_clinvar="0.45.2",  # see ANNONARS_VERSION in varfish-org/annonars-data-clinvar
     tracks="0",
     # refseq_37="105",
     # refseq_38="GCF_000001405.40+RS_2023_03",
