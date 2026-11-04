@@ -6,6 +6,15 @@
 # ``varfish-server-worker`` and is used in the backend for filtering and/or exposed to the
 # user via a REST API.
 
+import os
+
+# Run annonars from its Docker image instead of bioconda, so that the RocksDB databases are written
+# with a table format_version that all readers support (see annonars-image-bin/annonars).  This
+# happens before importing ``versions`` so that the annonars version is taken from the image.  Not
+# in CI test mode, which has no Apptainer.
+if os.environ.get("CI", "false").lower() != "true":
+    os.environ["PATH"] = f"{os.getcwd()}/annonars-image-bin:{os.environ['PATH']}"
+
 from varfish_db_downloader.versions import (
     DATA_VERSIONS as DV,
     PACKAGE_VERSIONS as PV,
@@ -16,8 +25,6 @@ from varfish_db_downloader.versions import (
 
 # Unset conflicting SLURM environment variables to prevent srun conflicts
 # These can be set by parent SLURM jobs and conflict with Snakemake's resource management
-import os
-
 os.environ.pop("SLURM_CPUS_PER_TASK", None)
 os.environ.pop("SLURM_TRES_PER_TASK", None)
 

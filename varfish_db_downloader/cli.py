@@ -1,5 +1,6 @@
 """CLI entry point for VarFish DB Downloader."""
 
+import pathlib
 import sys
 
 import click
@@ -9,7 +10,7 @@ import requests_ftp
 from loguru import logger
 from reretry import retry
 
-from varfish_db_downloader import __version__, wget
+from varfish_db_downloader import __version__, rocksdb, wget
 
 
 @click.group()
@@ -188,6 +189,33 @@ def urls_check_upstream(urls, urls_yaml):
 @click.argument("urls", nargs=-1)
 def check_downloaded(urls, urls_yaml):
     """Checks whether the downloaded files are as expected."""
+
+
+@main.group(name="rocksdb")
+def rocksdb_():
+    """Group for 'rocksdb' sub commands."""
+
+
+@rocksdb_.command()
+@click.option(
+    "--max-format-version",
+    default=6,
+    show_default=True,
+    help="Highest table format_version that all readers support (RocksDB 8.x reads up to 6).",
+)
+@click.argument("rocksdb_dirs", nargs=-1, type=click.Path(exists=True, path_type=pathlib.Path))
+def check_format(rocksdb_dirs, max_format_version):
+    """Check the table format_version of built RocksDB databases."""
+    too_new = 0
+    for rocksdb_dir in rocksdb_dirs:
+        format_version = rocksdb.max_table_format_version(rocksdb_dir)
+        click.echo(f"{rocksdb_dir}: format_version {format_version}")
+        if format_version > max_format_version:
+            too_new += 1
+    if too_new:
+        raise click.ClickException(
+            f"{too_new} database(s) above format_version {max_format_version} (see above)"
+        )
 
 
 if __name__ == "__main__":

@@ -80,6 +80,23 @@ Besides the full output, we also build a subset of the data suitable for develop
 At the moment of writing, the subset is to the BRCA1 gene only.
 The rationale is that this gene and its variants are heavily annotated as breast cancer predisposition screening is a common task and users/data is plenty.
 
+### annonars from its Docker image
+
+Outside of CI test mode, the workflow runs `annonars` from the Docker image `ghcr.io/varfish-org/annonars:0.45.2` via Apptainer instead of the bioconda package (`annonars-image-bin/annonars`, put first on `PATH` by the `Snakefile`).
+The image links RocksDB 8.9, which writes table `format_version` 5.
+The bioconda build bundles RocksDB 11.8.1, which writes `format_version` 7, and readers with RocksDB < 10.4 (e.g. varfish-server-worker 0.17) cannot open that.
+
+- Apptainer must be available on the nodes that run the jobs.
+- Fill the Apptainer cache once before starting the workflow, so that the jobs do not convert the image in parallel:
+  ```
+  # apptainer exec docker://ghcr.io/varfish-org/annonars:0.45.2 annonars --version
+  ```
+- Paths outside the working directory and `$HOME` must be bound, e.g. with `export APPTAINER_BIND=/data02`.
+- Check the format of built databases; databases above `format_version` 6 have to be rebuilt:
+  ```
+  # varfish-db-downloader rocksdb check-format output/full/annonars/*/rocksdb output/full/mehari/freqs-*/rocksdb
+  ```
+
 ### Running in Test Mode
 
 TODO: This part is currently disabled in CI (`Run-Test-Mode` in `.github/workflows/main.yml`).

@@ -67,6 +67,12 @@ class TableFormatVersionTest(unittest.TestCase):
 
         self.assertEqual(max_table_format_version(self.rocksdb_dir), 7)
 
+    def test_max_table_format_version_without_options_file(self):
+        self.rocksdb_dir.mkdir(parents=True)
+
+        with self.assertRaises(ValueError):
+            max_table_format_version(self.rocksdb_dir)
+
     def test_check_format_fails_above_max_format_version(self):
         write_options(self.rocksdb_dir, "OPTIONS-000005", 7)
 
