@@ -1,0 +1,10 @@
+#!/usr/bin/bash
+
+# Runs annonars from its Docker image instead of bioconda (#150).  The image links
+# the system RocksDB 8.9, which writes table format_version 5 that every current
+# reader supports; bioconda's bundled RocksDB 11.8.1 writes format_version 7.
+#
+# Keep the version pinned: images built after varfish-org/annonars#878 use the
+# bundled RocksDB again.
+
+exec apptainer exec docker://ghcr.io/varfish-org/annonars:0.45.2 annonars "$@"
